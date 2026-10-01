@@ -2654,8 +2654,11 @@ p {
   }
 
   .footer-columns {
-    grid-template-columns: 1fr 1fr;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 48px;
+  width: 100%;
+}
 
   .footer-column:last-child {
     grid-column: span 2;
@@ -2697,9 +2700,8 @@ p {
    ========================================= */
 
 @media (max-width: 900px) {
-
   .site-footer .footer-top {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 48px;
   }
 
@@ -2710,10 +2712,9 @@ p {
   .site-footer .footer-columns {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 32px;
   }
-
 }
 
 
