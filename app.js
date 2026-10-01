@@ -1,309 +1,530 @@
-const promptInput = document.getElementById("prompt");
-const responseInput = document.getElementById("response");
-const referenceInput = document.getElementById("reference");
-const evaluateButton = document.getElementById("evaluateButton");
-
-const resultsSection = document.getElementById("results");
-
-const overallScore = document.getElementById("overallScore");
-const overallText = document.getElementById("overallText");
-
-const factualityScore = document.getElementById("factualityScore");
-const instructionScore = document.getElementById("instructionScore");
-const relevanceScore = document.getElementById("relevanceScore");
-const completenessScore = document.getElementById("completenessScore");
-const safetyScore = document.getElementById("safetyScore");
-const fluencyScore = document.getElementById("fluencyScore");
-
-const summaryText = document.getElementById("summaryText");
-const issuesList = document.getElementById("issuesList");
-const recommendationText = document.getElementById("recommendationText");
+/* =========================================================
+   EVALLOOP AI
+   Landing Page Interactions
+   ========================================================= */
 
 
-/*
- * Evaluate button
- */
+/* =========================================================
+   PAGE PROGRESS
+   ========================================================= */
 
-evaluateButton.addEventListener("click", async () => {
+const pageProgress = document.getElementById("pageProgress");
 
-  const prompt = promptInput.value.trim();
-  const response = responseInput.value.trim();
-  const reference = referenceInput.value.trim();
+function updatePageProgress() {
+  const scrollTop = window.scrollY;
 
+  const documentHeight =
+    document.documentElement.scrollHeight - window.innerHeight;
 
-  /*
-   * Validate required fields.
-   */
-
-  if (!prompt || !response) {
-
-    alert("Please enter both the Prompt and AI Response.");
-
+  if (documentHeight <= 0) {
+    pageProgress.style.width = "0%";
     return;
   }
 
+  const progress = (scrollTop / documentHeight) * 100;
 
-  /*
-   * Disable button while evaluation is running.
-   */
+  pageProgress.style.width = `${Math.min(progress, 100)}%`;
+}
 
-  evaluateButton.disabled = true;
-  evaluateButton.textContent = "Evaluating with Groq...";
+window.addEventListener("scroll", updatePageProgress, {
+  passive: true
+});
 
-
-  /*
-   * Show results area.
-   */
-
-  resultsSection.style.display = "block";
+updatePageProgress();
 
 
-  /*
-   * Update loading text.
-   */
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
 
-  overallScore.textContent = "—";
-  overallText.textContent = "EvalLoop AI is evaluating the response...";
+const mobileMenuButton =
+  document.getElementById("mobileMenuButton");
 
-  summaryText.textContent = "Analyzing the AI response...";
+const mobileNav =
+  document.getElementById("mobileNav");
 
-  issuesList.innerHTML = `
-    <div class="issue-item">
-      Evaluation in progress...
-    </div>
-  `;
+if (mobileMenuButton && mobileNav) {
 
-  recommendationText.textContent = "Generating recommendation...";
+  mobileMenuButton.addEventListener("click", () => {
+
+    const isOpen =
+      mobileMenuButton.classList.toggle("active");
+
+    mobileNav.classList.toggle("active", isOpen);
+
+    mobileMenuButton.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    document.body.classList.toggle(
+      "menu-open",
+      isOpen
+    );
+
+  });
 
 
-  try {
+  /* Close mobile menu after clicking a link */
 
-    /*
-     * Send the evaluation request to our Vercel API.
-     */
+  const mobileLinks =
+    mobileNav.querySelectorAll("a");
 
-    const apiResponse = await fetch("/api/evaluate", {
+  mobileLinks.forEach((link) => {
 
-      method: "POST",
+    link.addEventListener("click", () => {
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+      mobileMenuButton.classList.remove("active");
 
-      body: JSON.stringify({
-        prompt: prompt,
-        response: response,
-        reference: reference
-      })
+      mobileNav.classList.remove("active");
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      document.body.classList.remove(
+        "menu-open"
+      );
 
     });
 
+  });
 
-    /*
-     * Convert API response to JSON.
-     */
-
-    const data = await apiResponse.json();
+}
 
 
-    /*
-     * Handle backend errors.
-     */
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
 
-    if (!apiResponse.ok) {
+const revealElements =
+  document.querySelectorAll(".reveal");
 
-      throw new Error(
-        data?.error ||
-        "Evaluation request failed."
+const revealObserver =
+  new IntersectionObserver(
+    (entries, observer) => {
+
+      entries.forEach((entry) => {
+
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("visible");
+
+        observer.unobserve(entry.target);
+
+      });
+
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px"
+    }
+  );
+
+
+revealElements.forEach((element) => {
+  revealObserver.observe(element);
+});
+
+
+/* =========================================================
+   FAQ ACCORDION
+   ========================================================= */
+
+const faqItems =
+  document.querySelectorAll(".faq-item");
+
+faqItems.forEach((item) => {
+
+  const question =
+    item.querySelector(".faq-question");
+
+  if (!question) {
+    return;
+  }
+
+  question.addEventListener("click", () => {
+
+    const isCurrentlyActive =
+      item.classList.contains("active");
+
+
+    /* Close all FAQ items */
+
+    faqItems.forEach((otherItem) => {
+      otherItem.classList.remove("active");
+
+      const otherQuestion =
+        otherItem.querySelector(".faq-question");
+
+      if (otherQuestion) {
+        otherQuestion.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    });
+
+
+    /* Open clicked item */
+
+    if (!isCurrentlyActive) {
+
+      item.classList.add("active");
+
+      question.setAttribute(
+        "aria-expanded",
+        "true"
       );
 
     }
 
-
-    /*
-     * Display the real Groq evaluation.
-     */
-
-    displayResults(data);
-
-
-  } catch (error) {
-
-    console.error(
-      "Evaluation error:",
-      error
-    );
-
-
-    /*
-     * Show error to the user.
-     */
-
-    overallScore.textContent = "Error";
-
-    overallText.textContent =
-      error.message ||
-      "Something went wrong while evaluating the response.";
-
-    summaryText.textContent =
-      "EvalLoop AI could not complete the evaluation.";
-
-    issuesList.innerHTML = `
-      <div class="issue-item">
-        ${escapeHtml(
-          error.message ||
-          "Evaluation failed."
-        )}
-      </div>
-    `;
-
-    recommendationText.textContent =
-      "Please try again. If the problem continues, check the Vercel deployment and Groq configuration.";
-
-  } finally {
-
-    /*
-     * Re-enable button.
-     */
-
-    evaluateButton.disabled = false;
-    evaluateButton.textContent = "Evaluate Response";
-
-  }
+  });
 
 });
 
 
-/*
- * Display evaluation results.
- */
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
 
-function displayResults(data) {
+const cursorDot =
+  document.getElementById("cursorDot");
 
-  /*
-   * Overall score
-   */
+const cursorRing =
+  document.getElementById("cursorRing");
 
-  overallScore.textContent =
-    `${data.overall_score ?? "—"}/100`;
-
-  overallText.textContent =
-    data.overall_text ||
-    "Evaluation completed.";
+const finePointer =
+  window.matchMedia("(pointer: fine)").matches;
 
 
-  /*
-   * Individual scores
-   */
+if (finePointer && cursorDot && cursorRing) {
 
-  factualityScore.textContent =
-    `${data.scores?.factuality ?? "—"}`;
+  let mouseX = 0;
+  let mouseY = 0;
 
-  instructionScore.textContent =
-    `${data.scores?.instruction_following ?? "—"}`;
-
-  relevanceScore.textContent =
-    `${data.scores?.relevance ?? "—"}`;
-
-  completenessScore.textContent =
-    `${data.scores?.completeness ?? "—"}`;
-
-  safetyScore.textContent =
-    `${data.scores?.safety ?? "—"}`;
-
-  fluencyScore.textContent =
-    `${data.scores?.fluency ?? "—"}`;
+  let ringX = 0;
+  let ringY = 0;
 
 
-  /*
-   * Summary
-   */
+  document.addEventListener("mousemove", (event) => {
 
-  summaryText.textContent =
-    data.summary ||
-    "No summary was returned.";
+    mouseX = event.clientX;
+    mouseY = event.clientY;
 
+    cursorDot.style.left = `${mouseX}px`;
+    cursorDot.style.top = `${mouseY}px`;
 
-  /*
-   * Issues
-   */
+    cursorDot.style.opacity = "1";
+    cursorRing.style.opacity = "1";
 
-  issuesList.innerHTML = "";
+  });
 
 
-  if (
-    !Array.isArray(data.issues) ||
-    data.issues.length === 0
-  ) {
+  function animateCursor() {
 
-    issuesList.innerHTML = `
-      <div class="issue-item">
-        No meaningful issues detected.
-      </div>
-    `;
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
 
-  } else {
+    cursorRing.style.left = `${ringX}px`;
+    cursorRing.style.top = `${ringY}px`;
 
-    data.issues.forEach(issue => {
-
-      const issueElement =
-        document.createElement("div");
-
-      issueElement.className =
-        "issue-item";
-
-      issueElement.innerHTML = `
-        <div class="issue-type">
-          ${escapeHtml(issue.type || "Issue")}
-        </div>
-
-        <div class="issue-description">
-          ${escapeHtml(
-            issue.description ||
-            ""
-          )}
-        </div>
-      `;
-
-      issuesList.appendChild(
-        issueElement
-      );
-
-    });
+    requestAnimationFrame(animateCursor);
 
   }
 
+  animateCursor();
 
-  /*
-   * Recommendation
-   */
 
-  recommendationText.textContent =
-    data.recommendation ||
-    "No recommendation was returned.";
+  /* Interactive cursor state */
+
+  const interactiveElements =
+    document.querySelectorAll(
+      "a, button, .capability-card, .about-card, .process-step"
+    );
+
+
+  interactiveElements.forEach((element) => {
+
+    element.addEventListener("mouseenter", () => {
+      cursorRing.classList.add("active");
+    });
+
+    element.addEventListener("mouseleave", () => {
+      cursorRing.classList.remove("active");
+    });
+
+  });
+
+
+  document.addEventListener("mouseleave", () => {
+
+    cursorDot.style.opacity = "0";
+    cursorRing.style.opacity = "0";
+
+  });
+
+
+  document.addEventListener("mouseenter", () => {
+
+    cursorDot.style.opacity = "1";
+    cursorRing.style.opacity = "1";
+
+  });
 
 }
 
 
-/*
- * Basic HTML escaping.
- *
- * This prevents model-generated text from
- * being interpreted as HTML.
- */
+/* =========================================================
+   SMOOTH ANCHOR HANDLING
+   ========================================================= */
 
-function escapeHtml(value) {
+const anchorLinks =
+  document.querySelectorAll('a[href^="#"]');
 
-  return String(value)
+anchorLinks.forEach((link) => {
 
-    .replace(/&/g, "&amp;")
+  link.addEventListener("click", (event) => {
 
-    .replace(/</g, "&lt;")
+    const targetId =
+      link.getAttribute("href");
 
-    .replace(/>/g, "&gt;")
+    if (
+      !targetId ||
+      targetId === "#" ||
+      targetId.length < 2
+    ) {
+      return;
+    }
 
-    .replace(/"/g, "&quot;")
+    const target =
+      document.querySelector(targetId);
 
-    .replace(/'/g, "&#039;");
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const header =
+      document.querySelector(".site-header");
+
+    const headerHeight =
+      header ? header.offsetHeight : 0;
+
+    const announcement =
+      document.querySelector(".announcement-bar");
+
+    const announcementHeight =
+      announcement
+        ? announcement.offsetHeight
+        : 0;
+
+    const offset =
+      headerHeight + announcementHeight + 15;
+
+    const targetPosition =
+      target.getBoundingClientRect().top +
+      window.scrollY -
+      offset;
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth"
+    });
+
+  });
+
+});
+
+
+/* =========================================================
+   HERO ORB MOUSE PARALLAX
+   ========================================================= */
+
+const heroVisual =
+  document.querySelector(".hero-visual");
+
+const heroOrb =
+  document.querySelector(".evaluation-orb");
+
+if (
+  heroVisual &&
+  heroOrb &&
+  finePointer &&
+  !window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches
+) {
+
+  heroVisual.addEventListener(
+    "mousemove",
+    (event) => {
+
+      const rect =
+        heroVisual.getBoundingClientRect();
+
+      const x =
+        (event.clientX - rect.left) /
+        rect.width;
+
+      const y =
+        (event.clientY - rect.top) /
+        rect.height;
+
+      const moveX =
+        (x - 0.5) * 12;
+
+      const moveY =
+        (y - 0.5) * 12;
+
+      heroOrb.style.transform =
+        `translate(${moveX}px, ${moveY}px)`;
+
+    }
+  );
+
+
+  heroVisual.addEventListener(
+    "mouseleave",
+    () => {
+
+      heroOrb.style.transform =
+        "translate(0, 0)";
+
+    }
+  );
 
 }
+
+
+/* =========================================================
+   QUALITY METER
+   ========================================================= */
+
+const qualityMeter =
+  document.querySelector(".quality-meter-fill");
+
+if (qualityMeter) {
+
+  qualityMeter.style.transformOrigin =
+    "left center";
+
+  qualityMeter.style.transform =
+    "scaleX(0)";
+
+  const meterObserver =
+    new IntersectionObserver(
+      (entries, observer) => {
+
+        entries.forEach((entry) => {
+
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          qualityMeter.style.transition =
+            "transform 1.2s cubic-bezier(.22,.61,.36,1)";
+
+          qualityMeter.style.transform =
+            "scaleX(1)";
+
+          observer.unobserve(entry.target);
+
+        });
+
+      },
+      {
+        threshold: 0.4
+      }
+    );
+
+  meterObserver.observe(qualityMeter);
+
+}
+
+
+/* =========================================================
+   SCORE BAR ANIMATION
+   ========================================================= */
+
+const scoreBars =
+  document.querySelectorAll(".score-bar span");
+
+if (scoreBars.length) {
+
+  scoreBars.forEach((bar) => {
+
+    const finalWidth =
+      bar.style.width;
+
+    bar.style.width = "0%";
+
+    const observer =
+      new IntersectionObserver(
+        (entries, observerInstance) => {
+
+          entries.forEach((entry) => {
+
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            bar.style.transition =
+              "width 1.1s cubic-bezier(.22,.61,.36,1)";
+
+            bar.style.width =
+              finalWidth;
+
+            observerInstance.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+          threshold: 0.5
+        }
+      );
+
+    observer.observe(bar);
+
+  });
+
+}
+
+
+/* =========================================================
+   YEAR
+   ========================================================= */
+
+const yearElements =
+  document.querySelectorAll(
+    "[data-current-year]"
+  );
+
+yearElements.forEach((element) => {
+
+  element.textContent =
+    new Date().getFullYear();
+
+});
+
+
+/* =========================================================
+   CONSOLE BRAND MESSAGE
+   ========================================================= */
+
+console.log(
+  "%cEvalLoop AI_",
+  "color:#3ecf8e;font-family:monospace;font-size:18px;"
+);
+
+console.log(
+  "%cAI Evaluation & LLM Quality Platform",
+  "color:#a4aaa6;font-family:monospace;font-size:11px;"
+);
