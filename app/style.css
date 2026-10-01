@@ -8,7 +8,6 @@
    --------------------------------------------------------- */
 
 :root {
-
   --bg: #101211;
   --panel: #171b18;
   --panel2: #1d221f;
@@ -25,7 +24,6 @@
 
   --sans: Inter, system-ui, sans-serif;
   --mono: "DM Mono", monospace;
-
 }
 
 
@@ -39,11 +37,9 @@
   padding: 0;
 }
 
-
 html {
   scroll-behavior: smooth;
 }
-
 
 body {
   min-height: 100vh;
@@ -52,7 +48,6 @@ body {
   color: var(--ink);
 
   font-family: var(--sans);
-
   font-weight: 400;
 
   line-height: 1.6;
@@ -60,18 +55,15 @@ body {
   overflow-x: hidden;
 }
 
-
 button,
 textarea,
 input {
   font: inherit;
 }
 
-
 button {
   cursor: pointer;
 }
-
 
 a {
   color: inherit;
@@ -84,7 +76,6 @@ a {
    --------------------------------------------------------- */
 
 .background-grid {
-
   position: fixed;
 
   inset: 0;
@@ -113,9 +104,7 @@ a {
   );
 }
 
-
 .background-glow {
-
   position: fixed;
 
   width: 700px;
@@ -135,7 +124,6 @@ a {
     rgba(62, 207, 142, .13),
     transparent 65%
   );
-
 }
 
 
@@ -144,7 +132,6 @@ a {
    --------------------------------------------------------- */
 
 .app-header {
-
   position: sticky;
 
   top: 0;
@@ -158,9 +145,7 @@ a {
   backdrop-filter: blur(16px);
 }
 
-
 .header-inner {
-
   width: min(1200px, calc(100% - 40px));
 
   min-height: 72px;
@@ -177,7 +162,13 @@ a {
 }
 
 
+/* ---------------------------------------------------------
+   BRAND
+   --------------------------------------------------------- */
+
 .brand {
+  display: inline-flex;
+  align-items: center;
 
   font-family: var(--mono);
 
@@ -188,14 +179,43 @@ a {
   color: var(--ink);
 }
 
-
-.brand span {
+.brand > span {
   color: var(--green);
 }
 
 
-.header-status {
+/*
+ * Blinking underscore.
+ *
+ * This matches the terminal-style cursor
+ * used by the EvalLoop AI brand.
+ */
 
+.brand .cursor {
+  display: inline-block;
+
+  color: var(--green);
+
+  animation:
+    brandCursorBlink 1s steps(1, end) infinite;
+}
+
+@keyframes brandCursorBlink {
+
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+
+}
+
+
+.header-status {
   display: flex;
 
   align-items: center;
@@ -213,9 +233,7 @@ a {
   text-transform: uppercase;
 }
 
-
 .status-dot {
-
   width: 7px;
   height: 7px;
 
@@ -228,9 +246,7 @@ a {
     0 0 14px rgba(62, 207, 142, .4);
 }
 
-
 .back-link {
-
   color: var(--muted);
 
   font-size: 13px;
@@ -240,9 +256,7 @@ a {
     transform .2s ease;
 }
 
-
 .back-link:hover {
-
   color: var(--green2);
 
   transform: translateX(-3px);
@@ -254,7 +268,6 @@ a {
    --------------------------------------------------------- */
 
 .workspace {
-
   width: min(1200px, calc(100% - 40px));
 
   margin: auto;
@@ -270,7 +283,6 @@ a {
    --------------------------------------------------------- */
 
 .workspace-heading {
-
   display: flex;
 
   align-items: flex-end;
@@ -282,9 +294,7 @@ a {
   margin-bottom: 48px;
 }
 
-
 .eyebrow {
-
   margin-bottom: 14px;
 
   color: var(--green);
@@ -296,9 +306,7 @@ a {
   letter-spacing: .14em;
 }
 
-
 .workspace-heading h1 {
-
   max-width: 700px;
 
   font-size: clamp(38px, 5vw, 64px);
@@ -310,15 +318,11 @@ a {
   letter-spacing: -.045em;
 }
 
-
 .workspace-heading h1 span {
-
   color: var(--green2);
 }
 
-
 .workspace-heading p {
-
   max-width: 650px;
 
   margin-top: 20px;
@@ -330,9 +334,7 @@ a {
   line-height: 1.8;
 }
 
-
 .model-badge {
-
   flex-shrink: 0;
 
   display: flex;
@@ -354,9 +356,7 @@ a {
   font-size: 11px;
 }
 
-
 .model-dot {
-
   width: 6px;
   height: 6px;
 
@@ -371,7 +371,6 @@ a {
    --------------------------------------------------------- */
 
 .evaluation-layout {
-
   display: grid;
 
   grid-template-columns:
@@ -390,7 +389,6 @@ a {
 
 .input-panel,
 .results-panel {
-
   border: 1px solid var(--line);
 
   background:
@@ -402,26 +400,19 @@ a {
 
   box-shadow:
     0 30px 80px rgba(0, 0, 0, .18);
-
 }
 
-
 .input-panel {
-
   padding: 28px;
 }
 
-
 .results-panel {
-
   min-height: 680px;
 
   padding: 28px;
 }
 
-
 .panel-header {
-
   display: flex;
 
   align-items: flex-start;
@@ -437,9 +428,7 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-
 .panel-label {
-
   margin-bottom: 7px;
 
   color: var(--green);
@@ -451,9 +440,7 @@ a {
   letter-spacing: .12em;
 }
 
-
 .panel-header h2 {
-
   font-size: 18px;
 
   line-height: 1.2;
@@ -463,9 +450,7 @@ a {
   letter-spacing: -.02em;
 }
 
-
 .panel-state {
-
   padding: 5px 8px;
 
   border: 1px solid rgba(62, 207, 142, .25);
@@ -481,9 +466,7 @@ a {
   letter-spacing: .08em;
 }
 
-
 .panel-state.waiting {
-
   color: var(--dim);
 
   border-color: var(--line);
@@ -497,13 +480,10 @@ a {
    --------------------------------------------------------- */
 
 .field {
-
   margin-bottom: 22px;
 }
 
-
 .field-top {
-
   display: flex;
 
   align-items: center;
@@ -515,9 +495,7 @@ a {
   margin-bottom: 9px;
 }
 
-
 .field-top label {
-
   color: var(--ink);
 
   font-size: 13px;
@@ -525,9 +503,7 @@ a {
   font-weight: 400;
 }
 
-
 .field-top span {
-
   color: var(--dim);
 
   font-family: var(--mono);
@@ -539,9 +515,7 @@ a {
   text-transform: uppercase;
 }
 
-
 textarea {
-
   width: 100%;
 
   min-height: 145px;
@@ -572,14 +546,11 @@ textarea {
     background .2s ease;
 }
 
-
 textarea::placeholder {
   color: #626963;
 }
 
-
 textarea:focus {
-
   border-color: rgba(62, 207, 142, .45);
 
   background: rgba(16, 18, 17, .95);
@@ -588,11 +559,9 @@ textarea:focus {
     0 0 0 3px rgba(62, 207, 142, .05);
 }
 
-
 .response-box {
   min-height: 190px;
 }
-
 
 .reference-box {
   min-height: 115px;
@@ -604,7 +573,6 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .evaluate-button {
-
   width: 100%;
 
   min-height: 52px;
@@ -638,9 +606,7 @@ textarea:focus {
     transform .2s ease;
 }
 
-
 .evaluate-button:hover {
-
   background: #173522;
 
   border-color: var(--green);
@@ -651,29 +617,29 @@ textarea:focus {
   transform: translateY(-1px);
 }
 
-
 .evaluate-button:active {
-
   transform: translateY(0);
 }
 
+.evaluate-button:disabled {
+  cursor: wait;
+
+  opacity: .65;
+
+  transform: none;
+}
 
 .button-arrow {
-
   font-size: 18px;
 
   transition: transform .2s ease;
 }
 
-
 .evaluate-button:hover .button-arrow {
-
   transform: translateX(4px);
 }
 
-
 .form-message {
-
   min-height: 22px;
 
   margin-top: 12px;
@@ -693,7 +659,6 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .empty-state {
-
   min-height: 540px;
 
   display: flex;
@@ -709,9 +674,7 @@ textarea:focus {
   padding: 30px;
 }
 
-
 .empty-orb {
-
   position: relative;
 
   width: 105px;
@@ -743,9 +706,7 @@ textarea:focus {
   font-size: 13px;
 }
 
-
 .empty-orb::before {
-
   content: "";
 
   position: absolute;
@@ -757,9 +718,7 @@ textarea:focus {
   border-radius: 50%;
 }
 
-
 .orb-ring {
-
   position: absolute;
 
   border: 1px solid rgba(62, 207, 142, .1);
@@ -767,27 +726,23 @@ textarea:focus {
   border-radius: 50%;
 }
 
-
 .ring-one {
-
   inset: -15px;
 
-  animation: orbit 8s linear infinite;
+  animation:
+    orbit 8s linear infinite;
 }
 
-
 .ring-two {
-
   inset: -30px;
 
   border-style: dashed;
 
-  animation: orbitReverse 12s linear infinite;
+  animation:
+    orbitReverse 12s linear infinite;
 }
-
 
 @keyframes orbit {
-
   from {
     transform: rotate(0deg);
   }
@@ -795,12 +750,9 @@ textarea:focus {
   to {
     transform: rotate(360deg);
   }
-
 }
-
 
 @keyframes orbitReverse {
-
   from {
     transform: rotate(360deg);
   }
@@ -808,12 +760,9 @@ textarea:focus {
   to {
     transform: rotate(0deg);
   }
-
 }
 
-
 .empty-state h3 {
-
   font-size: 18px;
 
   font-weight: 400;
@@ -821,9 +770,7 @@ textarea:focus {
   margin-bottom: 9px;
 }
 
-
 .empty-state p {
-
   max-width: 330px;
 
   color: var(--muted);
@@ -842,30 +789,23 @@ textarea:focus {
   display: none !important;
 }
 
-
 .results {
-  animation: resultAppear .5s ease both;
+  animation:
+    resultAppear .5s ease both;
 }
 
-
 @keyframes resultAppear {
-
   from {
-
     opacity: 0;
 
     transform: translateY(8px);
-
   }
 
   to {
-
     opacity: 1;
 
     transform: translateY(0);
-
   }
-
 }
 
 
@@ -874,7 +814,6 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .overall-card {
-
   display: flex;
 
   align-items: center;
@@ -897,9 +836,7 @@ textarea:focus {
     );
 }
 
-
 .result-label {
-
   margin-bottom: 7px;
 
   color: var(--dim);
@@ -911,9 +848,7 @@ textarea:focus {
   letter-spacing: .1em;
 }
 
-
 .overall-score {
-
   color: var(--green2);
 
   font-family: var(--mono);
@@ -925,9 +860,7 @@ textarea:focus {
   font-weight: 400;
 }
 
-
 .overall-text {
-
   max-width: 180px;
 
   color: var(--muted);
@@ -945,7 +878,6 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .score-grid {
-
   display: grid;
 
   grid-template-columns:
@@ -956,9 +888,7 @@ textarea:focus {
   margin-bottom: 18px;
 }
 
-
 .score-card {
-
   padding: 15px;
 
   border: 1px solid var(--line);
@@ -966,9 +896,7 @@ textarea:focus {
   background: rgba(16, 18, 17, .45);
 }
 
-
 .score-card > span {
-
   display: block;
 
   min-height: 34px;
@@ -980,9 +908,7 @@ textarea:focus {
   line-height: 1.4;
 }
 
-
 .score-card strong {
-
   display: block;
 
   margin-top: 7px;
@@ -996,9 +922,7 @@ textarea:focus {
   font-weight: 400;
 }
 
-
 .score-line {
-
   width: 100%;
 
   height: 2px;
@@ -1010,16 +934,15 @@ textarea:focus {
   background: rgba(241, 241, 239, .08);
 }
 
-
 .score-line div {
-
   width: 0%;
 
   height: 100%;
 
   background: var(--green);
 
-  transition: width 1s ease;
+  transition:
+    width 1s ease;
 }
 
 
@@ -1028,15 +951,12 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .result-section {
-
   padding: 20px 0;
 
   border-top: 1px solid var(--line);
 }
 
-
 .result-section-title {
-
   margin-bottom: 9px;
 
   color: var(--green);
@@ -1050,9 +970,7 @@ textarea:focus {
   text-transform: uppercase;
 }
 
-
 .result-section p {
-
   color: var(--muted);
 
   font-size: 12px;
@@ -1065,8 +983,8 @@ textarea:focus {
    16. ISSUES
    --------------------------------------------------------- */
 
-.issue {
-
+.issue,
+.issue-item {
   display: grid;
 
   grid-template-columns: auto 1fr;
@@ -1078,14 +996,12 @@ textarea:focus {
   border-bottom: 1px solid rgba(241, 241, 239, .06);
 }
 
-
-.issue:last-child {
+.issue:last-child,
+.issue-item:last-child {
   border-bottom: 0;
 }
 
-
 .issue-marker {
-
   width: 6px;
   height: 6px;
 
@@ -1096,9 +1012,8 @@ textarea:focus {
   background: var(--green);
 }
 
-
-.issue-content strong {
-
+.issue-content strong,
+.issue-type {
   display: block;
 
   margin-bottom: 3px;
@@ -1110,9 +1025,8 @@ textarea:focus {
   font-weight: 400;
 }
 
-
-.issue-content p {
-
+.issue-content p,
+.issue-description {
   color: var(--muted);
 
   font-size: 11px;
@@ -1126,7 +1040,6 @@ textarea:focus {
    --------------------------------------------------------- */
 
 .recommendation {
-
   padding: 18px;
 
   border: 1px solid rgba(62, 207, 142, .13);
@@ -1134,9 +1047,7 @@ textarea:focus {
   background: rgba(19, 38, 28, .38);
 }
 
-
 .recommendation p {
-
   color: var(--muted);
 
   font-size: 12px;
@@ -1155,29 +1066,21 @@ textarea:focus {
     padding-top: 60px;
   }
 
-
   .workspace-heading {
-
     align-items: flex-start;
 
     flex-direction: column;
 
     gap: 20px;
-
   }
-
 
   .evaluation-layout {
-
     grid-template-columns: 1fr;
-
   }
-
 
   .results-panel {
     min-height: auto;
   }
-
 
   .empty-state {
     min-height: 420px;
@@ -1189,73 +1092,51 @@ textarea:focus {
 @media (max-width: 600px) {
 
   .header-inner {
-
     width: min(
       100% - 28px,
       1200px
     );
 
     min-height: 64px;
-
   }
-
 
   .header-status {
     display: none;
   }
 
-
   .workspace {
-
     width: min(
       100% - 28px,
       1200px
     );
 
     padding-top: 45px;
-
   }
-
 
   .workspace-heading h1 {
-
     font-size: 40px;
-
   }
-
 
   .input-panel,
   .results-panel {
-
     padding: 20px;
-
   }
-
 
   .score-grid {
-
     grid-template-columns: 1fr;
-
   }
 
-
   .overall-card {
-
     align-items: flex-start;
 
     flex-direction: column;
-
   }
 
-
   .overall-text {
-
     max-width: none;
 
     text-align: left;
-
   }
-
 
   .back-link {
     font-size: 11px;
@@ -1269,7 +1150,6 @@ textarea:focus {
   *,
   *::before,
   *::after {
-
     scroll-behavior: auto !important;
 
     animation-duration: .01ms !important;
@@ -1277,7 +1157,6 @@ textarea:focus {
     animation-iteration-count: 1 !important;
 
     transition-duration: .01ms !important;
-
   }
 
 }
