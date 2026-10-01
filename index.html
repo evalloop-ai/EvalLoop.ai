@@ -1,338 +1,333 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
-  <title>EvalLoop AI — Evaluate AI. Understand AI. Improve AI.</title>
+  <title>EvalLoop AI — AI Evaluation & LLM Quality Platform</title>
 
   <meta
     name="description"
-    content="EvalLoop AI is a free AI evaluation and knowledge platform for testing LLMs, RAG systems, AI agents, multimodal models, safety, and AI quality."
-  >
+    content="EvalLoop AI is an AI evaluation and LLM quality platform for testing, evaluating, and improving AI responses."
+  />
 
-  <meta
-    name="keywords"
-    content="AI evaluation, LLM evaluation, RAG evaluation, AI agent evaluation, AI safety, AI benchmarking, prompt testing, EvalLoop AI"
-  >
+  <meta name="theme-color" content="#101211" />
 
-  <meta name="theme-color" content="#101211">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts: only Light 300, Regular 400, Medium 500 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
     rel="stylesheet"
-  >
+  />
 
-  <link rel="stylesheet" href="style.css">
-
-  <link
-    rel="icon"
-    type="image/png"
-    href="/favicon.png"
-  >
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- =====================================================
+  <!-- =========================================================
        PAGE PROGRESS
-       ===================================================== -->
+  ========================================================== -->
+  <div class="page-progress" id="pageProgress"></div>
 
-  <div class="page-progress"></div>
-
-  <!-- =====================================================
+  <!-- =========================================================
        CUSTOM CURSOR
-       ===================================================== -->
+  ========================================================== -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-  <div class="cursor-dot"></div>
-  <div class="cursor-ring"></div>
+  <!-- =========================================================
+       BACKGROUND GRID
+  ========================================================== -->
+  <div class="background-grid"></div>
+  <div class="background-glow"></div>
 
-
-  <!-- =====================================================
-       ANNOUNCEMENT
-       ===================================================== -->
-
+  <!-- =========================================================
+       ANNOUNCEMENT BAR
+  ========================================================== -->
   <div class="announcement-bar">
-    <span>EvalLoop AI</span>
-    — Free AI evaluation tools &amp; knowledge
+    <div class="container announcement-inner">
+
+      <div class="announcement-left">
+        <span class="status-dot"></span>
+
+        <span class="mono-label">
+          EVALLOOP AI
+        </span>
+
+        <span class="announcement-divider"></span>
+
+        <span class="announcement-text">
+          AI EVALUATION &amp; QUALITY PLATFORM
+        </span>
+      </div>
+
+      <a href="#product" class="announcement-link">
+        FREE TO USE <span>↗</span>
+      </a>
+
+    </div>
   </div>
 
+  <!-- =========================================================
+       NAVIGATION
+  ========================================================== -->
+  <header class="site-header" id="siteHeader">
 
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
+    <div class="container nav-inner">
 
-  <header class="site-header">
-
-    <div class="container">
-
-      <a href="/" class="logo">
-        EvalLoop AI
+      <a href="#" class="brand">
+        <span>EvalLoop AI</span><span class="brand-cursor">_</span>
       </a>
 
       <nav class="desktop-nav">
 
-        <a href="#evaluate">
-          Evaluate
+        <a href="#product">Product</a>
+
+        <a href="#how-it-works">
+          How it works
         </a>
 
-        <a href="#knowledge">
-          Knowledge
+        <a href="#pricing">
+          Pricing
         </a>
 
-        <a href="#labs">
-          Labs
-        </a>
-
-        <a href="#benchmarks">
-          Benchmarks
-        </a>
-
-        <a href="#docs">
-          Docs
+        <a href="#faq">
+          FAQ
         </a>
 
       </nav>
 
       <div class="nav-actions">
 
-        <a
-          href="/app/"
-          class="nav-link"
-        >
-          Open Evaluator
+        <a href="#login" class="nav-login">
+          Login
         </a>
 
-        <a
-          href="#start"
-          class="nav-button"
-        >
-          Start Evaluating
+        <a href="#signup" class="button button-small">
+          Sign up <span>↗</span>
         </a>
 
       </div>
 
+      <!-- Mobile menu button -->
       <button
         class="mobile-menu-button"
-        aria-label="Open navigation"
-        type="button"
+        id="mobileMenuButton"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
       >
+        <span></span>
         <span></span>
       </button>
 
     </div>
 
-    <nav class="mobile-nav">
+    <!-- Mobile navigation -->
+    <div class="mobile-nav" id="mobileNav">
 
-      <a href="#evaluate">
-        Evaluate
+      <a href="#product">Product</a>
+
+      <a href="#how-it-works">
+        How it works
       </a>
 
-      <a href="#knowledge">
-        Knowledge
+      <a href="#pricing">
+        Pricing
       </a>
 
-      <a href="#labs">
-        Labs
+      <a href="#faq">
+        FAQ
       </a>
 
-      <a href="#benchmarks">
-        Benchmarks
-      </a>
+      <div class="mobile-nav-actions">
 
-      <a href="#docs">
-        Docs
-      </a>
+        <a href="#login">
+          Login
+        </a>
 
-      <a href="/app/">
-        Open Evaluator
-      </a>
+        <a href="#signup" class="button">
+          Sign up <span>↗</span>
+        </a>
 
-    </nav>
+      </div>
+
+    </div>
 
   </header>
 
-
   <main>
 
-
-    <!-- ===================================================
+    <!-- =======================================================
          HERO
-         =================================================== -->
+    ======================================================== -->
+    <section class="hero section">
 
-    <section
-      class="hero"
-      id="evaluate"
-    >
+      <div class="container hero-grid">
 
-      <div class="container">
+        <!-- Hero copy -->
+        <div class="hero-content reveal">
 
-        <div class="hero-grid">
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            LLM QUALITY PLATFORM
+          </div>
 
-          <div class="hero-content reveal">
+          <h1>
+            Evaluate AI.
+            <span>Improve trust.</span>
+          </h1>
 
-            <div class="eyebrow">
-              AI EVALUATION PLATFORM
-            </div>
+          <p class="hero-description">
+            EvalLoop AI helps you test, evaluate, and understand
+            AI-generated responses using structured quality metrics,
+            automated evaluation, and actionable insights.
+          </p>
 
-            <h1>
-              Evaluate AI.
-              <br>
-              Understand AI.
-              <br>
-              <span>Improve AI.</span>
-            </h1>
+          <div class="hero-actions">
 
-            <p>
-              EvalLoop AI is a free platform for evaluating
-              LLMs, RAG systems, AI agents, multimodal models,
-              prompts, safety, and overall AI quality.
-            </p>
+            <a href="#product" class="button button-primary">
+              Try EvalLoop AI
+              <span>↗</span>
+            </a>
 
-            <div class="hero-actions">
-
-              <a
-                href="/app/"
-                class="primary-button"
-              >
-                Start Evaluating
-              </a>
-
-              <a
-                href="#knowledge"
-                class="secondary-button"
-              >
-                Explore Knowledge
-              </a>
-
-            </div>
+            <a href="#download" class="button button-secondary">
+              Download App
+              <span>↓</span>
+            </a>
 
           </div>
 
+          <div class="hero-meta">
 
-          <!-- Evaluation preview -->
+            <span>TEXT</span>
+            <span class="meta-dot">·</span>
 
-          <div class="hero-visual reveal reveal-delay-2">
+            <span>VISION</span>
+            <span class="meta-dot">·</span>
 
-            <div class="evaluation-window">
+            <span>SPEECH</span>
 
-              <div class="window-header">
+            <span class="meta-divider"></span>
 
-                <div class="window-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+            <span>FREE TO USE</span>
+
+          </div>
+
+        </div>
+
+        <!-- Hero visual -->
+        <div class="hero-visual reveal">
+
+          <div class="evaluation-window">
+
+            <div class="window-header">
+
+              <div class="window-title">
+                <span class="live-dot"></span>
+                EVALLOOP / EVALUATION
+              </div>
+
+              <div class="window-code">
+                RUN_001
+              </div>
+
+            </div>
+
+            <div class="evaluation-body">
+
+              <div class="evaluation-orb">
+
+                <div class="orb-ring orb-ring-one"></div>
+                <div class="orb-ring orb-ring-two"></div>
+                <div class="orb-core"></div>
+
+              </div>
+
+              <div class="evaluation-status">
+
+                <div class="status-label">
+                  CURRENT STATUS
                 </div>
 
+                <div class="status-value">
+                  EVALUATING
+                </div>
+
+                <div class="scan-line"></div>
+
+              </div>
+
+              <div class="evaluation-metrics">
+
+                <div class="metric">
+
+                  <span>FACTUALITY</span>
+
+                  <div class="metric-value">
+                    94
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>RELEVANCE</span>
+
+                  <div class="metric-value">
+                    91
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>SAFETY</span>
+
+                  <div class="metric-value">
+                    98
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>QUALITY</span>
+
+                  <div class="metric-value metric-green">
+                    94.3
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="evaluation-footer">
+
                 <span>
-                  EVALLOOP / LIVE
+                  EVAL_ENGINE
+                </span>
+
+                <span>
+                  READY
                 </span>
 
               </div>
 
-              <div class="evaluation-body">
-
-                <div class="evaluation-orb"></div>
-
-                <div class="evaluation-status">
-                  Evaluation Engine Ready
-                </div>
-
-                <div class="evaluation-metrics">
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Factuality
-                    </span>
-
-                    <span class="metric-value good">
-                      96
-                    </span>
-
-                  </div>
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Relevance
-                    </span>
-
-                    <span class="metric-value good">
-                      94
-                    </span>
-
-                  </div>
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Safety
-                    </span>
-
-                    <span class="metric-value good">
-                      100
-                    </span>
-
-                  </div>
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Completeness
-                    </span>
-
-                    <span class="metric-value good">
-                      91
-                    </span>
-
-                  </div>
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Fluency
-                    </span>
-
-                    <span class="metric-value good">
-                      98
-                    </span>
-
-                  </div>
-
-                  <div class="metric">
-
-                    <span class="metric-label">
-                      Overall
-                    </span>
-
-                    <span class="metric-value good">
-                      96
-                    </span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
             </div>
 
-            <div class="floating-tag tag-one">
-              <span>+</span> factuality
-            </div>
+          </div>
 
-            <div class="floating-tag tag-two">
-              <span>+</span> safety
-            </div>
+          <div class="floating-tag tag-one">
+            <span class="tag-dot"></span>
+            AI RESPONSE
+          </div>
 
+          <div class="floating-tag tag-two">
+            QUALITY SCORE <span>94.3</span>
           </div>
 
         </div>
@@ -341,161 +336,491 @@
 
     </section>
 
-
-    <!-- ===================================================
-         WHAT IS EVALLOOP
-         =================================================== -->
-
-    <section class="about" id="about">
+    <!-- =======================================================
+         PRODUCT INTRO
+    ======================================================== -->
+    <section class="section section-border" id="product">
 
       <div class="container">
 
-        <div class="about-grid">
+        <div class="section-heading reveal">
 
-          <div class="reveal">
-
-            <div class="section-label">
-              01 / PLATFORM
-            </div>
-
-            <h2 class="section-title">
-              A practical layer for AI quality.
-            </h2>
-
-            <p class="section-copy">
-              AI systems can generate impressive answers and
-              still fail on factuality, instructions, relevance,
-              safety, grounding, or tool usage.
-            </p>
-
-            <br>
-
-            <p class="section-copy">
-              EvalLoop AI brings evaluation, learning,
-              experimentation, and benchmarking into one
-              practical ecosystem.
-            </p>
-
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            ABOUT EVALLOOP AI
           </div>
 
-
-          <div class="reveal reveal-delay-2">
-
-            <div class="about-card">
-
-              <span class="about-number">
-                01
-              </span>
-
-              <h3>
-                Evaluate
-              </h3>
-
-              <p>
-                Test AI responses and systems across quality,
-                factuality, safety, RAG, agents, and more.
-              </p>
-
-            </div>
-
-            <div class="about-card">
-
-              <span class="about-number">
-                02
-              </span>
-
-              <h3>
-                Learn
-              </h3>
-
-              <p>
-                Build practical knowledge about AI evaluation
-                through free concepts, examples, and exercises.
-              </p>
-
-            </div>
-
-            <div class="about-card">
-
-              <span class="about-number">
-                03
-              </span>
-
-              <h3>
-                Improve
-              </h3>
-
-              <p>
-                Turn evaluation results into actionable feedback,
-                regression checks, and better AI systems.
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         EVALUATION LABS
-         =================================================== -->
-
-    <section
-      class="capabilities"
-      id="labs"
-    >
-
-      <div class="container">
-
-        <div class="capabilities-header reveal">
-
-          <div class="section-label">
-            02 / EVALUATION LABS
-          </div>
-
-          <h2 class="section-title">
-            Test AI from multiple angles.
+          <h2>
+            AI should be
+            <span>measurable.</span>
           </h2>
 
-          <p class="section-copy">
-            Evaluation is not one score. Different AI systems
-            require different evaluation methods.
+          <p>
+            Modern AI systems can generate thousands of responses in
+            seconds. EvalLoop AI gives you a structured way to understand
+            whether those responses are actually useful, accurate,
+            relevant, complete, and safe.
           </p>
 
         </div>
 
+        <div class="about-grid">
+
+          <div class="about-card about-card-large reveal">
+
+            <div class="card-number">
+              01
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE PROBLEM
+              </div>
+
+              <h3>
+                AI output is easy to generate.
+                Quality is harder to measure.
+              </h3>
+
+              <p>
+                A response can sound convincing while still containing
+                factual errors, missing instructions, irrelevant content,
+                or unsafe information.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="about-card reveal">
+
+            <div class="card-number">
+              02
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE SOLUTION
+              </div>
+
+              <h3>
+                Turn AI responses into measurable quality signals.
+              </h3>
+
+              <p>
+                EvalLoop AI analyzes responses across multiple evaluation
+                dimensions and presents the results in a clear interface.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="about-card reveal">
+
+            <div class="card-number">
+              03
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE GOAL
+              </div>
+
+              <h3>
+                Build AI systems you can trust.
+              </h3>
+
+              <p>
+                Test prompts, compare outputs, identify weaknesses,
+                and continuously improve your AI applications.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         HOW IT WORKS
+    ======================================================== -->
+    <section class="section section-border" id="how-it-works">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            HOW IT WORKS
+          </div>
+
+          <h2>
+            From prompt to
+            <span>quality signal.</span>
+          </h2>
+
+          <p>
+            EvalLoop AI creates a simple evaluation loop around your
+            AI-generated responses.
+          </p>
+
+        </div>
+
+        <div class="process-flow reveal">
+
+          <div class="process-step">
+
+            <div class="process-number">
+              01
+            </div>
+
+            <div class="process-icon">
+              →
+            </div>
+
+            <div class="process-title">
+              PROMPT
+            </div>
+
+            <p>
+              Provide the instruction or task given to the AI.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step">
+
+            <div class="process-number">
+              02
+            </div>
+
+            <div class="process-icon">
+              ◇
+            </div>
+
+            <div class="process-title">
+              LLM RESPONSE
+            </div>
+
+            <p>
+              Add the response generated by your AI model.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step process-highlight">
+
+            <div class="process-number">
+              03
+            </div>
+
+            <div class="process-icon">
+              ◎
+            </div>
+
+            <div class="process-title">
+              EVALLOOP AI
+            </div>
+
+            <p>
+              Evaluate the response against quality dimensions.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step">
+
+            <div class="process-number">
+              04
+            </div>
+
+            <div class="process-icon">
+              ↗
+            </div>
+
+            <div class="process-title">
+              INSIGHTS
+            </div>
+
+            <p>
+              Receive scores, issues, explanations, and recommendations.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- Architecture -->
+        <div class="architecture reveal">
+
+          <div class="architecture-header">
+
+            <span>
+              EVALLOOP AI MODEL
+            </span>
+
+            <span>
+              SYSTEM FLOW / 001
+            </span>
+
+          </div>
+
+          <div class="architecture-flow">
+
+            <div class="architecture-node">
+              <span>PROMPT</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>LLM</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node architecture-node-active">
+              <span>EVALLOOP</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>SCORE</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>INSIGHTS</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         EVALUATION CAPABILITIES
+    ======================================================== -->
+    <section class="section section-border">
+
+      <div class="container">
+
+        <div class="section-heading split-heading reveal">
+
+          <div>
+
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              EVALUATION ENGINE
+            </div>
+
+            <h2>
+              Multiple signals.
+              <span>One quality view.</span>
+            </h2>
+
+          </div>
+
+          <p>
+            Evaluate AI responses across the dimensions that matter
+            for real-world AI systems.
+          </p>
+
+        </div>
 
         <div class="capabilities-grid">
 
+          <div class="capability-card capability-large reveal">
 
-          <!-- LLM -->
+            <div class="capability-top">
 
-          <article class="capability-card capability-large reveal">
+              <span class="capability-index">
+                01
+              </span>
 
-            <div class="capability-icon">
-              LLM
+              <span class="capability-symbol">
+                ◌
+              </span>
+
             </div>
 
             <h3>
-              LLM Evaluation
+              Factuality
             </h3>
 
             <p>
-              Evaluate factuality, instruction following,
-              relevance, completeness, fluency, safety,
-              hallucinations, and response quality.
+              Identify unsupported claims, inaccuracies, and potential
+              hallucinations in AI-generated responses.
             </p>
+
+            <div class="capability-line"></div>
+
+            <div class="capability-status">
+              <span>CHECK</span>
+              <span>ACTIVE</span>
+            </div>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                02
+              </span>
+
+              <span class="capability-symbol">
+                →
+              </span>
+
+            </div>
+
+            <h3>
+              Instruction Following
+            </h3>
+
+            <p>
+              Check whether the AI followed the user's requirements
+              and constraints.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                03
+              </span>
+
+              <span class="capability-symbol">
+                +
+              </span>
+
+            </div>
+
+            <h3>
+              Relevance
+            </h3>
+
+            <p>
+              Measure how directly the response addresses the requested
+              task.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                04
+              </span>
+
+              <span class="capability-symbol">
+                □
+              </span>
+
+            </div>
+
+            <h3>
+              Completeness
+            </h3>
+
+            <p>
+              Identify missing information and incomplete responses.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                05
+              </span>
+
+              <span class="capability-symbol">
+                ⌁
+              </span>
+
+            </div>
+
+            <h3>
+              Safety
+            </h3>
+
+            <p>
+              Detect potentially unsafe, harmful, or policy-sensitive
+              response patterns.
+            </p>
+
+          </div>
+
+          <div class="capability-card capability-wide reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                06
+              </span>
+
+              <span class="capability-symbol">
+                ∿
+              </span>
+
+            </div>
+
+            <div class="capability-wide-content">
+
+              <h3>
+                Fluency &amp; Overall Quality
+              </h3>
+
+              <p>
+                Evaluate clarity, coherence, readability, and the
+                overall usefulness of an AI response.
+              </p>
+
+            </div>
 
             <div class="quality-meter">
 
               <div class="quality-meter-label">
-                <span>Quality dimensions</span>
-                <span>06</span>
+                <span>QUALITY SIGNAL</span>
+                <span>94.3</span>
               </div>
 
               <div class="quality-meter-track">
@@ -504,108 +829,7 @@
 
             </div>
 
-          </article>
-
-
-          <!-- RAG -->
-
-          <article class="capability-card reveal reveal-delay-1">
-
-            <div class="capability-icon">
-              RAG
-            </div>
-
-            <h3>
-              RAG Evaluation
-            </h3>
-
-            <p>
-              Test retrieval quality, context relevance,
-              groundedness, faithfulness, and citation quality.
-            </p>
-
-          </article>
-
-
-          <!-- Agent -->
-
-          <article class="capability-card reveal">
-
-            <div class="capability-icon">
-              AG
-            </div>
-
-            <h3>
-              Agent Evaluation
-            </h3>
-
-            <p>
-              Evaluate tool selection, tool correctness,
-              trajectories, task completion, and agent behavior.
-            </p>
-
-          </article>
-
-
-          <!-- Safety -->
-
-          <article class="capability-card reveal">
-
-            <div class="capability-icon">
-              SF
-            </div>
-
-            <h3>
-              AI Safety Lab
-            </h3>
-
-            <p>
-              Explore prompt injection, jailbreaks, unsafe
-              outputs, system-prompt leakage, and other risks.
-            </p>
-
-          </article>
-
-
-          <!-- Multimodal -->
-
-          <article class="capability-card reveal reveal-delay-1">
-
-            <div class="capability-icon">
-              MM
-            </div>
-
-            <h3>
-              Multimodal Evaluation
-            </h3>
-
-            <p>
-              Evaluate AI systems working with text, images,
-              audio, video, and mixed modalities.
-            </p>
-
-          </article>
-
-
-          <!-- Prompt -->
-
-          <article class="capability-card capability-wide reveal">
-
-            <div class="capability-icon">
-              PR
-            </div>
-
-            <h3>
-              Prompt Testing
-            </h3>
-
-            <p>
-              Compare prompts, test variations, identify failures,
-              and understand how instructions affect AI outputs.
-            </p>
-
-          </article>
-
+          </div>
 
         </div>
 
@@ -613,573 +837,264 @@
 
     </section>
 
-
-    <!-- ===================================================
-         EVALUATION PROCESS
-         =================================================== -->
-
-    <section class="learning" id="process">
+    <!-- =======================================================
+         APP PREVIEW
+    ======================================================== -->
+    <section class="section section-border">
 
       <div class="container">
 
-        <div class="reveal">
+        <div class="section-heading reveal">
 
-          <div class="section-label">
-            03 / EVALUATION METHOD
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            APPLICATION PREVIEW
           </div>
 
-          <h2 class="section-title">
-            From AI output to useful evidence.
+          <h2>
+            Your AI quality
+            <span>at a glance.</span>
           </h2>
-
-          <p class="section-copy">
-            A practical evaluation workflow helps turn an AI
-            response into measurable quality signals.
-          </p>
-
-        </div>
-
-
-        <div class="learning-flow">
-
-          <div class="learning-step reveal">
-
-            <div class="learning-step-number">
-              01
-            </div>
-
-            <h3>
-              Define
-            </h3>
-
-            <p>
-              Define the task, expected behavior, and evaluation
-              criteria.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-1">
-
-            <div class="learning-step-number">
-              02
-            </div>
-
-            <h3>
-              Generate
-            </h3>
-
-            <p>
-              Produce an AI response using a model, prompt,
-              retrieval system, or agent.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-2">
-
-            <div class="learning-step-number">
-              03
-            </div>
-
-            <h3>
-              Evaluate
-            </h3>
-
-            <p>
-              Measure quality using human or automated evaluation
-              methods.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-3">
-
-            <div class="learning-step-number">
-              04
-            </div>
-
-            <h3>
-              Diagnose
-            </h3>
-
-            <p>
-              Identify factual errors, missing information,
-              safety issues, or behavioral failures.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-4">
-
-            <div class="learning-step-number">
-              05
-            </div>
-
-            <h3>
-              Improve
-            </h3>
-
-            <p>
-              Refine prompts, systems, models, data, and
-              evaluation criteria.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         EVP ENGINES
-         =================================================== -->
-
-    <section class="evp-section" id="evp">
-
-      <div class="container">
-
-        <div class="evp-header">
-
-          <div class="reveal">
-
-            <div class="section-label">
-              04 / EVP
-            </div>
-
-            <h2 class="section-title">
-              Specialized evaluation engines.
-            </h2>
-
-          </div>
-
-          <p class="section-copy reveal reveal-delay-1">
-            EVP is the evaluation engine family planned for
-            EvalLoop AI. Each profile focuses on a different
-            evaluation problem.
-          </p>
-
-        </div>
-
-
-        <div class="evp-grid">
-
-
-          <article class="evp-card reveal">
-
-            <div class="evp-number">
-              EVP / 01
-            </div>
-
-            <div class="evp-name">
-              Nexora
-            </div>
-
-            <div class="evp-role">
-              General-purpose AI evaluation
-            </div>
-
-            <div class="evp-status">
-              Core
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-1">
-
-            <div class="evp-number">
-              EVP / 02
-            </div>
-
-            <div class="evp-name">
-              Aeron
-            </div>
-
-            <div class="evp-role">
-              Factuality and accuracy evaluation
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-2">
-
-            <div class="evp-number">
-              EVP / 03
-            </div>
-
-            <div class="evp-name">
-              Luna
-            </div>
-
-            <div class="evp-role">
-              Reasoning and logic evaluation
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-3">
-
-            <div class="evp-number">
-              EVP / 04
-            </div>
-
-            <div class="evp-name">
-              Vespera
-            </div>
-
-            <div class="evp-role">
-              Safety and adversarial testing
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal">
-
-            <div class="evp-number">
-              EVP / 05
-            </div>
-
-            <div class="evp-name">
-              Hethera
-            </div>
-
-            <div class="evp-role">
-              RAG and knowledge evaluation
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-1">
-
-            <div class="evp-number">
-              EVP / 06
-            </div>
-
-            <div class="evp-name">
-              Nebrix
-            </div>
-
-            <div class="evp-role">
-              Multimodal evaluation
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-2">
-
-            <div class="evp-number">
-              EVP / 07
-            </div>
-
-            <div class="evp-name">
-              Sellara
-            </div>
-
-            <div class="evp-role">
-              Agent and tool evaluation
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-          <article class="evp-card reveal reveal-delay-3">
-
-            <div class="evp-number">
-              EVP / 08
-            </div>
-
-            <div class="evp-name">
-              Stellara
-            </div>
-
-            <div class="evp-role">
-              Benchmarks and regression testing
-            </div>
-
-            <div class="evp-status">
-              Planned
-            </div>
-
-          </article>
-
-
-        </div>
-
-
-        <p class="evp-note">
-          EVP profiles are evaluation-engine concepts and may
-          use different underlying models or methods as the
-          platform evolves.
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         KNOWLEDGE
-         =================================================== -->
-
-    <section
-      class="knowledge"
-      id="knowledge"
-    >
-
-      <div class="container">
-
-        <div class="knowledge-layout">
-
-          <div class="knowledge-feature reveal">
-
-            <div>
-
-              <div class="section-label">
-                05 / KNOWLEDGE
-              </div>
-
-              <h3>
-                Learn how AI evaluation actually works.
-              </h3>
-
-              <p>
-                Free practical learning for people who want to
-                understand AI evaluation — from fundamentals
-                to advanced evaluation systems.
-              </p>
-
-            </div>
-
-            <div class="knowledge-feature-bottom">
-
-              <span>
-                Free learning
-              </span>
-
-              <strong>
-                Updated regularly
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          <div class="knowledge-topics">
-
-            <article class="knowledge-topic reveal">
-
-              <span class="knowledge-topic-number">
-                01
-              </span>
-
-              <h4>
-                LLM Evaluation
-              </h4>
-
-              <p>
-                Rubrics, factuality, relevance, completeness,
-                fluency, and instruction following.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal reveal-delay-1">
-
-              <span class="knowledge-topic-number">
-                02
-              </span>
-
-              <h4>
-                Hallucination
-              </h4>
-
-              <p>
-                Detect unsupported claims and distinguish
-                confident errors from grounded answers.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal">
-
-              <span class="knowledge-topic-number">
-                03
-              </span>
-
-              <h4>
-                RAG Evaluation
-              </h4>
-
-              <p>
-                Retrieval relevance, context quality,
-                groundedness, and citation evaluation.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal reveal-delay-1">
-
-              <span class="knowledge-topic-number">
-                04
-              </span>
-
-              <h4>
-                Agent Evaluation
-              </h4>
-
-              <p>
-                Tool usage, trajectories, task completion,
-                and agent reliability.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal">
-
-              <span class="knowledge-topic-number">
-                05
-              </span>
-
-              <h4>
-                AI Safety
-              </h4>
-
-              <p>
-                Prompt injection, jailbreaks, leakage,
-                and adversarial evaluation.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal reveal-delay-1">
-
-              <span class="knowledge-topic-number">
-                06
-              </span>
-
-              <h4>
-                Human Evaluation
-              </h4>
-
-              <p>
-                Pairwise comparison, Likert scales, rubrics,
-                preference data, and quality review.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal">
-
-              <span class="knowledge-topic-number">
-                07
-              </span>
-
-              <h4>
-                Benchmarks
-              </h4>
-
-              <p>
-                Build evaluation datasets and measure systems
-                consistently over time.
-              </p>
-
-            </article>
-
-
-            <article class="knowledge-topic reveal reveal-delay-1">
-
-              <span class="knowledge-topic-number">
-                08
-              </span>
-
-              <h4>
-                Regression Testing
-              </h4>
-
-              <p>
-                Detect when changes to prompts, models, or
-                systems introduce new failures.
-              </p>
-
-            </article>
-
-          </div>
-
-        </div>
-
-
-        <div class="knowledge-bottom reveal">
 
           <p>
-            Concept → Example → Evaluation → Exercise → Further learning
+            A focused workspace for evaluating individual responses,
+            comparing outputs, and understanding quality signals.
           </p>
 
-          <a
-            href="#learning"
-            class="knowledge-link"
-          >
-            Explore learning →
-          </a>
+        </div>
+
+        <div class="dashboard reveal">
+
+          <div class="dashboard-topbar">
+
+            <div class="dashboard-brand">
+              EvalLoop AI_
+            </div>
+
+            <div class="dashboard-nav">
+
+              <span class="dashboard-nav-active">
+                Evaluate
+              </span>
+
+              <span>
+                Compare
+              </span>
+
+              <span>
+                History
+              </span>
+
+            </div>
+
+            <div class="dashboard-user">
+              USER_001
+            </div>
+
+          </div>
+
+          <div class="dashboard-content">
+
+            <!-- Sidebar -->
+            <aside class="dashboard-sidebar">
+
+              <div class="sidebar-label">
+                EVALUATION
+              </div>
+
+              <div class="sidebar-item sidebar-item-active">
+                New evaluation
+              </div>
+
+              <div class="sidebar-item">
+                Previous runs
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-label">
+                MODE
+              </div>
+
+              <div class="sidebar-item">
+                Standard
+              </div>
+
+              <div class="sidebar-item">
+                Custom rubric
+              </div>
+
+            </aside>
+
+            <!-- Main dashboard -->
+            <div class="dashboard-main">
+
+              <div class="dashboard-heading">
+
+                <div>
+
+                  <div class="dashboard-kicker">
+                    RESPONSE EVALUATION
+                  </div>
+
+                  <h3>
+                    Evaluation #001
+                  </h3>
+
+                </div>
+
+                <div class="dashboard-run">
+                  RUN COMPLETE
+                </div>
+
+              </div>
+
+              <div class="dashboard-score-row">
+
+                <div class="score-card score-main">
+
+                  <div class="score-label">
+                    OVERALL QUALITY
+                  </div>
+
+                  <div class="score-number">
+                    94.3
+                  </div>
+
+                  <div class="score-description">
+                    Strong response
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    FACTUALITY
+                  </div>
+
+                  <div class="small-score">
+                    94
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:94%"></span>
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    RELEVANCE
+                  </div>
+
+                  <div class="small-score">
+                    91
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:91%"></span>
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    SAFETY
+                  </div>
+
+                  <div class="small-score">
+                    98
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:98%"></span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="dashboard-analysis">
+
+                <div class="analysis-card">
+
+                  <div class="analysis-header">
+
+                    <span>
+                      DETECTED ISSUES
+                    </span>
+
+                    <span>
+                      01
+                    </span>
+
+                  </div>
+
+                  <div class="analysis-item">
+
+                    <span class="analysis-icon">
+                      !
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        Minor completeness gap
+                      </strong>
+
+                      <p>
+                        One requested detail was not directly addressed
+                        in the generated response.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="analysis-card">
+
+                  <div class="analysis-header">
+
+                    <span>
+                      EVALUATION SUMMARY
+                    </span>
+
+                    <span>
+                      AI
+                    </span>
+
+                  </div>
+
+                  <p class="summary-text">
+                    The response is relevant and mostly accurate.
+                    It follows the main instruction but could provide
+                    additional detail to fully satisfy the request.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div class="dashboard-bottom">
+
+                <span>
+                  EVAL ENGINE / STANDARD
+                </span>
+
+                <span>
+                  2026.001
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -1187,139 +1102,65 @@
 
     </section>
 
-
-    <!-- ===================================================
-         DAILY LEARNING
-         =================================================== -->
-
-    <section
-      class="learning"
-      id="learning"
-    >
+    <!-- =======================================================
+         DOWNLOAD
+    ======================================================== -->
+    <section class="section section-border" id="download">
 
       <div class="container">
 
-        <div class="reveal">
+        <div class="download-panel reveal">
 
-          <div class="section-label">
-            06 / DAILY LEARNING
-          </div>
+          <div class="download-content">
 
-          <h2 class="section-title">
-            Learn one evaluation concept at a time.
-          </h2>
-
-          <p class="section-copy">
-            Short, practical lessons designed to help you
-            understand a concept and immediately apply it.
-          </p>
-
-        </div>
-
-
-        <div class="learning-flow">
-
-          <div class="learning-step reveal">
-
-            <div class="learning-step-number">
-              CONCEPT
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              GET EVALLOOP AI
             </div>
 
-            <h3>
-              Understand
-            </h3>
+            <h2>
+              Built for the
+              <span>AI evaluation loop.</span>
+            </h2>
 
             <p>
-              Learn what the evaluation concept means and why
-              it matters.
+              Start with the web application. A downloadable desktop
+              application is planned for a future release.
             </p>
 
-            <div class="learning-arrow">
-              →
-            </div>
+            <div class="download-actions">
 
-          </div>
+              <a href="#product" class="button button-primary">
+                Launch Web App
+                <span>↗</span>
+              </a>
 
+              <button
+                class="button button-secondary"
+                type="button"
+                disabled
+              >
+                Desktop App
+                <span>SOON</span>
+              </button>
 
-          <div class="learning-step reveal reveal-delay-1">
-
-            <div class="learning-step-number">
-              EXAMPLE
-            </div>
-
-            <h3>
-              See it
-            </h3>
-
-            <p>
-              Study realistic AI outputs and identify the
-              quality differences.
-            </p>
-
-            <div class="learning-arrow">
-              →
             </div>
 
           </div>
 
+          <div class="download-visual">
 
-          <div class="learning-step reveal reveal-delay-2">
+            <div class="download-orbit">
 
-            <div class="learning-step-number">
-              EVALUATE
+              <div class="orbit orbit-a"></div>
+              <div class="orbit orbit-b"></div>
+              <div class="orbit orbit-c"></div>
+
+              <div class="download-core">
+                EL
+              </div>
+
             </div>
-
-            <h3>
-              Practice
-            </h3>
-
-            <p>
-              Apply the concept to an actual evaluation task.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-3">
-
-            <div class="learning-step-number">
-              EXERCISE
-            </div>
-
-            <h3>
-              Test yourself
-            </h3>
-
-            <p>
-              Make an evaluation decision and explain the
-              evidence behind it.
-            </p>
-
-            <div class="learning-arrow">
-              →
-            </div>
-
-          </div>
-
-
-          <div class="learning-step reveal reveal-delay-4">
-
-            <div class="learning-step-number">
-              NEXT
-            </div>
-
-            <h3>
-              Go deeper
-            </h3>
-
-            <p>
-              Connect the concept to more advanced evaluation
-              methods and systems.
-            </p>
 
           </div>
 
@@ -1329,175 +1170,163 @@
 
     </section>
 
-
-    <!-- ===================================================
-         BENCHMARKS
-         =================================================== -->
-
-    <section
-      class="benchmarks"
-      id="benchmarks"
-    >
+    <!-- =======================================================
+         PRICING
+    ======================================================== -->
+    <section class="section section-border" id="pricing">
 
       <div class="container">
 
-        <div class="reveal">
+        <div class="section-heading reveal">
 
-          <div class="section-label">
-            07 / BENCHMARKS
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            PRICING
           </div>
 
-          <h2 class="section-title">
-            Measure AI quality consistently.
+          <h2>
+            Start free.
+            <span>Evaluate more.</span>
           </h2>
 
-          <p class="section-copy">
-            Benchmarking makes it possible to compare systems,
-            track changes, and detect regressions.
+          <p>
+            EvalLoop AI is designed to be accessible while giving
+            users a practical way to experiment with AI evaluation.
           </p>
 
         </div>
 
+        <div class="pricing-grid">
 
-        <div class="benchmark-panel reveal">
+          <div class="pricing-card pricing-main reveal">
 
-          <div class="benchmark-header">
+            <div class="pricing-top">
 
-            <h3>
-              Evaluation dimensions
-            </h3>
+              <div class="pricing-name">
+                FREE
+              </div>
 
-            <span>
-              Benchmark framework
-            </span>
+              <div class="pricing-status">
+                AVAILABLE
+              </div>
+
+            </div>
+
+            <div class="pricing-price">
+
+              <span class="price-symbol">
+                ₹
+              </span>
+
+              <span class="price-number">
+                0
+              </span>
+
+              <span class="price-period">
+                / forever
+              </span>
+
+            </div>
+
+            <p class="pricing-description">
+              Explore AI evaluation without an upfront subscription.
+            </p>
+
+            <div class="pricing-divider"></div>
+
+            <ul class="pricing-features">
+
+              <li>
+                <span>+</span>
+                AI response evaluation
+              </li>
+
+              <li>
+                <span>+</span>
+                Core quality metrics
+              </li>
+
+              <li>
+                <span>+</span>
+                Evaluation insights
+              </li>
+
+              <li>
+                <span>+</span>
+                Limited usage
+              </li>
+
+              <li>
+                <span>+</span>
+                Evaluation history
+              </li>
+
+            </ul>
+
+            <a href="#product" class="button button-primary pricing-button">
+              Get started
+              <span>↗</span>
+            </a>
 
           </div>
 
+          <div class="pricing-info reveal">
 
-          <div class="benchmark-table">
+            <div class="pricing-info-row">
 
-            <div class="benchmark-row header">
+              <span>
+                CURRENT MODEL
+              </span>
 
-              <div>
-                Dimension
-              </div>
-
-              <div>
-                Method
-              </div>
-
-              <div>
-                Signal
-              </div>
-
-              <div>
-                Status
-              </div>
+              <span>
+                EVAL ENGINE
+              </span>
 
             </div>
 
+            <div class="pricing-info-row">
 
-            <div class="benchmark-row">
+              <span>
+                USAGE
+              </span>
 
-              <div>
-                Factuality
-              </div>
-
-              <div>
-                Reference
-              </div>
-
-              <div class="score">
-                Accuracy
-              </div>
-
-              <div class="status live">
-                Active
-              </div>
+              <span>
+                LIMITED
+              </span>
 
             </div>
 
+            <div class="pricing-info-row">
 
-            <div class="benchmark-row">
+              <span>
+                API ACCESS
+              </span>
 
-              <div>
-                Instruction
-              </div>
-
-              <div>
-                Rubric
-              </div>
-
-              <div class="score">
-                Compliance
-              </div>
-
-              <div class="status live">
-                Active
-              </div>
+              <span>
+                FUTURE
+              </span>
 
             </div>
 
+            <div class="pricing-info-row">
 
-            <div class="benchmark-row">
+              <span>
+                TEAM FEATURES
+              </span>
 
-              <div>
-                RAG Grounding
-              </div>
-
-              <div>
-                Context
-              </div>
-
-              <div class="score">
-                Faithfulness
-              </div>
-
-              <div class="status">
-                Building
-              </div>
+              <span>
+                FUTURE
+              </span>
 
             </div>
 
+            <div class="pricing-info-note">
 
-            <div class="benchmark-row">
+              <span class="note-symbol">
+                *
+              </span>
 
-              <div>
-                Agent Quality
-              </div>
-
-              <div>
-                Trajectory
-              </div>
-
-              <div class="score">
-                Completion
-              </div>
-
-              <div class="status">
-                Planned
-              </div>
-
-            </div>
-
-
-            <div class="benchmark-row">
-
-              <div>
-                Safety
-              </div>
-
-              <div>
-                Adversarial
-              </div>
-
-              <div class="score">
-                Risk
-              </div>
-
-              <div class="status">
-                Building
-              </div>
+              Usage limits may change as the application evolves.
 
             </div>
 
@@ -1509,103 +1338,46 @@
 
     </section>
 
-
-    <!-- ===================================================
-         DOCUMENTATION
-         =================================================== -->
-
-    <section
-      class="docs"
-      id="docs"
-    >
+    <!-- =======================================================
+         LOGIN / SIGNUP
+    ======================================================== -->
+    <section class="section section-border" id="signup">
 
       <div class="container">
 
-        <div class="reveal">
+        <div class="auth-panel reveal">
 
-          <div class="section-label">
-            08 / DOCUMENTATION
+          <div class="auth-copy">
+
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              YOUR EVALUATION WORKSPACE
+            </div>
+
+            <h2>
+              Create your
+              <span>EvalLoop account.</span>
+            </h2>
+
+            <p>
+              Save evaluations, compare AI responses, and build a
+              personal history of your AI quality experiments.
+            </p>
+
           </div>
 
-          <h2 class="section-title">
-            Build with evaluation in mind.
-          </h2>
+          <div class="auth-actions">
 
-          <p class="section-copy">
-            Documentation will bring together practical
-            evaluation methods, workflows, terminology,
-            and implementation guidance.
-          </p>
-
-        </div>
-
-
-        <div class="docs-grid">
-
-          <article class="docs-card reveal">
-
-            <div class="docs-card-number">
-              DOC / 01
-            </div>
-
-            <h3>
-              Evaluation Fundamentals
-            </h3>
-
-            <p>
-              Understand evaluation dimensions, rubrics,
-              datasets, judges, and human review.
-            </p>
-
-            <a href="#knowledge">
-              Read knowledge →
+            <a href="#" class="button button-primary">
+              Create account
+              <span>↗</span>
             </a>
 
-          </article>
-
-
-          <article class="docs-card reveal reveal-delay-1">
-
-            <div class="docs-card-number">
-              DOC / 02
-            </div>
-
-            <h3>
-              RAG Evaluation
-            </h3>
-
-            <p>
-              Learn how retrieval and generation quality can
-              be evaluated separately and together.
-            </p>
-
-            <a href="#knowledge">
-              Coming soon →
+            <a href="#" class="auth-login-link" id="login">
+              Already have an account? Login
             </a>
 
-          </article>
-
-
-          <article class="docs-card reveal reveal-delay-2">
-
-            <div class="docs-card-number">
-              DOC / 03
-            </div>
-
-            <h3>
-              Agent Evaluation
-            </h3>
-
-            <p>
-              Explore tool correctness, trajectories,
-              task completion, and agent reliability.
-            </p>
-
-            <a href="#knowledge">
-              Coming soon →
-            </a>
-
-          </article>
+          </div>
 
         </div>
 
@@ -1613,165 +1385,185 @@
 
     </section>
 
-
-    <!-- ===================================================
+    <!-- =======================================================
          FAQ
-         =================================================== -->
-
-    <section
-      class="faq"
-      id="faq"
-    >
+    ======================================================== -->
+    <section class="section section-border" id="faq">
 
       <div class="container">
 
-        <div class="reveal">
+        <div class="section-heading reveal">
 
-          <div class="section-label">
-            09 / FAQ
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            FAQ
           </div>
 
-          <h2 class="section-title">
-            About EvalLoop AI.
+          <h2>
+            Questions,
+            <span>answered.</span>
           </h2>
 
         </div>
-
 
         <div class="faq-list">
 
-
           <div class="faq-item reveal">
 
-            <button
-              class="faq-question"
-              type="button"
-            >
+            <button class="faq-question" type="button">
 
               <span>
                 What is EvalLoop AI?
               </span>
 
-              <span>
+              <span class="faq-icon">
                 +
               </span>
 
             </button>
 
             <div class="faq-answer">
-              EvalLoop AI is a platform focused on AI evaluation,
-              practical evaluation tools, benchmarks, and free
-              knowledge about evaluating AI systems.
+
+              <p>
+                EvalLoop AI is an AI evaluation platform designed to
+                help users analyze the quality of AI-generated responses
+                across dimensions such as factuality, relevance,
+                instruction following, completeness, fluency, and safety.
+              </p>
+
             </div>
 
           </div>
 
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                Is EvalLoop AI free?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                EvalLoop AI is planned with a free-to-use tier that
+                includes usage limits. Additional capabilities may be
+                introduced in future versions.
+              </p>
+
+            </div>
+
+          </div>
 
           <div class="faq-item reveal">
 
-            <button
-              class="faq-question"
-              type="button"
-            >
+            <button class="faq-question" type="button">
 
               <span>
                 What can I evaluate?
               </span>
 
-              <span>
+              <span class="faq-icon">
                 +
               </span>
 
             </button>
 
             <div class="faq-answer">
-              The platform is designed to support LLM responses,
-              prompts, RAG systems, AI agents, multimodal systems,
-              safety behavior, and broader AI quality evaluation.
+
+              <p>
+                The initial application focuses on evaluating text-based
+                AI responses. Future versions can expand into multimodal
+                evaluation including vision, speech, and other AI outputs.
+              </p>
+
             </div>
 
           </div>
-
 
           <div class="faq-item reveal">
 
-            <button
-              class="faq-question"
-              type="button"
-            >
+            <button class="faq-question" type="button">
 
               <span>
-                Is the evaluator free?
+                Which AI models power EvalLoop AI?
               </span>
 
-              <span>
+              <span class="faq-icon">
                 +
               </span>
 
             </button>
 
             <div class="faq-answer">
-              EvalLoop AI is being developed with a strong focus
-              on free and accessible evaluation tools and learning
-              resources.
+
+              <p>
+                The evaluation application can connect to supported
+                language models through its evaluation backend. The
+                model layer can evolve independently from the EvalLoop
+                interface.
+              </p>
+
             </div>
 
           </div>
-
 
           <div class="faq-item reveal">
 
-            <button
-              class="faq-question"
-              type="button"
-            >
+            <button class="faq-question" type="button">
 
               <span>
-                What are the EVP engines?
+                Can I compare two AI responses?
               </span>
 
-              <span>
+              <span class="faq-icon">
                 +
               </span>
 
             </button>
 
             <div class="faq-answer">
-              EVP is the planned evaluation engine family within
-              EvalLoop AI. Different EVP profiles focus on areas
-              such as general evaluation, factuality, reasoning,
-              safety, RAG, multimodal systems, agents, and
-              benchmarking.
+
+              <p>
+                A response comparison workflow is planned for the
+                application, allowing users to evaluate multiple outputs
+                against the same prompt or rubric.
+              </p>
+
             </div>
 
           </div>
-
 
           <div class="faq-item reveal">
 
-            <button
-              class="faq-question"
-              type="button"
-            >
+            <button class="faq-question" type="button">
 
               <span>
-                Are EVP engines independent AI models?
+                Is there a desktop application?
               </span>
 
-              <span>
+              <span class="faq-icon">
                 +
               </span>
 
             </button>
 
             <div class="faq-answer">
-              EVP profiles are evaluation-engine concepts.
-              Their underlying models and evaluation methods may
-              evolve as EvalLoop AI develops.
+
+              <p>
+                The first version is designed as a web application.
+                Desktop downloads can be introduced in a future release.
+              </p>
+
             </div>
 
           </div>
-
 
         </div>
 
@@ -1779,40 +1571,46 @@
 
     </section>
 
-
-    <!-- ===================================================
+    <!-- =======================================================
          FINAL CTA
-         =================================================== -->
-
-    <section
-      class="final-cta"
-      id="start"
-    >
+    ======================================================== -->
+    <section class="section final-cta">
 
       <div class="container">
 
         <div class="cta-panel reveal">
 
-          <div class="section-label">
-            10 / START
+          <div class="cta-grid">
+
+            <div>
+
+              <div class="section-kicker">
+                <span class="kicker-line"></span>
+                EVALLOOP AI
+              </div>
+
+              <h2>
+                Don't just generate AI.
+                <span>Evaluate it.</span>
+              </h2>
+
+              <p>
+                Build a stronger AI quality loop with measurable,
+                explainable evaluation.
+              </p>
+
+            </div>
+
+            <div class="cta-action">
+
+              <a href="#product" class="button button-primary button-large">
+                Start evaluating
+                <span>↗</span>
+              </a>
+
+            </div>
+
           </div>
-
-          <h2>
-            Start evaluating AI.
-          </h2>
-
-          <p>
-            Put an AI response through the EvalLoop evaluator
-            and see how it performs across practical quality
-            dimensions.
-          </p>
-
-          <a
-            href="/app/"
-            class="primary-button"
-          >
-            Open Evaluation Lab
-          </a>
 
         </div>
 
@@ -1820,115 +1618,90 @@
 
     </section>
 
-
   </main>
 
-
-  <!-- =====================================================
+  <!-- =========================================================
        FOOTER
-       ===================================================== -->
-
+  ========================================================== -->
   <footer class="site-footer">
 
     <div class="container">
 
-      <div class="site-footer-top">
-
+      <div class="footer-top">
 
         <div class="footer-brand">
 
-          <a
-            href="/"
-            class="logo"
-          >
-            EvalLoop AI
+          <a href="#" class="brand">
+            <span>EvalLoop AI</span><span class="brand-cursor">_</span>
           </a>
 
           <p>
-            A practical AI evaluation and knowledge platform
-            for understanding, testing, and improving AI systems.
+            AI evaluation &amp; LLM quality platform.
           </p>
 
         </div>
 
+        <div class="footer-columns">
 
-        <div class="footer-column">
+          <div class="footer-column">
 
-          <h4>
-            Platform
-          </h4>
+            <div class="footer-label">
+              PRODUCT
+            </div>
 
-          <a href="/app/">
-            Evaluate
-          </a>
+            <a href="#product">
+              Overview
+            </a>
 
-          <a href="#labs">
-            Evaluation Labs
-          </a>
+            <a href="#how-it-works">
+              How it works
+            </a>
 
-          <a href="#benchmarks">
-            Benchmarks
-          </a>
+            <a href="#pricing">
+              Pricing
+            </a>
 
-          <a href="#evp">
-            EVP
-          </a>
+          </div>
 
-        </div>
+          <div class="footer-column">
 
+            <div class="footer-label">
+              RESOURCES
+            </div>
 
-        <div class="footer-column">
+            <a href="#faq">
+              FAQ
+            </a>
 
-          <h4>
-            Learn
-          </h4>
+            <a href="#download">
+              Download
+            </a>
 
-          <a href="#knowledge">
-            Knowledge
-          </a>
+            <a href="#">
+              Documentation
+            </a>
 
-          <a href="#learning">
-            Daily Learning
-          </a>
+          </div>
 
-          <a href="#docs">
-            Documentation
-          </a>
+          <div class="footer-column">
 
-          <a href="#faq">
-            FAQ
-          </a>
+            <div class="footer-label">
+              ACCOUNT
+            </div>
 
-        </div>
+            <a href="#login">
+              Login
+            </a>
 
+            <a href="#signup">
+              Sign up
+            </a>
 
-        <div class="footer-column">
-
-          <h4>
-            Explore
-          </h4>
-
-          <a href="#about">
-            About EvalLoop
-          </a>
-
-          <a href="#labs">
-            Labs
-          </a>
-
-          <a href="#benchmarks">
-            Benchmarks
-          </a>
-
-          <a href="/app/">
-            Open Evaluator
-          </a>
+          </div>
 
         </div>
-
 
       </div>
-
 
       <div class="footer-bottom">
 
@@ -1937,7 +1710,11 @@
         </span>
 
         <span>
-          Evaluate. Understand. Improve.
+          BUILT FOR BETTER AI
+        </span>
+
+        <span>
+          HYDERABAD · INDIA
         </span>
 
       </div>
@@ -1946,12 +1723,10 @@
 
   </footer>
 
-
-  <!-- =====================================================
+  <!-- =========================================================
        JAVASCRIPT
-       ===================================================== -->
-
-  <script src="app.js?v=4"></script>
+  ========================================================== -->
+  <script src="app.js?v=2"></script>
 
 </body>
 </html>
