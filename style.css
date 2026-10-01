@@ -2692,3 +2692,74 @@ p {
   }
 
 }
+/* =========================================
+   FOOTER — TABLET & MOBILE RESPONSIVE
+   ========================================= */
+
+@media (max-width: 900px) {
+
+  .site-footer .footer-top {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .site-footer .footer-brand {
+    width: 100%;
+  }
+
+  .site-footer .footer-columns {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .site-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .site-footer .footer-top {
+    gap: 40px;
+  }
+
+  .site-footer .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 24px;
+  }
+
+  .site-footer .footer-column {
+    min-width: 0;
+  }
+
+  .site-footer .footer-column a {
+    display: block;
+    white-space: normal;
+  }
+
+  .site-footer .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+}
+
+
+@media (max-width: 380px) {
+
+  .site-footer .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .site-footer .footer-bottom {
+    gap: 10px;
+  }
+
+}
