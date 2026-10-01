@@ -1,5 +1,6 @@
 /* =========================================================
    EvalLoop AI — Evaluation Workspace
+   Real API Evaluation
    ========================================================= */
 
 
@@ -28,6 +29,8 @@ const emptyState =
 const results =
   document.getElementById("results");
 
+const resultState =
+  document.getElementById("resultState");
 
 
 /* ---------------------------------------------------------
@@ -48,7 +51,6 @@ const recommendationText =
 
 const issuesList =
   document.getElementById("issuesList");
-
 
 
 /* ---------------------------------------------------------
@@ -90,9 +92,8 @@ const scoreElements = {
 };
 
 
-
 /* ---------------------------------------------------------
-   4. SHOW MESSAGE
+   4. MESSAGE HELPERS
    --------------------------------------------------------- */
 
 function showMessage(message) {
@@ -102,17 +103,32 @@ function showMessage(message) {
 }
 
 
-
-/* ---------------------------------------------------------
-   5. CLEAR MESSAGE
-   --------------------------------------------------------- */
-
 function clearMessage() {
 
   formMessage.textContent = "";
 
 }
 
+
+/* ---------------------------------------------------------
+   5. HTML ESCAPING
+   --------------------------------------------------------- */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
 
 
 /* ---------------------------------------------------------
@@ -128,18 +144,27 @@ function updateScore(scoreName, value) {
     return;
   }
 
-  score.text.textContent =
-    `${value}/100`;
+  const safeValue = Math.max(
+    0,
+    Math.min(
+      100,
+      Number(value) || 0
+    )
+  );
 
-  setTimeout(() => {
+  score.text.textContent =
+    `${safeValue}/100`;
+
+  score.bar.style.width = "0%";
+
+  requestAnimationFrame(() => {
 
     score.bar.style.width =
-      `${value}%`;
+      `${safeValue}%`;
 
-  }, 100);
+  });
 
 }
-
 
 
 /* ---------------------------------------------------------
@@ -150,7 +175,10 @@ function displayIssues(issues) {
 
   issuesList.innerHTML = "";
 
-  if (!issues || issues.length === 0) {
+  if (
+    !Array.isArray(issues) ||
+    issues.length === 0
+  ) {
 
     issuesList.innerHTML = `
       <div class="issue">
@@ -159,11 +187,13 @@ function displayIssues(issues) {
 
         <div class="issue-content">
 
-          <strong>No major issues detected</strong>
+          <strong>
+            No major issues detected
+          </strong>
 
           <p>
-            The evaluation did not identify any
-            significant quality problems.
+            The evaluation did not identify
+            any significant quality problems.
           </p>
 
         </div>
@@ -180,7 +210,23 @@ function displayIssues(issues) {
     const issueElement =
       document.createElement("div");
 
-    issueElement.className = "issue";
+    issueElement.className =
+      "issue";
+
+
+    const type =
+      escapeHtml(
+        issue?.type ||
+        "Issue"
+      );
+
+
+    const description =
+      escapeHtml(
+        issue?.description ||
+        ""
+      );
+
 
     issueElement.innerHTML = `
 
@@ -189,23 +235,25 @@ function displayIssues(issues) {
       <div class="issue-content">
 
         <strong>
-          ${issue.type || "Issue"}
+          ${type}
         </strong>
 
         <p>
-          ${issue.description || ""}
+          ${description}
         </p>
 
       </div>
 
     `;
 
-    issuesList.appendChild(issueElement);
+
+    issuesList.appendChild(
+      issueElement
+    );
 
   });
 
 }
-
 
 
 /* ---------------------------------------------------------
@@ -215,199 +263,313 @@ function displayIssues(issues) {
 function displayResults(data) {
 
   /*
-    Hide the empty state.
-  */
+   * Hide empty state.
+   */
 
-  emptyState.classList.add("hidden");
-
-
-  /*
-    Show results.
-  */
-
-  results.classList.remove("hidden");
+  emptyState.classList.add(
+    "hidden"
+  );
 
 
   /*
-    Overall score.
-  */
+   * Show results.
+   */
+
+  results.classList.remove(
+    "hidden"
+  );
+
+
+  /*
+   * Update result state.
+   */
+
+  if (resultState) {
+
+    resultState.textContent =
+      "COMPLETED";
+
+    resultState.classList.remove(
+      "waiting"
+    );
+
+  }
+
+
+  /*
+   * Overall score.
+   */
 
   const overall =
-    Number(data.overall_score || 0);
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(data?.overall_score) || 0
+      )
+    );
+
 
   overallScore.textContent =
     `${overall}/100`;
 
 
   /*
-    Overall explanation.
-  */
+   * Overall explanation.
+   */
 
   overallText.textContent =
-    data.overall_text ||
+    data?.overall_text ||
     "Evaluation completed.";
 
 
   /*
-    Individual scores.
-  */
+   * Individual scores.
+   */
 
   updateScore(
     "factuality",
-    Number(data.scores?.factuality || 0)
+    data?.scores?.factuality
   );
 
 
   updateScore(
     "instruction_following",
-    Number(data.scores?.instruction_following || 0)
+    data?.scores?.instruction_following
   );
 
 
   updateScore(
     "relevance",
-    Number(data.scores?.relevance || 0)
+    data?.scores?.relevance
   );
 
 
   updateScore(
     "completeness",
-    Number(data.scores?.completeness || 0)
+    data?.scores?.completeness
   );
 
 
   updateScore(
     "safety",
-    Number(data.scores?.safety || 0)
+    data?.scores?.safety
   );
 
 
   updateScore(
     "fluency",
-    Number(data.scores?.fluency || 0)
+    data?.scores?.fluency
   );
 
 
   /*
-    Summary.
-  */
+   * Summary.
+   */
 
   summaryText.textContent =
-    data.summary ||
+    data?.summary ||
     "No summary was provided.";
 
 
   /*
-    Issues.
-  */
+   * Issues.
+   */
 
   displayIssues(
-    data.issues || []
+    data?.issues
   );
 
 
   /*
-    Recommendation.
-  */
+   * Recommendation.
+   */
 
   recommendationText.textContent =
-    data.recommendation ||
+    data?.recommendation ||
     "No recommendation was provided.";
 
 }
 
 
-
 /* ---------------------------------------------------------
-   9. DEMO EVALUATION
-   ---------------------------------------------------------
+   9. RESET RESULTS FOR NEW EVALUATION
+   --------------------------------------------------------- */
 
-   IMPORTANT:
+function showLoadingState() {
 
-   This is NOT connected to Groq or Gemini yet.
+  emptyState.classList.add(
+    "hidden"
+  );
 
-   We are using fake evaluation data temporarily
-   so we can test the interface.
-
-   We will remove this later.
---------------------------------------------------------- */
-
-function runDemoEvaluation() {
-
-  const demoResult = {
-
-    overall_score: 94,
-
-    overall_text:
-      "Strong response with minor opportunities for improvement.",
-
-    scores: {
-
-      factuality: 96,
-
-      instruction_following: 95,
-
-      relevance: 94,
-
-      completeness: 89,
-
-      safety: 98,
-
-      fluency: 97
-
-    },
-
-    issues: [
-
-      {
-
-        type: "Completeness",
-
-        description:
-          "One requested detail could have been explained more explicitly."
-
-      },
-
-      {
-
-        type: "Relevance",
-
-        description:
-          "A small portion of the response could be more directly focused on the user's request."
-
-      }
-
-    ],
-
-    summary:
-      "The response is accurate, relevant and well written. It follows the main instruction and does not contain obvious safety concerns.",
-
-    recommendation:
-      "Add the missing detail and make the less relevant portion more concise."
-
-  };
+  results.classList.remove(
+    "hidden"
+  );
 
 
-  displayResults(demoResult);
+  overallScore.textContent =
+    "—";
+
+
+  overallText.textContent =
+    "EvalLoop AI is evaluating the response...";
+
+
+  summaryText.textContent =
+    "Analyzing the AI response...";
+
+
+  issuesList.innerHTML = `
+    <div class="issue">
+
+      <div class="issue-marker"></div>
+
+      <div class="issue-content">
+
+        <strong>
+          Evaluation in progress
+        </strong>
+
+        <p>
+          EvalLoop AI is analyzing the response.
+        </p>
+
+      </div>
+
+    </div>
+  `;
+
+
+  recommendationText.textContent =
+    "Generating recommendation...";
+
+
+  Object.values(scoreElements)
+    .forEach(score => {
+
+      score.text.textContent =
+        "—";
+
+      score.bar.style.width =
+        "0%";
+
+    });
+
+
+  if (resultState) {
+
+    resultState.textContent =
+      "EVALUATING";
+
+    resultState.classList.remove(
+      "waiting"
+    );
+
+  }
 
 }
 
 
+/* ---------------------------------------------------------
+   10. CALL EVALLOOP API
+   --------------------------------------------------------- */
+
+async function evaluateResponse(
+  prompt,
+  response,
+  reference
+) {
+
+  const apiResponse =
+    await fetch(
+      "/api/evaluate",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          prompt,
+          response,
+          reference
+        })
+      }
+    );
+
+
+  /*
+   * Try to read JSON.
+   */
+
+  let data;
+
+  try {
+
+    data =
+      await apiResponse.json();
+
+  } catch {
+
+    throw new Error(
+      "The evaluation API returned an invalid response."
+    );
+
+  }
+
+
+  /*
+   * Handle HTTP errors.
+   */
+
+  if (!apiResponse.ok) {
+
+    throw new Error(
+      data?.error ||
+      `Evaluation failed with status ${apiResponse.status}.`
+    );
+
+  }
+
+
+  /*
+   * Make sure we actually received
+   * an evaluation object.
+   */
+
+  if (
+    !data ||
+    typeof data !== "object"
+  ) {
+
+    throw new Error(
+      "The evaluation API returned an empty result."
+    );
+
+  }
+
+
+  return data;
+
+}
+
 
 /* ---------------------------------------------------------
-   10. BUTTON CLICK
+   11. BUTTON CLICK
    --------------------------------------------------------- */
 
 evaluateButton.addEventListener(
   "click",
-  () => {
+  async () => {
 
     clearMessage();
 
 
     /*
-      Get user input.
-    */
+     * Get user input.
+     */
 
     const prompt =
       promptInput.value.trim();
@@ -420,8 +582,8 @@ evaluateButton.addEventListener(
 
 
     /*
-      Validate Prompt.
-    */
+     * Validate prompt.
+     */
 
     if (!prompt) {
 
@@ -432,12 +594,13 @@ evaluateButton.addEventListener(
       promptInput.focus();
 
       return;
+
     }
 
 
     /*
-      Validate AI Response.
-    */
+     * Validate AI response.
+     */
 
     if (!response) {
 
@@ -448,76 +611,158 @@ evaluateButton.addEventListener(
       responseInput.focus();
 
       return;
+
     }
 
 
     /*
-      Reference is optional.
-    */
+     * Start loading state.
+     */
 
-    console.log("Prompt:", prompt);
+    evaluateButton.disabled =
+      true;
 
-    console.log(
-      "AI Response:",
-      response
-    );
+    evaluateButton.querySelector(
+      "span:first-child"
+    ).textContent =
+      "Evaluating with Groq...";
 
-    console.log(
-      "Reference:",
-      reference
-    );
-
-
-    /*
-      Show temporary status.
-    */
 
     showMessage(
-      "Running evaluation..."
+      "Sending response to EvalLoop AI..."
     );
 
 
-    evaluateButton.disabled = true;
-
-    evaluateButton.style.opacity =
-      "0.6";
+    showLoadingState();
 
 
-    /*
-      Temporary delay.
+    try {
 
-      Later this will be replaced with
-      the real API request to:
+      /*
+       * Call our Vercel API.
+       */
 
-      /api/evaluate
-    */
+      const data =
+        await evaluateResponse(
+          prompt,
+          response,
+          reference
+        );
 
-    setTimeout(() => {
 
-      runDemoEvaluation();
+      /*
+       * Display real evaluation.
+       */
+
+      displayResults(data);
 
 
       showMessage(
-        "Demo evaluation completed."
+        "Evaluation completed."
       );
 
 
-      evaluateButton.disabled = false;
+    } catch (error) {
 
-      evaluateButton.style.opacity =
-        "1";
+      console.error(
+        "EvalLoop AI evaluation error:",
+        error
+      );
 
-    }, 900);
+
+      /*
+       * Show error state.
+       */
+
+      if (resultState) {
+
+        resultState.textContent =
+          "ERROR";
+
+        resultState.classList.remove(
+          "waiting"
+        );
+
+      }
+
+
+      overallScore.textContent =
+        "Error";
+
+
+      overallText.textContent =
+        error?.message ||
+        "Evaluation failed.";
+
+
+      summaryText.textContent =
+        "EvalLoop AI could not complete the evaluation.";
+
+
+      issuesList.innerHTML = `
+
+        <div class="issue">
+
+          <div class="issue-marker"></div>
+
+          <div class="issue-content">
+
+            <strong>
+              Evaluation Error
+            </strong>
+
+            <p>
+              ${escapeHtml(
+                error?.message ||
+                "Unknown evaluation error."
+              )}
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      recommendationText.textContent =
+        "Check the API configuration and try again.";
+
+
+      showMessage(
+        error?.message ||
+        "Evaluation failed."
+      );
+
+    } finally {
+
+      /*
+       * Re-enable button.
+       */
+
+      evaluateButton.disabled =
+        false;
+
+
+      evaluateButton.querySelector(
+        "span:first-child"
+      ).textContent =
+        "Evaluate Response";
+
+    }
 
   }
 );
 
 
-
 /* ---------------------------------------------------------
-   11. INITIAL STATE
+   12. INITIAL STATE
    --------------------------------------------------------- */
 
 console.log(
   "EvalLoop AI evaluation workspace loaded."
+);
+
+console.log(
+  "Real API evaluation enabled."
 );
