@@ -1,35 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Benchmarks — EvalLoop AI</title>
 
   <meta
     name="description"
     content="Run structured AI benchmark tests with EvalLoop AI."
-  />
+  >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
     rel="stylesheet"
-  />
+  >
 
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/style.css">
 
   <style>
 
     /* =========================================================
-       BENCHMARK WORKSPACE
+       BENCHMARK PAGE
        ========================================================= */
 
     .benchmark-page {
       overflow: hidden;
     }
+
+
+    /* =========================================================
+       ANIMATED EVP STATUS BAR
+       ========================================================= */
+
+    .evp-status-bar {
+      position: relative;
+      width: 100%;
+      min-height: 42px;
+      border-bottom: 1px solid var(--line-soft);
+      background:
+        linear-gradient(
+          90deg,
+          rgba(62, 207, 142, .025),
+          rgba(62, 207, 142, .055),
+          rgba(62, 207, 142, .025)
+        );
+      overflow: hidden;
+    }
+
+    .evp-status-inner {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .evp-status-track {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .09em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition:
+        opacity .35s ease,
+        transform .35s ease;
+    }
+
+    .evp-status-track.changing {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    .evp-live-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow:
+        0 0 0 0 rgba(62, 207, 142, .4);
+      animation: evpPulse 2s infinite;
+    }
+
+    @keyframes evpPulse {
+
+      0% {
+        box-shadow:
+          0 0 0 0 rgba(62, 207, 142, .4);
+      }
+
+      70% {
+        box-shadow:
+          0 0 0 7px rgba(62, 207, 142, 0);
+      }
+
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(62, 207, 142, 0);
+      }
+
+    }
+
+    .evp-status-primary {
+      color: var(--green2);
+    }
+
+    .evp-status-arrow {
+      color: var(--green);
+    }
+
+    .evp-status-action {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(62, 207, 142, .35);
+      padding-bottom: 2px;
+      transition: color .2s ease, border-color .2s ease;
+    }
+
+    .evp-status-action:hover {
+      color: var(--green2);
+      border-color: var(--green);
+    }
+
+    .evp-status-counter {
+      position: absolute;
+      right: 0;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--dim);
+      letter-spacing: .08em;
+    }
+
+    @media (max-width: 700px) {
+
+      .evp-status-inner {
+        justify-content: flex-start;
+        padding: 0 20px;
+      }
+
+      .evp-status-track {
+        gap: 9px;
+        font-size: 8px;
+      }
+
+      .evp-status-counter {
+        display: none;
+      }
+
+    }
+
 
     /* =========================================================
        HEADER RESET
@@ -81,6 +208,7 @@
       display: none;
     }
 
+
     @media (max-width: 900px) {
 
       .site-header .desktop-nav,
@@ -117,7 +245,7 @@
         right: 0;
         flex-direction: column;
         padding: 20px;
-        background: rgba(16, 18, 17, 0.98);
+        background: rgba(16, 18, 17, .98);
         border-top: 1px solid var(--line-soft);
         border-bottom: 1px solid var(--line);
         opacity: 0;
@@ -158,6 +286,7 @@
       .mobile-nav-actions a {
         text-decoration: none;
       }
+
     }
 
 
@@ -189,7 +318,7 @@
       margin: 0;
       font-size: clamp(48px, 6vw, 76px);
       line-height: 1;
-      letter-spacing: -0.055em;
+      letter-spacing: -.055em;
       font-weight: 400;
     }
 
@@ -911,6 +1040,23 @@
 
     }
 
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .evp-status-track {
+        transition: none;
+      }
+
+      .evp-live-dot {
+        animation: none;
+      }
+
+      .benchmark-card {
+        transition: none;
+      }
+
+    }
+
   </style>
 </head>
 
@@ -926,20 +1072,49 @@
 
 
   <!-- =======================================================
-       ANNOUNCEMENT
+       ANIMATED EVP STATUS
        ======================================================= -->
 
-  <div class="announcement-bar">
+  <div class="evp-status-bar">
 
-    <div class="container">
+    <div class="container evp-status-inner">
 
-      <span>EVP.AUREON IS LIVE</span>
+      <div
+        class="evp-status-track"
+        id="evpStatusTrack"
+        aria-live="polite"
+      >
 
-      <span class="announcement-arrow">→</span>
+        <span class="evp-live-dot"></span>
 
-      <a href="/app/">
-        Try the evaluator
-      </a>
+        <span
+          class="evp-status-primary"
+          id="evpStatusPrimary"
+        >
+          EVP.AUREON IS LIVE
+        </span>
+
+        <span class="evp-status-arrow">
+          →
+        </span>
+
+        <a
+          href="/app/"
+          class="evp-status-action"
+          id="evpStatusAction"
+        >
+          TRY THE EVALUATOR
+        </a>
+
+      </div>
+
+
+      <div
+        class="evp-status-counter"
+        id="evpStatusCounter"
+      >
+        01 / 04
+      </div>
 
     </div>
 
@@ -1021,8 +1196,10 @@
         aria-label="Open menu"
         aria-expanded="false"
       >
+
         <span></span>
         <span></span>
+
       </button>
 
     </div>
@@ -1093,7 +1270,7 @@
 
 
         <!-- =================================================
-             PAGE HEADER
+             HERO
              ================================================= -->
 
         <div class="benchmark-top reveal">
@@ -1133,7 +1310,7 @@
 
 
         <!-- =================================================
-             STATUS
+             CURRENT SYSTEM STATUS
              ================================================= -->
 
         <div class="benchmark-status reveal">
@@ -1193,7 +1370,7 @@
 
 
         <!-- =================================================
-             AVAILABLE BENCHMARKS
+             BENCHMARK SUITES
              ================================================= -->
 
         <section class="workspace-section reveal">
@@ -1224,8 +1401,6 @@
           <div class="benchmark-cards">
 
 
-            <!-- GENERAL -->
-
             <article class="benchmark-card active">
 
               <div class="benchmark-card-number">
@@ -1251,7 +1426,7 @@
                 <button
                   class="benchmark-card-button"
                   type="button"
-                  onclick="selectBenchmark('General Quality')"
+                  data-benchmark="General Quality"
                 >
                   SELECT →
                 </button>
@@ -1260,8 +1435,6 @@
 
             </article>
 
-
-            <!-- REASONING -->
 
             <article class="benchmark-card">
 
@@ -1294,8 +1467,6 @@
             </article>
 
 
-            <!-- RAG -->
-
             <article class="benchmark-card">
 
               <div class="benchmark-card-number">
@@ -1326,8 +1497,6 @@
 
             </article>
 
-
-            <!-- SAFETY -->
 
             <article class="benchmark-card">
 
@@ -1360,8 +1529,6 @@
             </article>
 
 
-            <!-- AGENT -->
-
             <article class="benchmark-card">
 
               <div class="benchmark-card-number">
@@ -1392,8 +1559,6 @@
 
             </article>
 
-
-            <!-- MULTIMODAL -->
 
             <article class="benchmark-card">
 
@@ -1432,7 +1597,7 @@
 
 
         <!-- =================================================
-             BENCHMARK BUILDER
+             NEW BENCHMARK
              ================================================= -->
 
         <section
@@ -1465,8 +1630,6 @@
           <div class="benchmark-builder">
 
 
-            <!-- BUILDER -->
-
             <div class="builder-panel">
 
               <div class="builder-header">
@@ -1487,7 +1650,10 @@
 
                 <div class="field">
 
-                  <label class="field-label">
+                  <label
+                    class="field-label"
+                    for="benchmarkSelect"
+                  >
                     BENCHMARK
                   </label>
 
@@ -1507,7 +1673,10 @@
 
                 <div class="field">
 
-                  <label class="field-label">
+                  <label
+                    class="field-label"
+                    for="modelName"
+                  >
                     SYSTEM / MODEL NAME
                   </label>
 
@@ -1516,16 +1685,16 @@
                     id="modelName"
                     type="text"
                     placeholder="e.g. My AI System"
-                  />
+                  >
 
                 </div>
 
 
                 <div class="field">
 
-                  <label class="field-label">
+                  <span class="field-label">
                     TEST SIZE
-                  </label>
+                  </span>
 
                   <div class="test-size">
 
@@ -1537,7 +1706,7 @@
                         id="size10"
                         value="10"
                         checked
-                      />
+                      >
 
                       <label for="size10">
                         10
@@ -1553,7 +1722,7 @@
                         name="testSize"
                         id="size25"
                         value="25"
-                      />
+                      >
 
                       <label for="size25">
                         25
@@ -1569,7 +1738,7 @@
                         name="testSize"
                         id="size50"
                         value="50"
-                      />
+                      >
 
                       <label for="size50">
                         50
@@ -1585,7 +1754,7 @@
                         name="testSize"
                         id="size100"
                         value="100"
-                      />
+                      >
 
                       <label for="size100">
                         100
@@ -1600,9 +1769,9 @@
 
                 <div class="field">
 
-                  <label class="field-label">
+                  <span class="field-label">
                     EVALUATION DIMENSIONS
-                  </label>
+                  </span>
 
 
                   <div class="dimension-list">
@@ -1614,7 +1783,7 @@
                         type="checkbox"
                         checked
                         value="Factuality"
-                      />
+                      >
 
                       <span>
                         Factuality
@@ -1629,7 +1798,7 @@
                         type="checkbox"
                         checked
                         value="Instruction Following"
-                      />
+                      >
 
                       <span>
                         Instruction Following
@@ -1644,7 +1813,7 @@
                         type="checkbox"
                         checked
                         value="Relevance"
-                      />
+                      >
 
                       <span>
                         Relevance
@@ -1659,7 +1828,7 @@
                         type="checkbox"
                         checked
                         value="Completeness"
-                      />
+                      >
 
                       <span>
                         Completeness
@@ -1674,7 +1843,7 @@
                         type="checkbox"
                         checked
                         value="Safety"
-                      />
+                      >
 
                       <span>
                         Safety
@@ -1689,7 +1858,7 @@
                         type="checkbox"
                         checked
                         value="Fluency"
-                      />
+                      >
 
                       <span>
                         Fluency
@@ -1708,8 +1877,6 @@
             </div>
 
 
-            <!-- SUMMARY -->
-
             <aside class="run-summary">
 
               <div class="run-summary-header">
@@ -1718,7 +1885,10 @@
                   BENCHMARK RUN
                 </div>
 
-                <div class="run-summary-title">
+                <div
+                  class="run-summary-title"
+                  id="runSummaryTitle"
+                >
                   Ready to test
                 </div>
 
@@ -1789,10 +1959,12 @@
                 </button>
 
 
-                <div class="run-note">
-                  Benchmark execution will connect to the
-                  evaluation backend as the benchmark runner
-                  is implemented.
+                <div
+                  class="run-note"
+                  id="runNote"
+                >
+                  Benchmark runner will use the configured
+                  evaluation system when available.
                 </div>
 
               </div>
@@ -1851,8 +2023,8 @@
 
               <p>
                 Configure a benchmark above and start your first
-                run. Results will be displayed here once the
-                benchmark runner is connected.
+                run. Results will be displayed here once a
+                benchmark has been executed.
               </p>
 
             </div>
@@ -2050,7 +2222,7 @@
               </thead>
 
 
-              <tbody>
+              <tbody id="historyBody">
 
                 <tr>
 
@@ -2090,7 +2262,7 @@
 
 
         <!-- =================================================
-             INFO
+             EVP INFORMATION
              ================================================= -->
 
         <div class="benchmark-info reveal">
@@ -2164,8 +2336,15 @@
             class="brand"
             aria-label="EvalLoop AI"
           >
-            <span>EvalLoop AI</span>
-            <span class="brand-cursor">_</span>
+
+            <span>
+              EvalLoop AI
+            </span>
+
+            <span class="brand-cursor">
+              _
+            </span>
+
           </a>
 
           <p>
@@ -2307,38 +2486,173 @@
 
     if (mobileMenuButton && mobileNav) {
 
-      mobileMenuButton.addEventListener("click", function () {
+      mobileMenuButton.addEventListener(
+        "click",
+        function () {
 
-        const isOpen =
-          mobileMenuButton.getAttribute("aria-expanded") === "true";
+          const isOpen =
+            mobileMenuButton.getAttribute(
+              "aria-expanded"
+            ) === "true";
 
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          String(!isOpen)
-        );
-
-        mobileNav.classList.toggle(
-          "open",
-          !isOpen
-        );
-
-      });
-
-
-      mobileNav.querySelectorAll("a").forEach(function (link) {
-
-        link.addEventListener("click", function () {
 
           mobileMenuButton.setAttribute(
             "aria-expanded",
-            "false"
+            String(!isOpen)
           );
 
-          mobileNav.classList.remove("open");
+
+          mobileNav.classList.toggle(
+            "open",
+            !isOpen
+          );
+
+        }
+      );
+
+
+      mobileNav
+        .querySelectorAll("a")
+        .forEach(function (link) {
+
+          link.addEventListener(
+            "click",
+            function () {
+
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+              mobileNav.classList.remove(
+                "open"
+              );
+
+            }
+          );
 
         });
 
-      });
+    }
+
+
+    /* =======================================================
+       EVP ANIMATED STATUS TICKER
+       ======================================================= */
+
+    const evpMessages = [
+
+      {
+        primary: "EVP.AUREON IS LIVE",
+        action: "TRY THE EVALUATOR",
+        href: "/app/"
+      },
+
+      {
+        primary: "EVP.AUREON",
+        action: "06 EVALUATION DIMENSIONS",
+        href: "#new-benchmark"
+      },
+
+      {
+        primary: "GENERAL QUALITY",
+        action: "BENCHMARK READY",
+        href: "#new-benchmark"
+      },
+
+      {
+        primary: "EVALLOOP AI",
+        action: "BUILDING BENCHMARK INFRASTRUCTURE",
+        href: "#new-benchmark"
+      }
+
+    ];
+
+
+    const evpTrack =
+      document.getElementById(
+        "evpStatusTrack"
+      );
+
+    const evpPrimary =
+      document.getElementById(
+        "evpStatusPrimary"
+      );
+
+    const evpAction =
+      document.getElementById(
+        "evpStatusAction"
+      );
+
+    const evpCounter =
+      document.getElementById(
+        "evpStatusCounter"
+      );
+
+
+    let evpIndex = 0;
+
+
+    function changeEvpMessage() {
+
+      if (!evpTrack) {
+        return;
+      }
+
+
+      evpTrack.classList.add(
+        "changing"
+      );
+
+
+      setTimeout(function () {
+
+        evpIndex =
+          (evpIndex + 1) %
+          evpMessages.length;
+
+
+        const message =
+          evpMessages[evpIndex];
+
+
+        evpPrimary.textContent =
+          message.primary;
+
+
+        evpAction.textContent =
+          message.action;
+
+
+        evpAction.href =
+          message.href;
+
+
+        evpCounter.textContent =
+          String(evpIndex + 1).padStart(2, "0")
+          + " / "
+          + String(evpMessages.length).padStart(2, "0");
+
+
+        evpTrack.classList.remove(
+          "changing"
+        );
+
+      }, 350);
+
+    }
+
+
+    if (
+      !window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ) {
+
+      setInterval(
+        changeEvpMessage,
+        3500
+      );
 
     }
 
@@ -2347,73 +2661,71 @@
        BENCHMARK SELECTION
        ======================================================= */
 
-    function selectBenchmark(name) {
-
-      const select =
-        document.getElementById("benchmarkSelect");
-
-      const summary =
-        document.getElementById("summaryBenchmark");
-
-      if (select) {
-        select.value = name;
-      }
-
-      if (summary) {
-        summary.textContent = name.toUpperCase();
-      }
-
-      const builder =
-        document.getElementById("new-benchmark");
-
-      if (builder) {
-
-        builder.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    }
-
-
-    /* =======================================================
-       TEST SIZE
-       ======================================================= */
-
-    const sizeInputs =
-      document.querySelectorAll(
-        'input[name="testSize"]'
+    const benchmarkSelect =
+      document.getElementById(
+        "benchmarkSelect"
       );
 
-    const summarySize =
-      document.getElementById("summarySize");
+    const summaryBenchmark =
+      document.getElementById(
+        "summaryBenchmark"
+      );
 
 
-    sizeInputs.forEach(function (input) {
+    document
+      .querySelectorAll(
+        "[data-benchmark]"
+      )
+      .forEach(function (button) {
 
-      input.addEventListener("change", function () {
+        button.addEventListener(
+          "click",
+          function () {
 
-        if (summarySize) {
-          summarySize.textContent = input.value;
-        }
+            const name =
+              button.dataset.benchmark;
+
+
+            if (benchmarkSelect) {
+
+              benchmarkSelect.value =
+                name;
+
+            }
+
+
+            if (summaryBenchmark) {
+
+              summaryBenchmark.textContent =
+                name.toUpperCase();
+
+            }
+
+
+            const builder =
+              document.getElementById(
+                "new-benchmark"
+              );
+
+
+            if (builder) {
+
+              builder.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+
+            }
+
+          }
+        );
 
       });
-
-    });
 
 
     /* =======================================================
        BENCHMARK SELECT
        ======================================================= */
-
-    const benchmarkSelect =
-      document.getElementById("benchmarkSelect");
-
-    const summaryBenchmark =
-      document.getElementById("summaryBenchmark");
-
 
     if (benchmarkSelect) {
 
@@ -2435,6 +2747,42 @@
 
 
     /* =======================================================
+       TEST SIZE
+       ======================================================= */
+
+    const sizeInputs =
+      document.querySelectorAll(
+        'input[name="testSize"]'
+      );
+
+    const summarySize =
+      document.getElementById(
+        "summarySize"
+      );
+
+
+    sizeInputs.forEach(
+      function (input) {
+
+        input.addEventListener(
+          "change",
+          function () {
+
+            if (summarySize) {
+
+              summarySize.textContent =
+                input.value;
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =======================================================
        DIMENSION COUNT
        ======================================================= */
 
@@ -2444,20 +2792,26 @@
       );
 
     const summaryDimensions =
-      document.getElementById("summaryDimensions");
+      document.getElementById(
+        "summaryDimensions"
+      );
 
 
     function updateDimensionCount() {
 
       let count = 0;
 
-      dimensionInputs.forEach(function (input) {
 
-        if (input.checked) {
-          count++;
+      dimensionInputs.forEach(
+        function (input) {
+
+          if (input.checked) {
+            count++;
+          }
+
         }
+      );
 
-      });
 
       if (summaryDimensions) {
 
@@ -2469,28 +2823,36 @@
     }
 
 
-    dimensionInputs.forEach(function (input) {
+    dimensionInputs.forEach(
+      function (input) {
 
-      input.addEventListener(
-        "change",
-        updateDimensionCount
-      );
+        input.addEventListener(
+          "change",
+          updateDimensionCount
+        );
 
-    });
+      }
+    );
 
 
     /* =======================================================
-       RUN BENCHMARK
+       RUN BUTTON
        ======================================================= */
 
     const runButton =
-      document.getElementById("runBenchmark");
+      document.getElementById(
+        "runBenchmark"
+      );
 
-    const resultsEmpty =
-      document.getElementById("resultsEmpty");
+    const runSummaryTitle =
+      document.getElementById(
+        "runSummaryTitle"
+      );
 
-    const resultsContent =
-      document.getElementById("resultsContent");
+    const runNote =
+      document.getElementById(
+        "runNote"
+      );
 
 
     if (runButton) {
@@ -2500,30 +2862,54 @@
         function () {
 
           /*
-           * UI preparation only.
-           *
-           * The actual benchmark runner will later connect
-           * to the benchmark API. We intentionally do not
-           * invent benchmark results here.
+           * The benchmark backend is not being fabricated here.
+           * The button provides a clear development state until
+           * the benchmark runner is connected to the evaluator.
            */
+
 
           runButton.disabled = true;
 
+          runSummaryTitle.textContent =
+            "Benchmark runner";
+
+
+          runNote.textContent =
+            "Benchmark execution is being prepared. No scores have been generated.";
+
+
           runButton.innerHTML =
-            "BENCHMARK RUNNER COMING SOON";
+            "RUNNER IN DEVELOPMENT";
 
-          runButton.style.opacity = "0.6";
 
-          setTimeout(function () {
+          runButton.style.opacity =
+            ".65";
 
-            runButton.disabled = false;
 
-            runButton.innerHTML =
-              'RUN BENCHMARK <span>→</span>';
+          setTimeout(
+            function () {
 
-            runButton.style.opacity = "1";
+              runButton.disabled =
+                false;
 
-          }, 2500);
+              runSummaryTitle.textContent =
+                "Ready to test";
+
+
+              runNote.textContent =
+                "Benchmark runner will use the configured evaluation system when available.";
+
+
+              runButton.innerHTML =
+                'RUN BENCHMARK <span>→</span>';
+
+
+              runButton.style.opacity =
+                "1";
+
+            },
+            2500
+          );
 
         }
       );
@@ -2532,53 +2918,72 @@
 
 
     /* =======================================================
-       REVEAL
+       REVEAL ANIMATION
        ======================================================= */
 
     const revealElements =
-      document.querySelectorAll(".reveal");
+      document.querySelectorAll(
+        ".reveal"
+      );
 
 
-    if ("IntersectionObserver" in window) {
+    if (
+      "IntersectionObserver" in window
+    ) {
 
       const revealObserver =
         new IntersectionObserver(
           function (entries) {
 
-            entries.forEach(function (entry) {
+            entries.forEach(
+              function (entry) {
 
-              if (entry.isIntersecting) {
+                if (
+                  entry.isIntersecting
+                ) {
 
-                entry.target.classList.add("visible");
+                  entry.target.classList.add(
+                    "visible"
+                  );
 
-                revealObserver.unobserve(
-                  entry.target
-                );
+
+                  revealObserver.unobserve(
+                    entry.target
+                  );
+
+                }
 
               }
-
-            });
+            );
 
           },
           {
-            threshold: 0.08
+            threshold: .08
           }
         );
 
 
-      revealElements.forEach(function (element) {
+      revealElements.forEach(
+        function (element) {
 
-        revealObserver.observe(element);
+          revealObserver.observe(
+            element
+          );
 
-      });
+        }
+      );
 
     } else {
 
-      revealElements.forEach(function (element) {
+      revealElements.forEach(
+        function (element) {
 
-        element.classList.add("visible");
+          element.classList.add(
+            "visible"
+          );
 
-      });
+        }
+      );
 
     }
 
