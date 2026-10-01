@@ -1,4949 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Benchmarks — EvalLoop AI</title>
-
-  <meta
-    name="description"
-    content="Run structured AI benchmark tests with EvalLoop AI."
-  >
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet"
-  >
-
-  <link rel="stylesheet" href="/style.css">
-
-  <style>
-
-    /* =========================================================
-       BENCHMARK PAGE
-       ========================================================= */
-
-    .benchmark-page {
-      overflow: hidden;
-    }
-
-
-    /* =========================================================
-       ANIMATED EVP STATUS BAR
-       ========================================================= */
-
-    .evp-status-bar {
-      position: relative;
-      width: 100%;
-      min-height: 42px;
-      border-bottom: 1px solid var(--line-soft);
-      background:
-        linear-gradient(
-          90deg,
-          rgba(62, 207, 142, .025),
-          rgba(62, 207, 142, .055),
-          rgba(62, 207, 142, .025)
-        );
-      overflow: hidden;
-    }
-
-    .evp-status-inner {
-      min-height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .evp-status-track {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .09em;
-      color: var(--muted);
-      text-transform: uppercase;
-      white-space: nowrap;
-      transition:
-        opacity .35s ease,
-        transform .35s ease;
-    }
-
-    .evp-status-track.changing {
-      opacity: 0;
-      transform: translateY(5px);
-    }
-
-    .evp-live-dot {
-      width: 6px;
-      height: 6px;
-      flex: 0 0 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow:
-        0 0 0 0 rgba(62, 207, 142, .4);
-      animation: evpPulse 2s infinite;
-    }
-
-    @keyframes evpPulse {
-
-      0% {
-        box-shadow:
-          0 0 0 0 rgba(62, 207, 142, .4);
-      }
-
-      70% {
-        box-shadow:
-          0 0 0 7px rgba(62, 207, 142, 0);
-      }
-
-      100% {
-        box-shadow:
-          0 0 0 0 rgba(62, 207, 142, 0);
-      }
-
-    }
-
-    .evp-status-primary {
-      color: var(--green2);
-    }
-
-    .evp-status-arrow {
-      color: var(--green);
-    }
-
-    .evp-status-action {
-      color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(62, 207, 142, .35);
-      padding-bottom: 2px;
-      transition: color .2s ease, border-color .2s ease;
-    }
-
-    .evp-status-action:hover {
-      color: var(--green2);
-      border-color: var(--green);
-    }
-
-    .evp-status-counter {
-      position: absolute;
-      right: 0;
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--dim);
-      letter-spacing: .08em;
-    }
-
-    @media (max-width: 700px) {
-
-      .evp-status-inner {
-        justify-content: flex-start;
-        padding: 0 20px;
-      }
-
-      .evp-status-track {
-        gap: 9px;
-        font-size: 8px;
-      }
-
-      .evp-status-counter {
-        display: none;
-      }
-
-    }
-
-
-    /* =========================================================
-       HEADER RESET
-       ========================================================= */
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      width: 100%;
-    }
-
-    .site-header .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 72px;
-    }
-
-    .site-header .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      margin-left: auto;
-      margin-right: 32px;
-    }
-
-    .site-header .desktop-nav a {
-      white-space: nowrap;
-      text-decoration: none;
-    }
-
-    .site-header .desktop-nav a[aria-current="page"] {
-      color: var(--green2);
-    }
-
-    .site-header .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-shrink: 0;
-    }
-
-    .site-header .mobile-menu-button {
-      display: none;
-    }
-
-    .site-header .mobile-nav {
-      display: none;
-    }
-
-
-    @media (max-width: 900px) {
-
-      .site-header .desktop-nav,
-      .site-header .header-actions {
-        display: none;
-      }
-
-      .site-header .mobile-menu-button {
-        display: flex;
-        width: 42px;
-        height: 42px;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: transparent;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        cursor: pointer;
-      }
-
-      .site-header .mobile-menu-button span {
-        width: 18px;
-        height: 1px;
-        background: var(--ink);
-      }
-
-      .site-header .mobile-nav {
-        display: flex;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        padding: 20px;
-        background: rgba(16, 18, 17, .98);
-        border-top: 1px solid var(--line-soft);
-        border-bottom: 1px solid var(--line);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transform: translateY(-10px);
-        transition:
-          opacity .25s ease,
-          transform .25s ease,
-          visibility .25s ease;
-      }
-
-      .site-header .mobile-nav.open {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        transform: translateY(0);
-      }
-
-      .site-header .mobile-nav > a {
-        padding: 14px 4px;
-        color: var(--muted);
-        text-decoration: none;
-        border-bottom: 1px solid var(--line-soft);
-      }
-
-      .site-header .mobile-nav > a[aria-current="page"] {
-        color: var(--green2);
-      }
-
-      .mobile-nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding-top: 18px;
-      }
-
-      .mobile-nav-actions a {
-        text-decoration: none;
-      }
-
-    }
-
-
-    /* =========================================================
-       WORKSPACE HERO
-       ========================================================= */
-
-    .benchmark-workspace {
-      padding: 82px 0 120px;
-    }
-
-    .benchmark-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 40px;
-      margin-bottom: 55px;
-    }
-
-    .benchmark-heading {
-      max-width: 760px;
-    }
-
-    .benchmark-kicker {
-      margin-bottom: 18px;
-    }
-
-    .benchmark-heading h1 {
-      margin: 0;
-      font-size: clamp(48px, 6vw, 76px);
-      line-height: 1;
-      letter-spacing: -.055em;
-      font-weight: 400;
-    }
-
-    .benchmark-heading h1 span {
-      color: var(--green);
-    }
-
-    .benchmark-heading p {
-      max-width: 650px;
-      margin: 24px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    .benchmark-top-action {
-      flex-shrink: 0;
-    }
-
-
-    /* =========================================================
-       STATUS BAR
-       ========================================================= */
-
-    .benchmark-status {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--line);
-      background: rgba(23, 27, 24, .55);
-      margin-bottom: 55px;
-    }
-
-    .benchmark-status-item {
-      min-height: 86px;
-      padding: 20px 24px;
-      border-right: 1px solid var(--line);
-    }
-
-    .benchmark-status-item:last-child {
-      border-right: 0;
-    }
-
-    .status-label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      color: var(--dim);
-      margin-bottom: 8px;
-    }
-
-    .status-value {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--ink);
-    }
-
-    .status-live {
-      color: var(--green);
-    }
-
-
-    /* =========================================================
-       SECTION HEAD
-       ========================================================= */
-
-    .workspace-section {
-      margin-top: 80px;
-    }
-
-    .workspace-section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 30px;
-      margin-bottom: 25px;
-    }
-
-    .workspace-section-head h2 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 400;
-      letter-spacing: -.035em;
-    }
-
-    .workspace-section-head p {
-      max-width: 500px;
-      margin: 0;
-      color: var(--dim);
-      font-size: 13px;
-      line-height: 1.65;
-      text-align: right;
-    }
-
-
-    /* =========================================================
-       BENCHMARK CARDS
-       ========================================================= */
-
-    .benchmark-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--line);
-      border-left: 1px solid var(--line);
-    }
-
-    .benchmark-card {
-      min-height: 260px;
-      padding: 28px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: rgba(23, 27, 24, .35);
-      transition:
-        background .25s ease,
-        transform .25s ease;
-    }
-
-    .benchmark-card:hover {
-      background: rgba(62, 207, 142, .025);
-      transform: translateY(-2px);
-    }
-
-    .benchmark-card.active {
-      background:
-        linear-gradient(
-          145deg,
-          rgba(62, 207, 142, .07),
-          rgba(23, 27, 24, .4)
-        );
-    }
-
-    .benchmark-card-number {
-      font-family: var(--mono);
-      color: var(--green);
-      font-size: 10px;
-      letter-spacing: .1em;
-    }
-
-    .benchmark-card h3 {
-      margin: 45px 0 9px;
-      font-size: 21px;
-      font-weight: 400;
-      letter-spacing: -.025em;
-    }
-
-    .benchmark-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-      max-width: 310px;
-    }
-
-    .benchmark-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 27px;
-    }
-
-    .benchmark-card-status {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .08em;
-      color: var(--green);
-    }
-
-    .benchmark-card-status.soon {
-      color: var(--dim);
-    }
-
-    .benchmark-card-button {
-      border: 0;
-      padding: 0;
-      background: transparent;
-      color: var(--green2);
-      font-family: var(--mono);
-      font-size: 9px;
-      cursor: pointer;
-      letter-spacing: .06em;
-    }
-
-
-    /* =========================================================
-       TEST CONFIGURATION
-       ========================================================= */
-
-    .benchmark-builder {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .builder-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .builder-header {
-      min-height: 62px;
-      padding: 0 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .builder-header-title {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .1em;
-      color: var(--muted);
-    }
-
-    .builder-header-status {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--green);
-      letter-spacing: .08em;
-    }
-
-    .builder-body {
-      padding: 28px;
-    }
-
-    .field {
-      margin-bottom: 24px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .field-label {
-      display: block;
-      margin-bottom: 9px;
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-      letter-spacing: .1em;
-    }
-
-    .field-select,
-    .field-input {
-      width: 100%;
-      min-height: 46px;
-      box-sizing: border-box;
-      padding: 0 14px;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .field-select:focus,
-    .field-input:focus {
-      border-color: rgba(62, 207, 142, .55);
-    }
-
-    .test-size {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .size-option {
-      position: relative;
-    }
-
-    .size-option input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .size-option label {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 43px;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .size-option input:checked + label {
-      border-color: var(--green);
-      color: var(--green2);
-      background: rgba(62, 207, 142, .06);
-    }
-
-
-    /* =========================================================
-       DIMENSIONS
-       ========================================================= */
-
-    .dimension-list {
-      display: grid;
-      gap: 9px;
-    }
-
-    .dimension-option {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-height: 43px;
-      padding: 0 12px;
-      border: 1px solid var(--line-soft);
-      border-radius: 5px;
-      background: rgba(16, 18, 17, .35);
-    }
-
-    .dimension-option input {
-      accent-color: var(--green);
-    }
-
-    .dimension-option span {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-
-    /* =========================================================
-       RUN SUMMARY
-       ========================================================= */
-
-    .run-summary {
-      position: sticky;
-      top: 100px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .run-summary-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .run-summary-kicker {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      color: var(--green);
-    }
-
-    .run-summary-title {
-      margin-top: 8px;
-      font-size: 21px;
-      font-weight: 400;
-    }
-
-    .run-summary-body {
-      padding: 20px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .summary-row:last-child {
-      border-bottom: 0;
-    }
-
-    .summary-row span:first-child {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-    }
-
-    .summary-row span:last-child {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    .run-button {
-      width: 100%;
-      margin-top: 20px;
-      min-height: 48px;
-    }
-
-    .run-note {
-      margin-top: 13px;
-      color: var(--dim);
-      font-size: 10px;
-      line-height: 1.55;
-      text-align: center;
-    }
-
-
-    /* =========================================================
-       RESULTS
-       ========================================================= */
-
-    .results-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      overflow: hidden;
-    }
-
-    .results-empty {
-      padding: 70px 30px;
-      text-align: center;
-    }
-
-    .results-empty-icon {
-      width: 45px;
-      height: 45px;
-      margin: 0 auto 20px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--green);
-      font-family: var(--mono);
-    }
-
-    .results-empty h3 {
-      margin: 0;
-      font-size: 19px;
-      font-weight: 400;
-    }
-
-    .results-empty p {
-      max-width: 480px;
-      margin: 10px auto 0;
-      color: var(--dim);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .results-content {
-      display: none;
-    }
-
-    .results-content.visible {
-      display: block;
-    }
-
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .result-title {
-      font-size: 18px;
-    }
-
-    .result-meta {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-    }
-
-    .result-overall {
-      padding: 30px 24px;
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .overall-number {
-      font-family: var(--mono);
-      font-size: 54px;
-      color: var(--green);
-      line-height: 1;
-    }
-
-    .overall-copy strong {
-      display: block;
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .overall-copy span {
-      display: block;
-      margin-top: 4px;
-      color: var(--dim);
-      font-size: 11px;
-    }
-
-    .result-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .result-metric {
-      padding: 22px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .result-metric:nth-child(3n) {
-      border-right: 0;
-    }
-
-    .result-metric-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-      letter-spacing: .06em;
-    }
-
-    .result-metric-score {
-      margin-top: 12px;
-      font-family: var(--mono);
-      font-size: 24px;
-      color: var(--ink);
-    }
-
-
-    /* =========================================================
-       HISTORY
-       ========================================================= */
-
-    .history-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      overflow-x: auto;
-    }
-
-    .history-table {
-      width: 100%;
-      min-width: 650px;
-      border-collapse: collapse;
-    }
-
-    .history-table th,
-    .history-table td {
-      padding: 17px 20px;
-      border-bottom: 1px solid var(--line-soft);
-      text-align: left;
-      font-size: 12px;
-    }
-
-    .history-table th {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 400;
-      color: var(--dim);
-      letter-spacing: .08em;
-    }
-
-    .history-table td {
-      color: var(--muted);
-    }
-
-    .history-table td:first-child {
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-
-    .history-placeholder {
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-
-
-    /* =========================================================
-       INFO STRIP
-       ========================================================= */
-
-    .benchmark-info {
-      margin-top: 80px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .info-block {
-      padding: 30px;
-    }
-
-    .info-block:first-child {
-      border-right: 1px solid var(--line);
-    }
-
-    .info-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--green);
-      letter-spacing: .1em;
-    }
-
-    .info-block h3 {
-      margin: 15px 0 8px;
-      font-size: 19px;
-      font-weight: 400;
-    }
-
-    .info-block p {
-      margin: 0;
-      color: var(--dim);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 1050px) {
-
-      .benchmark-builder {
-        grid-template-columns: 1fr;
-      }
-
-      .run-summary {
-        position: static;
-      }
-
-      .benchmark-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-    }
-
-
-    @media (max-width: 760px) {
-
-      .benchmark-workspace {
-        padding: 60px 0 90px;
-      }
-
-      .benchmark-top {
-        display: block;
-        margin-bottom: 40px;
-      }
-
-      .benchmark-top-action {
-        margin-top: 25px;
-      }
-
-      .benchmark-top-action .button {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .benchmark-status {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .benchmark-status-item:nth-child(2) {
-        border-right: 0;
-      }
-
-      .benchmark-status-item:nth-child(3),
-      .benchmark-status-item:nth-child(4) {
-        border-top: 1px solid var(--line);
-      }
-
-      .benchmark-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .workspace-section {
-        margin-top: 65px;
-      }
-
-      .workspace-section-head {
-        display: block;
-      }
-
-      .workspace-section-head p {
-        margin-top: 10px;
-        text-align: left;
-      }
-
-      .builder-body {
-        padding: 20px;
-      }
-
-      .test-size {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .result-metrics {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .result-metric:nth-child(3n) {
-        border-right: 1px solid var(--line);
-      }
-
-      .result-metric:nth-child(2n) {
-        border-right: 0;
-      }
-
-      .benchmark-info {
-        grid-template-columns: 1fr;
-      }
-
-      .info-block:first-child {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-    }
-
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .evp-status-track {
-        transition: none;
-      }
-
-      .evp-live-dot {
-        animation: none;
-      }
-
-      .benchmark-card {
-        transition: none;
-      }
-
-    }
-
-  </style>
-</head>
-
-
-<body>
-
-  <!-- =======================================================
-       BACKGROUND
-       ======================================================= -->
-
-  <div class="background-grid"></div>
-  <div class="background-glow"></div>
-
-
-  <!-- =======================================================
-       ANIMATED EVP STATUS
-       ======================================================= -->
-
-  <div class="evp-status-bar">
-
-    <div class="container evp-status-inner">
-
-      <div
-        class="evp-status-track"
-        id="evpStatusTrack"
-        aria-live="polite"
-      >
-
-        <span class="evp-live-dot"></span>
-
-        <span
-          class="evp-status-primary"
-          id="evpStatusPrimary"
-        >
-          EVP.AUREON IS LIVE
-        </span>
-
-        <span class="evp-status-arrow">
-          →
-        </span>
-
-        <a
-          href="/app/"
-          class="evp-status-action"
-          id="evpStatusAction"
-        >
-          TRY THE EVALUATOR
-        </a>
-
-      </div>
-
-
-      <div
-        class="evp-status-counter"
-        id="evpStatusCounter"
-      >
-        01 / 04
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =======================================================
-       HEADER
-       ======================================================= -->
-
-  <header class="site-header">
-
-    <div class="container header-inner">
-
-      <a
-        href="/"
-        class="brand"
-        aria-label="EvalLoop AI"
-      >
-        EvalLoop AI<span class="brand-cursor">_</span>
-      </a>
-
-
-      <nav class="desktop-nav">
-
-        <a href="/app/">
-          Evaluate
-        </a>
-
-        <a href="/knowledge/">
-          Knowledge
-        </a>
-
-        <a href="/labs/">
-          Labs
-        </a>
-
-        <a
-          href="/benchmarks/"
-          aria-current="page"
-        >
-          Benchmarks
-        </a>
-
-        <a href="/docs/">
-          Docs
-        </a>
-
-        <a href="/pricing/">
-          Pricing
-        </a>
-
-      </nav>
-
-
-      <div class="header-actions">
-
-        <a
-          href="/#login"
-          class="header-login"
-        >
-          Login
-        </a>
-
-        <a
-          href="/#signup"
-          class="button button-primary"
-        >
-          Sign up <span>↗</span>
-        </a>
-
-      </div>
-
-
-      <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-      >
-
-        <span></span>
-        <span></span>
-
-      </button>
-
-    </div>
-
-
-    <div
-      class="mobile-nav"
-      id="mobileNav"
-    >
-
-      <a href="/app/">
-        Evaluate
-      </a>
-
-      <a href="/knowledge/">
-        Knowledge
-      </a>
-
-      <a href="/labs/">
-        Labs
-      </a>
-
-      <a
-        href="/benchmarks/"
-        aria-current="page"
-      >
-        Benchmarks
-      </a>
-
-      <a href="/docs/">
-        Docs
-      </a>
-
-      <a href="/pricing/">
-        Pricing
-      </a>
-
-
-      <div class="mobile-nav-actions">
-
-        <a href="/#login">
-          Login
-        </a>
-
-        <a
-          href="/#signup"
-          class="button button-primary"
-        >
-          Sign up <span>↗</span>
-        </a>
-
-      </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- =======================================================
-       MAIN
-       ======================================================= -->
-
-  <main class="benchmark-page">
-
-    <section class="benchmark-workspace">
-
-      <div class="container">
-
-
-        <!-- =================================================
-             HERO
-             ================================================= -->
-
-        <div class="benchmark-top reveal">
-
-          <div class="benchmark-heading">
-
-            <div class="section-kicker benchmark-kicker">
-              BENCHMARKS
-            </div>
-
-            <h1>
-              Test.
-              <span>Compare.</span>
-            </h1>
-
-            <p>
-              Run structured benchmark tests against AI systems
-              and measure performance across consistent evaluation
-              dimensions.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-top-action">
-
-            <a
-              href="#new-benchmark"
-              class="button button-primary"
-            >
-              + New Benchmark
-            </a>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             CURRENT SYSTEM STATUS
-             ================================================= -->
-
-        <div class="benchmark-status reveal">
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              BENCHMARK SYSTEM
-            </span>
-
-            <span class="status-value status-live">
-              ● BUILDING
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              ACTIVE BENCHMARK
-            </span>
-
-            <span class="status-value">
-              GENERAL QUALITY
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              DIMENSIONS
-            </span>
-
-            <span class="status-value">
-              06
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              ENGINE
-            </span>
-
-            <span class="status-value">
-              EVP.AUREON
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             BENCHMARK SUITES
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK SUITES
-              </div>
-
-              <h2>
-                Choose a benchmark.
-              </h2>
-
-            </div>
-
-            <p>
-              Start with the currently available general-quality
-              evaluation. Additional benchmark domains will be
-              introduced as their evaluation engines are built.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-cards">
-
-
-            <article class="benchmark-card active">
-
-              <div class="benchmark-card-number">
-                01 / AVAILABLE
-              </div>
-
-              <h3>
-                General Quality
-              </h3>
-
-              <p>
-                Evaluate factuality, instruction following,
-                relevance, completeness, safety, and fluency.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status">
-                  ● READY
-                </span>
-
-                <button
-                  class="benchmark-card-button"
-                  type="button"
-                  data-benchmark="General Quality"
-                >
-                  SELECT →
-                </button>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                02 / FUTURE
-              </div>
-
-              <h3>
-                Reasoning
-              </h3>
-
-              <p>
-                Structured tests for multi-step reasoning,
-                consistency, and answer correctness.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.LUNARA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                03 / FUTURE
-              </div>
-
-              <h3>
-                RAG
-              </h3>
-
-              <p>
-                Evaluate retrieval relevance, groundedness,
-                and evidence-supported responses.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.AETHERA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                04 / FUTURE
-              </div>
-
-              <h3>
-                Safety
-              </h3>
-
-              <p>
-                Test refusal behavior, policy compliance,
-                and responses to safety-sensitive prompts.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.VESPERA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                05 / FUTURE
-              </div>
-
-              <h3>
-                Agent
-              </h3>
-
-              <p>
-                Benchmark tool usage, task completion,
-                trajectories, and agent behavior.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.CELESTIA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                06 / FUTURE
-              </div>
-
-              <h3>
-                Multimodal
-              </h3>
-
-              <p>
-                Evaluate image, video, audio, text understanding,
-                and multimodal grounding.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.NEBRYX
-                </span>
-
-              </div>
-
-            </article>
-
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             NEW BENCHMARK
-             ================================================= -->
-
-        <section
-          class="workspace-section reveal"
-          id="new-benchmark"
-        >
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                NEW BENCHMARK TEST
-              </div>
-
-              <h2>
-                Configure your run.
-              </h2>
-
-            </div>
-
-            <p>
-              Set the benchmark parameters before starting the
-              evaluation run.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-builder">
-
-
-            <div class="builder-panel">
-
-              <div class="builder-header">
-
-                <span class="builder-header-title">
-                  TEST CONFIGURATION
-                </span>
-
-                <span class="builder-header-status">
-                  ● READY
-                </span>
-
-              </div>
-
-
-              <div class="builder-body">
-
-
-                <div class="field">
-
-                  <label
-                    class="field-label"
-                    for="benchmarkSelect"
-                  >
-                    BENCHMARK
-                  </label>
-
-                  <select
-                    class="field-select"
-                    id="benchmarkSelect"
-                  >
-
-                    <option>
-                      General Quality
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="field">
-
-                  <label
-                    class="field-label"
-                    for="modelName"
-                  >
-                    SYSTEM / MODEL NAME
-                  </label>
-
-                  <input
-                    class="field-input"
-                    id="modelName"
-                    type="text"
-                    placeholder="e.g. My AI System"
-                  >
-
-                </div>
-
-
-                <div class="field">
-
-                  <span class="field-label">
-                    TEST SIZE
-                  </span>
-
-                  <div class="test-size">
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size10"
-                        value="10"
-                        checked
-                      >
-
-                      <label for="size10">
-                        10
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size25"
-                        value="25"
-                      >
-
-                      <label for="size25">
-                        25
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size50"
-                        value="50"
-                      >
-
-                      <label for="size50">
-                        50
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size100"
-                        value="100"
-                      >
-
-                      <label for="size100">
-                        100
-                      </label>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-                <div class="field">
-
-                  <span class="field-label">
-                    EVALUATION DIMENSIONS
-                  </span>
-
-
-                  <div class="dimension-list">
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Factuality"
-                      >
-
-                      <span>
-                        Factuality
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Instruction Following"
-                      >
-
-                      <span>
-                        Instruction Following
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Relevance"
-                      >
-
-                      <span>
-                        Relevance
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Completeness"
-                      >
-
-                      <span>
-                        Completeness
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Safety"
-                      >
-
-                      <span>
-                        Safety
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Fluency"
-                      >
-
-                      <span>
-                        Fluency
-                      </span>
-
-                    </label>
-
-
-                  </div>
-
-                </div>
-
-
-              </div>
-
-            </div>
-
-
-            <aside class="run-summary">
-
-              <div class="run-summary-header">
-
-                <div class="run-summary-kicker">
-                  BENCHMARK RUN
-                </div>
-
-                <div
-                  class="run-summary-title"
-                  id="runSummaryTitle"
-                >
-                  Ready to test
-                </div>
-
-              </div>
-
-
-              <div class="run-summary-body">
-
-
-                <div class="summary-row">
-
-                  <span>
-                    SUITE
-                  </span>
-
-                  <span id="summaryBenchmark">
-                    GENERAL QUALITY
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    TESTS
-                  </span>
-
-                  <span id="summarySize">
-                    10
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    DIMENSIONS
-                  </span>
-
-                  <span id="summaryDimensions">
-                    06
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    ENGINE
-                  </span>
-
-                  <span>
-                    EVP.AUREON
-                  </span>
-
-                </div>
-
-
-                <button
-                  class="button button-primary run-button"
-                  id="runBenchmark"
-                  type="button"
-                >
-                  RUN BENCHMARK <span>→</span>
-                </button>
-
-
-                <div
-                  class="run-note"
-                  id="runNote"
-                >
-                  Benchmark runner will use the configured
-                  evaluation system when available.
-                </div>
-
-              </div>
-
-            </aside>
-
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             RESULTS
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK RESULTS
-              </div>
-
-              <h2>
-                Results from your runs.
-              </h2>
-
-            </div>
-
-            <p>
-              Completed benchmark runs will appear here with
-              dimension-level measurements and aggregate results.
-            </p>
-
-          </div>
-
-
-          <div class="results-panel">
-
-
-            <div
-              class="results-empty"
-              id="resultsEmpty"
-            >
-
-              <div class="results-empty-icon">
-                ∅
-              </div>
-
-              <h3>
-                No benchmark runs yet.
-              </h3>
-
-              <p>
-                Configure a benchmark above and start your first
-                run. Results will be displayed here once a
-                benchmark has been executed.
-              </p>
-
-            </div>
-
-
-            <div
-              class="results-content"
-              id="resultsContent"
-            >
-
-              <div class="result-header">
-
-                <div class="result-title">
-                  General Quality
-                </div>
-
-                <div class="result-meta">
-                  RUN #001 · 10 TESTS
-                </div>
-
-              </div>
-
-
-              <div class="result-overall">
-
-                <div class="overall-number">
-                  —
-                </div>
-
-                <div class="overall-copy">
-
-                  <strong>
-                    Benchmark score
-                  </strong>
-
-                  <span>
-                    Awaiting benchmark execution
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div class="result-metrics">
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    FACTUALITY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    INSTRUCTION FOLLOWING
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    RELEVANCE
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    COMPLETENESS
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    SAFETY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    FLUENCY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             HISTORY
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK HISTORY
-              </div>
-
-              <h2>
-                Track previous runs.
-              </h2>
-
-            </div>
-
-            <p>
-              Benchmark history will allow you to monitor changes
-              between evaluation runs over time.
-            </p>
-
-          </div>
-
-
-          <div class="history-panel">
-
-            <table class="history-table">
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    RUN
-                  </th>
-
-                  <th>
-                    BENCHMARK
-                  </th>
-
-                  <th>
-                    TESTS
-                  </th>
-
-                  <th>
-                    OVERALL
-                  </th>
-
-                  <th>
-                    STATUS
-                  </th>
-
-                  <th>
-                    DATE
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody id="historyBody">
-
-                <tr>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td class="history-placeholder">
-                    NO RUNS
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                </tr>
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             EVP INFORMATION
-             ================================================= -->
-
-        <div class="benchmark-info reveal">
-
-
-          <div class="info-block">
-
-            <div class="info-label">
-              CURRENT ENGINE
-            </div>
-
-            <h3>
-              EVP.Aureon
-            </h3>
-
-            <p>
-              General-purpose evaluation profile currently
-              available through the EvalLoop AI evaluator.
-              It evaluates factuality, instruction following,
-              relevance, completeness, safety, and fluency.
-            </p>
-
-          </div>
-
-
-          <div class="info-block">
-
-            <div class="info-label">
-              BENCHMARK ENGINE
-            </div>
-
-            <h3>
-              EVP.Stellara
-            </h3>
-
-            <p>
-              Planned benchmark evaluation profile for
-              standardized datasets, repeatable runs,
-              comparison, and regression tracking.
-              Currently under development.
-            </p>
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =======================================================
-       FOOTER
-       ======================================================= -->
-
-  <footer class="site-footer">
-
-    <div class="container">
-
-      <div class="footer-top">
-
-
-        <div class="footer-brand">
-
-          <a
-            href="/"
-            class="brand"
-            aria-label="EvalLoop AI"
-          >
-
-            <span>
-              EvalLoop AI
-            </span>
-
-            <span class="brand-cursor">
-              _
-            </span>
-
-          </a>
-
-          <p>
-            AI evaluation &amp; LLM quality platform.
-          </p>
-
-        </div>
-
-
-        <div class="footer-columns">
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              PRODUCT
-            </div>
-
-            <a href="/#product">
-              Overview
-            </a>
-
-            <a href="/app/">
-              Evaluate
-            </a>
-
-            <a href="/labs/">
-              Labs
-            </a>
-
-            <a href="/pricing/">
-              Pricing
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              RESOURCES
-            </div>
-
-            <a href="/knowledge/">
-              Knowledge
-            </a>
-
-            <a href="/docs/">
-              Documentation
-            </a>
-
-            <a href="/#faq">
-              FAQ
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              COMPANY
-            </div>
-
-            <a href="/about/">
-              About
-            </a>
-
-            <a href="/contact/">
-              Contact
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              LEGAL
-            </div>
-
-            <a href="/privacy/">
-              Privacy Policy
-            </a>
-
-            <a href="/terms/">
-              Terms of Service
-            </a>
-
-            <a href="/ai-usage/">
-              AI Usage Disclaimer
-            </a>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-bottom">
-
-        <span>
-          © 2026 EvalLoop AI
-        </span>
-
-        <span>
-          BUILT FOR BETTER AI
-        </span>
-
-        <span>
-          HYDERABAD · INDIA
-        </span>
-
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =======================================================
-       JAVASCRIPT
-       ======================================================= -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Benchmarks — EvalLoop AI</title>
-
-  <meta
-    name="description"
-    content="Run structured AI benchmark tests with EvalLoop AI."
-  >
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet"
-  >
-
-  <link rel="stylesheet" href="/style.css">
-
-  <style>
-
-    /* =========================================================
-       BENCHMARK PAGE
-       ========================================================= */
-
-    .benchmark-page {
-      overflow: hidden;
-    }
-
-
-    /* =========================================================
-       ANIMATED EVP STATUS BAR
-       ========================================================= */
-
-    .evp-status-bar {
-      position: relative;
-      width: 100%;
-      min-height: 42px;
-      border-bottom: 1px solid var(--line-soft);
-      background:
-        linear-gradient(
-          90deg,
-          rgba(62, 207, 142, .025),
-          rgba(62, 207, 142, .055),
-          rgba(62, 207, 142, .025)
-        );
-      overflow: hidden;
-    }
-
-    .evp-status-inner {
-      min-height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .evp-status-track {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .09em;
-      color: var(--muted);
-      text-transform: uppercase;
-      white-space: nowrap;
-      transition:
-        opacity .35s ease,
-        transform .35s ease;
-    }
-
-    .evp-status-track.changing {
-      opacity: 0;
-      transform: translateY(5px);
-    }
-
-    .evp-live-dot {
-      width: 6px;
-      height: 6px;
-      flex: 0 0 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow:
-        0 0 0 0 rgba(62, 207, 142, .4);
-      animation: evpPulse 2s infinite;
-    }
-
-    @keyframes evpPulse {
-
-      0% {
-        box-shadow:
-          0 0 0 0 rgba(62, 207, 142, .4);
-      }
-
-      70% {
-        box-shadow:
-          0 0 0 7px rgba(62, 207, 142, 0);
-      }
-
-      100% {
-        box-shadow:
-          0 0 0 0 rgba(62, 207, 142, 0);
-      }
-
-    }
-
-    .evp-status-primary {
-      color: var(--green2);
-    }
-
-    .evp-status-arrow {
-      color: var(--green);
-    }
-
-    .evp-status-action {
-      color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(62, 207, 142, .35);
-      padding-bottom: 2px;
-      transition: color .2s ease, border-color .2s ease;
-    }
-
-    .evp-status-action:hover {
-      color: var(--green2);
-      border-color: var(--green);
-    }
-
-    .evp-status-counter {
-      position: absolute;
-      right: 0;
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--dim);
-      letter-spacing: .08em;
-    }
-
-    @media (max-width: 700px) {
-
-      .evp-status-inner {
-        justify-content: flex-start;
-        padding: 0 20px;
-      }
-
-      .evp-status-track {
-        gap: 9px;
-        font-size: 8px;
-      }
-
-      .evp-status-counter {
-        display: none;
-      }
-
-    }
-
-
-    /* =========================================================
-       HEADER RESET
-       ========================================================= */
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      width: 100%;
-    }
-
-    .site-header .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 72px;
-    }
-
-    .site-header .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      margin-left: auto;
-      margin-right: 32px;
-    }
-
-    .site-header .desktop-nav a {
-      white-space: nowrap;
-      text-decoration: none;
-    }
-
-    .site-header .desktop-nav a[aria-current="page"] {
-      color: var(--green2);
-    }
-
-    .site-header .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-shrink: 0;
-    }
-
-    .site-header .mobile-menu-button {
-      display: none;
-    }
-
-    .site-header .mobile-nav {
-      display: none;
-    }
-
-
-    @media (max-width: 900px) {
-
-      .site-header .desktop-nav,
-      .site-header .header-actions {
-        display: none;
-      }
-
-      .site-header .mobile-menu-button {
-        display: flex;
-        width: 42px;
-        height: 42px;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: transparent;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        cursor: pointer;
-      }
-
-      .site-header .mobile-menu-button span {
-        width: 18px;
-        height: 1px;
-        background: var(--ink);
-      }
-
-      .site-header .mobile-nav {
-        display: flex;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        padding: 20px;
-        background: rgba(16, 18, 17, .98);
-        border-top: 1px solid var(--line-soft);
-        border-bottom: 1px solid var(--line);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transform: translateY(-10px);
-        transition:
-          opacity .25s ease,
-          transform .25s ease,
-          visibility .25s ease;
-      }
-
-      .site-header .mobile-nav.open {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        transform: translateY(0);
-      }
-
-      .site-header .mobile-nav > a {
-        padding: 14px 4px;
-        color: var(--muted);
-        text-decoration: none;
-        border-bottom: 1px solid var(--line-soft);
-      }
-
-      .site-header .mobile-nav > a[aria-current="page"] {
-        color: var(--green2);
-      }
-
-      .mobile-nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding-top: 18px;
-      }
-
-      .mobile-nav-actions a {
-        text-decoration: none;
-      }
-
-    }
-
-
-    /* =========================================================
-       WORKSPACE HERO
-       ========================================================= */
-
-    .benchmark-workspace {
-      padding: 82px 0 120px;
-    }
-
-    .benchmark-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 40px;
-      margin-bottom: 55px;
-    }
-
-    .benchmark-heading {
-      max-width: 760px;
-    }
-
-    .benchmark-kicker {
-      margin-bottom: 18px;
-    }
-
-    .benchmark-heading h1 {
-      margin: 0;
-      font-size: clamp(48px, 6vw, 76px);
-      line-height: 1;
-      letter-spacing: -.055em;
-      font-weight: 400;
-    }
-
-    .benchmark-heading h1 span {
-      color: var(--green);
-    }
-
-    .benchmark-heading p {
-      max-width: 650px;
-      margin: 24px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    .benchmark-top-action {
-      flex-shrink: 0;
-    }
-
-
-    /* =========================================================
-       STATUS BAR
-       ========================================================= */
-
-    .benchmark-status {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--line);
-      background: rgba(23, 27, 24, .55);
-      margin-bottom: 55px;
-    }
-
-    .benchmark-status-item {
-      min-height: 86px;
-      padding: 20px 24px;
-      border-right: 1px solid var(--line);
-    }
-
-    .benchmark-status-item:last-child {
-      border-right: 0;
-    }
-
-    .status-label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      color: var(--dim);
-      margin-bottom: 8px;
-    }
-
-    .status-value {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--ink);
-    }
-
-    .status-live {
-      color: var(--green);
-    }
-
-
-    /* =========================================================
-       SECTION HEAD
-       ========================================================= */
-
-    .workspace-section {
-      margin-top: 80px;
-    }
-
-    .workspace-section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 30px;
-      margin-bottom: 25px;
-    }
-
-    .workspace-section-head h2 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 400;
-      letter-spacing: -.035em;
-    }
-
-    .workspace-section-head p {
-      max-width: 500px;
-      margin: 0;
-      color: var(--dim);
-      font-size: 13px;
-      line-height: 1.65;
-      text-align: right;
-    }
-
-
-    /* =========================================================
-       BENCHMARK CARDS
-       ========================================================= */
-
-    .benchmark-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--line);
-      border-left: 1px solid var(--line);
-    }
-
-    .benchmark-card {
-      min-height: 260px;
-      padding: 28px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: rgba(23, 27, 24, .35);
-      transition:
-        background .25s ease,
-        transform .25s ease;
-    }
-
-    .benchmark-card:hover {
-      background: rgba(62, 207, 142, .025);
-      transform: translateY(-2px);
-    }
-
-    .benchmark-card.active {
-      background:
-        linear-gradient(
-          145deg,
-          rgba(62, 207, 142, .07),
-          rgba(23, 27, 24, .4)
-        );
-    }
-
-    .benchmark-card-number {
-      font-family: var(--mono);
-      color: var(--green);
-      font-size: 10px;
-      letter-spacing: .1em;
-    }
-
-    .benchmark-card h3 {
-      margin: 45px 0 9px;
-      font-size: 21px;
-      font-weight: 400;
-      letter-spacing: -.025em;
-    }
-
-    .benchmark-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-      max-width: 310px;
-    }
-
-    .benchmark-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 27px;
-    }
-
-    .benchmark-card-status {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .08em;
-      color: var(--green);
-    }
-
-    .benchmark-card-status.soon {
-      color: var(--dim);
-    }
-
-    .benchmark-card-button {
-      border: 0;
-      padding: 0;
-      background: transparent;
-      color: var(--green2);
-      font-family: var(--mono);
-      font-size: 9px;
-      cursor: pointer;
-      letter-spacing: .06em;
-    }
-
-
-    /* =========================================================
-       TEST CONFIGURATION
-       ========================================================= */
-
-    .benchmark-builder {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .builder-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .builder-header {
-      min-height: 62px;
-      padding: 0 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .builder-header-title {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .1em;
-      color: var(--muted);
-    }
-
-    .builder-header-status {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--green);
-      letter-spacing: .08em;
-    }
-
-    .builder-body {
-      padding: 28px;
-    }
-
-    .field {
-      margin-bottom: 24px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .field-label {
-      display: block;
-      margin-bottom: 9px;
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-      letter-spacing: .1em;
-    }
-
-    .field-select,
-    .field-input {
-      width: 100%;
-      min-height: 46px;
-      box-sizing: border-box;
-      padding: 0 14px;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .field-select:focus,
-    .field-input:focus {
-      border-color: rgba(62, 207, 142, .55);
-    }
-
-    .test-size {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .size-option {
-      position: relative;
-    }
-
-    .size-option input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .size-option label {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 43px;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .size-option input:checked + label {
-      border-color: var(--green);
-      color: var(--green2);
-      background: rgba(62, 207, 142, .06);
-    }
-
-
-    /* =========================================================
-       DIMENSIONS
-       ========================================================= */
-
-    .dimension-list {
-      display: grid;
-      gap: 9px;
-    }
-
-    .dimension-option {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-height: 43px;
-      padding: 0 12px;
-      border: 1px solid var(--line-soft);
-      border-radius: 5px;
-      background: rgba(16, 18, 17, .35);
-    }
-
-    .dimension-option input {
-      accent-color: var(--green);
-    }
-
-    .dimension-option span {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-
-    /* =========================================================
-       RUN SUMMARY
-       ========================================================= */
-
-    .run-summary {
-      position: sticky;
-      top: 100px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .run-summary-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .run-summary-kicker {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      color: var(--green);
-    }
-
-    .run-summary-title {
-      margin-top: 8px;
-      font-size: 21px;
-      font-weight: 400;
-    }
-
-    .run-summary-body {
-      padding: 20px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .summary-row:last-child {
-      border-bottom: 0;
-    }
-
-    .summary-row span:first-child {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-    }
-
-    .summary-row span:last-child {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    .run-button {
-      width: 100%;
-      margin-top: 20px;
-      min-height: 48px;
-    }
-
-    .run-note {
-      margin-top: 13px;
-      color: var(--dim);
-      font-size: 10px;
-      line-height: 1.55;
-      text-align: center;
-    }
-
-
-    /* =========================================================
-       RESULTS
-       ========================================================= */
-
-    .results-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      overflow: hidden;
-    }
-
-    .results-empty {
-      padding: 70px 30px;
-      text-align: center;
-    }
-
-    .results-empty-icon {
-      width: 45px;
-      height: 45px;
-      margin: 0 auto 20px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--green);
-      font-family: var(--mono);
-    }
-
-    .results-empty h3 {
-      margin: 0;
-      font-size: 19px;
-      font-weight: 400;
-    }
-
-    .results-empty p {
-      max-width: 480px;
-      margin: 10px auto 0;
-      color: var(--dim);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .results-content {
-      display: none;
-    }
-
-    .results-content.visible {
-      display: block;
-    }
-
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .result-title {
-      font-size: 18px;
-    }
-
-    .result-meta {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-    }
-
-    .result-overall {
-      padding: 30px 24px;
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .overall-number {
-      font-family: var(--mono);
-      font-size: 54px;
-      color: var(--green);
-      line-height: 1;
-    }
-
-    .overall-copy strong {
-      display: block;
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .overall-copy span {
-      display: block;
-      margin-top: 4px;
-      color: var(--dim);
-      font-size: 11px;
-    }
-
-    .result-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .result-metric {
-      padding: 22px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .result-metric:nth-child(3n) {
-      border-right: 0;
-    }
-
-    .result-metric-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--dim);
-      letter-spacing: .06em;
-    }
-
-    .result-metric-score {
-      margin-top: 12px;
-      font-family: var(--mono);
-      font-size: 24px;
-      color: var(--ink);
-    }
-
-
-    /* =========================================================
-       HISTORY
-       ========================================================= */
-
-    .history-panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      overflow-x: auto;
-    }
-
-    .history-table {
-      width: 100%;
-      min-width: 650px;
-      border-collapse: collapse;
-    }
-
-    .history-table th,
-    .history-table td {
-      padding: 17px 20px;
-      border-bottom: 1px solid var(--line-soft);
-      text-align: left;
-      font-size: 12px;
-    }
-
-    .history-table th {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 400;
-      color: var(--dim);
-      letter-spacing: .08em;
-    }
-
-    .history-table td {
-      color: var(--muted);
-    }
-
-    .history-table td:first-child {
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-
-    .history-placeholder {
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-
-
-    /* =========================================================
-       INFO STRIP
-       ========================================================= */
-
-    .benchmark-info {
-      margin-top: 80px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .info-block {
-      padding: 30px;
-    }
-
-    .info-block:first-child {
-      border-right: 1px solid var(--line);
-    }
-
-    .info-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--green);
-      letter-spacing: .1em;
-    }
-
-    .info-block h3 {
-      margin: 15px 0 8px;
-      font-size: 19px;
-      font-weight: 400;
-    }
-
-    .info-block p {
-      margin: 0;
-      color: var(--dim);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 1050px) {
-
-      .benchmark-builder {
-        grid-template-columns: 1fr;
-      }
-
-      .run-summary {
-        position: static;
-      }
-
-      .benchmark-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-    }
-
-
-    @media (max-width: 760px) {
-
-      .benchmark-workspace {
-        padding: 60px 0 90px;
-      }
-
-      .benchmark-top {
-        display: block;
-        margin-bottom: 40px;
-      }
-
-      .benchmark-top-action {
-        margin-top: 25px;
-      }
-
-      .benchmark-top-action .button {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .benchmark-status {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .benchmark-status-item:nth-child(2) {
-        border-right: 0;
-      }
-
-      .benchmark-status-item:nth-child(3),
-      .benchmark-status-item:nth-child(4) {
-        border-top: 1px solid var(--line);
-      }
-
-      .benchmark-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .workspace-section {
-        margin-top: 65px;
-      }
-
-      .workspace-section-head {
-        display: block;
-      }
-
-      .workspace-section-head p {
-        margin-top: 10px;
-        text-align: left;
-      }
-
-      .builder-body {
-        padding: 20px;
-      }
-
-      .test-size {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .result-metrics {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .result-metric:nth-child(3n) {
-        border-right: 1px solid var(--line);
-      }
-
-      .result-metric:nth-child(2n) {
-        border-right: 0;
-      }
-
-      .benchmark-info {
-        grid-template-columns: 1fr;
-      }
-
-      .info-block:first-child {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-    }
-
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .evp-status-track {
-        transition: none;
-      }
-
-      .evp-live-dot {
-        animation: none;
-      }
-
-      .benchmark-card {
-        transition: none;
-      }
-
-    }
-
-  </style>
-</head>
-
-
-<body>
-
-  <!-- =======================================================
-       BACKGROUND
-       ======================================================= -->
-
-  <div class="background-grid"></div>
-  <div class="background-glow"></div>
-
-
-  <!-- =======================================================
-       ANIMATED EVP STATUS
-       ======================================================= -->
-
-  <div class="evp-status-bar">
-
-    <div class="container evp-status-inner">
-
-      <div
-        class="evp-status-track"
-        id="evpStatusTrack"
-        aria-live="polite"
-      >
-
-        <span class="evp-live-dot"></span>
-
-        <span
-          class="evp-status-primary"
-          id="evpStatusPrimary"
-        >
-          EVP.AUREON IS LIVE
-        </span>
-
-        <span class="evp-status-arrow">
-          →
-        </span>
-
-        <a
-          href="/app/"
-          class="evp-status-action"
-          id="evpStatusAction"
-        >
-          TRY THE EVALUATOR
-        </a>
-
-      </div>
-
-
-      <div
-        class="evp-status-counter"
-        id="evpStatusCounter"
-      >
-        01 / 04
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =======================================================
-       HEADER
-       ======================================================= -->
-
-  <header class="site-header">
-
-    <div class="container header-inner">
-
-      <a
-        href="/"
-        class="brand"
-        aria-label="EvalLoop AI"
-      >
-        EvalLoop AI<span class="brand-cursor">_</span>
-      </a>
-
-
-      <nav class="desktop-nav">
-
-        <a href="/app/">
-          Evaluate
-        </a>
-
-        <a href="/knowledge/">
-          Knowledge
-        </a>
-
-        <a href="/labs/">
-          Labs
-        </a>
-
-        <a
-          href="/benchmarks/"
-          aria-current="page"
-        >
-          Benchmarks
-        </a>
-
-        <a href="/docs/">
-          Docs
-        </a>
-
-        <a href="/pricing/">
-          Pricing
-        </a>
-
-      </nav>
-
-
-      <div class="header-actions">
-
-        <a
-          href="/#login"
-          class="header-login"
-        >
-          Login
-        </a>
-
-        <a
-          href="/#signup"
-          class="button button-primary"
-        >
-          Sign up <span>↗</span>
-        </a>
-
-      </div>
-
-
-      <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-      >
-
-        <span></span>
-        <span></span>
-
-      </button>
-
-    </div>
-
-
-    <div
-      class="mobile-nav"
-      id="mobileNav"
-    >
-
-      <a href="/app/">
-        Evaluate
-      </a>
-
-      <a href="/knowledge/">
-        Knowledge
-      </a>
-
-      <a href="/labs/">
-        Labs
-      </a>
-
-      <a
-        href="/benchmarks/"
-        aria-current="page"
-      >
-        Benchmarks
-      </a>
-
-      <a href="/docs/">
-        Docs
-      </a>
-
-      <a href="/pricing/">
-        Pricing
-      </a>
-
-
-      <div class="mobile-nav-actions">
-
-        <a href="/#login">
-          Login
-        </a>
-
-        <a
-          href="/#signup"
-          class="button button-primary"
-        >
-          Sign up <span>↗</span>
-        </a>
-
-      </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- =======================================================
-       MAIN
-       ======================================================= -->
-
-  <main class="benchmark-page">
-
-    <section class="benchmark-workspace">
-
-      <div class="container">
-
-
-        <!-- =================================================
-             HERO
-             ================================================= -->
-
-        <div class="benchmark-top reveal">
-
-          <div class="benchmark-heading">
-
-            <div class="section-kicker benchmark-kicker">
-              BENCHMARKS
-            </div>
-
-            <h1>
-              Test.
-              <span>Compare.</span>
-            </h1>
-
-            <p>
-              Run structured benchmark tests against AI systems
-              and measure performance across consistent evaluation
-              dimensions.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-top-action">
-
-            <a
-              href="#new-benchmark"
-              class="button button-primary"
-            >
-              + New Benchmark
-            </a>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             CURRENT SYSTEM STATUS
-             ================================================= -->
-
-        <div class="benchmark-status reveal">
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              BENCHMARK SYSTEM
-            </span>
-
-            <span class="status-value status-live">
-              ● BUILDING
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              ACTIVE BENCHMARK
-            </span>
-
-            <span class="status-value">
-              GENERAL QUALITY
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              DIMENSIONS
-            </span>
-
-            <span class="status-value">
-              06
-            </span>
-
-          </div>
-
-
-          <div class="benchmark-status-item">
-
-            <span class="status-label">
-              ENGINE
-            </span>
-
-            <span class="status-value">
-              EVP.AUREON
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             BENCHMARK SUITES
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK SUITES
-              </div>
-
-              <h2>
-                Choose a benchmark.
-              </h2>
-
-            </div>
-
-            <p>
-              Start with the currently available general-quality
-              evaluation. Additional benchmark domains will be
-              introduced as their evaluation engines are built.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-cards">
-
-
-            <article class="benchmark-card active">
-
-              <div class="benchmark-card-number">
-                01 / AVAILABLE
-              </div>
-
-              <h3>
-                General Quality
-              </h3>
-
-              <p>
-                Evaluate factuality, instruction following,
-                relevance, completeness, safety, and fluency.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status">
-                  ● READY
-                </span>
-
-                <button
-                  class="benchmark-card-button"
-                  type="button"
-                  data-benchmark="General Quality"
-                >
-                  SELECT →
-                </button>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                02 / FUTURE
-              </div>
-
-              <h3>
-                Reasoning
-              </h3>
-
-              <p>
-                Structured tests for multi-step reasoning,
-                consistency, and answer correctness.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.LUNARA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                03 / FUTURE
-              </div>
-
-              <h3>
-                RAG
-              </h3>
-
-              <p>
-                Evaluate retrieval relevance, groundedness,
-                and evidence-supported responses.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.AETHERA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                04 / FUTURE
-              </div>
-
-              <h3>
-                Safety
-              </h3>
-
-              <p>
-                Test refusal behavior, policy compliance,
-                and responses to safety-sensitive prompts.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.VESPERA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                05 / FUTURE
-              </div>
-
-              <h3>
-                Agent
-              </h3>
-
-              <p>
-                Benchmark tool usage, task completion,
-                trajectories, and agent behavior.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.CELESTIA
-                </span>
-
-              </div>
-
-            </article>
-
-
-            <article class="benchmark-card">
-
-              <div class="benchmark-card-number">
-                06 / FUTURE
-              </div>
-
-              <h3>
-                Multimodal
-              </h3>
-
-              <p>
-                Evaluate image, video, audio, text understanding,
-                and multimodal grounding.
-              </p>
-
-
-              <div class="benchmark-card-footer">
-
-                <span class="benchmark-card-status soon">
-                  COMING SOON
-                </span>
-
-                <span class="benchmark-card-status soon">
-                  EVP.NEBRYX
-                </span>
-
-              </div>
-
-            </article>
-
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             NEW BENCHMARK
-             ================================================= -->
-
-        <section
-          class="workspace-section reveal"
-          id="new-benchmark"
-        >
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                NEW BENCHMARK TEST
-              </div>
-
-              <h2>
-                Configure your run.
-              </h2>
-
-            </div>
-
-            <p>
-              Set the benchmark parameters before starting the
-              evaluation run.
-            </p>
-
-          </div>
-
-
-          <div class="benchmark-builder">
-
-
-            <div class="builder-panel">
-
-              <div class="builder-header">
-
-                <span class="builder-header-title">
-                  TEST CONFIGURATION
-                </span>
-
-                <span class="builder-header-status">
-                  ● READY
-                </span>
-
-              </div>
-
-
-              <div class="builder-body">
-
-
-                <div class="field">
-
-                  <label
-                    class="field-label"
-                    for="benchmarkSelect"
-                  >
-                    BENCHMARK
-                  </label>
-
-                  <select
-                    class="field-select"
-                    id="benchmarkSelect"
-                  >
-
-                    <option>
-                      General Quality
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="field">
-
-                  <label
-                    class="field-label"
-                    for="modelName"
-                  >
-                    SYSTEM / MODEL NAME
-                  </label>
-
-                  <input
-                    class="field-input"
-                    id="modelName"
-                    type="text"
-                    placeholder="e.g. My AI System"
-                  >
-
-                </div>
-
-
-                <div class="field">
-
-                  <span class="field-label">
-                    TEST SIZE
-                  </span>
-
-                  <div class="test-size">
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size10"
-                        value="10"
-                        checked
-                      >
-
-                      <label for="size10">
-                        10
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size25"
-                        value="25"
-                      >
-
-                      <label for="size25">
-                        25
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size50"
-                        value="50"
-                      >
-
-                      <label for="size50">
-                        50
-                      </label>
-
-                    </div>
-
-
-                    <div class="size-option">
-
-                      <input
-                        type="radio"
-                        name="testSize"
-                        id="size100"
-                        value="100"
-                      >
-
-                      <label for="size100">
-                        100
-                      </label>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-                <div class="field">
-
-                  <span class="field-label">
-                    EVALUATION DIMENSIONS
-                  </span>
-
-
-                  <div class="dimension-list">
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Factuality"
-                      >
-
-                      <span>
-                        Factuality
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Instruction Following"
-                      >
-
-                      <span>
-                        Instruction Following
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Relevance"
-                      >
-
-                      <span>
-                        Relevance
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Completeness"
-                      >
-
-                      <span>
-                        Completeness
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Safety"
-                      >
-
-                      <span>
-                        Safety
-                      </span>
-
-                    </label>
-
-
-                    <label class="dimension-option">
-
-                      <input
-                        type="checkbox"
-                        checked
-                        value="Fluency"
-                      >
-
-                      <span>
-                        Fluency
-                      </span>
-
-                    </label>
-
-
-                  </div>
-
-                </div>
-
-
-              </div>
-
-            </div>
-
-
-            <aside class="run-summary">
-
-              <div class="run-summary-header">
-
-                <div class="run-summary-kicker">
-                  BENCHMARK RUN
-                </div>
-
-                <div
-                  class="run-summary-title"
-                  id="runSummaryTitle"
-                >
-                  Ready to test
-                </div>
-
-              </div>
-
-
-              <div class="run-summary-body">
-
-
-                <div class="summary-row">
-
-                  <span>
-                    SUITE
-                  </span>
-
-                  <span id="summaryBenchmark">
-                    GENERAL QUALITY
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    TESTS
-                  </span>
-
-                  <span id="summarySize">
-                    10
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    DIMENSIONS
-                  </span>
-
-                  <span id="summaryDimensions">
-                    06
-                  </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                  <span>
-                    ENGINE
-                  </span>
-
-                  <span>
-                    EVP.AUREON
-                  </span>
-
-                </div>
-
-
-                <button
-                  class="button button-primary run-button"
-                  id="runBenchmark"
-                  type="button"
-                >
-                  RUN BENCHMARK <span>→</span>
-                </button>
-
-
-                <div
-                  class="run-note"
-                  id="runNote"
-                >
-                  Benchmark runner will use the configured
-                  evaluation system when available.
-                </div>
-
-              </div>
-
-            </aside>
-
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             RESULTS
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK RESULTS
-              </div>
-
-              <h2>
-                Results from your runs.
-              </h2>
-
-            </div>
-
-            <p>
-              Completed benchmark runs will appear here with
-              dimension-level measurements and aggregate results.
-            </p>
-
-          </div>
-
-
-          <div class="results-panel">
-
-
-            <div
-              class="results-empty"
-              id="resultsEmpty"
-            >
-
-              <div class="results-empty-icon">
-                ∅
-              </div>
-
-              <h3>
-                No benchmark runs yet.
-              </h3>
-
-              <p>
-                Configure a benchmark above and start your first
-                run. Results will be displayed here once a
-                benchmark has been executed.
-              </p>
-
-            </div>
-
-
-            <div
-              class="results-content"
-              id="resultsContent"
-            >
-
-              <div class="result-header">
-
-                <div class="result-title">
-                  General Quality
-                </div>
-
-                <div class="result-meta">
-                  RUN #001 · 10 TESTS
-                </div>
-
-              </div>
-
-
-              <div class="result-overall">
-
-                <div class="overall-number">
-                  —
-                </div>
-
-                <div class="overall-copy">
-
-                  <strong>
-                    Benchmark score
-                  </strong>
-
-                  <span>
-                    Awaiting benchmark execution
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div class="result-metrics">
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    FACTUALITY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    INSTRUCTION FOLLOWING
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    RELEVANCE
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    COMPLETENESS
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    SAFETY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-
-                <div class="result-metric">
-
-                  <div class="result-metric-label">
-                    FLUENCY
-                  </div>
-
-                  <div class="result-metric-score">
-                    —
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             HISTORY
-             ================================================= -->
-
-        <section class="workspace-section reveal">
-
-          <div class="workspace-section-head">
-
-            <div>
-
-              <div class="section-kicker">
-                BENCHMARK HISTORY
-              </div>
-
-              <h2>
-                Track previous runs.
-              </h2>
-
-            </div>
-
-            <p>
-              Benchmark history will allow you to monitor changes
-              between evaluation runs over time.
-            </p>
-
-          </div>
-
-
-          <div class="history-panel">
-
-            <table class="history-table">
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    RUN
-                  </th>
-
-                  <th>
-                    BENCHMARK
-                  </th>
-
-                  <th>
-                    TESTS
-                  </th>
-
-                  <th>
-                    OVERALL
-                  </th>
-
-                  <th>
-                    STATUS
-                  </th>
-
-                  <th>
-                    DATE
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody id="historyBody">
-
-                <tr>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                  <td class="history-placeholder">
-                    NO RUNS
-                  </td>
-
-                  <td>
-                    —
-                  </td>
-
-                </tr>
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             EVP INFORMATION
-             ================================================= -->
-
-        <div class="benchmark-info reveal">
-
-
-          <div class="info-block">
-
-            <div class="info-label">
-              CURRENT ENGINE
-            </div>
-
-            <h3>
-              EVP.Aureon
-            </h3>
-
-            <p>
-              General-purpose evaluation profile currently
-              available through the EvalLoop AI evaluator.
-              It evaluates factuality, instruction following,
-              relevance, completeness, safety, and fluency.
-            </p>
-
-          </div>
-
-
-          <div class="info-block">
-
-            <div class="info-label">
-              BENCHMARK ENGINE
-            </div>
-
-            <h3>
-              EVP.Stellara
-            </h3>
-
-            <p>
-              Planned benchmark evaluation profile for
-              standardized datasets, repeatable runs,
-              comparison, and regression tracking.
-              Currently under development.
-            </p>
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =======================================================
-       FOOTER
-       ======================================================= -->
-
-  <footer class="site-footer">
-
-    <div class="container">
-
-      <div class="footer-top">
-
-
-        <div class="footer-brand">
-
-          <a
-            href="/"
-            class="brand"
-            aria-label="EvalLoop AI"
-          >
-
-            <span>
-              EvalLoop AI
-            </span>
-
-            <span class="brand-cursor">
-              _
-            </span>
-
-          </a>
-
-          <p>
-            AI evaluation &amp; LLM quality platform.
-          </p>
-
-        </div>
-
-
-        <div class="footer-columns">
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              PRODUCT
-            </div>
-
-            <a href="/#product">
-              Overview
-            </a>
-
-            <a href="/app/">
-              Evaluate
-            </a>
-
-            <a href="/labs/">
-              Labs
-            </a>
-
-            <a href="/pricing/">
-              Pricing
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              RESOURCES
-            </div>
-
-            <a href="/knowledge/">
-              Knowledge
-            </a>
-
-            <a href="/docs/">
-              Documentation
-            </a>
-
-            <a href="/#faq">
-              FAQ
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              COMPANY
-            </div>
-
-            <a href="/about/">
-              About
-            </a>
-
-            <a href="/contact/">
-              Contact
-            </a>
-
-          </div>
-
-
-          <div class="footer-column">
-
-            <div class="footer-label">
-              LEGAL
-            </div>
-
-            <a href="/privacy/">
-              Privacy Policy
-            </a>
-
-            <a href="/terms/">
-              Terms of Service
-            </a>
-
-            <a href="/ai-usage/">
-              AI Usage Disclaimer
-            </a>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-bottom">
-
-        <span>
-          © 2026 EvalLoop AI
-        </span>
-
-        <span>
-          BUILT FOR BETTER AI
-        </span>
-
-        <span>
-          HYDERABAD · INDIA
-        </span>
-
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =======================================================
-       JAVASCRIPT
-       ======================================================= -->
-
   <script>
 
     /* =======================================================
@@ -5309,7 +363,7 @@
 
 
     /* =======================================================
-       RUN BUTTON
+       BENCHMARK RUNNER
        ======================================================= */
 
     const runButton =
@@ -5327,62 +381,603 @@
         "runNote"
       );
 
+    const builderStatus =
+      document.getElementById(
+        "builderStatus"
+      );
+
+    const resultsEmpty =
+      document.getElementById(
+        "resultsEmpty"
+      );
+
+    const resultsContent =
+      document.getElementById(
+        "resultsContent"
+      );
+
+    const resultTitle =
+      document.getElementById(
+        "resultTitle"
+      );
+
+    const resultMeta =
+      document.getElementById(
+        "resultMeta"
+      );
+
+    const overallScore =
+      document.getElementById(
+        "overallScore"
+      );
+
+    const overallCopy =
+      document.getElementById(
+        "overallCopy"
+      );
+
+    const historyBody =
+      document.getElementById(
+        "historyBody"
+      );
+
+
+    let benchmarkRunCount = 0;
+
+
+    function formatScore(value) {
+
+      const number =
+        Number(value);
+
+
+      if (!Number.isFinite(number)) {
+        return "—";
+      }
+
+
+      return number.toFixed(1);
+
+    }
+
+
+    function findDimensionScore(
+      dimensionScores,
+      dimensionName
+    ) {
+
+      if (!dimensionScores) {
+        return null;
+      }
+
+
+      if (
+        Object.prototype.hasOwnProperty.call(
+          dimensionScores,
+          dimensionName
+        )
+      ) {
+
+        return dimensionScores[
+          dimensionName
+        ];
+
+      }
+
+
+      const target =
+        dimensionName
+          .toLowerCase()
+          .replace(/[\s_-]+/g, "");
+
+
+      const key =
+        Object.keys(
+          dimensionScores
+        ).find(function (candidate) {
+
+          return candidate
+            .toLowerCase()
+            .replace(/[\s_-]+/g, "")
+            === target;
+
+        });
+
+
+      if (key) {
+
+        return dimensionScores[key];
+
+      }
+
+
+      return null;
+
+    }
+
+
+    function updateResultMetrics(
+      dimensionScores
+    ) {
+
+      document
+        .querySelectorAll(
+          ".result-metric-score"
+        )
+        .forEach(function (scoreElement) {
+
+          const dimension =
+            scoreElement.dataset.dimension;
+
+
+          const score =
+            findDimensionScore(
+              dimensionScores,
+              dimension
+            );
+
+
+          if (score === null) {
+
+            scoreElement.textContent =
+              "—";
+
+          } else {
+
+            scoreElement.textContent =
+              formatScore(score);
+
+          }
+
+        });
+
+    }
+
+
+    function addHistoryRow(
+      benchmark,
+      testSize,
+      overall
+    ) {
+
+      if (!historyBody) {
+        return;
+      }
+
+
+      benchmarkRunCount++;
+
+
+      const date =
+        new Date().toLocaleString(
+          undefined,
+          {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+        <td>RUN #${String(benchmarkRunCount).padStart(3, "0")}</td>
+        <td>${benchmark}</td>
+        <td>${testSize}</td>
+        <td>${formatScore(overall)}</td>
+        <td>COMPLETED</td>
+        <td>${date}</td>
+      `;
+
+
+      const placeholder =
+        historyBody.querySelector(
+          ".history-placeholder"
+        );
+
+
+      if (placeholder) {
+
+        historyBody.innerHTML = "";
+
+      }
+
+
+      historyBody.prepend(row);
+
+    }
+
+
+    function showBenchmarkError(
+      message
+    ) {
+
+      if (runSummaryTitle) {
+
+        runSummaryTitle.textContent =
+          "Benchmark failed";
+
+      }
+
+
+      if (runNote) {
+
+        runNote.textContent =
+          message;
+
+      }
+
+
+      if (builderStatus) {
+
+        builderStatus.textContent =
+          "● ERROR";
+
+        builderStatus.style.color =
+          "var(--muted)";
+
+      }
+
+    }
+
 
     if (runButton) {
 
       runButton.addEventListener(
         "click",
-        function () {
+        async function () {
 
-          /*
-           * The benchmark backend is not being fabricated here.
-           * The button provides a clear development state until
-           * the benchmark runner is connected to the evaluator.
-           */
+          const benchmark =
+            benchmarkSelect
+              ? benchmarkSelect.value
+              : "General Quality";
+
+
+          const modelInput =
+            document.getElementById(
+              "modelName"
+            );
+
+
+          const model =
+            modelInput
+              ? modelInput.value.trim()
+              : "";
+
+
+          const selectedSize =
+            document.querySelector(
+              'input[name="testSize"]:checked'
+            );
+
+
+          const testSize =
+            selectedSize
+              ? Number(selectedSize.value)
+              : 10;
+
+
+          const dimensions =
+            Array.from(
+              document.querySelectorAll(
+                ".dimension-option input:checked"
+              )
+            ).map(function (input) {
+
+              return input.value;
+
+            });
+
+
+          if (!model) {
+
+            if (runSummaryTitle) {
+
+              runSummaryTitle.textContent =
+                "Model name required";
+
+            }
+
+
+            if (runNote) {
+
+              runNote.textContent =
+                "Enter a system or model name before running the benchmark.";
+
+            }
+
+
+            if (modelInput) {
+
+              modelInput.focus();
+
+            }
+
+
+            return;
+
+          }
+
+
+          if (!dimensions.length) {
+
+            if (runSummaryTitle) {
+
+              runSummaryTitle.textContent =
+                "Select a dimension";
+
+            }
+
+
+            if (runNote) {
+
+              runNote.textContent =
+                "Select at least one evaluation dimension before running the benchmark.";
+
+            }
+
+
+            return;
+
+          }
 
 
           runButton.disabled = true;
-
-          runSummaryTitle.textContent =
-            "Benchmark runner";
-
-
-          runNote.textContent =
-            "Benchmark execution is being prepared. No scores have been generated.";
-
-
-          runButton.innerHTML =
-            "RUNNER IN DEVELOPMENT";
-
 
           runButton.style.opacity =
             ".65";
 
 
-          setTimeout(
-            function () {
+          runButton.innerHTML =
+            "RUNNING…";
 
-              runButton.disabled =
-                false;
+
+          if (runSummaryTitle) {
+
+            runSummaryTitle.textContent =
+              "Running benchmark";
+
+          }
+
+
+          if (runNote) {
+
+            runNote.textContent =
+              "Sending the configured benchmark to the EvalLoop AI benchmark engine…";
+
+          }
+
+
+          if (builderStatus) {
+
+            builderStatus.textContent =
+              "● RUNNING";
+
+            builderStatus.style.color =
+              "var(--green)";
+
+          }
+
+
+          try {
+
+            const response =
+              await fetch(
+                "/api/benchmark",
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body: JSON.stringify({
+                    benchmark:
+                      benchmark,
+
+                    model:
+                      model,
+
+                    testSize:
+                      testSize,
+
+                    dimensions:
+                      dimensions
+                  })
+                }
+              );
+
+
+            let data = null;
+
+
+            try {
+
+              data =
+                await response.json();
+
+            } catch (jsonError) {
+
+              throw new Error(
+                "The benchmark server returned an invalid response."
+              );
+
+            }
+
+
+            if (
+              !response.ok ||
+              !data ||
+              data.success !== true
+            ) {
+
+              throw new Error(
+                data &&
+                data.error
+                  ? data.error
+                  : "Benchmark execution failed."
+              );
+
+            }
+
+
+            /*
+             * Successful benchmark result.
+             */
+
+
+            if (resultsEmpty) {
+
+              resultsEmpty.style.display =
+                "none";
+
+            }
+
+
+            if (resultsContent) {
+
+              resultsContent.classList.add(
+                "visible"
+              );
+
+            }
+
+
+            if (resultTitle) {
+
+              resultTitle.textContent =
+                data.benchmark ||
+                benchmark;
+
+            }
+
+
+            if (resultMeta) {
+
+              resultMeta.textContent =
+                "RUN #"
+                + String(
+                    benchmarkRunCount + 1
+                  ).padStart(3, "0")
+                + " · "
+                + String(
+                    data.testSize ||
+                    testSize
+                  )
+                + " TESTS";
+
+            }
+
+
+            if (overallScore) {
+
+              overallScore.textContent =
+                formatScore(
+                  data.overall
+                );
+
+            }
+
+
+            if (overallCopy) {
+
+              overallCopy.textContent =
+                (data.model || model)
+                + " · "
+                + (data.engine ||
+                   "EVP.Aureon");
+
+            }
+
+
+            updateResultMetrics(
+              data.dimensionScores
+            );
+
+
+            addHistoryRow(
+              data.benchmark ||
+                benchmark,
+
+              data.testSize ||
+                testSize,
+
+              data.overall
+            );
+
+
+            if (runSummaryTitle) {
 
               runSummaryTitle.textContent =
-                "Ready to test";
+                "Benchmark complete";
 
+            }
+
+
+            if (runNote) {
 
               runNote.textContent =
-                "Benchmark runner will use the configured evaluation system when available.";
+                data.note ||
+                "Benchmark completed successfully.";
+
+            }
 
 
-              runButton.innerHTML =
-                'RUN BENCHMARK <span>→</span>';
+            if (builderStatus) {
+
+              builderStatus.textContent =
+                "● COMPLETE";
+
+              builderStatus.style.color =
+                "var(--green)";
+
+            }
 
 
-              runButton.style.opacity =
-                "1";
+            if (resultsContent) {
 
-            },
-            2500
-          );
+              resultsContent.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+
+            }
+
+          } catch (error) {
+
+            console.error(
+              "Benchmark error:",
+              error
+            );
+
+
+            showBenchmarkError(
+              error &&
+              error.message
+                ? error.message
+                : "Unable to run the benchmark. Please try again."
+            );
+
+          } finally {
+
+            runButton.disabled =
+              false;
+
+
+            runButton.style.opacity =
+              "1";
+
+
+            runButton.innerHTML =
+              'RUN BENCHMARK <span>→</span>';
+
+          }
 
         }
       );
@@ -5461,8 +1056,3 @@
     }
 
   </script>
-
-</body>
-</html>
-</body>
-</html>
