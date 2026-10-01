@@ -2158,7 +2158,7 @@ p {
 
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
 }
 
@@ -2653,17 +2653,6 @@ p {
     padding: 28px 22px;
   }
 
-  .footer-columns {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 48px;
-  width: 100%;
-}
-
-  .footer-column:last-child {
-    grid-column: span 2;
-  }
-
   .cursor-dot,
   .cursor-ring {
     display: none;
@@ -2672,34 +2661,11 @@ p {
 }
 
 /* =========================================================
-   REDUCED MOTION
+   FOOTER — TABLET & MOBILE RESPONSIVE
    ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-
-}
-/* =========================================
-   FOOTER — TABLET & MOBILE RESPONSIVE
-   ========================================= */
-
 @media (max-width: 900px) {
+
   .site-footer .footer-top {
     grid-template-columns: 1fr;
     gap: 48px;
@@ -2715,6 +2681,7 @@ p {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 32px;
   }
+
 }
 
 
@@ -2761,6 +2728,31 @@ p {
 
   .site-footer .footer-bottom {
     gap: 10px;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 
 }
