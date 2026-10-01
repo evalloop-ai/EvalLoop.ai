@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
 
@@ -27,17 +28,18 @@
 
 <body>
 
-  <!-- Background -->
   <div class="background-grid"></div>
   <div class="background-glow"></div>
 
-  <!-- Header -->
+
+  <!-- HEADER -->
+
   <header class="app-header">
 
     <div class="header-inner">
 
       <a href="/" class="brand">
-        EvalLoop<span> AI_</span>
+        EvalLoop<span> AI<span class="cursor">_</span></span>
       </a>
 
       <div class="header-status">
@@ -54,14 +56,17 @@
   </header>
 
 
-  <!-- Main -->
+  <!-- MAIN -->
+
   <main class="workspace">
 
-    <!-- Page heading -->
     <section class="workspace-heading">
 
       <div>
-        <div class="eyebrow">AI QUALITY EVALUATION</div>
+
+        <div class="eyebrow">
+          AI QUALITY EVALUATION
+        </div>
 
         <h1>
           Evaluate an
@@ -73,40 +78,65 @@
           EvalLoop AI will analyze the response across multiple
           quality dimensions.
         </p>
+
       </div>
 
+
       <div class="model-badge">
+
         <span class="model-dot"></span>
+
         LLM Judge
+
       </div>
 
     </section>
 
 
-    <!-- Evaluation form -->
+    <!-- EVALUATION -->
+
     <section class="evaluation-layout">
 
-      <!-- LEFT SIDE -->
+
+      <!-- INPUT PANEL -->
+
       <div class="input-panel">
 
         <div class="panel-header">
 
           <div>
-            <div class="panel-label">01</div>
-            <h2>Evaluation Input</h2>
+
+            <div class="panel-label">
+              01
+            </div>
+
+            <h2>
+              Evaluation Input
+            </h2>
+
           </div>
 
-          <span class="panel-state">READY</span>
+          <span class="panel-state">
+            READY
+          </span>
 
         </div>
 
 
-        <!-- Prompt -->
+        <!-- PROMPT -->
+
         <div class="field">
 
           <div class="field-top">
-            <label for="prompt">Prompt</label>
-            <span>Required</span>
+
+            <label for="prompt">
+              Prompt
+            </label>
+
+            <span>
+              Required
+            </span>
+
           </div>
 
           <textarea
@@ -117,12 +147,20 @@
         </div>
 
 
-        <!-- AI Response -->
+        <!-- AI RESPONSE -->
+
         <div class="field">
 
           <div class="field-top">
-            <label for="response">AI Response</label>
-            <span>Required</span>
+
+            <label for="response">
+              AI Response
+            </label>
+
+            <span>
+              Required
+            </span>
+
           </div>
 
           <textarea
@@ -134,7 +172,8 @@
         </div>
 
 
-        <!-- Reference -->
+        <!-- REFERENCE -->
+
         <div class="field">
 
           <div class="field-top">
@@ -143,7 +182,9 @@
               Reference / Context
             </label>
 
-            <span>Optional</span>
+            <span>
+              Optional
+            </span>
 
           </div>
 
@@ -156,49 +197,77 @@
         </div>
 
 
-        <!-- Evaluate button -->
+        <!-- BUTTON -->
+
         <button
           id="evaluateButton"
           class="evaluate-button"
           type="button"
         >
 
-          <span>Evaluate Response</span>
+          <span>
+            Evaluate Response
+          </span>
 
-          <span class="button-arrow">→</span>
+          <span class="button-arrow">
+            →
+          </span>
 
         </button>
 
 
-        <div id="formMessage" class="form-message"></div>
+        <div
+          id="formMessage"
+          class="form-message"
+        ></div>
 
       </div>
 
 
-      <!-- RIGHT SIDE -->
+      <!-- RESULTS PANEL -->
+
       <div class="results-panel">
 
         <div class="panel-header">
 
           <div>
-            <div class="panel-label">02</div>
-            <h2>Evaluation Results</h2>
+
+            <div class="panel-label">
+              02
+            </div>
+
+            <h2>
+              Evaluation Results
+            </h2>
+
           </div>
 
-          <span class="panel-state waiting">WAITING</span>
+          <span
+            id="resultState"
+            class="panel-state waiting"
+          >
+            WAITING
+          </span>
 
         </div>
 
 
-        <!-- Empty state -->
-        <div id="emptyState" class="empty-state">
+        <!-- EMPTY STATE -->
+
+        <div
+          id="emptyState"
+          class="empty-state"
+        >
 
           <div class="empty-orb">
 
             <div class="orb-ring ring-one"></div>
+
             <div class="orb-ring ring-two"></div>
 
-            <span>AI</span>
+            <span>
+              AI
+            </span>
 
           </div>
 
@@ -214,13 +283,16 @@
         </div>
 
 
-        <!-- Results -->
+        <!-- RESULTS -->
+
         <div
           id="results"
           class="results hidden"
         >
 
-          <!-- Overall -->
+
+          <!-- OVERALL -->
+
           <div class="overall-card">
 
             <div>
@@ -248,12 +320,16 @@
           </div>
 
 
-          <!-- Score grid -->
+          <!-- SCORES -->
+
           <div class="score-grid">
+
 
             <div class="score-card">
 
-              <span>Factuality</span>
+              <span>
+                Factuality
+              </span>
 
               <strong id="factualityScore">
                 —
@@ -268,7 +344,9 @@
 
             <div class="score-card">
 
-              <span>Instruction Following</span>
+              <span>
+                Instruction Following
+              </span>
 
               <strong id="instructionScore">
                 —
@@ -283,7 +361,9 @@
 
             <div class="score-card">
 
-              <span>Relevance</span>
+              <span>
+                Relevance
+              </span>
 
               <strong id="relevanceScore">
                 —
@@ -298,7 +378,9 @@
 
             <div class="score-card">
 
-              <span>Completeness</span>
+              <span>
+                Completeness
+              </span>
 
               <strong id="completenessScore">
                 —
@@ -313,7 +395,9 @@
 
             <div class="score-card">
 
-              <span>Safety</span>
+              <span>
+                Safety
+              </span>
 
               <strong id="safetyScore">
                 —
@@ -328,7 +412,9 @@
 
             <div class="score-card">
 
-              <span>Fluency</span>
+              <span>
+                Fluency
+              </span>
 
               <strong id="fluencyScore">
                 —
@@ -343,7 +429,8 @@
           </div>
 
 
-          <!-- Summary -->
+          <!-- SUMMARY -->
+
           <div class="result-section">
 
             <div class="result-section-title">
@@ -357,7 +444,8 @@
           </div>
 
 
-          <!-- Issues -->
+          <!-- ISSUES -->
+
           <div class="result-section">
 
             <div class="result-section-title">
@@ -371,7 +459,8 @@
           </div>
 
 
-          <!-- Recommendation -->
+          <!-- RECOMMENDATION -->
+
           <div class="recommendation">
 
             <div class="result-section-title">
@@ -393,7 +482,10 @@
   </main>
 
 
+  <!-- EVALUATOR JAVASCRIPT -->
+
   <script src="app.js"></script>
 
 </body>
+
 </html>
