@@ -8,7 +8,7 @@
 
   <meta
     name="description"
-    content="Explore practical AI evaluation labs for model comparison, prompt testing, RAG evaluation, safety, agents, multimodal systems, and AI quality."
+    content="Explore EvalLoop AI evaluation engines and practical AI evaluation labs."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +63,6 @@
         var(--bg);
       color: var(--ink);
       font-family: var(--sans);
-      font-weight: 400;
       line-height: 1.6;
       overflow-x: hidden;
     }
@@ -229,12 +228,122 @@
     }
 
     /* =========================================
-       LAB GRID
+       EVP SECTION
+       ========================================= */
+
+    .section-header {
+      margin-top: 85px;
+      margin-bottom: 24px;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 30px;
+    }
+
+    .section-label {
+      color: var(--green2);
+
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.10em;
+    }
+
+    .section-description {
+      max-width: 480px;
+
+      color: var(--dim);
+
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: right;
+    }
+
+    .evp-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .evp-card {
+      position: relative;
+
+      min-height: 205px;
+      padding: 25px;
+
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+
+      background: rgba(23, 27, 24, 0.55);
+
+      transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .evp-card:hover {
+      background: var(--panel);
+
+      border-color: rgba(62, 207, 142, 0.28);
+
+      transform: translateY(-2px);
+    }
+
+    .evp-status {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.06em;
+
+      color: var(--dim);
+    }
+
+    .evp-status.current {
+      color: var(--green);
+    }
+
+    .evp-name {
+      margin-top: 30px;
+
+      font-family: var(--mono);
+      font-size: 17px;
+      letter-spacing: -0.03em;
+    }
+
+    .evp-name span {
+      color: var(--green);
+    }
+
+    .evp-purpose {
+      margin-top: 12px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .evp-description {
+      margin-top: 14px;
+
+      color: var(--dim);
+
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* =========================================
+       LABS
        ========================================= */
 
     .labs-grid {
-      margin-top: 70px;
-
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
 
@@ -358,14 +467,14 @@
        TABLET
        ========================================= */
 
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
 
-      .labs-grid {
+      .evp-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .lab-card {
-        min-height: 245px;
+      .labs-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
     }
@@ -402,10 +511,31 @@
         font-size: 14px;
       }
 
+      .section-header {
+        margin-top: 65px;
+
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 12px;
+      }
+
+      .section-description {
+        text-align: left;
+      }
+
+      .evp-grid {
+        grid-template-columns: 1fr;
+      }
+
       .labs-grid {
-        margin-top: 50px;
+        margin-top: 0;
 
         grid-template-columns: 1fr;
+      }
+
+      .evp-card {
+        min-height: 190px;
       }
 
       .lab-card {
@@ -435,10 +565,12 @@
         font-size: 7px;
       }
 
+      .evp-card,
       .lab-card {
         padding: 22px;
       }
 
+      .evp-status,
       .lab-status {
         top: 22px;
         right: 22px;
@@ -472,6 +604,7 @@
   <div class="background-grid"></div>
   <div class="background-glow"></div>
 
+
   <!-- HEADER -->
 
   <header class="site-header">
@@ -504,13 +637,245 @@
     </h1>
 
     <p class="intro">
-      Practical evaluation environments for testing AI systems,
-      comparing models, measuring quality, finding failures,
-      and understanding how reliable an AI system really is.
+      Practical evaluation environments and specialized EVP engines
+      for testing AI systems, measuring quality, finding failures,
+      and improving AI reliability.
     </p>
 
 
-    <!-- LABS -->
+    <!-- EVP ENGINES -->
+
+    <div class="section-header">
+
+      <div class="section-label">
+        EVP EVALUATION ENGINES
+      </div>
+
+      <p class="section-description">
+        The EvalLoop Evaluation Platform architecture.
+        Each EVP specializes in a specific evaluation domain,
+        with Nexora serving as the orchestration layer.
+      </p>
+
+    </div>
+
+
+    <section class="evp-grid">
+
+
+      <!-- AUREON -->
+
+      <div class="evp-card">
+
+        <span class="evp-status current">
+          ● CURRENT
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Aureon</span>
+        </div>
+
+        <div class="evp-purpose">
+          General Purpose Evaluation
+        </div>
+
+        <p class="evp-description">
+          General AI response evaluation across factuality,
+          instruction-following, relevance, completeness,
+          safety, and fluency.
+        </p>
+
+      </div>
+
+
+      <!-- LUNARA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Lunara</span>
+        </div>
+
+        <div class="evp-purpose">
+          Reasoning Evaluation
+        </div>
+
+        <p class="evp-description">
+          Evaluation of reasoning quality, logical consistency,
+          problem solving, and structured thinking.
+        </p>
+
+      </div>
+
+
+      <!-- AETHERA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Aethera</span>
+        </div>
+
+        <div class="evp-purpose">
+          RAG Evaluation
+        </div>
+
+        <p class="evp-description">
+          Evaluation of retrieval quality, groundedness,
+          context usage, answer relevance, and unsupported claims.
+        </p>
+
+      </div>
+
+
+      <!-- VESPERA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Vespera</span>
+        </div>
+
+        <div class="evp-purpose">
+          Safety Evaluation
+        </div>
+
+        <p class="evp-description">
+          Evaluation of harmful outputs, safety failures,
+          jailbreaks, prompt injection, and policy compliance.
+        </p>
+
+      </div>
+
+
+      <!-- NEBRYX -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Nebryx</span>
+        </div>
+
+        <div class="evp-purpose">
+          Multimodal Evaluation
+        </div>
+
+        <p class="evp-description">
+          Evaluation across text, image, audio, and video
+          understanding, grounding, and consistency.
+        </p>
+
+      </div>
+
+
+      <!-- CELESTIA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Celestia</span>
+        </div>
+
+        <div class="evp-purpose">
+          Agent Evaluation
+        </div>
+
+        <p class="evp-description">
+          Evaluation of AI agents across planning, tool usage,
+          task execution, trajectories, and recovery.
+        </p>
+
+      </div>
+
+
+      <!-- NEXORA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Nexora</span>
+        </div>
+
+        <div class="evp-purpose">
+          Orchestrator
+        </div>
+
+        <p class="evp-description">
+          Coordinates specialized evaluation engines and
+          determines which evaluation capabilities should
+          be applied to an AI system.
+        </p>
+
+      </div>
+
+
+      <!-- STELLARA -->
+
+      <div class="evp-card">
+
+        <span class="evp-status">
+          ○ COMING SOON
+        </span>
+
+        <div class="evp-name">
+          EVP.<span>Stellara</span>
+        </div>
+
+        <div class="evp-purpose">
+          Benchmark Evaluation
+        </div>
+
+        <p class="evp-description">
+          Benchmark execution, regression testing,
+          evaluation datasets, repeatability, and
+          performance tracking.
+        </p>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- PRACTICAL LABS -->
+
+    <div class="section-header">
+
+      <div class="section-label">
+        PRACTICAL LABS
+      </div>
+
+      <p class="section-description">
+        Interactive evaluation environments built around
+        the EVP architecture.
+      </p>
+
+    </div>
+
 
     <section class="labs-grid">
 
@@ -533,8 +898,7 @@
 
         <p class="lab-description">
           Compare multiple AI models against the same prompts
-          and examine differences in quality, accuracy, safety,
-          relevance, and other evaluation dimensions.
+          and examine differences in evaluation results.
         </p>
 
         <span class="lab-link">
@@ -562,8 +926,7 @@
 
         <p class="lab-description">
           Compare two AI responses using structured evaluation
-          criteria and identify which response better satisfies
-          the required task.
+          criteria and identify differences in quality.
         </p>
 
         <span class="lab-link">
@@ -590,9 +953,8 @@
         </h2>
 
         <p class="lab-description">
-          Test prompts systematically across different inputs
-          and identify inconsistencies, failures, hallucinations,
-          and instruction-following problems.
+          Test prompts systematically and identify
+          inconsistencies, hallucinations, and instruction failures.
         </p>
 
         <span class="lab-link">
@@ -619,9 +981,8 @@
         </h2>
 
         <p class="lab-description">
-          Evaluate retrieval-augmented generation systems for
-          retrieval quality, groundedness, answer relevance,
-          completeness, and unsupported claims.
+          Evaluate retrieval quality, groundedness,
+          context usage, and unsupported claims.
         </p>
 
         <span class="lab-link">
@@ -648,9 +1009,8 @@
         </h2>
 
         <p class="lab-description">
-          Test AI systems for unsafe outputs, policy violations,
-          prompt injection, jailbreak behavior, sensitive-data
-          leakage, and other safety risks.
+          Test AI systems for safety failures, jailbreaks,
+          prompt injection, and policy violations.
         </p>
 
         <span class="lab-link">
@@ -677,9 +1037,8 @@
         </h2>
 
         <p class="lab-description">
-          Evaluate AI agents across planning, tool usage,
-          task completion, trajectory quality, reliability,
-          and recovery from failures.
+          Evaluate planning, tool usage, task completion,
+          trajectories, and agent reliability.
         </p>
 
         <span class="lab-link">
@@ -706,9 +1065,8 @@
         </h2>
 
         <p class="lab-description">
-          Evaluate systems that work across text, images, audio,
-          and video for grounding, accuracy, understanding,
-          and cross-modal consistency.
+          Evaluate AI systems across text, image, audio,
+          and video understanding.
         </p>
 
         <span class="lab-link">
@@ -735,9 +1093,8 @@
         </h2>
 
         <p class="lab-description">
-          Create structured human evaluation workflows using
-          rubrics, pairwise comparison, Likert scales,
-          annotations, and evaluator guidelines.
+          Build structured human evaluation workflows using
+          rubrics, pairwise comparison, and scoring systems.
         </p>
 
         <span class="lab-link">
@@ -764,9 +1121,8 @@
         </h2>
 
         <p class="lab-description">
-          Run repeatable evaluation sets to detect quality
-          regressions when prompts, models, system instructions,
-          or application logic change.
+          Detect evaluation regressions when models,
+          prompts, or application logic change.
         </p>
 
         <span class="lab-link">
@@ -787,17 +1143,11 @@
 
     <div class="footer-inner">
 
-      <span>
-        © 2026 EvalLoop AI
-      </span>
+      <span>© 2026 EvalLoop AI</span>
 
-      <span>
-        BUILT FOR BETTER AI
-      </span>
+      <span>BUILT FOR BETTER AI</span>
 
-      <span>
-        HYDERABAD · INDIA
-      </span>
+      <span>HYDERABAD · INDIA</span>
 
     </div>
 
