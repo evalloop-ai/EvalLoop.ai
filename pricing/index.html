@@ -338,15 +338,51 @@
     .mobile-nav {
       display: none;
     }
-    .mobile-nav.active {
-      display: block;
-    }
-    @media (max-width: 768px) {
+   .mobile-nav.active {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 
-  .mobile-menu-button {
-    display: flex;
-  }
+  margin-top: 12px;
+  padding: 14px;
 
+  border: 1px solid var(--line);
+  background: var(--panel);
+
+  gap: 4px;
+}
+    .mobile-nav.active a {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px 10px;
+
+  color: var(--muted);
+  text-decoration: none;
+
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.mobile-nav.active a:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav.active a:hover,
+.mobile-nav.active a:active {
+  color: var(--ink);
+  background: var(--panel2);
 }
 
     /* =========================================
