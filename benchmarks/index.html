@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/style.css">
 
   <style>
+
     /* =========================================================
        BENCHMARK PAGE
        ========================================================= */
@@ -89,6 +90,7 @@
     }
 
     @keyframes evpPulse {
+
       0% {
         box-shadow:
           0 0 0 0 rgba(62, 207, 142, .4);
@@ -103,6 +105,7 @@
         box-shadow:
           0 0 0 0 rgba(62, 207, 142, 0);
       }
+
     }
 
     .evp-status-primary {
@@ -138,6 +141,7 @@
     }
 
     @media (max-width: 700px) {
+
       .evp-status-inner {
         justify-content: flex-start;
         padding: 0 20px;
@@ -151,6 +155,7 @@
       .evp-status-counter {
         display: none;
       }
+
     }
 
     /* =========================================================
@@ -204,6 +209,7 @@
     }
 
     @media (max-width: 900px) {
+
       .site-header .desktop-nav,
       .site-header .header-actions {
         display: none;
@@ -279,6 +285,7 @@
       .mobile-nav-actions a {
         text-decoration: none;
       }
+
     }
 
     /* =========================================================
@@ -487,6 +494,195 @@
       font-size: 9px;
       cursor: pointer;
       letter-spacing: .06em;
+    }
+
+    /* =========================================================
+       TARGET AI SYSTEM
+       ========================================================= */
+
+    .target-system-panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .target-system-header {
+      min-height: 68px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .target-system-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .target-system-icon {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .target-system-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+
+    .target-system-status {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .08em;
+      color: var(--dim);
+    }
+
+    .target-system-body {
+      padding: 28px;
+    }
+
+    .connection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .connection-grid .field-full {
+      grid-column: 1 / -1;
+    }
+
+    .connection-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .connection-option {
+      position: relative;
+    }
+
+    .connection-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .connection-option label {
+      min-height: 72px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+      transition: .2s ease;
+      background: rgba(16, 18, 17, .35);
+    }
+
+    .connection-option label strong {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .connection-option label span {
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--dim);
+      letter-spacing: .04em;
+    }
+
+    .connection-option input:checked + label {
+      border-color: var(--green);
+      background: rgba(62, 207, 142, .055);
+    }
+
+    .connection-option input:checked + label strong {
+      color: var(--green2);
+    }
+
+    .field-help {
+      margin-top: 7px;
+      color: var(--dim);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .api-key-wrap {
+      position: relative;
+    }
+
+    .api-key-wrap .field-input {
+      padding-right: 85px;
+    }
+
+    .api-key-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .06em;
+      cursor: pointer;
+    }
+
+    .connection-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 25px;
+      padding-top: 23px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .test-connection-button {
+      min-height: 43px;
+      padding: 0 17px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .07em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .test-connection-button:hover {
+      border-color: var(--green);
+      color: var(--green2);
+    }
+
+    .connection-message {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--dim);
+    }
+
+    .connection-message.success {
+      color: var(--green);
+    }
+
+    .connection-message.error {
+      color: #d98b8b;
     }
 
     /* =========================================================
@@ -861,7 +1057,7 @@
 
     .history-table {
       width: 100%;
-      min-width: 650px;
+      min-width: 750px;
       border-collapse: collapse;
     }
 
@@ -895,6 +1091,10 @@
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
+    }
+
+    .history-system {
+      color: var(--ink);
     }
 
     /* =========================================================
@@ -938,10 +1138,38 @@
     }
 
     /* =========================================================
+       SECURITY STRIP
+       ========================================================= */
+
+    .security-strip {
+      margin-top: 20px;
+      padding: 17px 20px;
+      border: 1px solid var(--line-soft);
+      background: rgba(16, 18, 17, .3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .security-icon {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .security-strip span {
+      color: var(--dim);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
        RESPONSIVE
        ========================================================= */
 
     @media (max-width: 1050px) {
+
       .benchmark-builder {
         grid-template-columns: 1fr;
       }
@@ -953,9 +1181,11 @@
       .benchmark-cards {
         grid-template-columns: repeat(2, 1fr);
       }
+
     }
 
     @media (max-width: 760px) {
+
       .benchmark-workspace {
         padding: 60px 0 90px;
       }
@@ -1004,8 +1234,26 @@
         text-align: left;
       }
 
-      .builder-body {
+      .builder-body,
+      .target-system-body {
         padding: 20px;
+      }
+
+      .connection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .connection-grid .field-full {
+        grid-column: auto;
+      }
+
+      .connection-methods {
+        grid-template-columns: 1fr;
+      }
+
+      .connection-actions {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .test-size {
@@ -1046,9 +1294,15 @@
         border-right: 0;
         border-bottom: 1px solid var(--line);
       }
+
+      .security-strip {
+        align-items: flex-start;
+      }
+
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       .evp-status-track {
         transition: none;
       }
@@ -1060,7 +1314,9 @@
       .benchmark-card {
         transition: none;
       }
+
     }
+
   </style>
 </head>
 
@@ -1074,6 +1330,7 @@
        ======================================================= -->
 
   <div class="evp-status-bar">
+
     <div class="container evp-status-inner">
 
       <div
@@ -1081,6 +1338,7 @@
         id="evpStatusTrack"
         aria-live="polite"
       >
+
         <span class="evp-live-dot"></span>
 
         <span
@@ -1101,6 +1359,7 @@
         >
           TRY THE EVALUATOR
         </a>
+
       </div>
 
       <div
@@ -1111,7 +1370,9 @@
       </div>
 
     </div>
+
   </div>
+
 
   <!-- =======================================================
        HEADER
@@ -1185,11 +1446,14 @@
         aria-label="Open menu"
         aria-expanded="false"
       >
+
         <span></span>
         <span></span>
+
       </button>
 
     </div>
+
 
     <div
       class="mobile-nav"
@@ -1242,6 +1506,7 @@
 
   </header>
 
+
   <!-- =======================================================
        MAIN
        ======================================================= -->
@@ -1251,6 +1516,7 @@
     <section class="benchmark-workspace">
 
       <div class="container">
+
 
         <!-- =================================================
              HERO
@@ -1270,9 +1536,9 @@
             </h1>
 
             <p>
-              Run structured benchmark tests against AI systems
-              and measure performance across consistent evaluation
-              dimensions.
+              Connect your AI system, run structured benchmark
+              tests, and measure performance across consistent
+              evaluation dimensions.
             </p>
 
           </div>
@@ -1289,6 +1555,7 @@
           </div>
 
         </div>
+
 
         <!-- =================================================
              CURRENT SYSTEM STATUS
@@ -1349,6 +1616,7 @@
 
         </div>
 
+
         <!-- =================================================
              BENCHMARK SUITES
              ================================================= -->
@@ -1370,14 +1638,16 @@
             </div>
 
             <p>
-              Start with the currently available general-quality
-              evaluation. Additional benchmark domains will be
-              introduced as their evaluation engines are built.
+              Start with General Quality. Additional benchmark
+              domains will be introduced as their evaluation
+              engines are built.
             </p>
 
           </div>
 
+
           <div class="benchmark-cards">
+
 
             <article class="benchmark-card active">
 
@@ -1412,6 +1682,7 @@
 
             </article>
 
+
             <article class="benchmark-card">
 
               <div class="benchmark-card-number">
@@ -1440,6 +1711,7 @@
               </div>
 
             </article>
+
 
             <article class="benchmark-card">
 
@@ -1470,6 +1742,7 @@
 
             </article>
 
+
             <article class="benchmark-card">
 
               <div class="benchmark-card-number">
@@ -1498,6 +1771,7 @@
               </div>
 
             </article>
+
 
             <article class="benchmark-card">
 
@@ -1528,6 +1802,7 @@
 
             </article>
 
+
             <article class="benchmark-card">
 
               <div class="benchmark-card-number">
@@ -1557,9 +1832,342 @@
 
             </article>
 
+
           </div>
 
         </section>
+
+
+        <!-- =================================================
+             TARGET AI SYSTEM
+             ================================================= -->
+
+        <section
+          class="workspace-section reveal"
+          id="target-system"
+        >
+
+          <div class="workspace-section-head">
+
+            <div>
+
+              <div class="section-kicker">
+                TARGET AI SYSTEM
+              </div>
+
+              <h2>
+                Connect what you want to test.
+              </h2>
+
+            </div>
+
+            <p>
+              EvalLoop evaluates the AI system you provide.
+              Your target system is separate from the EvalLoop
+              evaluation engine.
+            </p>
+
+          </div>
+
+
+          <div class="target-system-panel">
+
+            <div class="target-system-header">
+
+              <div class="target-system-title-wrap">
+
+                <div class="target-system-icon">
+                  AI
+                </div>
+
+                <div class="target-system-title">
+                  TARGET CONNECTION
+                </div>
+
+              </div>
+
+              <div
+                class="target-system-status"
+                id="targetSystemStatus"
+              >
+                ● NOT CONNECTED
+              </div>
+
+            </div>
+
+
+            <div class="target-system-body">
+
+              <div class="connection-grid">
+
+
+                <!-- SYSTEM NAME -->
+
+                <div class="field">
+
+                  <label
+                    class="field-label"
+                    for="modelName"
+                  >
+                    SYSTEM / MODEL NAME
+                  </label>
+
+                  <input
+                    class="field-input"
+                    id="modelName"
+                    type="text"
+                    placeholder="e.g. Customer Support AI"
+                    autocomplete="off"
+                  >
+
+                  <div class="field-help">
+                    A name used to identify this target system
+                    in benchmark results and history.
+                  </div>
+
+                </div>
+
+
+                <!-- MODEL ID -->
+
+                <div class="field">
+
+                  <label
+                    class="field-label"
+                    for="modelId"
+                  >
+                    MODEL ID
+                  </label>
+
+                  <input
+                    class="field-input"
+                    id="modelId"
+                    type="text"
+                    placeholder="e.g. customer-support-v2"
+                    autocomplete="off"
+                  >
+
+                  <div class="field-help">
+                    Optional identifier supplied by your AI
+                    provider or application.
+                  </div>
+
+                </div>
+
+
+                <!-- CONNECTION METHOD -->
+
+                <div class="field field-full">
+
+                  <span class="field-label">
+                    CONNECTION METHOD
+                  </span>
+
+                  <div class="connection-methods">
+
+
+                    <div class="connection-option">
+
+                      <input
+                        type="radio"
+                        name="connectionMethod"
+                        id="connectionCustom"
+                        value="custom-api"
+                        checked
+                      >
+
+                      <label for="connectionCustom">
+
+                        <strong>
+                          Custom API
+                        </strong>
+
+                        <span>
+                          ENDPOINT + AUTH
+                        </span>
+
+                      </label>
+
+                    </div>
+
+
+                    <div class="connection-option">
+
+                      <input
+                        type="radio"
+                        name="connectionMethod"
+                        id="connectionProvider"
+                        value="provider-api"
+                      >
+
+                      <label for="connectionProvider">
+
+                        <strong>
+                          Provider API
+                        </strong>
+
+                        <span>
+                          PROVIDER ADAPTER
+                        </span>
+
+                      </label>
+
+                    </div>
+
+
+                    <div class="connection-option">
+
+                      <input
+                        type="radio"
+                        name="connectionMethod"
+                        id="connectionUpload"
+                        value="upload"
+                      >
+
+                      <label for="connectionUpload">
+
+                        <strong>
+                          Upload Responses
+                        </strong>
+
+                        <span>
+                          CSV / JSON
+                        </span>
+
+                      </label>
+
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+                <!-- API ENDPOINT -->
+
+                <div
+                  class="field field-full"
+                  id="endpointField"
+                >
+
+                  <label
+                    class="field-label"
+                    for="apiEndpoint"
+                  >
+                    API ENDPOINT
+                  </label>
+
+                  <input
+                    class="field-input"
+                    id="apiEndpoint"
+                    type="url"
+                    placeholder="https://your-domain.com/api/chat"
+                    autocomplete="off"
+                  >
+
+                  <div class="field-help">
+                    EvalLoop will use this endpoint to send
+                    benchmark test requests.
+                  </div>
+
+                </div>
+
+
+                <!-- API KEY -->
+
+                <div
+                  class="field field-full"
+                  id="apiKeyField"
+                >
+
+                  <label
+                    class="field-label"
+                    for="apiKey"
+                  >
+                    API KEY / AUTHENTICATION
+                  </label>
+
+                  <div class="api-key-wrap">
+
+                    <input
+                      class="field-input"
+                      id="apiKey"
+                      type="password"
+                      placeholder="Enter API key"
+                      autocomplete="new-password"
+                    >
+
+                    <button
+                      class="api-key-toggle"
+                      id="apiKeyToggle"
+                      type="button"
+                    >
+                      SHOW
+                    </button>
+
+                  </div>
+
+                  <div class="field-help">
+                    For the real product, credentials will be
+                    processed securely by the backend and will
+                    not be exposed to the browser or stored in
+                    frontend code.
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+              <!-- CONNECTION ACTION -->
+
+              <div class="connection-actions">
+
+                <button
+                  class="test-connection-button"
+                  id="testConnection"
+                  type="button"
+                >
+                  TEST CONNECTION →
+                </button>
+
+                <span
+                  class="connection-message"
+                  id="connectionMessage"
+                >
+                  Connection verification will be enabled
+                  when the benchmark backend is connected.
+                </span>
+
+              </div>
+
+
+              <!-- SECURITY -->
+
+              <div class="security-strip">
+
+                <span class="security-icon">
+                  ◆
+                </span>
+
+                <span>
+                  Security architecture: API credentials should
+                  be handled server-side. Never place permanent
+                  API keys directly in frontend JavaScript,
+                  HTML, or public repositories.
+                </span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </section>
+
 
         <!-- =================================================
              NEW BENCHMARK
@@ -1585,13 +2193,17 @@
             </div>
 
             <p>
-              Set the benchmark parameters before starting the
-              evaluation run.
+              Select the benchmark suite, test size, and
+              evaluation dimensions before execution.
             </p>
 
           </div>
 
+
           <div class="benchmark-builder">
+
+
+            <!-- BUILDER -->
 
             <div class="builder-panel">
 
@@ -1610,7 +2222,11 @@
 
               </div>
 
+
               <div class="builder-body">
+
+
+                <!-- BENCHMARK -->
 
                 <div class="field">
 
@@ -1625,31 +2241,17 @@
                     class="field-select"
                     id="benchmarkSelect"
                   >
+
                     <option value="General Quality">
                       General Quality
                     </option>
+
                   </select>
 
                 </div>
 
-                <div class="field">
 
-                  <label
-                    class="field-label"
-                    for="modelName"
-                  >
-                    SYSTEM / MODEL NAME
-                  </label>
-
-                  <input
-                    class="field-input"
-                    id="modelName"
-                    type="text"
-                    placeholder="e.g. My AI System"
-                    autocomplete="off"
-                  >
-
-                </div>
+                <!-- TEST SIZE -->
 
                 <div class="field">
 
@@ -1658,6 +2260,7 @@
                   </span>
 
                   <div class="test-size">
+
 
                     <div class="size-option">
 
@@ -1675,6 +2278,7 @@
 
                     </div>
 
+
                     <div class="size-option">
 
                       <input
@@ -1689,6 +2293,7 @@
                       </label>
 
                     </div>
+
 
                     <div class="size-option">
 
@@ -1705,6 +2310,7 @@
 
                     </div>
 
+
                     <div class="size-option">
 
                       <input
@@ -1720,9 +2326,13 @@
 
                     </div>
 
+
                   </div>
 
                 </div>
+
+
+                <!-- DIMENSIONS -->
 
                 <div class="field">
 
@@ -1731,6 +2341,7 @@
                   </span>
 
                   <div class="dimension-list">
+
 
                     <label class="dimension-option">
 
@@ -1746,6 +2357,7 @@
 
                     </label>
 
+
                     <label class="dimension-option">
 
                       <input
@@ -1759,6 +2371,7 @@
                       </span>
 
                     </label>
+
 
                     <label class="dimension-option">
 
@@ -1774,6 +2387,7 @@
 
                     </label>
 
+
                     <label class="dimension-option">
 
                       <input
@@ -1787,6 +2401,7 @@
                       </span>
 
                     </label>
+
 
                     <label class="dimension-option">
 
@@ -1802,6 +2417,7 @@
 
                     </label>
 
+
                     <label class="dimension-option">
 
                       <input
@@ -1816,13 +2432,18 @@
 
                     </label>
 
+
                   </div>
 
                 </div>
 
+
               </div>
 
             </div>
+
+
+            <!-- RUN SUMMARY -->
 
             <aside class="run-summary">
 
@@ -1841,7 +2462,22 @@
 
               </div>
 
+
               <div class="run-summary-body">
+
+
+                <div class="summary-row">
+
+                  <span>
+                    TARGET
+                  </span>
+
+                  <span id="summaryTarget">
+                    NOT CONNECTED
+                  </span>
+
+                </div>
+
 
                 <div class="summary-row">
 
@@ -1855,6 +2491,7 @@
 
                 </div>
 
+
                 <div class="summary-row">
 
                   <span>
@@ -1866,6 +2503,7 @@
                   </span>
 
                 </div>
+
 
                 <div class="summary-row">
 
@@ -1879,6 +2517,7 @@
 
                 </div>
 
+
                 <div class="summary-row">
 
                   <span>
@@ -1891,6 +2530,7 @@
 
                 </div>
 
+
                 <button
                   class="button button-primary run-button"
                   id="runBenchmark"
@@ -1899,21 +2539,25 @@
                   RUN BENCHMARK <span>→</span>
                 </button>
 
+
                 <div
                   class="run-note"
                   id="runNote"
                 >
-                  Configure your benchmark and start a real
-                  benchmark execution.
+                  Connect a target AI system and configure
+                  your benchmark before running.
                 </div>
+
 
               </div>
 
             </aside>
 
+
           </div>
 
         </section>
+
 
         <!-- =================================================
              RESULTS
@@ -1942,7 +2586,9 @@
 
           </div>
 
+
           <div class="results-panel">
+
 
             <div
               class="results-empty"
@@ -1958,17 +2604,19 @@
               </h3>
 
               <p>
-                Configure a benchmark above and start your first
-                run. Results will be displayed here once a
-                benchmark has been executed.
+                Connect your AI system and start a benchmark.
+                Completed runs will appear here with detailed
+                evaluation measurements.
               </p>
 
             </div>
+
 
             <div
               class="results-content"
               id="resultsContent"
             >
+
 
               <div class="result-header">
 
@@ -1987,6 +2635,7 @@
                 </div>
 
               </div>
+
 
               <div class="result-overall">
 
@@ -2011,10 +2660,12 @@
 
               </div>
 
+
               <div
                 class="result-metrics"
                 id="resultMetrics"
               >
+
 
                 <div
                   class="result-metric"
@@ -2034,6 +2685,7 @@
 
                 </div>
 
+
                 <div
                   class="result-metric"
                   data-result-card="Instruction Following"
@@ -2051,6 +2703,7 @@
                   </div>
 
                 </div>
+
 
                 <div
                   class="result-metric"
@@ -2070,6 +2723,7 @@
 
                 </div>
 
+
                 <div
                   class="result-metric"
                   data-result-card="Completeness"
@@ -2087,6 +2741,7 @@
                   </div>
 
                 </div>
+
 
                 <div
                   class="result-metric"
@@ -2106,6 +2761,7 @@
 
                 </div>
 
+
                 <div
                   class="result-metric"
                   data-result-card="Fluency"
@@ -2124,18 +2780,22 @@
 
                 </div>
 
+
               </div>
+
 
               <div
                 class="benchmark-result-note"
                 id="benchmarkResultNote"
               ></div>
 
+
             </div>
 
           </div>
 
         </section>
+
 
         <!-- =================================================
              HISTORY
@@ -2152,17 +2812,18 @@
               </div>
 
               <h2>
-                Track previous runs.
+                Your previous runs.
               </h2>
 
             </div>
 
             <p>
-              Benchmark history is kept for the current browser
-              session. Persistent history will require a database.
+              Signed-in users will have their benchmark history
+              stored privately and associated with their account.
             </p>
 
           </div>
+
 
           <div class="history-panel">
 
@@ -2174,6 +2835,10 @@
 
                   <th>
                     RUN
+                  </th>
+
+                  <th>
+                    TARGET SYSTEM
                   </th>
 
                   <th>
@@ -2200,9 +2865,14 @@
 
               </thead>
 
+
               <tbody id="historyBody">
 
                 <tr>
+
+                  <td>
+                    —
+                  </td>
 
                   <td>
                     —
@@ -2232,17 +2902,20 @@
 
               </tbody>
 
+
             </table>
 
           </div>
 
         </section>
 
+
         <!-- =================================================
              EVP INFORMATION
              ================================================= -->
 
         <div class="benchmark-info reveal">
+
 
           <div class="info-block">
 
@@ -2263,6 +2936,7 @@
 
           </div>
 
+
           <div class="info-block">
 
             <div class="info-label">
@@ -2282,13 +2956,16 @@
 
           </div>
 
+
         </div>
+
 
       </div>
 
     </section>
 
   </main>
+
 
   <!-- =======================================================
        FOOTER
@@ -2300,6 +2977,7 @@
 
       <div class="footer-top">
 
+
         <div class="footer-brand">
 
           <a
@@ -2307,6 +2985,7 @@
             class="brand"
             aria-label="EvalLoop AI"
           >
+
             <span>
               EvalLoop AI
             </span>
@@ -2314,6 +2993,7 @@
             <span class="brand-cursor">
               _
             </span>
+
           </a>
 
           <p>
@@ -2322,7 +3002,9 @@
 
         </div>
 
+
         <div class="footer-columns">
+
 
           <div class="footer-column">
 
@@ -2348,6 +3030,7 @@
 
           </div>
 
+
           <div class="footer-column">
 
             <div class="footer-label">
@@ -2368,6 +3051,7 @@
 
           </div>
 
+
           <div class="footer-column">
 
             <div class="footer-label">
@@ -2383,6 +3067,7 @@
             </a>
 
           </div>
+
 
           <div class="footer-column">
 
@@ -2404,9 +3089,11 @@
 
           </div>
 
+
         </div>
 
       </div>
+
 
       <div class="footer-bottom">
 
@@ -2424,9 +3111,11 @@
 
       </div>
 
+
     </div>
 
   </footer>
+
 
   <!-- =======================================================
        JAVASCRIPT
@@ -2439,12 +3128,19 @@
        ======================================================= */
 
     const mobileMenuButton =
-      document.getElementById("mobileMenuButton");
+      document.getElementById(
+        "mobileMenuButton"
+      );
 
     const mobileNav =
-      document.getElementById("mobileNav");
+      document.getElementById(
+        "mobileNav"
+      );
 
-    if (mobileMenuButton && mobileNav) {
+    if (
+      mobileMenuButton &&
+      mobileNav
+    ) {
 
       mobileMenuButton.addEventListener(
         "click",
@@ -2475,37 +3171,41 @@
         }
       );
 
+
       mobileNav
         .querySelectorAll("a")
-        .forEach(function (link) {
+        .forEach(
+          function (link) {
 
-          link.addEventListener(
-            "click",
-            function () {
+            link.addEventListener(
+              "click",
+              function () {
 
-              mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-              );
+                mobileMenuButton.setAttribute(
+                  "aria-expanded",
+                  "false"
+                );
 
-              mobileMenuButton.setAttribute(
-                "aria-label",
-                "Open menu"
-              );
+                mobileMenuButton.setAttribute(
+                  "aria-label",
+                  "Open menu"
+                );
 
-              mobileNav.classList.remove(
-                "open"
-              );
+                mobileNav.classList.remove(
+                  "open"
+                );
 
-            }
-          );
+              }
+            );
 
-        });
+          }
+        );
 
     }
 
+
     /* =======================================================
-       EVP ANIMATED STATUS TICKER
+       EVP STATUS TICKER
        ======================================================= */
 
     const evpMessages = [
@@ -2531,10 +3231,11 @@
       {
         primary: "EVALLOOP AI",
         action: "BUILDING BENCHMARK INFRASTRUCTURE",
-        href: "#new-benchmark"
+        href: "#target-system"
       }
 
     ];
+
 
     const evpTrack =
       document.getElementById(
@@ -2556,7 +3257,9 @@
         "evpStatusCounter"
       );
 
+
     let evpIndex = 0;
+
 
     function changeEvpMessage() {
 
@@ -2568,40 +3271,56 @@
         "changing"
       );
 
-      setTimeout(function () {
 
-        evpIndex =
-          (evpIndex + 1) %
-          evpMessages.length;
+      setTimeout(
+        function () {
 
-        const message =
-          evpMessages[evpIndex];
+          evpIndex =
+            (
+              evpIndex + 1
+            ) %
+            evpMessages.length;
 
-        evpPrimary.textContent =
-          message.primary;
+          const message =
+            evpMessages[
+              evpIndex
+            ];
 
-        evpAction.textContent =
-          message.action;
+          evpPrimary.textContent =
+            message.primary;
 
-        evpAction.href =
-          message.href;
+          evpAction.textContent =
+            message.action;
 
-        evpCounter.textContent =
-          String(
-            evpIndex + 1
-          ).padStart(2, "0")
-          + " / "
-          + String(
-            evpMessages.length
-          ).padStart(2, "0");
+          evpAction.href =
+            message.href;
 
-        evpTrack.classList.remove(
-          "changing"
-        );
+          evpCounter.textContent =
+            String(
+              evpIndex + 1
+            ).padStart(
+              2,
+              "0"
+            )
+            + " / "
+            +
+            String(
+              evpMessages.length
+            ).padStart(
+              2,
+              "0"
+            );
 
-      }, 350);
+          evpTrack.classList.remove(
+            "changing"
+          );
+
+        },
+        350
+      );
 
     }
+
 
     if (
       !window.matchMedia(
@@ -2615,6 +3334,369 @@
       );
 
     }
+
+
+    /* =======================================================
+       TARGET SYSTEM ELEMENTS
+       ======================================================= */
+
+    const modelNameInput =
+      document.getElementById(
+        "modelName"
+      );
+
+    const modelIdInput =
+      document.getElementById(
+        "modelId"
+      );
+
+    const apiEndpointInput =
+      document.getElementById(
+        "apiEndpoint"
+      );
+
+    const apiKeyInput =
+      document.getElementById(
+        "apiKey"
+      );
+
+    const apiKeyToggle =
+      document.getElementById(
+        "apiKeyToggle"
+      );
+
+    const targetSystemStatus =
+      document.getElementById(
+        "targetSystemStatus"
+      );
+
+    const summaryTarget =
+      document.getElementById(
+        "summaryTarget"
+      );
+
+    const connectionMessage =
+      document.getElementById(
+        "connectionMessage"
+      );
+
+    const testConnectionButton =
+      document.getElementById(
+        "testConnection"
+      );
+
+    const endpointField =
+      document.getElementById(
+        "endpointField"
+      );
+
+    const apiKeyField =
+      document.getElementById(
+        "apiKeyField"
+      );
+
+
+    /* =======================================================
+       API KEY VISIBILITY
+       ======================================================= */
+
+    if (apiKeyToggle && apiKeyInput) {
+
+      apiKeyToggle.addEventListener(
+        "click",
+        function () {
+
+          const hidden =
+            apiKeyInput.type === "password";
+
+          apiKeyInput.type =
+            hidden
+              ? "text"
+              : "password";
+
+          apiKeyToggle.textContent =
+            hidden
+              ? "HIDE"
+              : "SHOW";
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       CONNECTION METHOD
+       ======================================================= */
+
+    const connectionInputs =
+      document.querySelectorAll(
+        'input[name="connectionMethod"]'
+      );
+
+
+    function updateConnectionMethod() {
+
+      const selected =
+        document.querySelector(
+          'input[name="connectionMethod"]:checked'
+        );
+
+
+      if (!selected) {
+        return;
+      }
+
+
+      const method =
+        selected.value;
+
+
+      if (
+        method === "upload"
+      ) {
+
+        if (endpointField) {
+          endpointField.style.display =
+            "none";
+        }
+
+        if (apiKeyField) {
+          apiKeyField.style.display =
+            "none";
+        }
+
+        if (connectionMessage) {
+
+          connectionMessage.textContent =
+            "Response upload mode selected. File upload will be enabled in the benchmark backend.";
+
+          connectionMessage.className =
+            "connection-message";
+
+        }
+
+      } else {
+
+        if (endpointField) {
+          endpointField.style.display =
+            "";
+        }
+
+        if (apiKeyField) {
+          apiKeyField.style.display =
+            "";
+        }
+
+        if (connectionMessage) {
+
+          connectionMessage.textContent =
+            "Connection verification will be enabled when the benchmark backend is connected.";
+
+          connectionMessage.className =
+            "connection-message";
+
+        }
+
+      }
+
+    }
+
+
+    connectionInputs.forEach(
+      function (input) {
+
+        input.addEventListener(
+          "change",
+          updateConnectionMethod
+        );
+
+      }
+    );
+
+
+    /* =======================================================
+       TARGET NAME → SUMMARY
+       ======================================================= */
+
+    function updateTargetSummary() {
+
+      const name =
+        modelNameInput
+          ? modelNameInput.value.trim()
+          : "";
+
+
+      if (summaryTarget) {
+
+        summaryTarget.textContent =
+          name
+            ? name.toUpperCase()
+            : "NOT CONNECTED";
+
+      }
+
+    }
+
+
+    if (modelNameInput) {
+
+      modelNameInput.addEventListener(
+        "input",
+        updateTargetSummary
+      );
+
+    }
+
+
+    /* =======================================================
+       TEST CONNECTION
+       ======================================================= */
+
+    if (testConnectionButton) {
+
+      testConnectionButton.addEventListener(
+        "click",
+        function () {
+
+          const method =
+            document.querySelector(
+              'input[name="connectionMethod"]:checked'
+            );
+
+
+          if (
+            method &&
+            method.value === "upload"
+          ) {
+
+            if (connectionMessage) {
+
+              connectionMessage.textContent =
+                "Upload mode does not require a live API connection.";
+
+              connectionMessage.className =
+                "connection-message success";
+
+            }
+
+            if (targetSystemStatus) {
+
+              targetSystemStatus.textContent =
+                "● UPLOAD MODE";
+
+              targetSystemStatus.style.color =
+                "var(--green)";
+
+            }
+
+            return;
+
+          }
+
+
+          const endpoint =
+            apiEndpointInput
+              ? apiEndpointInput.value.trim()
+              : "";
+
+          const apiKey =
+            apiKeyInput
+              ? apiKeyInput.value.trim()
+              : "";
+
+
+          if (!endpoint) {
+
+            if (connectionMessage) {
+
+              connectionMessage.textContent =
+                "Enter an API endpoint first.";
+
+              connectionMessage.className =
+                "connection-message error";
+
+            }
+
+            if (apiEndpointInput) {
+              apiEndpointInput.focus();
+            }
+
+            return;
+
+          }
+
+
+          if (!apiKey) {
+
+            if (connectionMessage) {
+
+              connectionMessage.textContent =
+                "Enter an API key before testing the connection.";
+
+              connectionMessage.className =
+                "connection-message error";
+
+            }
+
+            if (apiKeyInput) {
+              apiKeyInput.focus();
+            }
+
+            return;
+
+          }
+
+
+          /*
+           * IMPORTANT:
+           *
+           * This is intentionally only a UI state for now.
+           * We are NOT sending the API key anywhere yet.
+           *
+           * The real implementation will be:
+           *
+           * Browser
+           *   ↓
+           * /api/benchmark/connection
+           *   ↓
+           * secure server
+           *   ↓
+           * target AI
+           *
+           * Supabase/auth will be connected later.
+           */
+
+
+          if (connectionMessage) {
+
+            connectionMessage.textContent =
+              "Connection fields validated. Backend verification will be enabled in the integration phase.";
+
+            connectionMessage.className =
+              "connection-message success";
+
+          }
+
+
+          if (targetSystemStatus) {
+
+            targetSystemStatus.textContent =
+              "● CONFIGURED";
+
+            targetSystemStatus.style.color =
+              "var(--green)";
+
+          }
+
+
+          updateTargetSummary();
+
+        }
+      );
+
+    }
+
 
     /* =======================================================
        BENCHMARK SELECTION
@@ -2630,55 +3712,59 @@
         "summaryBenchmark"
       );
 
+
     document
       .querySelectorAll(
         "[data-benchmark]"
       )
-      .forEach(function (button) {
+      .forEach(
+        function (button) {
 
-        button.addEventListener(
-          "click",
-          function () {
+          button.addEventListener(
+            "click",
+            function () {
 
-            const name =
-              button.dataset.benchmark;
+              const name =
+                button.dataset.benchmark;
 
-            if (benchmarkSelect) {
 
-              benchmarkSelect.value =
-                name;
+              if (benchmarkSelect) {
+
+                benchmarkSelect.value =
+                  name;
+
+              }
+
+
+              if (summaryBenchmark) {
+
+                summaryBenchmark.textContent =
+                  name.toUpperCase();
+
+              }
+
+
+              const builder =
+                document.getElementById(
+                  "new-benchmark"
+                );
+
+
+              if (builder) {
+
+                builder.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start"
+                });
+
+              }
 
             }
+          );
 
-            if (summaryBenchmark) {
+        }
+      );
 
-              summaryBenchmark.textContent =
-                name.toUpperCase();
-
-            }
-
-            const builder =
-              document.getElementById(
-                "new-benchmark"
-              );
-
-            if (builder) {
-
-              builder.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-
-            }
-
-          }
-        );
-
-      });
-
-    /* =======================================================
-       BENCHMARK SELECT
-       ======================================================= */
 
     if (benchmarkSelect) {
 
@@ -2698,6 +3784,7 @@
 
     }
 
+
     /* =======================================================
        TEST SIZE
        ======================================================= */
@@ -2711,6 +3798,7 @@
       document.getElementById(
         "summarySize"
       );
+
 
     sizeInputs.forEach(
       function (input) {
@@ -2732,6 +3820,7 @@
       }
     );
 
+
     /* =======================================================
        DIMENSION COUNT
        ======================================================= */
@@ -2751,9 +3840,11 @@
         "activeDimensionStatus"
       );
 
+
     function updateDimensionCount() {
 
       let count = 0;
+
 
       dimensionInputs.forEach(
         function (input) {
@@ -2765,8 +3856,15 @@
         }
       );
 
+
       const formattedCount =
-        String(count).padStart(2, "0");
+        String(
+          count
+        ).padStart(
+          2,
+          "0"
+        );
+
 
       if (summaryDimensions) {
 
@@ -2774,6 +3872,7 @@
           formattedCount;
 
       }
+
 
       if (activeDimensionStatus) {
 
@@ -2783,6 +3882,7 @@
       }
 
     }
+
 
     dimensionInputs.forEach(
       function (input) {
@@ -2795,7 +3895,9 @@
       }
     );
 
+
     updateDimensionCount();
+
 
     /* =======================================================
        BENCHMARK RUNNER
@@ -2861,41 +3963,75 @@
         "benchmarkResultNote"
       );
 
+
     /*
-     * History exists only for this browser session.
-     * It is intentionally not presented as persistent storage.
+     * Temporary browser-session counter.
+     *
+     * This is NOT the final persistence system.
+     *
+     * Later:
+     *
+     * Supabase Auth
+     *      ↓
+     * user_id
+     *      ↓
+     * benchmark_runs
+     *
+     * Every user will see only their own rows.
      */
 
     let benchmarkRunCount = 0;
+
 
     /* =======================================================
        SCORE FORMATTER
        ======================================================= */
 
-    function formatScore(value) {
+    function formatScore(
+      value
+    ) {
 
       const number =
         Number(value);
 
-      if (!Number.isFinite(number)) {
+
+      if (
+        !Number.isFinite(
+          number
+        )
+      ) {
+
         return "—";
+
       }
 
-      return number.toFixed(1);
+
+      return number.toFixed(
+        1
+      );
 
     }
+
 
     /* =======================================================
        DIMENSION KEY NORMALIZATION
        ======================================================= */
 
-    function normalizeDimensionKey(value) {
+    function normalizeDimensionKey(
+      value
+    ) {
 
-      return String(value || "")
+      return String(
+        value || ""
+      )
         .toLowerCase()
-        .replace(/[\s_-]+/g, "");
+        .replace(
+          /[\s_-]+/g,
+          ""
+        );
 
     }
+
 
     /* =======================================================
        FIND DIMENSION SCORE
@@ -2915,6 +4051,7 @@
 
       }
 
+
       if (
         Object.prototype.hasOwnProperty.call(
           dimensionScores,
@@ -2928,21 +4065,26 @@
 
       }
 
+
       const target =
         normalizeDimensionKey(
           dimensionName
         );
 
+
       const matchingKey =
         Object.keys(
           dimensionScores
-        ).find(function (candidate) {
+        ).find(
+          function (candidate) {
 
-          return normalizeDimensionKey(
-            candidate
-          ) === target;
+            return normalizeDimensionKey(
+              candidate
+            ) === target;
 
-        });
+          }
+        );
+
 
       if (matchingKey) {
 
@@ -2952,9 +4094,11 @@
 
       }
 
+
       return null;
 
     }
+
 
     /* =======================================================
        UPDATE RESULT METRICS
@@ -2970,66 +4114,75 @@
           selectedDimensions
         );
 
+
       document
         .querySelectorAll(
           ".result-metric"
         )
-        .forEach(function (card) {
+        .forEach(
+          function (card) {
 
-          const dimension =
-            card.dataset.resultCard;
+            const dimension =
+              card.dataset.resultCard;
 
-          const scoreElement =
-            card.querySelector(
-              ".result-metric-score"
-            );
 
-          if (!scoreElement) {
-            return;
-          }
+            const scoreElement =
+              card.querySelector(
+                ".result-metric-score"
+              );
 
-          /*
-           * Only display dimensions that were actually
-           * selected for this run.
-           */
 
-          if (
-            !selectedSet.has(
-              dimension
-            )
-          ) {
+            if (!scoreElement) {
+              return;
+            }
+
+
+            if (
+              !selectedSet.has(
+                dimension
+              )
+            ) {
+
+              card.style.display =
+                "none";
+
+              return;
+
+            }
+
 
             card.style.display =
-              "none";
+              "";
 
-            return;
+
+            const score =
+              findDimensionScore(
+                dimensionScores,
+                dimension
+              );
+
+
+            if (
+              score === null
+            ) {
+
+              scoreElement.textContent =
+                "—";
+
+            } else {
+
+              scoreElement.textContent =
+                formatScore(
+                  score
+                );
+
+            }
 
           }
-
-          card.style.display =
-            "";
-
-          const score =
-            findDimensionScore(
-              dimensionScores,
-              dimension
-            );
-
-          if (score === null) {
-
-            scoreElement.textContent =
-              "—";
-
-          } else {
-
-            scoreElement.textContent =
-              formatScore(score);
-
-          }
-
-        });
+        );
 
     }
+
 
     /* =======================================================
        RESET RESULT METRICS
@@ -3041,26 +4194,31 @@
         .querySelectorAll(
           ".result-metric"
         )
-        .forEach(function (card) {
+        .forEach(
+          function (card) {
 
-          card.style.display =
-            "";
+            card.style.display =
+              "";
 
-          const scoreElement =
-            card.querySelector(
-              ".result-metric-score"
-            );
 
-          if (scoreElement) {
+            const scoreElement =
+              card.querySelector(
+                ".result-metric-score"
+              );
 
-            scoreElement.textContent =
-              "—";
+
+            if (scoreElement) {
+
+              scoreElement.textContent =
+                "—";
+
+            }
 
           }
-
-        });
+        );
 
     }
+
 
     /* =======================================================
        HISTORY ROW
@@ -3068,6 +4226,7 @@
 
     function addHistoryRow(
       benchmark,
+      systemName,
       testSize,
       overall
     ) {
@@ -3076,7 +4235,9 @@
         return;
       }
 
+
       benchmarkRunCount++;
+
 
       const date =
         new Date().toLocaleString(
@@ -3090,73 +4251,92 @@
           }
         );
 
+
       const row =
         document.createElement(
           "tr"
         );
 
-      const runCell =
-        document.createElement(
-          "td"
-        );
 
-      const benchmarkCell =
-        document.createElement(
-          "td"
-        );
+      const values = [
 
-      const testsCell =
-        document.createElement(
-          "td"
-        );
-
-      const overallCell =
-        document.createElement(
-          "td"
-        );
-
-      const statusCell =
-        document.createElement(
-          "td"
-        );
-
-      const dateCell =
-        document.createElement(
-          "td"
-        );
-
-      runCell.textContent =
         "RUN #"
-        + String(
+        +
+        String(
           benchmarkRunCount
-        ).padStart(3, "0");
+        ).padStart(
+          3,
+          "0"
+        ),
 
-      benchmarkCell.textContent =
-        benchmark;
+        systemName,
 
-      testsCell.textContent =
-        String(testSize);
+        benchmark,
 
-      overallCell.textContent =
-        formatScore(overall);
+        String(
+          testSize
+        ),
 
-      statusCell.textContent =
-        "COMPLETED";
+        formatScore(
+          overall
+        ),
 
-      dateCell.textContent =
-        date;
+        "COMPLETED",
 
-      row.appendChild(runCell);
-      row.appendChild(benchmarkCell);
-      row.appendChild(testsCell);
-      row.appendChild(overallCell);
-      row.appendChild(statusCell);
-      row.appendChild(dateCell);
+        date
+
+      ];
+
+
+      values.forEach(
+        function (
+          value,
+          index
+        ) {
+
+          const cell =
+            document.createElement(
+              "td"
+            );
+
+
+          cell.textContent =
+            value;
+
+
+          if (
+            index === 1
+          ) {
+
+            cell.className =
+              "history-system";
+
+          }
+
+
+          if (
+            index === 5
+          ) {
+
+            cell.className =
+              "history-placeholder";
+
+          }
+
+
+          row.appendChild(
+            cell
+          );
+
+        }
+      );
+
 
       const placeholder =
         historyBody.querySelector(
           ".history-placeholder"
         );
+
 
       if (placeholder) {
 
@@ -3165,11 +4345,13 @@
 
       }
 
+
       historyBody.prepend(
         row
       );
 
     }
+
 
     /* =======================================================
        ERROR STATE
@@ -3186,12 +4368,14 @@
 
       }
 
+
       if (runNote) {
 
         runNote.textContent =
           message;
 
       }
+
 
       if (builderStatus) {
 
@@ -3205,6 +4389,7 @@
 
     }
 
+
     /* =======================================================
        RUN BENCHMARK
        ======================================================= */
@@ -3215,25 +4400,54 @@
         "click",
         async function () {
 
+
           const benchmark =
             benchmarkSelect
               ? benchmarkSelect.value
               : "General Quality";
 
-          const modelInput =
-            document.getElementById(
-              "modelName"
-            );
 
           const model =
-            modelInput
-              ? modelInput.value.trim()
+            modelNameInput
+              ? modelNameInput.value.trim()
               : "";
+
+
+          const modelId =
+            modelIdInput
+              ? modelIdInput.value.trim()
+              : "";
+
+
+          const endpoint =
+            apiEndpointInput
+              ? apiEndpointInput.value.trim()
+              : "";
+
+
+          const apiKey =
+            apiKeyInput
+              ? apiKeyInput.value.trim()
+              : "";
+
+
+          const connectionMethod =
+            document.querySelector(
+              'input[name="connectionMethod"]:checked'
+            );
+
+
+          const method =
+            connectionMethod
+              ? connectionMethod.value
+              : "custom-api";
+
 
           const selectedSize =
             document.querySelector(
               'input[name="testSize"]:checked'
             );
+
 
           const testSize =
             selectedSize
@@ -3242,19 +4456,23 @@
                 )
               : 10;
 
+
           const dimensions =
             Array.from(
               document.querySelectorAll(
                 ".dimension-option input:checked"
               )
-            ).map(function (input) {
+            ).map(
+              function (input) {
 
-              return input.value;
+                return input.value;
 
-            });
+              }
+            );
+
 
           /* -----------------------------------------------
-             VALIDATE MODEL
+             VALIDATE TARGET SYSTEM
              ----------------------------------------------- */
 
           if (!model) {
@@ -3262,26 +4480,100 @@
             if (runSummaryTitle) {
 
               runSummaryTitle.textContent =
-                "Model name required";
+                "Target system required";
 
             }
+
 
             if (runNote) {
 
               runNote.textContent =
-                "Enter a system or model name before running the benchmark.";
+                "Enter the name of the AI system you want to benchmark.";
 
             }
 
-            if (modelInput) {
 
-              modelInput.focus();
+            if (modelNameInput) {
+
+              modelNameInput.focus();
 
             }
+
 
             return;
 
           }
+
+
+          /* -----------------------------------------------
+             VALIDATE CONNECTION
+             ----------------------------------------------- */
+
+          if (
+            method !== "upload" &&
+            !endpoint
+          ) {
+
+            if (runSummaryTitle) {
+
+              runSummaryTitle.textContent =
+                "API endpoint required";
+
+            }
+
+
+            if (runNote) {
+
+              runNote.textContent =
+                "Provide the target AI API endpoint before running the benchmark.";
+
+            }
+
+
+            if (apiEndpointInput) {
+
+              apiEndpointInput.focus();
+
+            }
+
+
+            return;
+
+          }
+
+
+          if (
+            method !== "upload" &&
+            !apiKey
+          ) {
+
+            if (runSummaryTitle) {
+
+              runSummaryTitle.textContent =
+                "Authentication required";
+
+            }
+
+
+            if (runNote) {
+
+              runNote.textContent =
+                "Provide the authentication credential required by the target AI system.";
+
+            }
+
+
+            if (apiKeyInput) {
+
+              apiKeyInput.focus();
+
+            }
+
+
+            return;
+
+          }
+
 
           /* -----------------------------------------------
              VALIDATE DIMENSIONS
@@ -3296,6 +4588,7 @@
 
             }
 
+
             if (runNote) {
 
               runNote.textContent =
@@ -3303,9 +4596,11 @@
 
             }
 
+
             return;
 
           }
+
 
           /* -----------------------------------------------
              PREPARE UI
@@ -3320,6 +4615,7 @@
           runButton.innerHTML =
             "RUNNING…";
 
+
           if (runSummaryTitle) {
 
             runSummaryTitle.textContent =
@@ -3327,12 +4623,14 @@
 
           }
 
+
           if (runNote) {
 
             runNote.textContent =
               "Sending the configured benchmark to the EvalLoop AI benchmark engine…";
 
           }
+
 
           if (builderStatus) {
 
@@ -3344,13 +4642,37 @@
 
           }
 
+
           resetResultMetrics();
+
 
           /* -----------------------------------------------
              API REQUEST
              ----------------------------------------------- */
 
           try {
+
+
+            /*
+             * IMPORTANT FUTURE ARCHITECTURE
+             *
+             * The browser should eventually send the
+             * connection details to a secure backend.
+             *
+             * The backend will:
+             *
+             * 1. authenticate the EvalLoop user
+             * 2. retrieve / validate credentials
+             * 3. load benchmark test cases
+             * 4. call the target AI
+             * 5. evaluate responses
+             * 6. calculate scores
+             * 7. save the run against user_id
+             * 8. return the result
+             *
+             * Supabase will sit behind this architecture.
+             */
+
 
             const response =
               await fetch(
@@ -3371,6 +4693,28 @@
                     model:
                       model,
 
+                    modelId:
+                      modelId,
+
+                    connectionMethod:
+                      method,
+
+                    endpoint:
+                      endpoint,
+
+                    /*
+                     * Temporary frontend integration.
+                     *
+                     * DO NOT deploy a production backend
+                     * that logs or stores this value.
+                     *
+                     * Later this will move to secure
+                     * server-side credential handling.
+                     */
+
+                    apiKey:
+                      apiKey,
+
                     testSize:
                       testSize,
 
@@ -3382,24 +4726,30 @@
                 }
               );
 
+
             /* ---------------------------------------------
                PARSE RESPONSE
                --------------------------------------------- */
 
-            let data = null;
+            let data =
+              null;
+
 
             try {
 
               data =
                 await response.json();
 
-            } catch (jsonError) {
+            } catch (
+              jsonError
+            ) {
 
               throw new Error(
                 "The benchmark server returned an invalid response."
               );
 
             }
+
 
             /* ---------------------------------------------
                API ERROR
@@ -3426,13 +4776,15 @@
 
             }
 
+
             /* ---------------------------------------------
-               VALIDATE BASIC RESULT
+               BASIC RESULT
                --------------------------------------------- */
 
             const returnedBenchmark =
               data.benchmark ||
               benchmark;
+
 
             const returnedTestSize =
               Number(
@@ -3440,13 +4792,16 @@
                 testSize
               );
 
+
             const returnedModel =
               data.model ||
               model;
 
+
             const returnedEngine =
               data.engine ||
               "EVP.Aureon";
+
 
             /* ---------------------------------------------
                SHOW RESULTS
@@ -3459,6 +4814,7 @@
 
             }
 
+
             if (resultsContent) {
 
               resultsContent.classList.add(
@@ -3466,6 +4822,7 @@
               );
 
             }
+
 
             /* ---------------------------------------------
                RESULT HEADER
@@ -3478,20 +4835,29 @@
 
             }
 
+
             if (resultMeta) {
 
               resultMeta.textContent =
                 "RUN #"
-                + String(
-                    benchmarkRunCount + 1
-                  ).padStart(3, "0")
-                + " · "
-                + String(
-                    returnedTestSize
-                  )
-                + " TESTS";
+                +
+                String(
+                  benchmarkRunCount + 1
+                ).padStart(
+                  3,
+                  "0"
+                )
+                +
+                " · "
+                +
+                String(
+                  returnedTestSize
+                )
+                +
+                " TESTS";
 
             }
+
 
             /* ---------------------------------------------
                OVERALL SCORE
@@ -3506,6 +4872,7 @@
 
             }
 
+
             /* ---------------------------------------------
                OVERALL DESCRIPTION
                --------------------------------------------- */
@@ -3514,10 +4881,13 @@
 
               overallCopy.textContent =
                 returnedModel
-                + " · "
-                + returnedEngine;
+                +
+                " · "
+                +
+                returnedEngine;
 
             }
+
 
             /* ---------------------------------------------
                DIMENSION SCORES
@@ -3528,8 +4898,9 @@
               dimensions
             );
 
+
             /* ---------------------------------------------
-               BENCHMARK NOTE
+               RESULT NOTE
                --------------------------------------------- */
 
             if (benchmarkResultNote) {
@@ -3538,8 +4909,10 @@
                 data.note ||
                 "Structured EvalLoop benchmark result.";
 
+
               benchmarkResultNote.textContent =
                 note;
+
 
               benchmarkResultNote.classList.add(
                 "visible"
@@ -3547,15 +4920,18 @@
 
             }
 
+
             /* ---------------------------------------------
                HISTORY
                --------------------------------------------- */
 
             addHistoryRow(
               returnedBenchmark,
+              returnedModel,
               returnedTestSize,
               data.overall
             );
+
 
             /* ---------------------------------------------
                SUCCESS STATE
@@ -3568,6 +4944,7 @@
 
             }
 
+
             if (runNote) {
 
               runNote.textContent =
@@ -3575,6 +4952,7 @@
                 "Benchmark completed successfully.";
 
             }
+
 
             if (builderStatus) {
 
@@ -3585,6 +4963,7 @@
                 "var(--green)";
 
             }
+
 
             /* ---------------------------------------------
                SCROLL TO RESULTS
@@ -3606,12 +4985,17 @@
 
             }
 
-          } catch (error) {
+
+          } catch (
+            error
+          ) {
+
 
             console.error(
               "Benchmark error:",
               error
             );
+
 
             showBenchmarkError(
               error &&
@@ -3620,13 +5004,17 @@
                 : "Unable to run the benchmark. Please try again."
             );
 
+
           } finally {
+
 
             runButton.disabled =
               false;
 
+
             runButton.style.opacity =
               "1";
+
 
             runButton.innerHTML =
               'RUN BENCHMARK <span>→</span>';
@@ -3638,6 +5026,7 @@
 
     }
 
+
     /* =======================================================
        REVEAL ANIMATION
        ======================================================= */
@@ -3647,16 +5036,21 @@
         ".reveal"
       );
 
+
     if (
       "IntersectionObserver" in window
     ) {
 
       const revealObserver =
         new IntersectionObserver(
-          function (entries) {
+          function (
+            entries
+          ) {
 
             entries.forEach(
-              function (entry) {
+              function (
+                entry
+              ) {
 
                 if (
                   entry.isIntersecting
@@ -3665,6 +5059,7 @@
                   entry.target.classList.add(
                     "visible"
                   );
+
 
                   revealObserver.unobserve(
                     entry.target
@@ -3681,8 +5076,11 @@
           }
         );
 
+
       revealElements.forEach(
-        function (element) {
+        function (
+          element
+        ) {
 
           revealObserver.observe(
             element
@@ -3691,10 +5089,13 @@
         }
       );
 
+
     } else {
 
       revealElements.forEach(
-        function (element) {
+        function (
+          element
+        ) {
 
           element.classList.add(
             "visible"
@@ -3704,6 +5105,14 @@
       );
 
     }
+
+
+    /* =======================================================
+       INITIAL STATE
+       ======================================================= */
+
+    updateConnectionMethod();
+    updateTargetSummary();
 
   </script>
 
