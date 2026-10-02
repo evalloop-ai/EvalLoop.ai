@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Knowledge — EvalLoop AI</title>
+
+  <meta
+    name="description"
+    content="Learn AI evaluation, LLM evaluation, RAG, AI safety, benchmarks, and practical evaluation methodologies with EvalLoop AI."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+
+      --line: rgba(241, 241, 239, 0.14);
+      --line-soft: rgba(241, 241, 239, 0.08);
+
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "DM Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(62, 207, 142, 0.075),
+          transparent 35%
+        ),
+        var(--bg);
+
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.6;
+
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* BACKGROUND GRID */
+
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+
+      background-image:
+        linear-gradient(
+          rgba(241, 241, 239, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241, 241, 239, 0.025) 1px,
+          transparent 1px
+        );
+
+      background-size: 48px 48px;
+
+      mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        rgba(0, 0, 0, 0.55) 55%,
+        transparent 100%
+      );
+    }
+
+    .background-glow {
+      position: fixed;
+
+      width: 700px;
+      height: 700px;
+
+      left: 50%;
+      top: -500px;
+
+      transform: translateX(-50%);
+
+      z-index: -1;
+      pointer-events: none;
+
+      background: radial-gradient(
+        circle,
+        rgba(62, 207, 142, 0.085),
+        transparent 68%
+      );
+
+      filter: blur(10px);
+    }
+
+    /* HEADER */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+
+      border-bottom: 1px solid var(--line-soft);
+
+      background: rgba(16, 18, 17, 0.78);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-inner {
+      width: min(calc(100% - 48px), 1200px);
+      min-height: 76px;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 30px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: -0.04em;
+
+      white-space: nowrap;
+    }
+
+    .brand-cursor {
+      color: var(--green);
+    }
+    .brand-cursor {
+  color: var(--green);
+  animation: cursorBlink 1s steps(1, end) infinite;
+}
+
+@keyframes cursorBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+    
+    .back {
+      color: var(--muted);
+
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+
+      transition: color 0.25s ease;
+    }
+
+    .back:hover {
+      color: var(--green2);
+    }
+
+    /* MAIN */
+
+    main {
+      width: min(calc(100% - 48px), 1200px);
+
+      min-height: calc(100vh - 153px);
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+
+      padding: 100px 0;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 850px;
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      color: var(--green2);
+
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.10em;
+    }
+
+    .kicker-line {
+      width: 26px;
+      height: 1px;
+
+      background: var(--green);
+    }
+
+    h1 {
+      margin-top: 24px;
+
+      font-size: clamp(58px, 9vw, 105px);
+      line-height: 0.9;
+
+      font-weight: 300;
+      letter-spacing: -0.05em;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .description {
+      max-width: 650px;
+
+      margin-top: 30px;
+
+      color: var(--muted);
+
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* STATUS PANEL */
+
+    .status-panel {
+      margin-top: 50px;
+
+      max-width: 850px;
+
+      border: 1px solid var(--line);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(19, 38, 28, 0.55),
+          var(--panel)
+        );
+    }
+
+    .status-header {
+      min-height: 45px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 18px;
+
+      border-bottom: 1px solid var(--line-soft);
+
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.07em;
+    }
+
+    .status-title {
+      color: var(--muted);
+    }
+
+    .status-live {
+      color: var(--green);
+    }
+
+    .status-body {
+      padding: 28px;
+    }
+
+    .status-body p {
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .topics {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 22px;
+    }
+
+    .topic {
+      padding: 8px 11px;
+
+      border: 1px solid var(--line);
+
+      background: var(--panel2);
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .topic:first-child {
+      border-color: rgba(62, 207, 142, 0.35);
+      color: var(--green2);
+      background: rgba(62, 207, 142, 0.045);
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--line-soft);
+
+      padding: 22px 0;
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-inner {
+      width: min(calc(100% - 48px), 1200px);
+
+      margin: 0 auto;
+
+      display: flex;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 600px) {
+
+      .nav-inner,
+      main,
+      .footer-inner {
+        width: min(calc(100% - 32px), 1200px);
+      }
+
+      .nav-inner {
+        min-height: 66px;
+      }
+
+      main {
+        min-height: calc(100vh - 135px);
+
+        padding: 70px 0;
+      }
+
+      h1 {
+        font-size: clamp(52px, 16vw, 78px);
+      }
+
+      .description {
+        font-size: 14px;
+      }
+
+      .status-body {
+        padding: 22px 18px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before {
+        transition-duration: 0.001ms !important;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="background-grid"></div>
+  <div class="background-glow"></div>
+
+  <header class="site-header">
+
+    <div class="nav-inner">
+
+      <a href="/" class="brand" aria-label="EvalLoop AI">EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
+
+      <a href="/" class="back">
+        ← BACK TO EVALLOOP AI
+      </a>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <section class="content">
+
+      <div class="kicker">
+        <span class="kicker-line"></span>
+        KNOWLEDGE
+      </div>
+
+      <h1>
+        Learn.<br>
+        <span>Evaluate.</span>
+      </h1>
+
+      <p class="description">
+        A practical knowledge hub for understanding AI evaluation,
+        LLM quality, RAG evaluation, safety, benchmarks, agents,
+        multimodal systems, and the methods used to measure AI quality.
+      </p>
+
+      <div class="status-panel">
+
+        <div class="status-header">
+
+          <span class="status-title">
+            KNOWLEDGE SYSTEM
+          </span>
+
+          <span class="status-live">
+            ● BUILDING
+          </span>
+
+        </div>
+
+        <div class="status-body">
+
+          <p>
+            Structured learning content will be added here progressively,
+            from evaluation fundamentals to advanced AI quality methodologies.
+          </p>
+
+          <div class="topics">
+
+            <span class="topic">
+              AI EVALUATION
+            </span>
+
+            <span class="topic">
+              LLM QUALITY
+            </span>
+
+            <span class="topic">
+              RAG EVALUATION
+            </span>
+
+            <span class="topic">
+              AI SAFETY
+            </span>
+
+            <span class="topic">
+              BENCHMARKS
+            </span>
+
+            <span class="topic">
+              AGENT EVALUATION
+            </span>
+
+            <span class="topic">
+              MULTIMODAL
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <span>
+        © 2026 EvalLoop AI
+      </span>
+
+      <span>
+        BUILT FOR BETTER AI
+      </span>
+
+      <span>
+        HYDERABAD · INDIA
+      </span>
+
+    </div>
+
+  </footer>
+
+</body>
+</html>
