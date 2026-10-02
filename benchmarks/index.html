@@ -3497,93 +3497,128 @@
     }
 
 
-   /* =======================================================
-       CONNECTION METHOD
-       ======================================================= */
+  /* =======================================================
+   CONNECTION METHOD
+   ======================================================= */
 
-    const connectionInputs =
-      document.querySelectorAll(
-        'input[name="connectionMethod"]'
-      );
+const connectionInputs =
+  document.querySelectorAll(
+    'input[name="connectionMethod"]'
+  );
 
-    function updateConnectionMethod() {
 
-      const selected =
-        document.querySelector(
-          'input[name="connectionMethod"]:checked'
-        );
+const uploadPanel =
+  document.getElementById("uploadPanel");
 
-      if (!selected) {
-        return;
-      }
 
-      const method =
-        selected.value;
+function updateConnectionMethod() {
 
-      if (
-        method === "upload"
-      ) {
+  const selected =
+    document.querySelector(
+      'input[name="connectionMethod"]:checked'
+    );
 
-        if (endpointField) {
-          endpointField.style.display =
-            "none";
-        }
 
-        if (apiKeyField) {
-          apiKeyField.style.display =
-            "none";
-        }
+  if (!selected) {
+    return;
+  }
 
-        if (connectionMessage) {
 
-          connectionMessage.textContent =
-            "Response upload mode selected. File upload will be enabled in the benchmark backend.";
+  const method =
+    selected.value;
 
-          connectionMessage.className =
-            "connection-message";
 
-        }
+  if (method === "upload") {
 
-      } else {
+    /* Hide API fields */
 
-        if (endpointField) {
-          endpointField.style.display =
-            "";
-        }
+    if (endpointField) {
+      endpointField.style.display = "none";
+    }
 
-        if (apiKeyField) {
-          apiKeyField.style.display =
-            "";
-        }
+    if (apiKeyField) {
+      apiKeyField.style.display = "none";
+    }
 
-        if (connectionMessage) {
 
-          connectionMessage.textContent =
-            "Connection verification will be enabled when the benchmark backend is connected.";
+    /* Show upload panel */
 
-          connectionMessage.className =
-            "connection-message";
+    if (uploadPanel) {
+      uploadPanel.hidden = false;
+    }
 
-        }
 
-      }
+    /* Update connection message */
+
+    if (connectionMessage) {
+
+      connectionMessage.textContent =
+        "Upload a CSV or JSON file containing the responses from your AI system.";
+
+      connectionMessage.className =
+        "connection-message";
 
     }
 
-    connectionInputs.forEach(
-      function (input) {
+  } else {
 
-        input.addEventListener(
-          "change",
-          updateConnectionMethod
-        );
+    /* Hide upload panel */
 
-      }
+    if (uploadPanel) {
+      uploadPanel.hidden = true;
+    }
+
+
+    /* Show API fields */
+
+    if (endpointField) {
+      endpointField.style.display = "";
+    }
+
+    if (apiKeyField) {
+      apiKeyField.style.display = "";
+    }
+
+
+    /* Update connection message */
+
+    if (connectionMessage) {
+
+      connectionMessage.textContent =
+        "Connection verification will be enabled when the benchmark backend is connected.";
+
+      connectionMessage.className =
+        "connection-message";
+
+    }
+
+  }
+
+}
+
+
+/* Listen for connection method changes */
+
+connectionInputs.forEach(
+  function (input) {
+
+    input.addEventListener(
+      "change",
+      updateConnectionMethod
     );
 
-    /* =======================================================
-       TARGET NAME → SUMMARY
-       ======================================================= */
+  }
+);
+
+
+/* Set correct state when page loads */
+
+updateConnectionMethod();
+
+
+/* =======================================================
+   TARGET NAME → SUMMARY
+   ======================================================= */
     function updateTargetSummary() {
 
       const name =
