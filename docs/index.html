@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+
+<meta
+name=“viewport”
+content=“width=device-width, initial-scale=1.0”
+
   <title>Docs — EvalLoop AI</title>
-  <link rel="canonical" href="https://evalloop.ai/docs/" />
-  <link rel="stylesheet" href="/style.css" />
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  />
+
+<meta
+name=“description”
+content=“EvalLoop AI documentation for AI evaluation, evaluation dimensions, EVP profiles, benchmarks, and APIs.”
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
     crossorigin
-  />
+  >
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  />
+  >
   <style>
     /* =========================================================
-       DOCS PAGE
-       EvalLoop AI Design System
+       DOCS PAGE ONLY
+       Do NOT modify global navbar styles here.
        ========================================================= */
     .docs-page {
-      padding-top: 110px;
+      padding-top: 1px;
     }
-    /* ---------------------------------------------------------
-       HERO
-       --------------------------------------------------------- */
     .docs-hero {
-      padding: 90px 0 70px;
-      border-bottom: 1px solid var(--line-soft);
-    }
-    .docs-hero-inner {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 120px 24px 90px;
     }
     .docs-kicker {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .12em;
+      font-size: 11px;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--green);
     }
@@ -57,86 +56,89 @@
       background: var(--green);
       box-shadow:
         0 0 0 5px rgba(62,207,142,.08),
-        0 0 18px rgba(62,207,142,.35);
+        0 0 18px rgba(62,207,142,.30);
     }
-    .docs-hero h1 {
+    .docs-title {
       max-width: 900px;
-      margin: 0 0 22px;
-      font-size: clamp(48px, 7vw, 88px);
-      line-height: .98;
-      letter-spacing: -.055em;
+      margin: 0;
+      font-size: clamp(52px, 8vw, 94px);
+      line-height: .96;
+      letter-spacing: -.06em;
       font-weight: 400;
       color: var(--ink);
     }
-    .docs-hero h1 span {
+    .docs-title span {
       color: var(--green);
     }
-    .docs-hero-copy {
-      max-width: 680px;
-      margin: 0;
+    .docs-intro {
+      max-width: 700px;
+      margin: 28px 0 0;
       font-size: 18px;
       line-height: 1.7;
       color: var(--muted);
     }
-    .docs-hero-actions {
+    .docs-actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 34px;
     }
-    /* ---------------------------------------------------------
-       DOCUMENTATION LAYOUT
-       --------------------------------------------------------- */
-    .docs-layout {
+    /* =========================================================
+       MAIN DOCUMENTATION AREA
+       ========================================================= */
+    .docs-main {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 70px 24px 110px;
+      padding:
+        0 24px 120px;
       display: grid;
-      grid-template-columns: 250px minmax(0, 1fr);
+      grid-template-columns:
+        220px minmax(0, 1fr);
       gap: 70px;
     }
-    /* ---------------------------------------------------------
+    /* =========================================================
        SIDEBAR
-       --------------------------------------------------------- */
+       ========================================================= */
     .docs-sidebar {
       position: sticky;
       top: 110px;
       align-self: start;
     }
-    .docs-sidebar-label {
-      margin-bottom: 18px;
+    .docs-sidebar-title {
+      margin-bottom: 16px;
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--dim);
     }
-    .docs-sidebar nav {
+    .docs-sidebar-list {
       display: flex;
       flex-direction: column;
       border-left: 1px solid var(--line);
     }
-    .docs-sidebar a {
+    .docs-sidebar-list a {
       position: relative;
-      display: block;
-      padding: 9px 16px;
+      padding: 10px 14px;
       font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
+      font-size: 11px;
       text-decoration: none;
+      color: var(--muted);
       transition:
         color .2s var(--ease),
         background .2s var(--ease);
     }
-    .docs-sidebar a:hover {
+    .docs-sidebar-list a:hover {
       color: var(--green);
-      background: rgba(62,207,142,.04);
+      background:
+        rgba(62,207,142,.04);
     }
-    .docs-sidebar a.active {
+    .docs-sidebar-list a.active {
       color: var(--green);
-      background: rgba(62,207,142,.06);
+      background:
+        rgba(62,207,142,.06);
     }
-    .docs-sidebar a.active::before {
+    .docs-sidebar-list a.active::before {
       content: "";
       position: absolute;
       left: -1px;
@@ -145,155 +147,159 @@
       width: 2px;
       background: var(--green);
     }
-    /* ---------------------------------------------------------
-       CONTENT
-       --------------------------------------------------------- */
+    /* =========================================================
+       DOCUMENT CONTENT
+       ========================================================= */
     .docs-content {
       min-width: 0;
     }
     .docs-section {
-      padding-bottom: 85px;
-      margin-bottom: 85px;
-      border-bottom: 1px solid var(--line-soft);
+      padding-bottom: 80px;
+      margin-bottom: 80px;
+      border-bottom:
+        1px solid var(--line-soft);
     }
     .docs-section:last-child {
       margin-bottom: 0;
       border-bottom: 0;
     }
-    .docs-section-number {
+    .docs-number {
       margin-bottom: 12px;
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .12em;
+      font-size: 10px;
+      letter-spacing: .14em;
       color: var(--green);
     }
-    .docs-section h2 {
+    .docs-heading {
       margin: 0 0 18px;
-      font-size: clamp(30px, 4vw, 46px);
+      font-size: clamp(32px, 4vw, 48px);
       line-height: 1.05;
-      letter-spacing: -.04em;
+      letter-spacing: -.045em;
       font-weight: 400;
       color: var(--ink);
     }
-    .docs-section h3 {
-      margin: 38px 0 12px;
-      font-size: 21px;
-      line-height: 1.2;
-      font-weight: 500;
-      color: var(--ink);
-    }
-    .docs-section p {
+    .docs-text {
       max-width: 760px;
       margin: 0 0 18px;
       font-size: 15px;
       line-height: 1.75;
       color: var(--muted);
     }
-    .docs-section p:last-child {
-      margin-bottom: 0;
-    }
-    .docs-section strong {
+    .docs-text strong {
       color: var(--ink);
       font-weight: 500;
     }
-    /* ---------------------------------------------------------
-       QUICK START CARDS
-       --------------------------------------------------------- */
-    .docs-grid {
+    /* =========================================================
+       CARDS
+       ========================================================= */
+    .docs-cards {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
       gap: 14px;
       margin-top: 34px;
     }
     .docs-card {
-      padding: 25px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(23,27,24,.72);
+      padding: 24px;
+      border:
+        1px solid var(--line);
+      border-radius: 12px;
+      background:
+        rgba(23,27,24,.70);
       transition:
         border-color .25s var(--ease),
         transform .25s var(--ease),
         background .25s var(--ease);
     }
     .docs-card:hover {
-      border-color: rgba(62,207,142,.35);
-      background: rgba(29,34,31,.85);
-      transform: translateY(-2px);
+      border-color:
+        rgba(62,207,142,.30);
+      background:
+        rgba(29,34,31,.80);
+      transform:
+        translateY(-2px);
     }
-    .docs-card-number {
-      margin-bottom: 22px;
+    .docs-card-label {
+      margin-bottom: 20px;
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10px;
+      letter-spacing: .08em;
       color: var(--green);
     }
-    .docs-card h3 {
-      margin: 0 0 10px;
+    .docs-card-title {
+      margin: 0 0 9px;
       font-size: 18px;
       font-weight: 500;
+      color: var(--ink);
     }
-    .docs-card p {
+    .docs-card-text {
       margin: 0;
       font-size: 13px;
       line-height: 1.65;
+      color: var(--muted);
     }
-    /* ---------------------------------------------------------
-       ARCHITECTURE FLOW
-       --------------------------------------------------------- */
-    .docs-flow {
-      margin-top: 34px;
+    /* =========================================================
+       ARCHITECTURE
+       ========================================================= */
+    .docs-architecture {
+      margin-top: 32px;
       padding: 30px;
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
       background: var(--panel);
       overflow-x: auto;
     }
-    .docs-flow-row {
-      min-width: 620px;
+    .docs-architecture-track {
+      min-width: 650px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
-    .docs-flow-node {
-      min-width: 105px;
-      padding: 15px 13px;
+    .docs-node {
+      min-width: 110px;
+      padding: 15px 12px;
       text-align: center;
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
       background: var(--panel2);
     }
-    .docs-flow-node strong {
+    .docs-node strong {
       display: block;
       margin-bottom: 5px;
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .04em;
+      font-size: 10px;
+      color: var(--ink);
     }
-    .docs-flow-node span {
-      display: block;
-      font-size: 11px;
+    .docs-node span {
+      font-size: 10px;
       color: var(--dim);
     }
-    .docs-flow-arrow {
-      color: var(--green);
+    .docs-arrow {
       font-family: var(--mono);
-      font-size: 18px;
+      font-size: 17px;
+      color: var(--green);
     }
-    /* ---------------------------------------------------------
-       DIMENSION LIST
-       --------------------------------------------------------- */
+    /* =========================================================
+       DIMENSIONS
+       ========================================================= */
     .docs-dimensions {
       margin-top: 32px;
-      border-top: 1px solid var(--line);
+      border-top:
+        1px solid var(--line);
     }
     .docs-dimension {
       display: grid;
-      grid-template-columns: 42px 190px minmax(0, 1fr);
+      grid-template-columns:
+        40px 190px minmax(0,1fr);
       gap: 20px;
-      padding: 21px 0;
-      border-bottom: 1px solid var(--line-soft);
+      padding: 20px 0;
+      border-bottom:
+        1px solid var(--line-soft);
     }
     .docs-dimension-number {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10px;
       color: var(--green);
     }
     .docs-dimension-name {
@@ -301,41 +307,45 @@
       font-weight: 500;
       color: var(--ink);
     }
-    .docs-dimension-description {
+    .docs-dimension-text {
       font-size: 13px;
       line-height: 1.6;
       color: var(--muted);
     }
-    /* ---------------------------------------------------------
+    /* =========================================================
        EVP TABLE
-       --------------------------------------------------------- */
-    .docs-evps {
+       ========================================================= */
+    .docs-table {
       margin-top: 32px;
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
       overflow-x: auto;
     }
-    .docs-evp-row {
+    .docs-table-row {
       display: grid;
-      grid-template-columns: 180px 1fr 120px;
-      min-width: 560px;
-      border-bottom: 1px solid var(--line-soft);
+      grid-template-columns:
+        180px minmax(220px,1fr) 120px;
+      min-width: 540px;
+      border-bottom:
+        1px solid var(--line-soft);
     }
-    .docs-evp-row:last-child {
+    .docs-table-row:last-child {
       border-bottom: 0;
     }
-    .docs-evp-row > div {
-      padding: 17px 18px;
+    .docs-table-cell {
+      padding: 17px;
       font-size: 13px;
-      border-right: 1px solid var(--line-soft);
+      border-right:
+        1px solid var(--line-soft);
     }
-    .docs-evp-row > div:last-child {
+    .docs-table-cell:last-child {
       border-right: 0;
     }
-    .docs-evp-header {
+    .docs-table-header {
       background: var(--panel2);
       font-family: var(--mono);
-      font-size: 10px !important;
-      letter-spacing: .08em;
+      font-size: 9px;
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--dim);
     }
@@ -343,28 +353,105 @@
       font-family: var(--mono);
       color: var(--green);
     }
-    .docs-status-current {
+    .docs-current {
       color: var(--green);
     }
-    .docs-status-soon {
+    .docs-coming {
       color: var(--dim);
     }
-    /* ---------------------------------------------------------
-       CODE BLOCK
-       --------------------------------------------------------- */
+    /* =========================================================
+       BENCHMARK FLOW
+       ========================================================= */
+    .docs-benchmark {
+      display: grid;
+      grid-template-columns:
+        repeat(5, minmax(0,1fr));
+      margin-top: 32px;
+      border:
+        1px solid var(--line);
+    }
+    .docs-benchmark-step {
+      min-height: 130px;
+      padding: 20px;
+      background: var(--panel);
+      border-right:
+        1px solid var(--line-soft);
+    }
+    .docs-benchmark-step:last-child {
+      border-right: 0;
+    }
+    .docs-benchmark-number {
+      margin-bottom: 25px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--green);
+    }
+    .docs-benchmark-title {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .docs-benchmark-text {
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--dim);
+    }
+    /* =========================================================
+       API
+       ========================================================= */
+    .docs-endpoint {
+      margin-top: 30px;
+      border:
+        1px solid var(--line);
+      background: var(--panel);
+    }
+    .docs-endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      border-bottom:
+        1px solid var(--line-soft);
+    }
+    .docs-method {
+      padding: 5px 8px;
+      border:
+        1px solid rgba(62,207,142,.25);
+      background:
+        var(--darkgreen);
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--green);
+    }
+    .docs-path {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink);
+    }
+    .docs-endpoint-body {
+      padding: 18px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    /* =========================================================
+       CODE
+       ========================================================= */
     .docs-code {
-      position: relative;
-      margin: 28px 0;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
+      margin-top: 24px;
+      padding: 22px;
+      border:
+        1px solid var(--line);
+      border-radius: 9px;
       background: #0b0d0c;
       overflow-x: auto;
     }
     .docs-code-label {
-      margin-bottom: 17px;
+      margin-bottom: 15px;
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--green);
@@ -373,206 +460,130 @@
       margin: 0;
       font-family: var(--mono);
       font-size: 12px;
-      line-height: 1.75;
+      line-height: 1.7;
       color: #c8cec9;
     }
-    .code-green {
+    .docs-code-green {
       color: var(--green2);
     }
-    .code-muted {
-      color: var(--dim);
-    }
-    /* ---------------------------------------------------------
-       API ENDPOINT
-       --------------------------------------------------------- */
-    .docs-endpoint {
-      margin-top: 28px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-    .docs-endpoint-top {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 15px 18px;
-      border-bottom: 1px solid var(--line-soft);
-    }
-    .docs-method {
-      padding: 5px 8px;
-      border: 1px solid rgba(62,207,142,.28);
-      background: var(--darkgreen);
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--green);
-    }
-    .docs-path {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--ink);
-    }
-    .docs-endpoint-body {
-      padding: 20px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-    /* ---------------------------------------------------------
+    /* =========================================================
        NOTICE
-       --------------------------------------------------------- */
+       ========================================================= */
     .docs-notice {
       display: flex;
       gap: 14px;
       margin-top: 28px;
       padding: 20px;
-      border: 1px solid rgba(62,207,142,.2);
-      background: rgba(19,38,28,.45);
+      border:
+        1px solid rgba(62,207,142,.20);
+      background:
+        rgba(19,38,28,.40);
     }
-    .docs-notice-mark {
-      flex: 0 0 auto;
-      color: var(--green);
-      font-family: var(--mono);
-    }
-    .docs-notice p {
-      margin: 0;
-      font-size: 13px;
-    }
-    /* ---------------------------------------------------------
-       BENCHMARK ARCHITECTURE
-       --------------------------------------------------------- */
-    .docs-benchmark-flow {
-      margin-top: 32px;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      border: 1px solid var(--line);
-    }
-    .docs-benchmark-step {
-      min-height: 130px;
-      padding: 22px;
-      border-right: 1px solid var(--line-soft);
-      background: var(--panel);
-    }
-    .docs-benchmark-step:last-child {
-      border-right: 0;
-    }
-    .docs-benchmark-step-number {
-      margin-bottom: 28px;
+    .docs-notice-label {
+      flex-shrink: 0;
       font-family: var(--mono);
       font-size: 10px;
       color: var(--green);
     }
-    .docs-benchmark-step strong {
-      display: block;
-      margin-bottom: 7px;
+    .docs-notice-text {
+      margin: 0;
       font-size: 13px;
-      font-weight: 500;
+      line-height: 1.65;
+      color: var(--muted);
     }
-    .docs-benchmark-step span {
-      font-size: 11px;
-      line-height: 1.5;
-      color: var(--dim);
-    }
-    /* ---------------------------------------------------------
-       FOOTER NOTE
-       --------------------------------------------------------- */
-    .docs-end-note {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid var(--line-soft);
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--dim);
-    }
-    /* ---------------------------------------------------------
+    /* =========================================================
        RESPONSIVE
-       --------------------------------------------------------- */
+       ========================================================= */
     @media (max-width: 1050px) {
-      .docs-layout {
-        grid-template-columns: 210px minmax(0, 1fr);
-        gap: 45px;
+      .docs-main {
+        grid-template-columns:
+          190px minmax(0,1fr);
+        gap: 40px;
       }
-      .docs-benchmark-flow {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .docs-benchmark {
+        grid-template-columns:
+          repeat(2, minmax(0,1fr));
       }
       .docs-benchmark-step:nth-child(2) {
         border-right: 0;
       }
       .docs-benchmark-step:nth-child(-n+3) {
-        border-bottom: 1px solid var(--line-soft);
+        border-bottom:
+          1px solid var(--line-soft);
       }
     }
     @media (max-width: 800px) {
-      .docs-page {
-        padding-top: 80px;
-      }
       .docs-hero {
-        padding: 65px 0 50px;
+        padding:
+          90px 20px 65px;
       }
-      .docs-layout {
+      .docs-main {
         display: block;
-        padding-top: 50px;
+        padding:
+          0 20px 90px;
       }
       .docs-sidebar {
         position: relative;
         top: auto;
-        margin-bottom: 50px;
+        margin-bottom: 55px;
       }
-      .docs-sidebar nav {
+      .docs-sidebar-list {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        border: 1px solid var(--line);
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+        border:
+          1px solid var(--line);
       }
-      .docs-sidebar a {
-        border-bottom: 1px solid var(--line-soft);
+      .docs-sidebar-list a {
+        border-bottom:
+          1px solid var(--line-soft);
       }
-      .docs-sidebar a:nth-child(odd) {
-        border-right: 1px solid var(--line-soft);
+      .docs-sidebar-list a:nth-child(odd) {
+        border-right:
+          1px solid var(--line-soft);
       }
-      .docs-sidebar a.active::before {
+      .docs-sidebar-list a.active::before {
         left: 0;
       }
-      .docs-grid {
+      .docs-cards {
         grid-template-columns: 1fr;
       }
       .docs-dimension {
-        grid-template-columns: 35px 1fr;
+        grid-template-columns:
+          35px 1fr;
       }
-      .docs-dimension-description {
+      .docs-dimension-text {
         grid-column: 2;
       }
     }
     @media (max-width: 520px) {
-      .docs-hero h1 {
-        font-size: 48px;
+      .docs-title {
+        font-size: 50px;
       }
-      .docs-hero-copy {
+      .docs-intro {
         font-size: 15px;
       }
-      .docs-layout {
-        padding-left: 18px;
-        padding-right: 18px;
+      .docs-hero {
+        padding:
+          75px 18px 55px;
       }
-      .docs-hero-inner {
-        padding-left: 18px;
-        padding-right: 18px;
+      .docs-main {
+        padding:
+          0 18px 80px;
       }
-      .docs-sidebar nav {
+      .docs-sidebar-list {
         grid-template-columns: 1fr;
       }
-      .docs-sidebar a:nth-child(odd) {
+      .docs-sidebar-list a:nth-child(odd) {
         border-right: 0;
       }
-      .docs-flow {
-        padding: 18px;
-      }
-      .docs-code {
-        padding: 18px;
-      }
-      .docs-benchmark-flow {
+      .docs-benchmark {
         grid-template-columns: 1fr;
       }
       .docs-benchmark-step {
         border-right: 0;
-        border-bottom: 1px solid var(--line-soft);
+        border-bottom:
+          1px solid var(--line-soft);
       }
       .docs-benchmark-step:last-child {
         border-bottom: 0;
@@ -581,954 +592,1018 @@
   </style>
 </head>
 <body>
-  <!-- =========================================================
-       BACKGROUND
-       ========================================================= -->
-  <div class="background-grid"></div>
-  <!-- =========================================================
-       PAGE PROGRESS
-       ========================================================= -->
-  <div class="page-progress" id="pageProgress"></div>
-  <!-- =========================================================
-       ANNOUNCEMENT
-       ========================================================= -->
-  <div class="announcement-bar">
-    <span>EVP.Aureon</span>
-    <span>General Purpose Evaluation</span>
-    <span class="announcement-dot"></span>
-    <span>Evaluation infrastructure for better AI</span>
-  </div>
-  <!-- =========================================================
-       HEADER
-       ========================================================= -->
-  <header class="site-header">
+<!-- =========================================================
+     BACKGROUND
+     ========================================================= -->
+<div class="background-grid"></div>
+<div
+  class="page-progress"
+  id="pageProgress"
+></div>
+<!-- =========================================================
+     ANNOUNCEMENT
+     ========================================================= -->
+<div class="announcement-bar">
+  <span>EVP.Aureon</span>
+  <span>General Purpose Evaluation</span>
+  <span class="announcement-dot"></span>
+  <span>Evaluation infrastructure for better AI</span>
+</div>
+<!-- =========================================================
+     EXACT WORKING NAVBAR
+     ========================================================= -->
+<header class="site-header">
 <div class="header-inner">
-  <a
-    href="/"
-    class="brand"
-    aria-label="EvalLoop AI"
-  >
-    EvalLoop AI<span class="brand-cursor">_</span>
+
+<a
+href=”/”
+class=“brand”
+aria-label=“EvalLoop AI”
+
+EvalLoop AI<span class="brand-cursor">_</span>
   </a>
   <nav class="desktop-nav">
-    <a href="/app/">Evaluate</a>
-    <a href="/knowledge/">Knowledge</a>
-    <a href="/labs/">Labs</a>
-    <a href="/benchmarks/">Benchmarks</a>
-    <a
-      href="/docs/"
-      class="active"
-    >
-      Docs
-    </a>
-    <a href="/pricing/">Pricing</a>
+<a href="/app/">
+  Evaluate
+</a>
+<a href="/knowledge/">
+  Knowledge
+</a>
+<a href="/labs/">
+  Labs
+</a>
+<a href="/benchmarks/">
+  Benchmarks
+</a>
+<a
+  href="/docs/"
+  class="active"
+>
+  Docs
+</a>
+<a href="/pricing/">
+  Pricing
+</a>
   </nav>
   <div class="header-actions">
-    <a
-      href="/login/"
-      class="header-login"
-    >
-      Login
-    </a>
-    <a
-      href="/signup/"
-      class="button button-small"
-    >
-      Sign up
-    </a>
+<a
+  href="/login/"
+  class="header-login"
+>
+  Login
+</a>
+<a
+  href="/signup/"
+  class="button button-small"
+>
+  Sign up
+</a>
   </div>
-  <button
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    aria-label="Open navigation"
-    aria-expanded="false"
-  >
-    <span></span>
-    <span></span>
+
+<button
+class=“mobile-menu-button”
+id=“mobileMenuButton”
+aria-label=“Open navigation”
+aria-expanded=“false”
+
+<span></span>
+<span></span>
   </button>
 </div>
 <div
   class="mobile-nav"
   id="mobileNav"
 >
-  <a href="/app/">Evaluate</a>
-  <a href="/knowledge/">Knowledge</a>
-  <a href="/labs/">Labs</a>
-  <a href="/benchmarks/">Benchmarks</a>
-  <a href="/docs/">Docs</a>
-  <a href="/pricing/">Pricing</a>
-  <a href="/login/">Login</a>
-  <a href="/signup/">Sign up</a>
+
+Evaluate
+
+Knowledge
+
+Labs
+
+Benchmarks
+
+Docs
+
+Pricing
+
+Login
+
+Sign up
+
 </div>
-  </header>
-  <main class="docs-page">
-<!-- =======================================================
+</header>
+<!-- =========================================================
+     DOCS
+     ========================================================= -->
+<main class="docs-page">
+<!-- =========================================================
      HERO
-     ======================================================= -->
+     ========================================================= -->
 <section class="docs-hero">
-  <div class="docs-hero-inner">
-    <div class="docs-kicker">
-      Documentation
-    </div>
-    <h1>
-      Build with
-      <span>evaluation.</span>
-    </h1>
-    <p class="docs-hero-copy">
-      Understand the EvalLoop AI evaluation architecture,
-      evaluation dimensions, EVP profiles, benchmark system,
-      and APIs used to measure AI quality.
-    </p>
-    <div class="docs-hero-actions">
-      <a
-        href="#getting-started"
-        class="button"
-      >
-        Get started
-      </a>
-      <a
-        href="#api"
-        class="button button-secondary"
-      >
-        API reference
-      </a>
-    </div>
+  <div class="docs-kicker">
+    EvalLoop AI Documentation
+  </div>
+  <h1 class="docs-title">
+    Build with
+    <span>evaluation.</span>
+  </h1>
+  <p class="docs-intro">
+    Understand the EvalLoop AI evaluation architecture,
+    evaluation dimensions, Evaluation Profiles, benchmark
+    workflows, and APIs used to measure AI quality.
+  </p>
+  <div class="docs-actions">
+<a
+  href="#getting-started"
+  class="button"
+>
+  Get started
+</a>
+<a
+  href="#api"
+  class="button button-secondary"
+>
+  API reference
+</a>
   </div>
 </section>
-<!-- =======================================================
-     DOCUMENTATION LAYOUT
-     ======================================================= -->
-<div class="docs-layout">
-  <!-- =====================================================
-       SIDEBAR
-       ===================================================== -->
-  <aside class="docs-sidebar">
-    <div class="docs-sidebar-label">
-      On this page
-    </div>
-    <nav>
-      <a
-        href="#getting-started"
-        class="active"
-      >
-        Getting Started
-      </a>
-      <a href="#evaluation">
-        Evaluation
-      </a>
-      <a href="#dimensions">
-        Dimensions
-      </a>
-      <a href="#evps">
-        EVP Profiles
-      </a>
-      <a href="#benchmarks">
-        Benchmarks
-      </a>
-      <a href="#api">
-        API
-      </a>
-      <a href="#security">
-        Security
-      </a>
-    </nav>
-  </aside>
-  <!-- =====================================================
-       CONTENT
-       ===================================================== -->
-  <article class="docs-content">
-    <!-- ===================================================
-         01 GETTING STARTED
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="getting-started"
-    >
-      <div class="docs-section-number">
-        01 / GETTING STARTED
-      </div>
-      <h2>
-        Start evaluating AI quality.
-      </h2>
-      <p>
-        EvalLoop AI is an evaluation platform designed to
-        measure the quality of AI-generated responses across
-        structured evaluation dimensions.
-      </p>
-      <p>
-        The platform separates the <strong>AI system being
-        tested</strong> from the <strong>evaluation engine</strong>.
-        This allows responses to be generated by a target
-        system and evaluated independently.
-      </p>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <div class="docs-card-number">
-            01
-          </div>
-          <h3>
-            Generate
-          </h3>
-          <p>
-            Your target AI system produces the response
-            that you want to evaluate.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            02
-          </div>
-          <h3>
-            Evaluate
-          </h3>
-          <p>
-            An EvalLoop evaluation engine analyzes the
-            response against defined quality dimensions.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            03
-          </div>
-          <h3>
-            Measure
-          </h3>
-          <p>
-            Individual dimension scores are combined into
-            a structured evaluation result.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            04
-          </div>
-          <h3>
-            Improve
-          </h3>
-          <p>
-            Use evaluation results to identify weaknesses,
-            compare versions, and improve AI quality.
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- ===================================================
-         02 EVALUATION
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="evaluation"
-    >
-      <div class="docs-section-number">
-        02 / EVALUATION
-      </div>
-      <h2>
-        How evaluation works.
-      </h2>
-      <p>
-        EvalLoop evaluates an AI response using an evaluation
-        engine and a defined set of quality dimensions.
-      </p>
-      <div class="docs-flow">
-        <div class="docs-flow-row">
-          <div class="docs-flow-node">
-            <strong>TARGET AI</strong>
-            <span>
-              System under test
-            </span>
-          </div>
-          <div class="docs-flow-arrow">
-            →
-          </div>
-          <div class="docs-flow-node">
-            <strong>RESPONSE</strong>
-            <span>
-              Generated output
-            </span>
-          </div>
-          <div class="docs-flow-arrow">
-            →
-          </div>
-          <div class="docs-flow-node">
-            <strong>EVP.AUREON</strong>
-            <span>
-              Evaluation engine
-            </span>
-          </div>
-          <div class="docs-flow-arrow">
-            →
-          </div>
-          <div class="docs-flow-node">
-            <strong>6 DIMENSIONS</strong>
-            <span>
-              Quality analysis
-            </span>
-          </div>
-          <div class="docs-flow-arrow">
-            →
-          </div>
-          <div class="docs-flow-node">
-            <strong>RESULT</strong>
-            <span>
-              Scores + analysis
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="docs-notice">
-        <div class="docs-notice-mark">
-          INFO
-        </div>
-        <p>
-          EVP.Aureon is the current general-purpose
-          evaluation profile used by EvalLoop. Evaluation
-          profiles are evaluation engines built on top of
-          underlying AI models; they are not represented as
-          independently trained proprietary foundation models.
-        </p>
-      </div>
-    </section>
-    <!-- ===================================================
-         03 DIMENSIONS
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="dimensions"
-    >
-      <div class="docs-section-number">
-        03 / DIMENSIONS
-      </div>
-      <h2>
-        Six quality dimensions.
-      </h2>
-      <p>
-        The current general-purpose evaluation system analyzes
-        responses across six dimensions.
-      </p>
-      <div class="docs-dimensions">
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            01
-          </div>
-          <div class="docs-dimension-name">
-            Factuality
-          </div>
-          <div class="docs-dimension-description">
-            Measures whether claims in the response are
-            factually supported and free from significant
-            inaccuracies.
-          </div>
-        </div>
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            02
-          </div>
-          <div class="docs-dimension-name">
-            Instruction Following
-          </div>
-          <div class="docs-dimension-description">
-            Measures how accurately the response follows
-            the explicit requirements of the prompt.
-          </div>
-        </div>
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            03
-          </div>
-          <div class="docs-dimension-name">
-            Relevance
-          </div>
-          <div class="docs-dimension-description">
-            Measures whether the response stays focused on
-            the requested task and avoids unnecessary content.
-          </div>
-        </div>
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            04
-          </div>
-          <div class="docs-dimension-name">
-            Completeness
-          </div>
-          <div class="docs-dimension-description">
-            Measures whether the response sufficiently covers
-            the important requirements of the task.
-          </div>
-        </div>
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            05
-          </div>
-          <div class="docs-dimension-name">
-            Safety
-          </div>
-          <div class="docs-dimension-description">
-            Measures whether the response introduces
-            meaningful safety, policy, or harmful-content
-            concerns.
-          </div>
-        </div>
-        <div class="docs-dimension">
-          <div class="docs-dimension-number">
-            06
-          </div>
-          <div class="docs-dimension-name">
-            Fluency
-          </div>
-          <div class="docs-dimension-description">
-            Measures clarity, readability, grammar, and
-            overall linguistic quality.
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- ===================================================
-         04 EVP PROFILES
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="evps"
-    >
-      <div class="docs-section-number">
-        04 / EVALUATION PROFILES
-      </div>
-      <h2>
-        EVP evaluation profiles.
-      </h2>
-      <p>
-        EvalLoop Evaluation Profiles provide specialized
-        evaluation capabilities for different AI quality
-        scenarios.
-      </p>
-      <div class="docs-evps">
-        <div class="docs-evp-row">
-          <div class="docs-evp-header">
-            Profile
-          </div>
-          <div class="docs-evp-header">
-            Purpose
-          </div>
-          <div class="docs-evp-header">
-            Status
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Aureon
-          </div>
-          <div>
-            General Purpose Evaluation
-          </div>
-          <div class="docs-status-current">
-            CURRENT
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Lunara
-          </div>
-          <div>
-            Reasoning Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Aethera
-          </div>
-          <div>
-            RAG Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Vespera
-          </div>
-          <div>
-            Safety Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Nebryx
-          </div>
-          <div>
-            Multimodal Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Celestia
-          </div>
-          <div>
-            Agent Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Nexora
-          </div>
-          <div>
-            Evaluation Orchestrator
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-        <div class="docs-evp-row">
-          <div class="docs-evp-name">
-            EVP.Stellara
-          </div>
-          <div>
-            Benchmark Evaluation
-          </div>
-          <div class="docs-status-soon">
-            COMING SOON
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- ===================================================
-         05 BENCHMARKS
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="benchmarks"
-    >
-      <div class="docs-section-number">
-        05 / BENCHMARKS
-      </div>
-      <h2>
-        Benchmark AI systems.
-      </h2>
-      <p>
-        The EvalLoop benchmark system is designed to evaluate
-        responses generated by a target AI system against a
-        structured benchmark dataset.
-      </p>
-      <div class="docs-benchmark-flow">
-        <div class="docs-benchmark-step">
-          <div class="docs-benchmark-step-number">
-            01
-          </div>
-          <strong>
-            TARGET AI
-          </strong>
-          <span>
-            Connect the system you want to evaluate.
-          </span>
-        </div>
-        <div class="docs-benchmark-step">
-          <div class="docs-benchmark-step-number">
-            02
-          </div>
-          <strong>
-            GENERATE
-          </strong>
-          <span>
-            The target system generates responses.
-          </span>
-        </div>
-        <div class="docs-benchmark-step">
-          <div class="docs-benchmark-step-number">
-            03
-          </div>
-          <strong>
-            DATASET
-          </strong>
-          <span>
-            Responses are evaluated against benchmark tasks.
-          </span>
-        </div>
-        <div class="docs-benchmark-step">
-          <div class="docs-benchmark-step-number">
-            04
-          </div>
-          <strong>
-            EVALUATE
-          </strong>
-          <span>
-            An evaluation engine scores the responses.
-          </span>
-        </div>
-        <div class="docs-benchmark-step">
-          <div class="docs-benchmark-step-number">
-            05
-          </div>
-          <strong>
-            RESULTS
-          </strong>
-          <span>
-            Dimension scores and overall results are recorded.
-          </span>
-        </div>
-      </div>
-      <h3>
-        Supported target connection concepts
-      </h3>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <div class="docs-card-number">
-            API
-          </div>
-          <h3>
-            Custom API
-          </h3>
-          <p>
-            Connect an AI system through its own API endpoint
-            and authentication configuration.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            PROVIDER
-          </div>
-          <h3>
-            Provider API
-          </h3>
-          <p>
-            Configure a supported AI provider and model for
-            benchmark testing.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            FILE
-          </div>
-          <h3>
-            Upload Responses
-          </h3>
-          <p>
-            Provide previously generated responses using
-            supported CSV or JSON data.
-          </p>
-        </div>
-        <div class="docs-card">
-          <div class="docs-card-number">
-            ENGINE
-          </div>
-          <h3>
-            Evaluation Engine
-          </h3>
-          <p>
-            EVP.Aureon currently provides the general-purpose
-            evaluation layer for the benchmark workflow.
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- ===================================================
-         06 API
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="api"
-    >
-      <div class="docs-section-number">
-        06 / API
-      </div>
-      <h2>
-        Evaluation API.
-      </h2>
-      <p>
-        EvalLoop exposes an evaluation endpoint for sending an
-        AI response to the current general-purpose evaluator.
-      </p>
-      <div class="docs-endpoint">
-        <div class="docs-endpoint-top">
-          <span class="docs-method">
-            POST
-          </span>
-          <span class="docs-path">
-            /api/evaluate
-          </span>
-        </div>
-        <div class="docs-endpoint-body">
-          Evaluate an AI response across the six current
-          quality dimensions using EVP.Aureon.
-        </div>
-      </div>
-      <h3>
-        Request
-      </h3>
-      <div class="docs-code">
-        <div class="docs-code-label">
-          JSON
-        </div>
-<pre>{
-  <span class="code-green">"prompt"</span>: <span class="code-green">"Explain photosynthesis."</span>,
-  <span class="code-green">"response"</span>: <span class="code-green">"Photosynthesis is..."</span>
-}</pre>
-      </div>
-      <h3>
-        Evaluation response
-      </h3>
-      <div class="docs-code">
-        <div class="docs-code-label">
-          RESPONSE
-        </div>
-<pre>{
-  <span class="code-green">"evaluator"</span>: <span class="code-green">"EVP.Aureon"</span>,
-  <span class="code-green">"factuality"</span>: 9,
-  <span class="code-green">"instruction_following"</span>: 9,
-  <span class="code-green">"relevance"</span>: 9,
-  <span class="code-green">"completeness"</span>: 8,
-  <span class="code-green">"safety"</span>: 10,
-  <span class="code-green">"fluency"</span>: 9
-}</pre>
-      </div>
-      <div class="docs-notice">
-        <div class="docs-notice-mark">
-          API
-        </div>
-        <p>
-          API authentication and production request limits
-          may change as the EvalLoop API evolves. Refer to the
-          live API implementation for the currently supported
-          request contract.
-        </p>
-      </div>
-    </section>
-    <!-- ===================================================
-         07 SECURITY
-         =================================================== -->
-    <section
-      class="docs-section"
-      id="security"
-    >
-      <div class="docs-section-number">
-        07 / SECURITY
-      </div>
-      <h2>
-        Security and data handling.
-      </h2>
-      <p>
-        AI evaluation can involve sensitive prompts and
-        generated responses. EvalLoop is designed around
-        separating evaluation infrastructure from the target
-        AI system.
-      </p>
-      <h3>
-        API credentials
-      </h3>
-      <p>
-        API credentials used to connect target systems should
-        be treated as secrets and should not be exposed in
-        client-side code or publicly shared configuration.
-      </p>
-      <h3>
-        Evaluation data
-      </h3>
-      <p>
-        Evaluation requests may contain prompts and model
-        responses. Avoid submitting confidential or sensitive
-        information unless your deployment and data-handling
-        requirements permit it.
-      </p>
-      <h3>
-        Evaluation independence
-      </h3>
-      <p>
-        The target AI system and the evaluation engine serve
-        different roles. The benchmark architecture is
-        designed so that the system being tested can be
-        evaluated independently from the scoring layer.
-      </p>
-      <div class="docs-end-note">
-        EVALLOOP AI · DOCUMENTATION · HYDERABAD · INDIA
-      </div>
-    </section>
-  </article>
+<!-- =========================================================
+     DOCUMENTATION BODY
+     ========================================================= -->
+<div class="docs-main">
+<!-- =========================================================
+     SIDEBAR
+     ========================================================= -->
+<aside class="docs-sidebar">
+  <div class="docs-sidebar-title">
+    Documentation
+  </div>
+  <nav class="docs-sidebar-list">
+<a
+  href="#getting-started"
+  class="active"
+>
+  Getting Started
+</a>
+<a href="#evaluation">
+  Evaluation
+</a>
+<a href="#dimensions">
+  Dimensions
+</a>
+<a href="#evps">
+  EVP Profiles
+</a>
+<a href="#benchmarks">
+  Benchmarks
+</a>
+<a href="#api">
+  API
+</a>
+<a href="#security">
+  Security
+</a>
+  </nav>
+</aside>
+<!-- =========================================================
+     CONTENT
+     ========================================================= -->
+<div class="docs-content">
+<!-- =========================================================
+     01
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="getting-started"
+>
+  <div class="docs-number">
+    01 / GETTING STARTED
+  </div>
+  <h2 class="docs-heading">
+    Start evaluating AI quality.
+  </h2>
+  <p class="docs-text">
+    EvalLoop AI is an evaluation platform designed to
+    measure the quality of AI-generated responses across
+    structured evaluation dimensions.
+  </p>
+  <p class="docs-text">
+    The core architecture separates the
+    <strong>AI system being tested</strong>
+    from the
+    <strong>evaluation engine</strong>.
+    This allows responses to be evaluated independently.
+  </p>
+  <div class="docs-cards">
+<div class="docs-card">
+  <div class="docs-card-label">
+    01 / GENERATE
+  </div>
+  <h3 class="docs-card-title">
+    Generate
+  </h3>
+  <p class="docs-card-text">
+    Your target AI system produces the response
+    that you want to evaluate.
+  </p>
 </div>
-  </main>
-  <!-- =========================================================
-       FOOTER
-       ========================================================= -->
-  <footer class="site-footer">
-<div class="footer-inner">
-  <div class="footer-brand">
-    <a
-      href="/"
-      class="brand"
-    >
-      EvalLoop AI<span class="brand-cursor">_</span>
+<div class="docs-card">
+  <div class="docs-card-label">
+    02 / EVALUATE
+  </div>
+  <h3 class="docs-card-title">
+    Evaluate
+  </h3>
+  <p class="docs-card-text">
+    An EvalLoop evaluation engine analyzes the
+    response against defined quality dimensions.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    03 / MEASURE
+  </div>
+  <h3 class="docs-card-title">
+    Measure
+  </h3>
+  <p class="docs-card-text">
+    Individual dimension scores are combined into
+    a structured evaluation result.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    04 / IMPROVE
+  </div>
+  <h3 class="docs-card-title">
+    Improve
+  </h3>
+  <p class="docs-card-text">
+    Use evaluation results to identify weaknesses,
+    compare versions, and improve AI quality.
+  </p>
+</div>
+  </div>
+</section>
+<!-- =========================================================
+     02
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="evaluation"
+>
+  <div class="docs-number">
+    02 / EVALUATION
+  </div>
+  <h2 class="docs-heading">
+    How evaluation works.
+  </h2>
+  <p class="docs-text">
+    EvalLoop evaluates an AI response using an evaluation
+    engine and a defined set of quality dimensions.
+  </p>
+  <div class="docs-architecture">
+<div class="docs-architecture-track">
+  <div class="docs-node">
+    <strong>TARGET AI</strong>
+    <span>System under test</span>
+  </div>
+  <div class="docs-arrow">→</div>
+  <div class="docs-node">
+    <strong>RESPONSE</strong>
+    <span>Generated output</span>
+  </div>
+  <div class="docs-arrow">→</div>
+  <div class="docs-node">
+    <strong>EVP.AUREON</strong>
+    <span>Evaluation engine</span>
+  </div>
+  <div class="docs-arrow">→</div>
+  <div class="docs-node">
+    <strong>6 DIMENSIONS</strong>
+    <span>Quality analysis</span>
+  </div>
+  <div class="docs-arrow">→</div>
+  <div class="docs-node">
+    <strong>RESULT</strong>
+    <span>Scores + analysis</span>
+  </div>
+</div>
+  </div>
+  <div class="docs-notice">
+<div class="docs-notice-label">
+  NOTE
+</div>
+<p class="docs-notice-text">
+  EVP.Aureon is the current general-purpose
+  evaluation profile used by EvalLoop AI. Evaluation
+  profiles are evaluation engines backed by underlying
+  AI models and are not represented as independently
+  trained proprietary foundation models.
+</p>
+  </div>
+</section>
+<!-- =========================================================
+     03
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="dimensions"
+>
+  <div class="docs-number">
+    03 / DIMENSIONS
+  </div>
+  <h2 class="docs-heading">
+    Six quality dimensions.
+  </h2>
+  <p class="docs-text">
+    The current general-purpose evaluation system analyzes
+    responses across six dimensions.
+  </p>
+  <div class="docs-dimensions">
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    01
+  </div>
+  <div class="docs-dimension-name">
+    Factuality
+  </div>
+  <div class="docs-dimension-text">
+    Measures whether claims in the response are
+    factually supported and free from significant
+    inaccuracies.
+  </div>
+</div>
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    02
+  </div>
+  <div class="docs-dimension-name">
+    Instruction Following
+  </div>
+  <div class="docs-dimension-text">
+    Measures how accurately the response follows
+    the explicit requirements of the prompt.
+  </div>
+</div>
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    03
+  </div>
+  <div class="docs-dimension-name">
+    Relevance
+  </div>
+  <div class="docs-dimension-text">
+    Measures whether the response stays focused
+    on the requested task.
+  </div>
+</div>
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    04
+  </div>
+  <div class="docs-dimension-name">
+    Completeness
+  </div>
+  <div class="docs-dimension-text">
+    Measures whether the response sufficiently
+    covers the important requirements of the task.
+  </div>
+</div>
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    05
+  </div>
+  <div class="docs-dimension-name">
+    Safety
+  </div>
+  <div class="docs-dimension-text">
+    Measures whether the response introduces
+    meaningful safety or harmful-content concerns.
+  </div>
+</div>
+<div class="docs-dimension">
+  <div class="docs-dimension-number">
+    06
+  </div>
+  <div class="docs-dimension-name">
+    Fluency
+  </div>
+  <div class="docs-dimension-text">
+    Measures clarity, readability, grammar,
+    and overall linguistic quality.
+  </div>
+</div>
+  </div>
+</section>
+<!-- =========================================================
+     04
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="evps"
+>
+  <div class="docs-number">
+    04 / EVALUATION PROFILES
+  </div>
+  <h2 class="docs-heading">
+    EVP evaluation profiles.
+  </h2>
+  <p class="docs-text">
+    EvalLoop Evaluation Profiles provide specialized
+    evaluation capabilities for different AI quality
+    scenarios.
+  </p>
+  <div class="docs-table">
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-table-header">
+    Profile
+  </div>
+  <div class="docs-table-cell docs-table-header">
+    Purpose
+  </div>
+  <div class="docs-table-cell docs-table-header">
+    Status
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Aureon
+  </div>
+  <div class="docs-table-cell">
+    General Purpose Evaluation
+  </div>
+  <div class="docs-table-cell docs-current">
+    CURRENT
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Lunara
+  </div>
+  <div class="docs-table-cell">
+    Reasoning Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Aethera
+  </div>
+  <div class="docs-table-cell">
+    RAG Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Vespera
+  </div>
+  <div class="docs-table-cell">
+    Safety Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Nebryx
+  </div>
+  <div class="docs-table-cell">
+    Multimodal Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Celestia
+  </div>
+  <div class="docs-table-cell">
+    Agent Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Nexora
+  </div>
+  <div class="docs-table-cell">
+    Evaluation Orchestrator
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+<div class="docs-table-row">
+  <div class="docs-table-cell docs-evp-name">
+    EVP.Stellara
+  </div>
+  <div class="docs-table-cell">
+    Benchmark Evaluation
+  </div>
+  <div class="docs-table-cell docs-coming">
+    COMING SOON
+  </div>
+</div>
+  </div>
+</section>
+<!-- =========================================================
+     05
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="benchmarks"
+>
+  <div class="docs-number">
+    05 / BENCHMARKS
+  </div>
+  <h2 class="docs-heading">
+    Benchmark AI systems.
+  </h2>
+  <p class="docs-text">
+    The EvalLoop benchmark system is designed to evaluate
+    responses generated by a target AI system against a
+    structured benchmark dataset.
+  </p>
+  <div class="docs-benchmark">
+<div class="docs-benchmark-step">
+  <div class="docs-benchmark-number">
+    01
+  </div>
+  <span class="docs-benchmark-title">
+    TARGET AI
+  </span>
+  <span class="docs-benchmark-text">
+    Connect the system you want to evaluate.
+  </span>
+</div>
+<div class="docs-benchmark-step">
+  <div class="docs-benchmark-number">
+    02
+  </div>
+  <span class="docs-benchmark-title">
+    GENERATE
+  </span>
+  <span class="docs-benchmark-text">
+    The target system generates responses.
+  </span>
+</div>
+<div class="docs-benchmark-step">
+  <div class="docs-benchmark-number">
+    03
+  </div>
+  <span class="docs-benchmark-title">
+    DATASET
+  </span>
+  <span class="docs-benchmark-text">
+    Responses are evaluated against benchmark tasks.
+  </span>
+</div>
+<div class="docs-benchmark-step">
+  <div class="docs-benchmark-number">
+    04
+  </div>
+  <span class="docs-benchmark-title">
+    EVALUATE
+  </span>
+  <span class="docs-benchmark-text">
+    The evaluation engine scores the responses.
+  </span>
+</div>
+<div class="docs-benchmark-step">
+  <div class="docs-benchmark-number">
+    05
+  </div>
+  <span class="docs-benchmark-title">
+    RESULTS
+  </span>
+  <span class="docs-benchmark-text">
+    Dimension scores and overall results are recorded.
+  </span>
+</div>
+  </div>
+  <div class="docs-cards">
+<div class="docs-card">
+  <div class="docs-card-label">
+    CONNECTION
+  </div>
+  <h3 class="docs-card-title">
+    Custom API
+  </h3>
+  <p class="docs-card-text">
+    Connect an AI system through its API endpoint
+    and authentication configuration.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    CONNECTION
+  </div>
+  <h3 class="docs-card-title">
+    Provider API
+  </h3>
+  <p class="docs-card-text">
+    Configure a supported AI provider and model
+    for benchmark testing.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    INPUT
+  </div>
+  <h3 class="docs-card-title">
+    Upload Responses
+  </h3>
+  <p class="docs-card-text">
+    Provide previously generated responses using
+    supported CSV or JSON data.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    ENGINE
+  </div>
+  <h3 class="docs-card-title">
+    EVP.Aureon
+  </h3>
+  <p class="docs-card-text">
+    The current general-purpose evaluation profile
+    used by the benchmark workflow.
+  </p>
+</div>
+  </div>
+</section>
+<!-- =========================================================
+     06
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="api"
+>
+  <div class="docs-number">
+    06 / API
+  </div>
+  <h2 class="docs-heading">
+    Evaluation API.
+  </h2>
+  <p class="docs-text">
+    EvalLoop exposes an evaluation endpoint for sending
+    an AI response to the current general-purpose evaluator.
+  </p>
+  <div class="docs-endpoint">
+<div class="docs-endpoint-header">
+  <span class="docs-method">
+    POST
+  </span>
+  <span class="docs-path">
+    /api/evaluate
+  </span>
+</div>
+<div class="docs-endpoint-body">
+  Evaluate an AI response across the current six
+  quality dimensions using EVP.Aureon.
+</div>
+  </div>
+  <h3 class="docs-card-title" style="margin-top:40px;">
+    Request
+  </h3>
+  <div class="docs-code">
+<div class="docs-code-label">
+  JSON
+</div>
+<pre>{
+  <span class="docs-code-green">"prompt"</span>: <span class="docs-code-green">"Explain photosynthesis."</span>,
+  <span class="docs-code-green">"response"</span>: <span class="docs-code-green">"Photosynthesis is..."</span>
+}</pre>
+  </div>
+  <h3 class="docs-card-title" style="margin-top:40px;">
+    Response
+  </h3>
+  <div class="docs-code">
+<div class="docs-code-label">
+  JSON
+</div>
+<pre>{
+  <span class="docs-code-green">"evaluator"</span>: <span class="docs-code-green">"EVP.Aureon"</span>,
+  <span class="docs-code-green">"factuality"</span>: 9,
+  <span class="docs-code-green">"instruction_following"</span>: 9,
+  <span class="docs-code-green">"relevance"</span>: 9,
+  <span class="docs-code-green">"completeness"</span>: 8,
+  <span class="docs-code-green">"safety"</span>: 10,
+  <span class="docs-code-green">"fluency"</span>: 9
+}</pre>
+  </div>
+  <div class="docs-notice">
+<div class="docs-notice-label">
+  NOTE
+</div>
+<p class="docs-notice-text">
+  The API contract should remain aligned with the
+  current implementation of the EvalLoop evaluation
+  endpoint. Authentication and production limits may
+  evolve as the platform develops.
+</p>
+  </div>
+</section>
+<!-- =========================================================
+     07
+     ========================================================= -->
+<section
+  class="docs-section"
+  id="security"
+>
+  <div class="docs-number">
+    07 / SECURITY
+  </div>
+  <h2 class="docs-heading">
+    Security and data handling.
+  </h2>
+  <p class="docs-text">
+    AI evaluation can involve sensitive prompts and
+    generated responses. EvalLoop separates the target
+    AI system from the evaluation layer.
+  </p>
+  <div class="docs-cards">
+<div class="docs-card">
+  <div class="docs-card-label">
+    CREDENTIALS
+  </div>
+  <h3 class="docs-card-title">
+    API credentials
+  </h3>
+  <p class="docs-card-text">
+    Credentials used to connect target systems should
+    be treated as secrets and should not be exposed
+    in client-side code.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    DATA
+  </div>
+  <h3 class="docs-card-title">
+    Evaluation data
+  </h3>
+  <p class="docs-card-text">
+    Evaluation requests may contain prompts and model
+    responses. Avoid submitting confidential information
+    unless your deployment requirements permit it.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    ARCHITECTURE
+  </div>
+  <h3 class="docs-card-title">
+    Evaluation independence
+  </h3>
+  <p class="docs-card-text">
+    The target AI system and evaluation engine serve
+    different roles within the evaluation architecture.
+  </p>
+</div>
+<div class="docs-card">
+  <div class="docs-card-label">
+    PLATFORM
+  </div>
+  <h3 class="docs-card-title">
+    AI usage
+  </h3>
+  <p class="docs-card-text">
+    Review the EvalLoop AI usage documentation for
+    information about how AI-assisted functionality
+    is used across the platform.
+  </p>
+</div>
+  </div>
+  <div
+    style="
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid var(--line-soft);
+      font-family:var(--mono);
+      font-size:10px;
+      color:var(--dim);
+    "
+  >
+    EVALLOOP AI · DOCUMENTATION · HYDERABAD · INDIA
+  </div>
+</section>
+</div>
+</div>
+</main>
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+<div class="footer-brand">
+  <a
+    href="/"
+    class="brand"
+  >
+    EvalLoop AI<span class="brand-cursor">_</span>
+  </a>
+  <p>
+    Building better AI starts with better evaluation.
+  </p>
+</div>
+<div class="footer-columns">
+  <div class="footer-column">
+    <div class="footer-heading">
+      Product
+    </div>
+    <a href="/app/">
+      Evaluate
     </a>
-    <p>
-      Building better AI starts with better evaluation.
-    </p>
+    <a href="/benchmarks/">
+      Benchmarks
+    </a>
+    <a href="/labs/">
+      Labs
+    </a>
+    <a href="/pricing/">
+      Pricing
+    </a>
   </div>
-  <div class="footer-columns">
-    <div class="footer-column">
-      <div class="footer-heading">
-        Product
-      </div>
-      <a href="/app/">Evaluate</a>
-      <a href="/benchmarks/">
-        Benchmarks
-      </a>
-      <a href="/labs/">
-        Labs
-      </a>
-      <a href="/pricing/">
-        Pricing
-      </a>
+  <div class="footer-column">
+    <div class="footer-heading">
+      Resources
     </div>
-    <div class="footer-column">
-      <div class="footer-heading">
-        Resources
-      </div>
-      <a href="/knowledge/">
-        Knowledge
-      </a>
-      <a href="/docs/">
-        Docs
-      </a>
-      <a href="/ai-usage/">
-        AI Usage
-      </a>
+    <a href="/knowledge/">
+      Knowledge
+    </a>
+    <a href="/docs/">
+      Docs
+    </a>
+    <a href="/ai-usage/">
+      AI Usage
+    </a>
+  </div>
+  <div class="footer-column">
+    <div class="footer-heading">
+      Company
     </div>
-    <div class="footer-column">
-      <div class="footer-heading">
-        Company
-      </div>
-      <a href="/about/">
-        About
-      </a>
-      <a href="/contact/">
-        Contact
-      </a>
+    <a href="/about/">
+      About
+    </a>
+    <a href="/contact/">
+      Contact
+    </a>
+  </div>
+  <div class="footer-column">
+    <div class="footer-heading">
+      Legal
     </div>
-    <div class="footer-column">
-      <div class="footer-heading">
-        Legal
-      </div>
-      <a href="/privacy/">
-        Privacy
-      </a>
-      <a href="/terms/">
-        Terms
-      </a>
-    </div>
+    <a href="/privacy/">
+      Privacy
+    </a>
+    <a href="/terms/">
+      Terms
+    </a>
   </div>
 </div>
-<div class="footer-bottom">
-  <span>
-    © 2026 EvalLoop AI
-  </span>
-  <span>
-    BUILT FOR BETTER AI
-  </span>
-  <span>
-    HYDERABAD · INDIA
-  </span>
-</div>
-  </footer>
-  <!-- =========================================================
-       MOBILE MENU
-       ========================================================= -->
-  <script>
-    const mobileMenuButton =
-      document.getElementById("mobileMenuButton");
-    const mobileNav =
-      document.getElementById("mobileNav");
-    if (mobileMenuButton && mobileNav) {
-      mobileMenuButton.addEventListener(
-        "click",
-        () => {
-          const active =
-            mobileNav.classList.toggle("active");
-          mobileMenuButton.setAttribute(
-            "aria-expanded",
-            active
-          );
-        }
+  </div>
+  <div class="footer-bottom">
+<span>
+  © 2026 EvalLoop AI
+</span>
+<span>
+  BUILT FOR BETTER AI
+</span>
+<span>
+  HYDERABAD · INDIA
+</span>
+  </div>
+</footer>
+<!-- =========================================================
+     EXISTING MOBILE MENU BEHAVIOR
+     ========================================================= -->
+<script>
+const mobileMenuButton =
+  document.getElementById(
+    "mobileMenuButton"
+  );
+const mobileNav =
+  document.getElementById(
+    "mobileNav"
+  );
+if (
+  mobileMenuButton &&
+  mobileNav
+) {
+  mobileMenuButton.addEventListener(
+    "click",
+    () => {
+      const active =
+        mobileNav.classList.toggle(
+          "active"
+        );
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        active
       );
     }
-    /* ---------------------------------------------------------
-       PAGE PROGRESS
-       --------------------------------------------------------- */
-    const pageProgress =
-      document.getElementById("pageProgress");
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!pageProgress) return;
-        const scrollTop =
-          window.scrollY;
-        const documentHeight =
-          document.documentElement.scrollHeight -
-          window.innerHeight;
-        const progress =
-          documentHeight > 0
-            ? (scrollTop / documentHeight) * 100
-            : 0;
-        pageProgress.style.width =
-          progress + "%";
-      },
-      { passive: true }
-    );
-    /* ---------------------------------------------------------
-       ACTIVE DOCS NAV
-       --------------------------------------------------------- */
-    const docSections =
-      document.querySelectorAll(
-        ".docs-section"
-      );
-    const docLinks =
-      document.querySelectorAll(
-        ".docs-sidebar a"
-      );
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach(
-            (entry) => {
-              if (!entry.isIntersecting) return;
-              docLinks.forEach(
-                (link) => {
-                  link.classList.remove(
-                    "active"
-                  );
-                }
-              );
-              const activeLink =
-                document.querySelector(
-                  '.docs-sidebar a[href="#' +
-                  entry.target.id +
-                  '"]'
-                );
-              if (activeLink) {
-                activeLink.classList.add(
+  );
+}
+/* =========================================================
+   PAGE PROGRESS
+   ========================================================= */
+const pageProgress =
+  document.getElementById(
+    "pageProgress"
+  );
+if (pageProgress) {
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scrollTop =
+        window.scrollY;
+      const documentHeight =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+      const progress =
+        documentHeight > 0
+          ? (
+              scrollTop /
+              documentHeight
+            ) * 100
+          : 0;
+      pageProgress.style.width =
+        progress + "%";
+    },
+    { passive: true }
+  );
+}
+/* =========================================================
+   DOCS ACTIVE SECTION
+   ========================================================= */
+const docsSections =
+  document.querySelectorAll(
+    ".docs-section"
+  );
+const docsLinks =
+  document.querySelectorAll(
+    ".docs-sidebar-list a"
+  );
+if (
+  docsSections.length &&
+  docsLinks.length
+) {
+  const docsObserver =
+    new IntersectionObserver(
+      (entries) => {
+        entries.forEach(
+          (entry) => {
+            if (
+              !entry.isIntersecting
+            ) {
+              return;
+            }
+            docsLinks.forEach(
+              (link) => {
+                link.classList.remove(
                   "active"
                 );
               }
+            );
+            const activeLink =
+              document.querySelector(
+                '.docs-sidebar-list a[href="#' +
+                entry.target.id +
+                '"]'
+              );
+            if (activeLink) {
+              activeLink.classList.add(
+                "active"
+              );
             }
-          );
-        },
-        {
-          rootMargin:
-            "-20% 0px -65% 0px"
-        }
-      );
-    docSections.forEach(
-      (section) => {
-        observer.observe(section);
+          }
+        );
+      },
+      {
+        rootMargin:
+          "-20% 0px -65% 0px"
       }
     );
-  </script>
+  docsSections.forEach(
+    (section) => {
+      docsObserver.observe(
+        section
+      );
+    }
+  );
+}
+</script>
 </body>
 </html>
