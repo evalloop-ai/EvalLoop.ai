@@ -56,10 +56,14 @@
       grid-template-columns: 330px minmax(0, 1fr);
       gap: 20px;
       align-items: start;
+      min-width: 0;
+      max-width: 100%;
     }
     .runner-sidebar {
       position: sticky;
       top: 90px;
+      min-width: 0;
+      max-width: 100%;
     }
     .sidebar-panel {
       padding: 20px;
@@ -159,9 +163,14 @@
     }
     .runner-main {
       min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
     }
     .runner-panel {
       padding: 28px;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .runner-header {
       display: flex;
@@ -171,17 +180,25 @@
       padding-bottom: 22px;
       border-bottom: 1px solid var(--line-soft);
       margin-bottom: 26px;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .runner-header > div:first-child {
+      min-width: 0;
+      max-width: 100%;
     }
     .runner-header h2 {
       margin: 0 0 7px;
       font-size: 22px;
       letter-spacing: -.025em;
+      overflow-wrap: anywhere;
     }
     .runner-header p {
       margin: 0;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
     .run-id {
       padding: 7px 10px;
@@ -192,15 +209,20 @@
       font-size: 9px;
       letter-spacing: .08em;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .config-section {
       margin-bottom: 30px;
+      min-width: 0;
+      max-width: 100%;
     }
     .section-heading {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 15px;
+      min-width: 0;
+      max-width: 100%;
     }
     .section-number {
       display: inline-flex;
@@ -208,6 +230,7 @@
       justify-content: center;
       width: 24px;
       height: 24px;
+      flex: 0 0 24px;
       border: 1px solid var(--line);
       border-radius: 6px;
       color: var(--green2);
@@ -230,6 +253,8 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
+      min-width: 0;
+      max-width: 100%;
     }
     .form-grid.three {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -258,7 +283,9 @@
       background: rgba(255, 255, 255, .025);
       color: var(--ink);
       outline: none;
-      transition: border-color .2s ease, background .2s ease;
+      transition:
+        border-color .2s ease,
+        background .2s ease;
     }
     .input,
     .select {
@@ -294,6 +321,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+      min-width: 0;
+      max-width: 100%;
     }
     .custom-api {
       display: none;
@@ -316,6 +345,8 @@
     }
     .mode-content {
       display: none;
+      min-width: 0;
+      max-width: 100%;
     }
     .mode-content.active {
       display: block;
@@ -370,23 +401,33 @@
       border: 1px solid var(--line);
       border-radius: 9px;
       background: rgba(255, 255, 255, .018);
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .dataset-info {
+      min-width: 0;
+      max-width: 100%;
     }
     .dataset-info strong {
       display: block;
       margin-bottom: 5px;
       font-size: 13px;
+      overflow-wrap: anywhere;
     }
     .dataset-info p {
       margin: 0;
       color: var(--muted);
       font-size: 11px;
       line-height: 1.55;
+      overflow-wrap: anywhere;
     }
     .dataset-meta {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 7px;
+      flex-shrink: 0;
     }
     .meta-chip {
       padding: 5px 8px;
@@ -405,9 +446,12 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
+      min-width: 0;
+      max-width: 100%;
     }
     .metric-input {
       position: relative;
+      min-width: 0;
     }
     .metric-input .input {
       padding-right: 45px;
@@ -427,6 +471,7 @@
       color: var(--muted);
       font-size: 11px;
       line-height: 1.65;
+      overflow-wrap: anywhere;
     }
     .info-box strong {
       color: var(--ink);
@@ -435,29 +480,38 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 9px;
+      min-width: 0;
+      max-width: 100%;
     }
     .evaluation-option {
       padding: 13px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 255, 255, .015);
+      min-width: 0;
+      box-sizing: border-box;
     }
     .evaluation-option strong {
       display: block;
       margin-bottom: 5px;
       font-size: 11px;
+      overflow-wrap: anywhere;
     }
     .evaluation-option span {
       display: block;
       color: var(--dim);
       font-size: 9px;
       line-height: 1.45;
+      overflow-wrap: anywhere;
     }
     .rubric-box {
       margin-top: 12px;
       padding: 14px;
       border: 1px solid var(--line-soft);
       border-radius: 8px;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .rubric-row {
       display: grid;
@@ -473,6 +527,7 @@
     .rubric-row span {
       color: var(--muted);
       font-size: 11px;
+      overflow-wrap: anywhere;
     }
     .weight-input {
       width: 100%;
@@ -490,6 +545,8 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+      min-width: 0;
+      max-width: 100%;
     }
     .action-bar {
       display: flex;
@@ -498,24 +555,47 @@
       gap: 18px;
       padding-top: 24px;
       border-top: 1px solid var(--line-soft);
+      min-width: 0;
+      max-width: 100%;
     }
     .action-copy {
       color: var(--dim);
       font-size: 10px;
       line-height: 1.55;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
     .action-copy strong {
       color: var(--muted);
     }
     .run-button {
       min-width: 190px;
+      flex-shrink: 0;
     }
+    /* =========================================================
+       RESULTS CONTAINMENT
+       ========================================================= */
     .results-shell {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       margin-top: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .results-shell > * {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .results-empty {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       padding: 42px 28px;
       text-align: center;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .results-empty-icon {
       width: 42px;
@@ -533,6 +613,7 @@
     .results-empty h3 {
       margin: 0 0 7px;
       font-size: 15px;
+      overflow-wrap: anywhere;
     }
     .results-empty p {
       max-width: 500px;
@@ -540,25 +621,51 @@
       color: var(--muted);
       font-size: 11px;
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
     .results-panel {
       display: none;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .results-panel.visible {
       display: block;
     }
+    .results-panel .runner-header {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .results-panel .runner-header > div:first-child {
+      min-width: 0;
+      max-width: 100%;
+    }
+    .results-panel .runner-header h2,
+    .results-panel .runner-header p {
+      overflow-wrap: anywhere;
+    }
     .results-summary {
       display: grid;
-      grid-template-columns: 1.2fr repeat(4, 1fr);
+      grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr));
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       border: 1px solid var(--line);
       border-radius: 9px;
       overflow: hidden;
+      box-sizing: border-box;
     }
     .summary-cell {
+      min-width: 0;
       min-height: 88px;
       padding: 15px;
       border-right: 1px solid var(--line-soft);
       background: rgba(255, 255, 255, .015);
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .summary-cell:last-child {
       border-right: 0;
@@ -570,11 +677,14 @@
       font-size: 9px;
       letter-spacing: .08em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .summary-value {
+      min-width: 0;
       color: var(--ink);
       font-family: var(--mono);
       font-size: 20px;
+      overflow-wrap: anywhere;
     }
     .summary-value.green {
       color: var(--green2);
@@ -582,14 +692,21 @@
     .score-grid {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       gap: 9px;
       margin-top: 12px;
+      box-sizing: border-box;
     }
     .score-card {
+      min-width: 0;
       padding: 14px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 255, 255, .015);
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .score-card span {
       display: block;
@@ -597,15 +714,34 @@
       color: var(--dim);
       font-size: 9px;
       line-height: 1.35;
+      overflow-wrap: anywhere;
     }
     .score-card strong {
       color: var(--green2);
       font-family: var(--mono);
       font-size: 17px;
+      overflow-wrap: anywhere;
+    }
+    .results-cases {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .results-table-wrap {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
     }
     .case-table {
       width: 100%;
+      min-width: 620px;
       border-collapse: collapse;
+      table-layout: auto;
     }
     .case-table th,
     .case-table td {
@@ -620,9 +756,11 @@
       font-size: 8px;
       letter-spacing: .08em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .case-table td {
       color: var(--muted);
+      white-space: nowrap;
     }
     .case-number {
       color: var(--ink);
@@ -635,14 +773,25 @@
       color: #e5a0a0 !important;
     }
     .results-note {
+      max-width: 100%;
       margin-top: 14px;
       color: var(--dim);
       font-size: 9px;
       line-height: 1.6;
+      overflow-wrap: anywhere;
+      box-sizing: border-box;
+    }
+    .results-panel *,
+    .results-empty * {
+      box-sizing: border-box;
+      max-width: 100%;
     }
     .hidden {
       display: none !important;
     }
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
     @media (max-width: 1050px) {
       .runner-layout {
         grid-template-columns: 1fr;
@@ -657,10 +806,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
       .score-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       .results-summary {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       .summary-cell:nth-child(3) {
         border-right: 0;
@@ -695,7 +844,7 @@
       .stress-grid,
       .score-grid,
       .results-summary {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       }
       .action-bar {
         flex-direction: column;
@@ -703,6 +852,9 @@
       }
       .run-button {
         width: 100%;
+      }
+      .results-panel {
+        padding: 20px;
       }
       .results-summary .summary-cell {
         border-right: 1px solid var(--line-soft);
@@ -722,6 +874,9 @@
       }
       .run-id {
         align-self: flex-start;
+      }
+      .results-panel {
+        padding: 16px;
       }
     }
   </style>
@@ -743,7 +898,9 @@
   </div>
   <header class="site-header">
     <div class="nav-inner">
-      <a class="brand" href="/">EvalLoop AI<span class="brand-cursor">_</span></a>
+  <a class="brand" href="/">
+    EvalLoop AI<span class="brand-cursor">_</span>
+  </a>
   <nav class="desktop-nav" aria-label="Primary navigation">
     <a href="/app/">Evaluator</a>
     <a href="/benchmarks/">Benchmarks</a>
@@ -874,7 +1031,9 @@
         <div class="panel runner-panel">
           <div class="runner-header">
             <div>
-              <h2 id="runnerTitle">Single Case Evaluation</h2>
+              <h2 id="runnerTitle">
+                Single Case Evaluation
+              </h2>
               <p id="runnerDescription">
                 Test one response against a defined evaluation rubric.
               </p>
@@ -979,9 +1138,15 @@
                     Authentication
                   </label>
                   <select class="select" id="authType">
-                    <option value="bearer">Bearer token</option>
-                    <option value="api-key">API key header</option>
-                    <option value="none">No authentication</option>
+                    <option value="bearer">
+                      Bearer token
+                    </option>
+                    <option value="api-key">
+                      API key header
+                    </option>
+                    <option value="none">
+                      No authentication
+                    </option>
                   </select>
                 </div>
                 <div>
@@ -1083,7 +1248,9 @@
                       value="10"
                       checked
                     />
-                    <label for="count10">10</label>
+                    <label for="count10">
+                      10
+                    </label>
                   </div>
                   <div class="count-option">
                     <input
@@ -1092,7 +1259,9 @@
                       id="count25"
                       value="25"
                     />
-                    <label for="count25">25</label>
+                    <label for="count25">
+                      25
+                    </label>
                   </div>
                   <div class="count-option">
                     <input
@@ -1101,7 +1270,9 @@
                       id="count50"
                       value="50"
                     />
-                    <label for="count50">50</label>
+                    <label for="count50">
+                      50
+                    </label>
                   </div>
                   <div class="count-option">
                     <input
@@ -1110,7 +1281,9 @@
                       id="count100"
                       value="100"
                     />
-                    <label for="count100">100</label>
+                    <label for="count100">
+                      100
+                    </label>
                   </div>
                   <div class="count-option">
                     <input
@@ -1119,7 +1292,9 @@
                       id="countCustom"
                       value="custom"
                     />
-                    <label for="countCustom">Custom</label>
+                    <label for="countCustom">
+                      Custom
+                    </label>
                   </div>
                 </div>
                 <div
@@ -1202,7 +1377,9 @@
                       min="1"
                       max="1000"
                     />
-                    <span class="metric-unit">REQ</span>
+                    <span class="metric-unit">
+                      REQ
+                    </span>
                   </div>
                 </div>
                 <div>
@@ -1218,7 +1395,9 @@
                       min="1"
                       max="100000"
                     />
-                    <span class="metric-unit">REQ</span>
+                    <span class="metric-unit">
+                      REQ
+                    </span>
                   </div>
                 </div>
                 <div>
@@ -1233,7 +1412,9 @@
                       value="0"
                       min="0"
                     />
-                    <span class="metric-unit">MS</span>
+                    <span class="metric-unit">
+                      MS
+                    </span>
                   </div>
                 </div>
                 <div>
@@ -1248,7 +1429,9 @@
                       value="10"
                       min="1"
                     />
-                    <span class="metric-unit">MIN</span>
+                    <span class="metric-unit">
+                      MIN
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1291,21 +1474,27 @@
             </div>
             <div class="evaluation-options">
               <div class="evaluation-option">
-                <strong>Deterministic metrics</strong>
+                <strong>
+                  Deterministic metrics
+                </strong>
                 <span>
                   Exact match, schema validation, numerical and
                   rule-based checks where applicable.
                 </span>
               </div>
               <div class="evaluation-option">
-                <strong>LLM judge</strong>
+                <strong>
+                  LLM judge
+                </strong>
                 <span>
                   Rubric-based evaluation for qualitative dimensions
                   such as relevance and completeness.
                 </span>
               </div>
               <div class="evaluation-option">
-                <strong>Human calibration</strong>
+                <strong>
+                  Human calibration
+                </strong>
                 <span>
                   Preserve human-labelled examples for evaluator
                   agreement and calibration.
@@ -1380,8 +1569,12 @@
                   Sampling mode
                 </label>
                 <select class="select" id="samplingMode">
-                  <option value="fixed">Fixed configuration</option>
-                  <option value="default">Provider default</option>
+                  <option value="fixed">
+                    Fixed configuration
+                  </option>
+                  <option value="default">
+                    Provider default
+                  </option>
                 </select>
               </div>
             </div>
@@ -1419,7 +1612,9 @@
             <div class="results-empty-icon">
               ◎
             </div>
-            <h3>Results will appear here</h3>
+            <h3>
+              Results will appear here
+            </h3>
             <p>
               Configure a target model and evaluation mode above.
               EvalLoop will preserve individual case results together
@@ -1430,7 +1625,9 @@
           <div class="panel results-panel" id="resultsPanel">
             <div class="runner-header">
               <div>
-                <h2>Evaluation Results</h2>
+                <h2>
+                  Evaluation Results
+                </h2>
                 <p>
                   Aggregate metrics and individual execution results.
                 </p>
@@ -1441,32 +1638,57 @@
             </div>
             <div class="results-summary">
               <div class="summary-cell">
-                <div class="summary-label">Overall</div>
-                <div class="summary-value green" id="resultOverall">
+                <div class="summary-label">
+                  Overall
+                </div>
+                <div
+                  class="summary-value green"
+                  id="resultOverall"
+                >
                   —
                 </div>
               </div>
               <div class="summary-cell">
-                <div class="summary-label">Cases</div>
-                <div class="summary-value" id="resultCases">
+                <div class="summary-label">
+                  Cases
+                </div>
+                <div
+                  class="summary-value"
+                  id="resultCases"
+                >
                   —
                 </div>
               </div>
               <div class="summary-cell">
-                <div class="summary-label">Passed</div>
-                <div class="summary-value" id="resultPassed">
+                <div class="summary-label">
+                  Passed
+                </div>
+                <div
+                  class="summary-value"
+                  id="resultPassed"
+                >
                   —
                 </div>
               </div>
               <div class="summary-cell">
-                <div class="summary-label">Failed</div>
-                <div class="summary-value" id="resultFailed">
+                <div class="summary-label">
+                  Failed
+                </div>
+                <div
+                  class="summary-value"
+                  id="resultFailed"
+                >
                   —
                 </div>
               </div>
               <div class="summary-cell">
-                <div class="summary-label">Duration</div>
-                <div class="summary-value" id="resultDuration">
+                <div class="summary-label">
+                  Duration
+                </div>
+                <div
+                  class="summary-value"
+                  id="resultDuration"
+                >
                   —
                 </div>
               </div>
@@ -1497,7 +1719,10 @@
                 <strong>—</strong>
               </div>
             </div>
-            <div style="margin-top:28px;">
+            <div
+              class="results-cases"
+              style="margin-top:28px;"
+            >
               <div class="section-heading">
                 <span class="section-number">
                   CASES
@@ -1507,7 +1732,7 @@
                   <span>Per-case evidence</span>
                 </div>
               </div>
-              <div style="overflow-x:auto;">
+              <div class="results-table-wrap">
                 <table class="case-table">
                   <thead>
                     <tr>
@@ -1520,7 +1745,9 @@
                   </thead>
                   <tbody id="caseResults">
                     <tr>
-                      <td class="case-number">#001</td>
+                      <td class="case-number">
+                        #001
+                      </td>
                       <td>—</td>
                       <td>—</td>
                       <td>—</td>
@@ -1546,7 +1773,7 @@
        FOOTER
        ========================================================= -->
   <footer class="site-footer">
-    <div class="container">
+<div class="container">
   <div class="footer-top">
     <div class="footer-brand">
       <a class="brand" href="/">
@@ -1558,1144 +1785,1144 @@
     </div>
     <div class="footer-columns">
       <div class="footer-column">
-        <div class="footer-label">PRODUCT</div>
+        <div class="footer-label">
+          PRODUCT
+        </div>
         <a href="/app/">Evaluator</a>
         <a href="/benchmarks/">Benchmarks</a>
         <a href="/labs/">Labs</a>
         <a href="/pricing/">Pricing</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">RESOURCES</div>
+        <div class="footer-label">
+          RESOURCES
+        </div>
         <a href="/knowledge/">Knowledge</a>
         <a href="/docs/">Docs</a>
         <a href="/ai-usage/">AI Usage</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">COMPANY</div>
+        <div class="footer-label">
+          COMPANY
+        </div>
         <a href="/about/">About</a>
         <a href="/contact/">Contact</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">LEGAL</div>
+        <div class="footer-label">
+          LEGAL
+        </div>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 EVALLOOP AI</span>
+    <span>
+      © 2026 EVALLOOP AI
+    </span>
     <span>
       BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
     </span>
   </div>
 </div>
   </footer>
- <script>
-  /* =========================================================
-     GLOBAL NAVIGATION
-     ========================================================= */
-  const mobileMenuButton =
-    document.getElementById("mobileMenuButton");
-  const mobileNav =
-    document.getElementById("mobileNav");
-  if (mobileMenuButton && mobileNav) {
-    mobileMenuButton.addEventListener(
-      "click",
-      () => {
-        const active =
-          mobileNav.classList.toggle("active");
-        mobileMenuButton.classList.toggle(
-          "active",
-          active
+  <script>
+    /* =========================================================
+       GLOBAL NAVIGATION
+       ========================================================= */
+    const mobileMenuButton =
+      document.getElementById("mobileMenuButton");
+    const mobileNav =
+      document.getElementById("mobileNav");
+    if (mobileMenuButton && mobileNav) {
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
+          const active =
+            mobileNav.classList.toggle("active");
+          mobileMenuButton.classList.toggle(
+            "active",
+            active
+          );
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            String(active)
+          );
+          document.body.classList.toggle(
+            "menu-open",
+            active
+          );
+        }
+      );
+      mobileNav
+        .querySelectorAll("a")
+        .forEach((link) => {
+          link.addEventListener(
+            "click",
+            () => {
+              mobileNav.classList.remove(
+                "active"
+              );
+              mobileMenuButton.classList.remove(
+                "active"
+              );
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+              document.body.classList.remove(
+                "menu-open"
+              );
+            }
+          );
+        });
+    }
+    /* =========================================================
+       PAGE PROGRESS
+       ========================================================= */
+    const pageProgress =
+      document.getElementById(
+        "pageProgress"
+      );
+    if (pageProgress) {
+      const updateProgress = () => {
+        const scrollTop =
+          window.scrollY;
+        const docHeight =
+          document.documentElement
+            .scrollHeight -
+          window.innerHeight;
+        const progress =
+          docHeight > 0
+            ? (scrollTop / docHeight) * 100
+            : 0;
+        pageProgress.style.width =
+          `${progress}%`;
+      };
+      window.addEventListener(
+        "scroll",
+        updateProgress,
+        { passive: true }
+      );
+      updateProgress();
+    }
+    /* =========================================================
+       REVEAL
+       ========================================================= */
+    const revealItems =
+      document.querySelectorAll(
+        ".reveal"
+      );
+    if (
+      "IntersectionObserver" in window &&
+      revealItems.length
+    ) {
+      const observer =
+        new IntersectionObserver(
+          (entries) => {
+            entries.forEach(
+              (entry) => {
+                if (
+                  entry.isIntersecting
+                ) {
+                  entry.target.classList.add(
+                    "visible"
+                  );
+                  observer.unobserve(
+                    entry.target
+                  );
+                }
+              }
+            );
+          },
+          {
+            threshold: 0.12
+          }
         );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          String(active)
-        );
-        document.body.classList.toggle(
-          "menu-open",
-          active
+      revealItems.forEach(
+        (item) =>
+          observer.observe(item)
+      );
+    } else {
+      revealItems.forEach(
+        (item) =>
+          item.classList.add(
+            "visible"
+          )
+      );
+    }
+    /* =========================================================
+       PROVIDER
+       ========================================================= */
+    const provider =
+      document.getElementById(
+        "provider"
+      );
+    const customApiPanel =
+      document.getElementById(
+        "customApiPanel"
+      );
+    const modelId =
+      document.getElementById(
+        "modelId"
+      );
+    const providerDefaults = {
+      openai:
+        "gpt-5",
+      google:
+        "gemini",
+      anthropic:
+        "claude",
+      groq:
+        "openai/gpt-oss-120b",
+      mistral:
+        "mistral-large",
+      deepseek:
+        "deepseek-chat",
+      xai:
+        "grok",
+      openrouter:
+        "provider/model",
+      together:
+        "provider/model",
+      fireworks:
+        "provider/model",
+      cohere:
+        "command",
+      huggingface:
+        "model-id",
+      ollama:
+        "local-model",
+      azure:
+        "deployment-name",
+      bedrock:
+        "model-id",
+      custom:
+        ""
+    };
+    function updateProvider() {
+      if (!provider) {
+        return;
+      }
+      const value =
+        provider.value;
+      if (customApiPanel) {
+        customApiPanel.classList.toggle(
+          "visible",
+          value === "custom"
         );
       }
-    );
-    mobileNav
-      .querySelectorAll("a")
-      .forEach((link) => {
-        link.addEventListener(
+      if (
+        modelId &&
+        providerDefaults[value] !==
+          undefined &&
+        (
+          !modelId.value ||
+          Object.values(
+            providerDefaults
+          ).includes(
+            modelId.value
+          )
+        )
+      ) {
+        modelId.value =
+          providerDefaults[value];
+      }
+    }
+    if (provider) {
+      provider.addEventListener(
+        "change",
+        updateProvider
+      );
+      updateProvider();
+    }
+    /* =========================================================
+       TEST MODES
+       ========================================================= */
+    const modeButtons =
+      document.querySelectorAll(
+        ".mode-button"
+      );
+    const modeContents =
+      document.querySelectorAll(
+        ".mode-content"
+      );
+    const runnerTitle =
+      document.getElementById(
+        "runnerTitle"
+      );
+    const runnerDescription =
+      document.getElementById(
+        "runnerDescription"
+      );
+    const actionSummary =
+      document.getElementById(
+        "actionSummary"
+      );
+    const evaluationNumber =
+      document.getElementById(
+        "evaluationNumber"
+      );
+    let currentMode =
+      "single";
+    function updateMode(mode) {
+      currentMode =
+        mode;
+      modeButtons.forEach(
+        (button) => {
+          button.classList.toggle(
+            "active",
+            button.dataset.mode ===
+              mode
+          );
+        }
+      );
+      modeContents.forEach(
+        (content) => {
+          content.classList.toggle(
+            "active",
+            content.dataset.content ===
+              mode
+          );
+        }
+      );
+      if (mode === "single") {
+        runnerTitle.textContent =
+          "Single Case Evaluation";
+        runnerDescription.textContent =
+          "Test one response against a defined evaluation rubric.";
+        evaluationNumber.textContent =
+          "03";
+        actionSummary.textContent =
+          "Ready to evaluate 1 case.";
+      }
+      if (mode === "suite") {
+        runnerTitle.textContent =
+          "Benchmark Suite";
+        runnerDescription.textContent =
+          "Run a versioned evaluation dataset across multiple cases.";
+        evaluationNumber.textContent =
+          "03";
+        updateSuiteSummary();
+      }
+      if (mode === "stress") {
+        runnerTitle.textContent =
+          "Stress Test";
+        runnerDescription.textContent =
+          "Measure target-system performance under controlled load.";
+        evaluationNumber.textContent =
+          "04";
+        updateStressSummary();
+      }
+    }
+    modeButtons.forEach(
+      (button) => {
+        button.addEventListener(
           "click",
           () => {
-            mobileNav.classList.remove(
-              "active"
-            );
-            mobileMenuButton.classList.remove(
-              "active"
-            );
-            mobileMenuButton.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-            document.body.classList.remove(
-              "menu-open"
+            updateMode(
+              button.dataset.mode
             );
           }
         );
-      });
-  }
-  /* =========================================================
-     PAGE PROGRESS
-     ========================================================= */
-  const pageProgress =
-    document.getElementById(
-      "pageProgress"
+      }
     );
-  if (pageProgress) {
-    const updateProgress = () => {
-      const scrollTop =
-        window.scrollY;
-      const docHeight =
-        document.documentElement
-          .scrollHeight -
-        window.innerHeight;
-      const progress =
-        docHeight > 0
-          ? (scrollTop / docHeight) * 100
+    /* =========================================================
+       CASE COUNT
+       ========================================================= */
+    const countInputs =
+      document.querySelectorAll(
+        'input[name="caseCount"]'
+      );
+    const customCountWrap =
+      document.getElementById(
+        "customCountWrap"
+      );
+    const customCount =
+      document.getElementById(
+        "customCount"
+      );
+    function getCaseCount() {
+      const selected =
+        document.querySelector(
+          'input[name="caseCount"]:checked'
+        );
+      if (!selected) {
+        return 10;
+      }
+      if (
+        selected.value ===
+        "custom"
+      ) {
+        const custom =
+          Number(
+            customCount?.value
+          );
+        return custom > 0
+          ? Math.min(
+              custom,
+              100
+            )
           : 0;
-      pageProgress.style.width =
-        `${progress}%`;
-    };
-    window.addEventListener(
-      "scroll",
-      updateProgress,
-      { passive: true }
+      }
+      return Number(
+        selected.value
+      );
+    }
+    function updateSuiteSummary() {
+      const count =
+        getCaseCount();
+      actionSummary.textContent =
+        count > 0
+          ? `Ready to evaluate ${count} cases.`
+          : "Enter a valid custom case count.";
+    }
+    countInputs.forEach(
+      (input) => {
+        input.addEventListener(
+          "change",
+          () => {
+            if (customCountWrap) {
+              customCountWrap.classList.toggle(
+                "visible",
+                input.value ===
+                  "custom" &&
+                  input.checked
+              );
+            }
+            updateSuiteSummary();
+          }
+        );
+      }
     );
-    updateProgress();
-  }
-  /* =========================================================
-     REVEAL
-     ========================================================= */
-  const revealItems =
-    document.querySelectorAll(
-      ".reveal"
-    );
-  if (
-    "IntersectionObserver" in window &&
-    revealItems.length
-  ) {
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach(
-            (entry) => {
+    if (customCount) {
+      customCount.addEventListener(
+        "input",
+        updateSuiteSummary
+      );
+    }
+    /* =========================================================
+       STRESS SUMMARY
+       ========================================================= */
+    const concurrency =
+      document.getElementById(
+        "concurrency"
+      );
+    const totalRequests =
+      document.getElementById(
+        "totalRequests"
+      );
+    const requestDelay =
+      document.getElementById(
+        "requestDelay"
+      );
+    const maxDuration =
+      document.getElementById(
+        "maxDuration"
+      );
+    function updateStressSummary() {
+      const requests =
+        Number(
+          totalRequests?.value
+        ) || 0;
+      const workers =
+        Number(
+          concurrency?.value
+        ) || 0;
+      const delay =
+        Number(
+          requestDelay?.value
+        ) || 0;
+      const duration =
+        Number(
+          maxDuration?.value
+        ) || 0;
+      actionSummary.textContent =
+        `${requests} requests · ${workers} concurrent · ` +
+        `${delay} ms delay · ${duration} min maximum`;
+    }
+    [
+      concurrency,
+      totalRequests,
+      requestDelay,
+      maxDuration
+    ]
+      .filter(Boolean)
+      .forEach(
+        (element) => {
+          element.addEventListener(
+            "input",
+            () => {
               if (
-                entry.isIntersecting
+                currentMode ===
+                "stress"
               ) {
-                entry.target.classList.add(
-                  "visible"
-                );
-                observer.unobserve(
-                  entry.target
-                );
+                updateStressSummary();
               }
             }
           );
-        },
-        {
-          threshold: 0.12
         }
       );
-    revealItems.forEach(
-      (item) =>
-        observer.observe(item)
-    );
-  } else {
-    revealItems.forEach(
-      (item) =>
-        item.classList.add(
-          "visible"
-        )
-    );
-  }
-  /* =========================================================
-     PROVIDER
-     ========================================================= */
-  const provider =
-    document.getElementById(
-      "provider"
-    );
-  const customApiPanel =
-    document.getElementById(
-      "customApiPanel"
-    );
-  const modelId =
-    document.getElementById(
-      "modelId"
-    );
-  const providerDefaults = {
-    openai:
-      "gpt-5",
-    google:
-      "gemini",
-    anthropic:
-      "claude",
-    groq:
-      "openai/gpt-oss-120b",
-    mistral:
-      "mistral-large",
-    deepseek:
-      "deepseek-chat",
-    xai:
-      "grok",
-    openrouter:
-      "provider/model",
-    together:
-      "provider/model",
-    fireworks:
-      "provider/model",
-    cohere:
-      "command",
-    huggingface:
-      "model-id",
-    ollama:
-      "local-model",
-    azure:
-      "deployment-name",
-    bedrock:
-      "model-id",
-    custom:
-      ""
-  };
-  function updateProvider() {
-    if (!provider) {
-      return;
-    }
-    const value =
-      provider.value;
-    if (customApiPanel) {
-      customApiPanel.classList.toggle(
-        "visible",
-        value === "custom"
+    /* =========================================================
+       RESULT ELEMENTS
+       ========================================================= */
+    const runBenchmark =
+      document.getElementById(
+        "runBenchmark"
       );
-    }
-    if (
-      modelId &&
-      providerDefaults[value] !==
-        undefined &&
-      (
-        !modelId.value ||
-        Object.values(
-          providerDefaults
-        ).includes(
-          modelId.value
-        )
-      )
-    ) {
-      modelId.value =
-        providerDefaults[value];
-    }
-  }
-  if (provider) {
-    provider.addEventListener(
-      "change",
-      updateProvider
-    );
-    updateProvider();
-  }
-  /* =========================================================
-     TEST MODES
-     ========================================================= */
-  const modeButtons =
-    document.querySelectorAll(
-      ".mode-button"
-    );
-  const modeContents =
-    document.querySelectorAll(
-      ".mode-content"
-    );
-  const runnerTitle =
-    document.getElementById(
-      "runnerTitle"
-    );
-  const runnerDescription =
-    document.getElementById(
-      "runnerDescription"
-    );
-  const actionSummary =
-    document.getElementById(
-      "actionSummary"
-    );
-  const evaluationNumber =
-    document.getElementById(
-      "evaluationNumber"
-    );
-  let currentMode =
-    "single";
-  function updateMode(mode) {
-    currentMode =
-      mode;
-    modeButtons.forEach(
-      (button) => {
-        button.classList.toggle(
-          "active",
-          button.dataset.mode ===
-            mode
+    const resultsEmpty =
+      document.getElementById(
+        "resultsEmpty"
+      );
+    const resultsPanel =
+      document.getElementById(
+        "resultsPanel"
+      );
+    const resultCases =
+      document.getElementById(
+        "resultCases"
+      );
+    const resultPassed =
+      document.getElementById(
+        "resultPassed"
+      );
+    const resultFailed =
+      document.getElementById(
+        "resultFailed"
+      );
+    const resultOverall =
+      document.getElementById(
+        "resultOverall"
+      );
+    const resultDuration =
+      document.getElementById(
+        "resultDuration"
+      );
+    const caseResults =
+      document.getElementById(
+        "caseResults"
+      );
+    /* =========================================================
+       DIMENSION WEIGHTS
+       ========================================================= */
+    const DEFAULT_WEIGHTS = {
+      factuality: 20,
+      instruction_following: 20,
+      relevance: 15,
+      completeness: 15,
+      safety: 20,
+      fluency: 10
+    };
+    /* =========================================================
+       SELECTED DIMENSIONS
+       ========================================================= */
+    function getSelectedDimensions() {
+      const dimensionInputs =
+        document.querySelectorAll(
+          'input[name="dimension"]'
         );
-      }
-    );
-    modeContents.forEach(
-      (content) => {
-        content.classList.toggle(
-          "active",
-          content.dataset.content ===
-            mode
-        );
-      }
-    );
-    if (mode === "single") {
-      runnerTitle.textContent =
-        "Single Case Evaluation";
-      runnerDescription.textContent =
-        "Test one response against a defined evaluation rubric.";
-      evaluationNumber.textContent =
-        "03";
-      actionSummary.textContent =
-        "Ready to evaluate 1 case.";
-    }
-    if (mode === "suite") {
-      runnerTitle.textContent =
-        "Benchmark Suite";
-      runnerDescription.textContent =
-        "Run a versioned evaluation dataset across multiple cases.";
-      evaluationNumber.textContent =
-        "03";
-      updateSuiteSummary();
-    }
-    if (mode === "stress") {
-      runnerTitle.textContent =
-        "Stress Test";
-      runnerDescription.textContent =
-        "Measure target-system performance under controlled load.";
-      evaluationNumber.textContent =
-        "04";
-      updateStressSummary();
-    }
-  }
-  modeButtons.forEach(
-    (button) => {
-      button.addEventListener(
-        "click",
-        () => {
-          updateMode(
-            button.dataset.mode
-          );
-        }
-      );
-    }
-  );
-  /* =========================================================
-     CASE COUNT
-     ========================================================= */
-  const countInputs =
-    document.querySelectorAll(
-      'input[name="caseCount"]'
-    );
-  const customCountWrap =
-    document.getElementById(
-      "customCountWrap"
-    );
-  const customCount =
-    document.getElementById(
-      "customCount"
-    );
-  function getCaseCount() {
-    const selected =
-      document.querySelector(
-        'input[name="caseCount"]:checked'
-      );
-    if (!selected) {
-      return 10;
-    }
-    if (
-      selected.value ===
-      "custom"
-    ) {
-      const custom =
-        Number(
-          customCount?.value
-        );
-      return custom > 0
-        ? Math.min(
-            custom,
-            100
-          )
-        : 0;
-    }
-    return Number(
-      selected.value
-    );
-  }
-  function updateSuiteSummary() {
-    const count =
-      getCaseCount();
-    actionSummary.textContent =
-      count > 0
-        ? `Ready to evaluate ${count} cases.`
-        : "Enter a valid custom case count.";
-  }
-  countInputs.forEach(
-    (input) => {
-      input.addEventListener(
-        "change",
-        () => {
-          if (customCountWrap) {
-            customCountWrap.classList.toggle(
-              "visible",
-              input.value ===
-                "custom" &&
-                input.checked
-            );
-          }
-          updateSuiteSummary();
-        }
-      );
-    }
-  );
-  if (customCount) {
-    customCount.addEventListener(
-      "input",
-      updateSuiteSummary
-    );
-  }
-  /* =========================================================
-     STRESS SUMMARY
-     ========================================================= */
-  const concurrency =
-    document.getElementById(
-      "concurrency"
-    );
-  const totalRequests =
-    document.getElementById(
-      "totalRequests"
-    );
-  const requestDelay =
-    document.getElementById(
-      "requestDelay"
-    );
-  const maxDuration =
-    document.getElementById(
-      "maxDuration"
-    );
-  function updateStressSummary() {
-    const requests =
-      Number(
-        totalRequests?.value
-      ) || 0;
-    const workers =
-      Number(
-        concurrency?.value
-      ) || 0;
-    const delay =
-      Number(
-        requestDelay?.value
-      ) || 0;
-    const duration =
-      Number(
-        maxDuration?.value
-      ) || 0;
-    actionSummary.textContent =
-      `${requests} requests · ${workers} concurrent · ` +
-      `${delay} ms delay · ${duration} min maximum`;
-  }
-  [
-    concurrency,
-    totalRequests,
-    requestDelay,
-    maxDuration
-  ]
-    .filter(Boolean)
-    .forEach(
-      (element) => {
-        element.addEventListener(
-          "input",
-          () => {
-            if (
-              currentMode ===
-              "stress"
-            ) {
-              updateStressSummary();
-            }
-          }
-        );
-      }
-    );
-  /* =========================================================
-     RESULT ELEMENTS
-     ========================================================= */
-  const runBenchmark =
-    document.getElementById(
-      "runBenchmark"
-    );
-  const resultsEmpty =
-    document.getElementById(
-      "resultsEmpty"
-    );
-  const resultsPanel =
-    document.getElementById(
-      "resultsPanel"
-    );
-  const resultCases =
-    document.getElementById(
-      "resultCases"
-    );
-  const resultPassed =
-    document.getElementById(
-      "resultPassed"
-    );
-  const resultFailed =
-    document.getElementById(
-      "resultFailed"
-    );
-  const resultOverall =
-    document.getElementById(
-      "resultOverall"
-    );
-  const resultDuration =
-    document.getElementById(
-      "resultDuration"
-    );
-  const caseResults =
-    document.getElementById(
-      "caseResults"
-    );
-  /* =========================================================
-     DIMENSION WEIGHTS
-     ========================================================= */
-  /*
-   * These are the same weights defined by the benchmark
-   * architecture.
-   */
-  const DEFAULT_WEIGHTS = {
-    factuality: 20,
-    instruction_following: 20,
-    relevance: 15,
-    completeness: 15,
-    safety: 20,
-    fluency: 10
-  };
-  /* =========================================================
-     SELECTED DIMENSIONS
-     ========================================================= */
-  function getSelectedDimensions() {
-    /*
-     * If the benchmark page contains dimension checkboxes,
-     * read them.
-     *
-     * Otherwise use all six dimensions.
-     */
-    const dimensionInputs =
-      document.querySelectorAll(
-        'input[name="dimension"]'
-      );
-    if (
-      !dimensionInputs.length
-    ) {
-      return Object.keys(
-        DEFAULT_WEIGHTS
-      );
-    }
-    const selected =
-      Array.from(
-        dimensionInputs
-      )
-        .filter(
-          (input) =>
-            input.checked
-        )
-        .map(
-          (input) =>
-            input.value
-        )
-        .filter(
-          (value) =>
-            Object.prototype.hasOwnProperty.call(
-              DEFAULT_WEIGHTS,
-              value
-            )
-        );
-    return selected.length
-      ? selected
-      : Object.keys(
+      if (
+        !dimensionInputs.length
+      ) {
+        return Object.keys(
           DEFAULT_WEIGHTS
         );
-  }
-  /* =========================================================
-     GET WEIGHTS
-     ========================================================= */
-  function getWeights() {
-    const dimensions =
-      getSelectedDimensions();
-    const weights = {};
-    dimensions.forEach(
-      (dimension) => {
-        weights[dimension] =
-          DEFAULT_WEIGHTS[
-            dimension
-          ];
       }
-    );
-    return weights;
-  }
-  /* =========================================================
-     MODEL
-     ========================================================= */
-  function getModelValue() {
-    return (
-      modelId?.value ||
-      ""
-    ).trim();
-  }
-  /* =========================================================
-     BENCHMARK PAYLOAD
-     ========================================================= */
-  function buildBenchmarkPayload() {
-    const model =
-      getModelValue();
-    const dimensions =
-      getSelectedDimensions();
-    const weights =
-      getWeights();
-    const payload = {
-      mode:
-        currentMode,
-      provider:
-        provider?.value ||
-        "groq",
-      model,
-      benchmark:
-        "General Quality",
-      dataset:
-        "EVP.Aureon — General Purpose Quality",
-      dimensions,
-      weights
-    };
-    if (
-      currentMode ===
-      "single"
-    ) {
-      payload.testSize =
-        1;
+      const selected =
+        Array.from(
+          dimensionInputs
+        )
+          .filter(
+            (input) =>
+              input.checked
+          )
+          .map(
+            (input) =>
+              input.value
+          )
+          .filter(
+            (value) =>
+              Object.prototype.hasOwnProperty.call(
+                DEFAULT_WEIGHTS,
+                value
+              )
+          );
+      return selected.length
+        ? selected
+        : Object.keys(
+            DEFAULT_WEIGHTS
+          );
     }
-    if (
-      currentMode ===
-      "suite"
-    ) {
-      payload.testSize =
-        getCaseCount();
+    /* =========================================================
+       GET WEIGHTS
+       ========================================================= */
+    function getWeights() {
+      const dimensions =
+        getSelectedDimensions();
+      const weights = {};
+      dimensions.forEach(
+        (dimension) => {
+          weights[dimension] =
+            DEFAULT_WEIGHTS[
+              dimension
+            ];
+        }
+      );
+      return weights;
     }
-    if (
-      currentMode ===
-      "stress"
-    ) {
-      payload.testSize =
-        Number(
-          totalRequests?.value
-        ) || 1;
-      payload.stress = {
-        concurrency:
-          Number(
-            concurrency?.value
-          ) || 1,
-        totalRequests:
+    /* =========================================================
+       MODEL
+       ========================================================= */
+    function getModelValue() {
+      return (
+        modelId?.value ||
+        ""
+      ).trim();
+    }
+    /* =========================================================
+       BENCHMARK PAYLOAD
+       ========================================================= */
+    function buildBenchmarkPayload() {
+      const model =
+        getModelValue();
+      const dimensions =
+        getSelectedDimensions();
+      const weights =
+        getWeights();
+      const payload = {
+        mode:
+          currentMode,
+        provider:
+          provider?.value ||
+          "groq",
+        model,
+        benchmark:
+          "General Quality",
+        dataset:
+          "EVP.Aureon — General Purpose Quality",
+        dimensions,
+        weights
+      };
+      if (
+        currentMode ===
+        "single"
+      ) {
+        payload.testSize =
+          1;
+      }
+      if (
+        currentMode ===
+        "suite"
+      ) {
+        payload.testSize =
+          getCaseCount();
+      }
+      if (
+        currentMode ===
+        "stress"
+      ) {
+        payload.testSize =
           Number(
             totalRequests?.value
-          ) || 1,
-        requestDelay:
-          Number(
-            requestDelay?.value
-          ) || 0,
-        maxDuration:
-          Number(
-            maxDuration?.value
-          ) || 1
-      };
+          ) || 1;
+        payload.stress = {
+          concurrency:
+            Number(
+              concurrency?.value
+            ) || 1,
+          totalRequests:
+            Number(
+              totalRequests?.value
+            ) || 1,
+          requestDelay:
+            Number(
+              requestDelay?.value
+            ) || 0,
+          maxDuration:
+            Number(
+              maxDuration?.value
+            ) || 1
+        };
+      }
+      return payload;
     }
-    return payload;
-  }
-  /* =========================================================
-     BUTTON STATE
-     ========================================================= */
-  function setRunningState(
-    running
-  ) {
-    if (!runBenchmark) {
-      return;
-    }
-    runBenchmark.disabled =
-      running;
-    if (running) {
-      runBenchmark.dataset.originalText =
-        runBenchmark.textContent;
-      runBenchmark.textContent =
-        "Running benchmark...";
-      runBenchmark.classList.add(
-        "is-running"
-      );
-    } else {
-      runBenchmark.textContent =
-        runBenchmark.dataset.originalText ||
-        "Run benchmark";
-      runBenchmark.classList.remove(
-        "is-running"
-      );
-    }
-  }
-  /* =========================================================
-     FORMAT HELPERS
-     ========================================================= */
-  function formatDuration(
-    milliseconds
-  ) {
-    const ms =
-      Number(milliseconds);
-    if (
-      !Number.isFinite(ms)
+    /* =========================================================
+       BUTTON STATE
+       ========================================================= */
+    function setRunningState(
+      running
     ) {
-      return "—";
-    }
-    if (ms < 1000) {
-      return `${Math.round(ms)} ms`;
-    }
-    return `${(
-      ms / 1000
-    ).toFixed(2)} s`;
-  }
-  function formatScore(
-    score
-  ) {
-    const value =
-      Number(score);
-    if (
-      !Number.isFinite(value)
-    ) {
-      return "—";
-    }
-    return `${value.toFixed(
-      1
-    )}`;
-  }
-  /* =========================================================
-     DISPLAY RESULTS
-     ========================================================= */
-  function displayBenchmarkResults(
-    data
-  ) {
-    if (!data) {
-      return;
-    }
-    if (resultsEmpty) {
-      resultsEmpty.classList.add(
-        "hidden"
-      );
-    }
-    if (resultsPanel) {
-      resultsPanel.classList.add(
-        "visible"
-      );
-    }
-    const summary =
-      data.summary || {};
-    /* -------------------------------------------------------
-       SUMMARY CARDS
-       ------------------------------------------------------- */
-    if (resultCases) {
-      resultCases.textContent =
-        summary.requested ??
-        data.testSize ??
-        "—";
-    }
-    if (resultPassed) {
-      resultPassed.textContent =
-        summary.passed ??
-        0;
-    }
-    if (resultFailed) {
-      resultFailed.textContent =
-        (
-          Number(
-            summary.failed
-          ) || 0
-        ) +
-        (
-          Number(
-            summary.errors
-          ) || 0
+      if (!runBenchmark) {
+        return;
+      }
+      runBenchmark.disabled =
+        running;
+      if (running) {
+        runBenchmark.dataset.originalText =
+          runBenchmark.textContent;
+        runBenchmark.textContent =
+          "Running benchmark...";
+        runBenchmark.classList.add(
+          "is-running"
         );
+      } else {
+        runBenchmark.textContent =
+          runBenchmark.dataset.originalText ||
+          "Run benchmark";
+        runBenchmark.classList.remove(
+          "is-running"
+        );
+      }
     }
-    if (resultOverall) {
-      resultOverall.textContent =
-        Number.isFinite(
-          Number(
-            summary.overall
-          )
-        )
-          ? Number(
+    /* =========================================================
+       FORMAT HELPERS
+       ========================================================= */
+    function formatDuration(
+      milliseconds
+    ) {
+      const ms =
+        Number(milliseconds);
+      if (
+        !Number.isFinite(ms)
+      ) {
+        return "—";
+      }
+      if (ms < 1000) {
+        return `${Math.round(ms)} ms`;
+      }
+      return `${(
+        ms / 1000
+      ).toFixed(2)} s`;
+    }
+    function formatScore(
+      score
+    ) {
+      const value =
+        Number(score);
+      if (
+        !Number.isFinite(value)
+      ) {
+        return "—";
+      }
+      return `${value.toFixed(
+        1
+      )}`;
+    }
+    /* =========================================================
+       DISPLAY RESULTS
+       ========================================================= */
+    function displayBenchmarkResults(
+      data
+    ) {
+      if (!data) {
+        return;
+      }
+      if (resultsEmpty) {
+        resultsEmpty.classList.add(
+          "hidden"
+        );
+      }
+      if (resultsPanel) {
+        resultsPanel.classList.add(
+          "visible"
+        );
+      }
+      const summary =
+        data.summary || {};
+      /* -------------------------------------------------------
+         SUMMARY CARDS
+         ------------------------------------------------------- */
+      if (resultCases) {
+        resultCases.textContent =
+          summary.requested ??
+          data.testSize ??
+          "—";
+      }
+      if (resultPassed) {
+        resultPassed.textContent =
+          summary.passed ??
+          0;
+      }
+      if (resultFailed) {
+        resultFailed.textContent =
+          (
+            Number(
+              summary.failed
+            ) || 0
+          ) +
+          (
+            Number(
+              summary.errors
+            ) || 0
+          );
+      }
+      if (resultOverall) {
+        resultOverall.textContent =
+          Number.isFinite(
+            Number(
               summary.overall
-            ).toFixed(1)
-          : "—";
-    }
-    if (resultDuration) {
-      resultDuration.textContent =
-        formatDuration(
-          data.run?.durationMs
-        );
-    }
-    /* -------------------------------------------------------
-       INDIVIDUAL CASES
-       ------------------------------------------------------- */
-    if (
-      !caseResults
-    ) {
-      return;
-    }
-    const results =
-      Array.isArray(
-        data.results
-      )
-        ? data.results
-        : [];
-    if (!results.length) {
-      caseResults.innerHTML = `
-        <tr>
-          <td colspan="5">
-            No benchmark cases were returned.
-          </td>
-        </tr>
-      `;
-      return;
-    }
-    caseResults.innerHTML =
-      results
-        .map(
-          (item) => {
-            const scoreValues =
-              Object.values(
-                item.scores || {}
-              )
-                .map(
-                  Number
+            )
+          )
+            ? Number(
+                summary.overall
+              ).toFixed(1)
+            : "—";
+      }
+      if (resultDuration) {
+        resultDuration.textContent =
+          formatDuration(
+            data.run?.durationMs
+          );
+      }
+      /* -------------------------------------------------------
+         INDIVIDUAL CASES
+         ------------------------------------------------------- */
+      if (
+        !caseResults
+      ) {
+        return;
+      }
+      const results =
+        Array.isArray(
+          data.results
+        )
+          ? data.results
+          : [];
+      if (!results.length) {
+        caseResults.innerHTML = `
+          <tr>
+            <td colspan="5">
+              No benchmark cases were returned.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      caseResults.innerHTML =
+        results
+          .map(
+            (item) => {
+              const scoreValues =
+                Object.values(
+                  item.scores || {}
                 )
-                .filter(
-                  Number.isFinite
-                );
-            const score =
-              scoreValues.length
-                ? scoreValues.reduce(
-                    (
-                      sum,
-                      value
-                    ) =>
-                      sum +
-                      value,
-                    0
-                  ) /
-                  scoreValues.length
-                : null;
-            const status =
-              item.status ||
-              "ERROR";
-            const statusLabel =
-              status ===
-              "PASSED"
-                ? "PASSED"
-                : status ===
-                  "FAILED"
-                  ? "FAILED"
-                  : "ERROR";
-            const category =
-              item.category ||
-              "EVP.Aureon";
-            return `
-              <tr>
-                <td class="case-number">
-                  #${String(
-                    item.testNumber ||
-                      ""
-                  ).padStart(
-                    3,
-                    "0"
-                  )}
-                </td>
-                <td>
-                  ${statusLabel}
-                </td>
-                <td>
-                  ${
-                    score === null
-                      ? "—"
-                      : formatScore(
-                          score
-                        )
-                  }
-                </td>
-                <td>
-                  ${escapeHtml(
-                    category
-                  )}
-                </td>
-                <td>
-                  ${
-                    Number.isFinite(
-                      Number(
-                        item.candidateLatencyMs
-                      )
-                    )
-                      ? formatDuration(
+                  .map(
+                    Number
+                  )
+                  .filter(
+                    Number.isFinite
+                  );
+              const score =
+                scoreValues.length
+                  ? scoreValues.reduce(
+                      (
+                        sum,
+                        value
+                      ) =>
+                        sum +
+                        value,
+                      0
+                    ) /
+                    scoreValues.length
+                  : null;
+              const status =
+                item.status ||
+                "ERROR";
+              const statusLabel =
+                status ===
+                "PASSED"
+                  ? "PASSED"
+                  : status ===
+                    "FAILED"
+                    ? "FAILED"
+                    : "ERROR";
+              const category =
+                item.category ||
+                "EVP.Aureon";
+              return `
+                <tr>
+                  <td class="case-number">
+                    #${String(
+                      item.testNumber ||
+                        ""
+                    ).padStart(
+                      3,
+                      "0"
+                    )}
+                  </td>
+                  <td>
+                    ${statusLabel}
+                  </td>
+                  <td>
+                    ${
+                      score === null
+                        ? "—"
+                        : formatScore(
+                            score
+                          )
+                    }
+                  </td>
+                  <td>
+                    ${escapeHtml(
+                      category
+                    )}
+                  </td>
+                  <td>
+                    ${
+                      Number.isFinite(
+                        Number(
                           item.candidateLatencyMs
                         )
-                      : "—"
-                  }
+                      )
+                        ? formatDuration(
+                            item.candidateLatencyMs
+                          )
+                        : "—"
+                    }
+                  </td>
+                </tr>
+              `;
+            }
+          )
+          .join("");
+    }
+    /* =========================================================
+       HTML ESCAPE
+       ========================================================= */
+    function escapeHtml(
+      value
+    ) {
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+    /* =========================================================
+       DISPLAY ERROR
+       ========================================================= */
+    function displayBenchmarkError(
+      message
+    ) {
+      if (resultsEmpty) {
+        resultsEmpty.classList.add(
+          "hidden"
+        );
+      }
+      if (resultsPanel) {
+        resultsPanel.classList.add(
+          "visible"
+        );
+      }
+      if (resultCases) {
+        resultCases.textContent =
+          "—";
+      }
+      if (resultPassed) {
+        resultPassed.textContent =
+          "—";
+      }
+      if (resultFailed) {
+        resultFailed.textContent =
+          "—";
+      }
+      if (resultOverall) {
+        resultOverall.textContent =
+          "ERROR";
+      }
+      if (resultDuration) {
+        resultDuration.textContent =
+          "—";
+      }
+      if (caseResults) {
+        caseResults.innerHTML = `
+          <tr>
+            <td colspan="5">
+              ${escapeHtml(
+                message ||
+                  "Benchmark execution failed."
+              )}
+            </td>
+          </tr>
+        `;
+      }
+    }
+    /* =========================================================
+       RUN BENCHMARK
+       ========================================================= */
+    if (runBenchmark) {
+      runBenchmark.addEventListener(
+        "click",
+        async () => {
+          const model =
+            getModelValue();
+          /* -----------------------------------------------------
+             BASIC VALIDATION
+             ----------------------------------------------------- */
+          if (!model) {
+            displayBenchmarkError(
+              "Enter a model ID before running the benchmark."
+            );
+            return;
+          }
+          if (
+            currentMode ===
+            "suite"
+          ) {
+            const count =
+              getCaseCount();
+            if (
+              !count ||
+              count < 1
+            ) {
+              displayBenchmarkError(
+                "Enter a valid benchmark case count."
+              );
+              return;
+            }
+          }
+          /* -----------------------------------------------------
+             PREPARE UI
+             ----------------------------------------------------- */
+          setRunningState(
+            true
+          );
+          if (resultsEmpty) {
+            resultsEmpty.classList.add(
+              "hidden"
+            );
+          }
+          if (resultsPanel) {
+            resultsPanel.classList.add(
+              "visible"
+            );
+          }
+          if (caseResults) {
+            caseResults.innerHTML = `
+              <tr>
+                <td colspan="5">
+                  Running EVP.Aureon benchmark...
                 </td>
               </tr>
             `;
           }
-        )
-        .join("");
-  }
-  /* =========================================================
-     HTML ESCAPE
-     ========================================================= */
-  function escapeHtml(
-    value
-  ) {
-    return String(
-      value ?? ""
-    )
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-  }
-  /* =========================================================
-     DISPLAY ERROR
-     ========================================================= */
-  function displayBenchmarkError(
-    message
-  ) {
-    if (resultsEmpty) {
-      resultsEmpty.classList.add(
-        "hidden"
-      );
-    }
-    if (resultsPanel) {
-      resultsPanel.classList.add(
-        "visible"
-      );
-    }
-    if (resultCases) {
-      resultCases.textContent =
-        "—";
-    }
-    if (resultPassed) {
-      resultPassed.textContent =
-        "—";
-    }
-    if (resultFailed) {
-      resultFailed.textContent =
-        "—";
-    }
-    if (resultOverall) {
-      resultOverall.textContent =
-        "ERROR";
-    }
-    if (resultDuration) {
-      resultDuration.textContent =
-        "—";
-    }
-    if (caseResults) {
-      caseResults.innerHTML = `
-        <tr>
-          <td colspan="5">
-            ${escapeHtml(
-              message ||
-                "Benchmark execution failed."
-            )}
-          </td>
-        </tr>
-      `;
-    }
-  }
-  /* =========================================================
-     RUN BENCHMARK
-     ========================================================= */
-  if (runBenchmark) {
-    runBenchmark.addEventListener(
-      "click",
-      async () => {
-        const model =
-          getModelValue();
-        /* -----------------------------------------------------
-           BASIC VALIDATION
-           ----------------------------------------------------- */
-        if (!model) {
-          displayBenchmarkError(
-            "Enter a model ID before running the benchmark."
-          );
-          return;
-        }
-        if (
-          currentMode ===
-          "suite"
-        ) {
-          const count =
-            getCaseCount();
-          if (
-            !count ||
-            count < 1
-          ) {
-            displayBenchmarkError(
-              "Enter a valid benchmark case count."
-            );
-            return;
+          if (resultOverall) {
+            resultOverall.textContent =
+              "RUNNING";
           }
-        }
-        /* -----------------------------------------------------
-           PREPARE UI
-           ----------------------------------------------------- */
-        setRunningState(
-          true
-        );
-        if (resultsEmpty) {
-          resultsEmpty.classList.add(
-            "hidden"
-          );
-        }
-        if (resultsPanel) {
-          resultsPanel.classList.add(
-            "visible"
-          );
-        }
-        if (caseResults) {
-          caseResults.innerHTML = `
-            <tr>
-              <td colspan="5">
-                Running EVP.Aureon benchmark...
-              </td>
-            </tr>
-          `;
-        }
-        if (resultOverall) {
-          resultOverall.textContent =
-            "RUNNING";
-        }
-        try {
-          /* ---------------------------------------------------
-             BUILD REQUEST
-             --------------------------------------------------- */
-          const payload =
-            buildBenchmarkPayload();
-          console.log(
-            "EvalLoop benchmark request:",
-            {
-              ...payload
-            }
-          );
-          /* ---------------------------------------------------
-             CALL VERCEL FUNCTION
-             --------------------------------------------------- */
-          const response =
-            await fetch(
-              "/api/benchmark",
+          try {
+            /* ---------------------------------------------------
+               BUILD REQUEST
+               --------------------------------------------------- */
+            const payload =
+              buildBenchmarkPayload();
+            console.log(
+              "EvalLoop benchmark request:",
               {
-                method:
-                  "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    payload
-                  )
+                ...payload
               }
             );
-          /* ---------------------------------------------------
-             PARSE RESPONSE
-             --------------------------------------------------- */
-          const data =
-            await response.json()
-              .catch(
-                () => null
+            /* ---------------------------------------------------
+               CALL VERCEL FUNCTION
+               --------------------------------------------------- */
+            const response =
+              await fetch(
+                "/api/benchmark",
+                {
+                  method:
+                    "POST",
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+                  body:
+                    JSON.stringify(
+                      payload
+                    )
+                }
               );
-          if (
-            !response.ok ||
-            !data?.success
-          ) {
-            throw new Error(
-              data?.error ||
-                `Benchmark request failed with HTTP ${response.status}.`
+            /* ---------------------------------------------------
+               PARSE RESPONSE
+               --------------------------------------------------- */
+            const data =
+              await response.json()
+                .catch(
+                  () => null
+                );
+            if (
+              !response.ok ||
+              !data?.success
+            ) {
+              throw new Error(
+                data?.error ||
+                  `Benchmark request failed with HTTP ${response.status}.`
+              );
+            }
+            /* ---------------------------------------------------
+               DISPLAY
+               --------------------------------------------------- */
+            displayBenchmarkResults(
+              data
             );
-          }
-          /* ---------------------------------------------------
-             DISPLAY
-             --------------------------------------------------- */
-          displayBenchmarkResults(
-            data
-          );
-          /* ---------------------------------------------------
-             SCROLL
-             --------------------------------------------------- */
-          if (
-            resultsPanel
-          ) {
-            resultsPanel.scrollIntoView(
-              {
-                behavior:
-                  "smooth",
-                block:
-                  "start"
-              }
-            );
-          }
-        } catch (
-          error
-        ) {
-          console.error(
-            "EvalLoop benchmark error:",
+            /* ---------------------------------------------------
+               SCROLL
+               --------------------------------------------------- */
+            if (
+              resultsPanel
+            ) {
+              resultsPanel.scrollIntoView(
+                {
+                  behavior:
+                    "smooth",
+                  block:
+                    "start"
+                }
+              );
+            }
+          } catch (
             error
-          );
-          displayBenchmarkError(
-            error?.message ||
-              "Benchmark execution failed."
-          );
-        } finally {
-          setRunningState(
-            false
-          );
+          ) {
+            console.error(
+              "EvalLoop benchmark error:",
+              error
+            );
+            displayBenchmarkError(
+              error?.message ||
+                "Benchmark execution failed."
+            );
+          } finally {
+            setRunningState(
+              false
+            );
+          }
         }
-      }
+      );
+    }
+    /* =========================================================
+       INITIAL STATE
+       ========================================================= */
+    updateMode(
+      currentMode
     );
-  }
-  /* =========================================================
-     INITIAL STATE
-     ========================================================= */
-  updateMode(
-    currentMode
-  );
-</script>
+  </script>
 </body>
 </html>
