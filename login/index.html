@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Sign In — EvalLoop AI</title>
+  <meta
+    name="description"
+    content="Sign in to your EvalLoop AI workspace."
+  >
+  <link
+    rel="stylesheet"
+    href="/site.css"
+  >
+</head>
+<body>
+  <!-- =====================================================
+       BACKGROUND
+       ===================================================== -->
+  <div
+    class="background-grid"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="background-glow"
+    aria-hidden="true"
+  ></div>
+  <!-- =====================================================
+       PAGE PROGRESS
+       ===================================================== -->
+  <div
+    class="page-progress"
+    aria-hidden="true"
+  ></div>
+  <!-- =====================================================
+       ANNOUNCEMENT
+       ===================================================== -->
+  <div class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-left">
+        <span class="status-dot"></span>
+        <span class="mono-label">
+          EVALLOOP AI
+        </span>
+        <span class="announcement-divider"></span>
+        <span class="announcement-text">
+          AI EVALUATION INFRASTRUCTURE
+        </span>
+      </div>
+      <a
+        href="/"
+        class="announcement-link"
+      >
+        BACK TO PLATFORM
+        <span>↗</span>
+      </a>
+    </div>
+  </div>
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a
+        href="/"
+        class="brand"
+        aria-label="EvalLoop AI home"
+      >
+        EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
+      <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+      >
+        <a href="/knowledge/">
+          Knowledge
+        </a>
+        <a href="/labs/">
+          Labs
+        </a>
+        <a href="/benchmarks/">
+          Benchmarks
+        </a>
+        <a href="/pricing/">
+          Pricing
+        </a>
+      </nav>
+      <div class="nav-actions">
+        <a
+          href="/signup/"
+          class="nav-login"
+        >
+          CREATE ACCOUNT
+        </a>
+        <a
+          href="/signup/"
+          class="button button-small button-primary"
+        >
+          GET STARTED →
+        </a>
+      </div>
+      <!-- Mobile menu button -->
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!-- ===================================================
+         MOBILE NAV
+         =================================================== -->
+    <nav
+      class="mobile-nav"
+      id="mobileNav"
+      aria-label="Mobile navigation"
+    >
+      <a href="/knowledge/">
+        Knowledge
+      </a>
+      <a href="/labs/">
+        Labs
+      </a>
+      <a href="/benchmarks/">
+        Benchmarks
+      </a>
+      <a href="/pricing/">
+        Pricing
+      </a>
+      <div class="mobile-nav-actions">
+        <a
+          href="/signup/"
+          class="button button-small button-primary"
+        >
+          CREATE ACCOUNT →
+        </a>
+      </div>
+    </nav>
+  </header>
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+  <main>
+    <section class="auth-shell">
+      <div class="container">
+        <div class="auth-wrapper">
+          <!-- ===============================================
+               AUTH HEADER
+               =============================================== -->
+          <div class="auth-header">
+            <div class="auth-label">
+              AUTHENTICATION
+            </div>
+            <h1>
+              Sign <span>in.</span>
+            </h1>
+            <p>
+              Access your EvalLoop AI workspace and
+              continue evaluating AI systems.
+            </p>
+          </div>
+          <!-- ===============================================
+               AUTH PANEL
+               =============================================== -->
+          <div class="auth-panel">
+            <!-- =============================================
+                 LOGIN FORM
+                 ============================================= -->
+            <form
+              class="auth-form"
+              id="loginForm"
+            >
+              <!-- Email -->
+              <div class="form-group">
+                <label
+                  class="form-label"
+                  for="email"
+                >
+                  EMAIL
+                </label>
+                <input
+                  class="form-input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                >
+              </div>
+              <!-- Password -->
+              <div class="form-group">
+                <label
+                  class="form-label"
+                  for="password"
+                >
+                  PASSWORD
+                </label>
+                <input
+                  class="form-input"
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                >
+              </div>
+              <!-- Forgot password -->
+              <div class="auth-forgot">
+                <a
+                  href="#"
+                  id="forgotPassword"
+                >
+                  FORGOT PASSWORD →
+                </a>
+              </div>
+              <!-- Sign in -->
+              <button
+                type="submit"
+                class="button button-primary button-large"
+              >
+                SIGN IN →
+              </button>
+            </form>
+            <!-- =============================================
+                 SOCIAL DIVIDER
+                 ============================================= -->
+            <div class="auth-divider">
+              OR CONTINUE WITH
+            </div>
+            <!-- =============================================
+                 SOCIAL LOGIN
+                 ============================================= -->
+            <div class="auth-socials">
+              <!-- Google -->
+              <button
+                type="button"
+                class="auth-social"
+                id="googleLogin"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="#4285F4"
+                    d="M21.35 12.27c0-.73-.07-1.43-.21-2.1H12v3.98h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.27Z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.04H3.27v2.53A9.74 9.74 0 0 0 12 21.75Z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M6.51 13.82A5.86 5.86 0 0 1 6.2 12c0-.63.11-1.24.31-1.82V7.65H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.06 1.02 4.35l3.24-2.53Z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 6.14c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.24 14.63 2.25 12 2.25a9.74 9.74 0 0 0-8.73 5.4l3.24 2.53C7.29 7.86 9.45 6.14 12 6.14Z"
+                  />
+                </svg>
+                CONTINUE WITH GOOGLE
+              </button>
+              <!-- GitHub -->
+              <button
+                type="button"
+                class="auth-social"
+                id="githubLogin"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.1.79-.25.79-.56v-2.16c-3.23.7-3.91-1.38-3.91-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.58-.29-5.29-1.29-5.29-5.75 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.48.11-3.08 0 0 .97-.31 3.17 1.19A11 11 0 0 1 12 5.83c.98 0 1.96.13 2.88.39 2.2-1.5 3.17-1.19 3.17-1.19.63 1.6.23 2.79.11 3.08.74.81 1.19 1.85 1.19 3.12 0 4.47-2.72 5.46-5.31 5.75.42.36.79 1.08.79 2.18v3.18c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"
+                  />
+                </svg>
+                CONTINUE WITH GITHUB
+              </button>
+            </div>
+            <!-- =============================================
+                 AUTH FOOTER
+                 ============================================= -->
+            <div class="auth-footer">
+              DON'T HAVE AN ACCOUNT?
+              <a href="/signup/">
+                CREATE ACCOUNT →
+              </a>
+            </div>
+            <div class="auth-meta">
+              Authentication integration is currently
+              being prepared for EvalLoop AI.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a
+            href="/"
+            class="brand"
+          >
+            EvalLoop AI<span class="brand-cursor">_</span>
+          </a>
+          <p>
+            Evaluation infrastructure for
+            reliable AI systems.
+          </p>
+        </div>
+        <!-- Columns -->
+        <div class="footer-columns">
+          <div class="footer-column">
+            <div class="footer-label">
+              PLATFORM
+            </div>
+            <a href="/app/">
+              Evaluator
+            </a>
+            <a href="/benchmarks/">
+              Benchmarks
+            </a>
+            <a href="/labs/">
+              Labs
+            </a>
+            <a href="/pricing/">
+              Pricing
+            </a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              RESOURCES
+            </div>
+            <a href="/knowledge/">
+              Knowledge
+            </a>
+            <a href="/docs/">
+              Docs
+            </a>
+            <a href="/benchmarks/">
+              Research
+            </a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              COMPANY
+            </div>
+            <a href="/about/">
+              About
+            </a>
+            <a href="/contact/">
+              Contact
+            </a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              LEGAL
+            </div>
+            <a href="/privacy/">
+              Privacy
+            </a>
+            <a href="/terms/">
+              Terms
+            </a>
+            <a href="/ai-usage/">
+              AI Usage
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Footer bottom -->
+      <div class="footer-bottom">
+        <span>
+          © 2026 EVALLOOP AI
+        </span>
+        <span>
+          BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
+        </span>
+      </div>
+    </div>
+  </footer>
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+  <script>
+    /* ================================================
+       MOBILE MENU
+       ================================================ */
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+    const mobileNav =
+      document.getElementById(
+        "mobileNav"
+      );
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+        const active =
+          mobileNav.classList.toggle(
+            "active"
+          );
+        mobileMenuButton.classList.toggle(
+          "active",
+          active
+        );
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          active
+        );
+        document.body.classList.toggle(
+          "menu-open",
+          active
+        );
+      }
+    );
+    /* ================================================
+       CLOSE MOBILE MENU AFTER LINK CLICK
+       ================================================ */
+    mobileNav
+      .querySelectorAll("a")
+      .forEach((link) => {
+        link.addEventListener(
+          "click",
+          () => {
+            mobileNav.classList.remove(
+              "active"
+            );
+            mobileMenuButton.classList.remove(
+              "active"
+            );
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+            document.body.classList.remove(
+              "menu-open"
+            );
+          }
+        );
+      });
+    /* ================================================
+       LOGIN FORM
+       ================================================ */
+    const loginForm =
+      document.getElementById(
+        "loginForm"
+      );
+    loginForm.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault();
+        /*
+         * Authentication backend is not connected yet.
+         * This prevents a fake login request.
+         */
+        alert(
+          "Authentication is not connected yet. The login interface is ready for the backend integration."
+        );
+      }
+    );
+    /* ================================================
+       SOCIAL AUTH PLACEHOLDERS
+       ================================================ */
+    const googleLogin =
+      document.getElementById(
+        "googleLogin"
+      );
+    const githubLogin =
+      document.getElementById(
+        "githubLogin"
+      );
+    googleLogin.addEventListener(
+      "click",
+      () => {
+        alert(
+          "Google authentication will be connected here."
+        );
+      }
+    );
+    githubLogin.addEventListener(
+      "click",
+      () => {
+        alert(
+          "GitHub authentication will be connected here."
+        );
+      }
+    );
+    /* ================================================
+       FORGOT PASSWORD
+       ================================================ */
+    const forgotPassword =
+      document.getElementById(
+        "forgotPassword"
+      );
+    forgotPassword.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        alert(
+          "Password recovery will be connected here."
+        );
+      }
+    );
+    /* ================================================
+       PAGE PROGRESS
+       ================================================ */
+    const progress =
+      document.querySelector(
+        ".page-progress"
+      );
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrollTop =
+          window.scrollY;
+        const scrollHeight =
+          document.documentElement.scrollHeight -
+          window.innerHeight;
+        const percentage =
+          scrollHeight > 0
+            ? (scrollTop / scrollHeight) * 100
+            : 0;
+        progress.style.width =
+          percentage + "%";
+      }
+    );
+    /* ================================================
+       CUSTOM CURSOR
+       ================================================ */
+    const cursorDot =
+      document.querySelector(
+        ".cursor-dot"
+      );
+    const cursorRing =
+      document.querySelector(
+        ".cursor-ring"
+      );
+    if (cursorDot && cursorRing) {
+      window.addEventListener(
+        "mousemove",
+        (event) => {
+          cursorDot.style.left =
+            event.clientX + "px";
+          cursorDot.style.top =
+            event.clientY + "px";
+          cursorRing.style.left =
+            event.clientX + "px";
+          cursorRing.style.top =
+            event.clientY + "px";
+          cursorDot.style.opacity = "1";
+          cursorRing.style.opacity = "1";
+        }
+      );
+    }
+  </script>
+</body>
+</html>
