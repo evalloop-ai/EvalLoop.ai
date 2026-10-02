@@ -3497,7 +3497,7 @@
     }
 
 
-    /* =======================================================
+   /* =======================================================
        CONNECTION METHOD
        ======================================================= */
 
@@ -3506,7 +3506,6 @@
         'input[name="connectionMethod"]'
       );
 
-
     function updateConnectionMethod() {
 
       const selected =
@@ -3514,77 +3513,38 @@
           'input[name="connectionMethod"]:checked'
         );
 
-
       if (!selected) {
         return;
       }
 
-
       const method =
         selected.value;
 
+      if (
+        method === "upload"
+      ) {
 
-      if (method === "upload") {
+        if (endpointField) {
+          endpointField.style.display =
+            "none";
+        }
 
-  if (endpointField) {
-    endpointField.style.display =
-      "none";
-  }
+        if (apiKeyField) {
+          apiKeyField.style.display =
+            "none";
+        }
 
-  if (apiKeyField) {
-    apiKeyField.style.display =
-      "none";
-  }
+        if (connectionMessage) {
 
-  /* Show upload panel */
-  const uploadPanel =
-    document.getElementById("uploadPanel");
+          connectionMessage.textContent =
+            "Response upload mode selected. File upload will be enabled in the benchmark backend.";
 
-  if (uploadPanel) {
-    uploadPanel.hidden = false;
-  }
+          connectionMessage.className =
+            "connection-message";
 
-  if (connectionMessage) {
+        }
 
-    connectionMessage.textContent =
-      "Upload a CSV or JSON file containing the responses from your AI system.";
-
-    connectionMessage.className =
-      "connection-message";
-
-  }
-
-} else {
-
-  /* Hide upload panel */
-  const uploadPanel =
-    document.getElementById("uploadPanel");
-
-  if (uploadPanel) {
-    uploadPanel.hidden = true;
-  }
-
-  if (endpointField) {
-    endpointField.style.display =
-      "";
-  }
-
-  if (apiKeyField) {
-    apiKeyField.style.display =
-      "";
-  }
-
-  if (connectionMessage) {
-
-    connectionMessage.textContent =
-      "Connection verification will be enabled when the benchmark backend is connected.";
-
-    connectionMessage.className =
-      "connection-message";
-
-  }
-
-} else {
+      } else {
 
         if (endpointField) {
           endpointField.style.display =
@@ -3610,7 +3570,6 @@
 
     }
 
-
     connectionInputs.forEach(
       function (input) {
 
@@ -3622,11 +3581,9 @@
       }
     );
 
-
     /* =======================================================
        TARGET NAME → SUMMARY
        ======================================================= */
-
     function updateTargetSummary() {
 
       const name =
