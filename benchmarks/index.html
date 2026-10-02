@@ -1,920 +1,1027 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
   <title>Benchmarks — EvalLoop AI</title>
   <link rel="stylesheet" href="/site.css" />
   <style>
     /* =========================================================
        BENCHMARK PAGE
        Page-specific styles only.
-       Global navigation, footer and design system live in site.css.
+       Global navigation, footer, buttons and base system
+       come from /site.css.
        ========================================================= */
+    :root {
+      --benchmark-max: 1280px;
+    }
+    /* ---------------------------------------------------------
+       PAGE CONTAINER
+       --------------------------------------------------------- */
+    .benchmark-page {
+      width: 100%;
+      max-width: var(--benchmark-max);
+      margin: 0 auto;
+      padding: 72px 24px 110px;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+    .benchmark-page *,
+    .benchmark-page *::before,
+    .benchmark-page *::after {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+    /* ---------------------------------------------------------
+       HERO
+       --------------------------------------------------------- */
     .benchmark-hero {
-      padding: 86px 0 58px;
+      padding: 36px 0 64px;
+      max-width: 920px;
     }
     .benchmark-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 9px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       color: var(--green2);
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .14em;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .12em;
       text-transform: uppercase;
     }
     .benchmark-eyebrow::before {
       content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 16px rgba(62, 207, 142, .45);
+    }
+    .benchmark-hero h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: clamp(48px, 7vw, 76px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 600;
+    }
+    .benchmark-hero p {
+      max-width: 760px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+    /* ---------------------------------------------------------
+       SECTION SYSTEM
+       --------------------------------------------------------- */
+    .benchmark-section {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 24px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.025),
+          rgba(255,255,255,.012)
+        );
+      overflow: hidden;
+    }
+    .benchmark-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    .benchmark-section-heading {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .section-number {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(62, 207, 142, .35);
+      border-radius: 8px;
+      color: var(--green2);
+      background: rgba(62, 207, 142, .06);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .benchmark-section-title {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+    .benchmark-section-description {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .section-status {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      font-family: var(--mono);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .section-status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 14px rgba(62, 207, 142, .55);
+      box-shadow: 0 0 10px rgba(62, 207, 142, .5);
     }
-    .benchmark-hero h1 {
-      max-width: 850px;
-      margin: 0;
-      font-size: clamp(44px, 7vw, 82px);
-      line-height: .98;
-      letter-spacing: -.055em;
-    }
-    .benchmark-hero p {
-      max-width: 720px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.7;
-    }
-    .benchmark-shell {
-      padding: 20px 0 110px;
-    }
-    .runner-layout {
+    /* ---------------------------------------------------------
+       TEST MODE
+       --------------------------------------------------------- */
+    .mode-grid {
       display: grid;
-      grid-template-columns: 330px minmax(0, 1fr);
-      gap: 20px;
-      align-items: start;
-      min-width: 0;
-      max-width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
-    .runner-sidebar {
-      position: sticky;
-      top: 90px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .sidebar-panel {
-      padding: 20px;
-    }
-    .panel-label {
-      margin-bottom: 12px;
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-    .mode-list {
-      display: grid;
-      gap: 7px;
-    }
-    .mode-button {
-      width: 100%;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid transparent;
-      border-radius: 10px;
-      background: transparent;
-      color: var(--muted);
-      text-align: left;
+    .mode-card {
+      position: relative;
+      display: block;
+      padding: 22px;
+      min-height: 176px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255,255,255,.018);
       cursor: pointer;
       transition:
         border-color .2s ease,
         background .2s ease,
-        color .2s ease;
+        transform .2s ease;
     }
-    .mode-button:hover {
-      background: rgba(241, 241, 239, .035);
-      color: var(--ink);
+    .mode-card:hover {
+      border-color: rgba(62,207,142,.35);
+      background: rgba(62,207,142,.025);
+      transform: translateY(-2px);
     }
-    .mode-button.active {
-      border-color: rgba(62, 207, 142, .35);
-      background: rgba(62, 207, 142, .07);
-      color: var(--ink);
-    }
-    .mode-radio {
-      width: 16px;
-      height: 16px;
-      flex: 0 0 16px;
-      margin-top: 2px;
-      border: 1px solid var(--dim);
-      border-radius: 50%;
-      position: relative;
-    }
-    .mode-button.active .mode-radio {
+    .mode-card.active {
       border-color: var(--green);
+      background: rgba(62,207,142,.055);
+      box-shadow: 0 0 0 1px rgba(62,207,142,.08);
     }
-    .mode-button.active .mode-radio::after {
-      content: "";
-      position: absolute;
-      inset: 3px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-    .mode-copy strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .mode-copy span {
-      display: block;
-      color: var(--dim);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-    .sidebar-divider {
-      height: 1px;
-      margin: 20px 0;
-      background: var(--line-soft);
-    }
-    .sidebar-status {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 0;
-      border-bottom: 1px solid var(--line-soft);
-      font-size: 12px;
-      min-width: 0;
-    }
-    .sidebar-status:last-child {
-      border-bottom: 0;
-    }
-    .status-value {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      white-space: nowrap;
-    }
-    .status-value.ready {
-      color: var(--green2);
-    }
-    .runner-main {
-      min-width: 0;
-      max-width: 100%;
-    }
-    .runner-panel {
-      padding: 28px;
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-    .runner-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-      padding-bottom: 22px;
-      border-bottom: 1px solid var(--line-soft);
-      margin-bottom: 26px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .runner-header > div:first-child {
-      min-width: 0;
-      flex: 1 1 auto;
-    }
-    .runner-header h2 {
-      margin: 0 0 7px;
-      font-size: 22px;
-      letter-spacing: -.025em;
-      overflow-wrap: anywhere;
-    }
-    .runner-header p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-    .run-id {
-      padding: 7px 10px;
-      border: 1px solid var(--line-soft);
-      border-radius: 7px;
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .08em;
-      white-space: nowrap;
-      flex: 0 0 auto;
-    }
-    .config-section {
-      margin-bottom: 30px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .section-heading {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 15px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .section-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      flex: 0 0 24px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      color: var(--green2);
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-    .section-heading h3 {
-      margin: 0;
-      font-size: 13px;
-      letter-spacing: .01em;
-    }
-    .section-heading span {
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .form-grid.three {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .field-full {
-      grid-column: 1 / -1;
-    }
-    .field-label {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 500;
-    }
-    .field-label .optional {
-      color: var(--dim);
-      font-weight: 400;
-    }
-    .input,
-    .select,
-    .textarea {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, .025);
-      color: var(--ink);
-      outline: none;
-      transition:
-        border-color .2s ease,
-        background .2s ease;
-    }
-    .input,
-    .select {
-      height: 44px;
-      padding: 0 13px;
-    }
-    .textarea {
-      min-height: 130px;
-      padding: 12px 13px;
-      resize: vertical;
-      line-height: 1.55;
-    }
-    .input:focus,
-    .select:focus,
-    .textarea:focus {
-      border-color: rgba(62, 207, 142, .6);
-      background: rgba(62, 207, 142, .025);
-    }
-    .select {
-      appearance: auto;
-    }
-    .input::placeholder,
-    .textarea::placeholder {
-      color: #646a66;
-    }
-    .connection-note {
-      margin-top: 8px;
-      color: var(--dim);
-      font-size: 10px;
-      line-height: 1.5;
-    }
-    .provider-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .custom-api {
-      display: none;
-      margin-top: 16px;
-      padding: 17px;
-      border: 1px dashed rgba(62, 207, 142, .28);
-      border-radius: 10px;
-      background: rgba(62, 207, 142, .025);
-    }
-    .custom-api.visible {
-      display: block;
-    }
-    .custom-api-title {
-      margin-bottom: 14px;
-      color: var(--green2);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .mode-content {
-      display: none;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .mode-content.active {
-      display: block;
-    }
-    .case-counts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .count-option {
-      position: relative;
-    }
-    .count-option input {
+    .mode-card input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
-    .count-option label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 62px;
-      height: 38px;
-      padding: 0 12px;
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .count-option input:checked + label {
-      border-color: rgba(62, 207, 142, .55);
-      background: rgba(62, 207, 142, .09);
-      color: var(--green2);
-    }
-    .custom-count-wrap {
-      display: none;
-      margin-top: 12px;
-      max-width: 220px;
-    }
-    .custom-count-wrap.visible {
-      display: block;
-    }
-    .dataset-card {
+    .mode-card-top {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
-      gap: 18px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: rgba(255, 255, 255, .018);
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
     }
-    .dataset-info {
-      min-width: 0;
-      max-width: 100%;
-    }
-    .dataset-info strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-    .dataset-info p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
-    }
-    .dataset-meta {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 7px;
-      flex-shrink: 0;
-    }
-    .meta-chip {
-      padding: 5px 8px;
-      border: 1px solid var(--line-soft);
-      border-radius: 5px;
+    .mode-index {
       color: var(--dim);
       font-family: var(--mono);
-      font-size: 9px;
-      white-space: nowrap;
+      font-size: 11px;
     }
-    .meta-chip.active {
-      border-color: rgba(62, 207, 142, .25);
+    .mode-check {
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--dim);
+      border-radius: 50%;
+      transition: all .2s ease;
+    }
+    .mode-card.active .mode-check {
+      border-color: var(--green);
+      background: var(--green);
+      box-shadow: inset 0 0 0 4px var(--panel);
+    }
+    .mode-card h3 {
+      margin: 0 0 9px;
+      font-size: 19px;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+    .mode-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    /* ---------------------------------------------------------
+       FORM SYSTEM
+       --------------------------------------------------------- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .form-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .form-field {
+      min-width: 0;
+    }
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .form-helper {
+      margin: 6px 0 0;
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .form-control {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      color: var(--ink);
+      background: rgba(255,255,255,.025);
+      font-family: var(--sans);
+      font-size: 15px;
+      transition:
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+    }
+    .form-control:focus {
+      border-color: rgba(62,207,142,.65);
+      background: rgba(62,207,142,.025);
+      box-shadow: 0 0 0 3px rgba(62,207,142,.08);
+    }
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    select.form-control {
+      cursor: pointer;
+    }
+    option {
+      background: #171b18;
+      color: #f1f1ef;
+    }
+    /* ---------------------------------------------------------
+       INFO / STATUS GRID
+       --------------------------------------------------------- */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .status-card {
+      padding: 15px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(255,255,255,.015);
+    }
+    .status-card-label {
+      margin-bottom: 6px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .status-card-value {
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    /* ---------------------------------------------------------
+       CUSTOM API
+       --------------------------------------------------------- */
+    .custom-api-panel {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid rgba(62,207,142,.2);
+      border-radius: 10px;
+      background: rgba(62,207,142,.025);
+    }
+    .custom-api-panel.visible {
+      display: block;
+    }
+    /* ---------------------------------------------------------
+       CONDITIONAL PANELS
+       --------------------------------------------------------- */
+    .conditional-panel {
+      display: none;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line-soft);
+    }
+    .conditional-panel.visible {
+      display: block;
+    }
+    .panel-heading {
+      margin-bottom: 20px;
+    }
+    .panel-heading h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .panel-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    /* ---------------------------------------------------------
+       DATASET
+       --------------------------------------------------------- */
+    .dataset-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.018);
+    }
+    .dataset-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .dataset-name {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .dataset-version {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
       color: var(--green2);
+      font-family: var(--mono);
+      font-size: 10px;
     }
+    .dataset-description {
+      margin: 9px 0 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .dataset-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 16px;
+    }
+    .dataset-tag {
+      padding: 6px 9px;
+      border: 1px solid var(--line-soft);
+      border-radius: 5px;
+      color: var(--muted);
+      background: rgba(255,255,255,.018);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+    /* ---------------------------------------------------------
+       STRESS CONFIG
+       --------------------------------------------------------- */
     .stress-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      min-width: 0;
-      max-width: 100%;
+      gap: 16px;
     }
-    .metric-input {
-      position: relative;
-      min-width: 0;
-    }
-    .metric-input .input {
-      padding-right: 45px;
-    }
-    .metric-unit {
-      position: absolute;
-      right: 12px;
-      top: 14px;
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 9px;
-    }
-    .info-box {
-      padding: 13px 15px;
+    .stress-explanation {
+      margin-top: 18px;
+      padding: 15px 17px;
       border-left: 2px solid var(--green);
-      background: rgba(62, 207, 142, .045);
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.65;
-      overflow-wrap: anywhere;
+      background: rgba(62,207,142,.035);
     }
-    .info-box strong {
-      color: var(--ink);
-    }
-    .evaluation-options {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 9px;
-      min-width: 0;
-      max-width: 100%;
-    }
-    .evaluation-option {
-      padding: 13px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, .015);
-      min-width: 0;
-      box-sizing: border-box;
-    }
-    .evaluation-option strong {
+    .stress-explanation strong {
       display: block;
       margin-bottom: 5px;
-      font-size: 11px;
-      overflow-wrap: anywhere;
-    }
-    .evaluation-option span {
-      display: block;
-      color: var(--dim);
-      font-size: 9px;
-      line-height: 1.45;
-      overflow-wrap: anywhere;
-    }
-    .rubric-box {
-      margin-top: 12px;
-      padding: 14px;
-      border: 1px solid var(--line-soft);
-      border-radius: 8px;
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-    .rubric-row {
-      display: grid;
-      grid-template-columns: 1fr 100px;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--line-soft);
-    }
-    .rubric-row:last-child {
-      border-bottom: 0;
-    }
-    .rubric-row span {
-      color: var(--muted);
-      font-size: 11px;
-      overflow-wrap: anywhere;
-    }
-    .weight-input {
-      width: 100%;
-      height: 30px;
-      padding: 0 8px;
-      box-sizing: border-box;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      background: transparent;
       color: var(--ink);
-      font-family: var(--mono);
-      font-size: 10px;
+      font-size: 13px;
     }
-    .repro-grid {
+    .stress-explanation span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    /* ---------------------------------------------------------
+       EVALUATION DIMENSIONS
+       --------------------------------------------------------- */
+    .dimension-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      min-width: 0;
-      max-width: 100%;
+      gap: 14px;
     }
-    .action-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line-soft);
-      min-width: 0;
-      max-width: 100%;
-    }
-    .action-copy {
-      color: var(--dim);
-      font-size: 10px;
-      line-height: 1.55;
-      min-width: 0;
-      overflow-wrap: anywhere;
-    }
-    .action-copy strong {
-      color: var(--muted);
-    }
-    .run-button {
-      min-width: 190px;
-      flex-shrink: 0;
-    }
-    /* =========================================================
-       RESULTS
-       ========================================================= */
-    .results-shell {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      margin-top: 20px;
-      box-sizing: border-box;
-    }
-    .results-empty {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      padding: 42px 28px;
-      text-align: center;
-      box-sizing: border-box;
-    }
-    .results-empty-icon {
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 14px;
+    .dimension-card {
+      padding: 19px;
       border: 1px solid var(--line);
-      border-radius: 50%;
+      border-radius: 10px;
+      background: rgba(255,255,255,.018);
+    }
+    .dimension-top {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .dimension-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .dimension-weight {
       color: var(--green2);
       font-family: var(--mono);
       font-size: 12px;
     }
-    .results-empty h3 {
-      margin: 0 0 7px;
+    .dimension-description {
+      min-height: 42px;
+      margin-bottom: 15px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .weight-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .weight-control input {
+      width: 100%;
+      accent-color: var(--green);
+    }
+    .weight-number {
+      width: 48px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: right;
+    }
+    .dimension-toggle {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .dimension-toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--green);
+    }
+    .weight-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+      padding: 15px 17px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(255,255,255,.015);
+    }
+    .weight-total-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .weight-total-value {
+      color: var(--green2);
+      font-family: var(--mono);
       font-size: 15px;
+      font-weight: 600;
+    }
+    /* ---------------------------------------------------------
+       REPRODUCIBILITY
+       --------------------------------------------------------- */
+    .repro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .repro-card {
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: rgba(255,255,255,.015);
+    }
+    .repro-label {
+      margin-bottom: 8px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .repro-value {
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
       overflow-wrap: anywhere;
     }
-    .results-empty p {
-      max-width: 500px;
-      margin: 0 auto;
+    /* ---------------------------------------------------------
+       RUN SECTION
+       --------------------------------------------------------- */
+    .run-section {
+      border-color: rgba(62,207,142,.28);
+      background:
+        radial-gradient(
+          circle at 85% 15%,
+          rgba(62,207,142,.08),
+          transparent 35%
+        ),
+        rgba(62,207,142,.018);
+    }
+    .run-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+    .run-copy {
+      max-width: 700px;
+    }
+    .run-copy h2 {
+      margin: 0 0 9px;
+      font-size: 28px;
+      letter-spacing: -.03em;
+    }
+    .run-copy p {
+      margin: 0;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .run-button {
+      flex: 0 0 auto;
+      min-width: 210px;
+      min-height: 52px;
+      border: 0;
+      border-radius: 8px;
+      padding: 14px 22px;
+      color: #08110c;
+      background: var(--green);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform .2s ease,
+        background .2s ease,
+        opacity .2s ease;
+    }
+    .run-button:hover {
+      background: var(--green2);
+      transform: translateY(-1px);
+    }
+    .run-button:disabled {
+      opacity: .55;
+      cursor: wait;
+      transform: none;
+    }
+    .run-message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      font-size: 13px;
       line-height: 1.6;
-      overflow-wrap: anywhere;
+    }
+    .run-message.visible {
+      display: block;
+    }
+    .run-message.error {
+      border-color: rgba(255, 100, 100, .3);
+      color: #ffb1b1;
+      background: rgba(255, 80, 80, .04);
+    }
+    /* ---------------------------------------------------------
+       RESULTS
+       --------------------------------------------------------- */
+    #resultsSection {
+      scroll-margin-top: 120px;
+    }
+    .results-empty {
+      padding: 48px 20px;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      color: var(--muted);
+      background: rgba(255,255,255,.012);
+    }
+    .results-empty strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 17px;
+    }
+    .results-empty span {
+      font-size: 13px;
+      line-height: 1.6;
     }
     .results-panel {
       display: none;
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
     }
     .results-panel.visible {
       display: block;
     }
-    /*
-      IMPORTANT:
-      Do not use overflow:hidden on the Results panel.
-      The table has its own horizontal scroll container.
-    */
-    .results-panel .runner-header {
-      min-width: 0;
-      max-width: 100%;
-      overflow: visible;
+    .result-run-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 24px;
     }
-    .results-panel .runner-header > div:first-child {
-      min-width: 0;
-      flex: 1 1 auto;
+    .result-run-header h3 {
+      margin: 0 0 7px;
+      font-size: 24px;
+      font-weight: 600;
     }
-    .results-panel .runner-header h2,
-    .results-panel .runner-header p {
+    .result-run-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .run-id {
+      flex: 0 0 auto;
+      max-width: 260px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--dim);
+      background: rgba(255,255,255,.015);
+      font-family: var(--mono);
+      font-size: 10px;
       overflow-wrap: anywhere;
     }
-    .results-summary {
+    .result-summary {
       display: grid;
-      grid-template-columns:
-        minmax(110px, 1.2fr)
-        repeat(4, minmax(80px, 1fr));
+      grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr));
       width: 100%;
-      max-width: 100%;
-      min-width: 0;
+      margin-bottom: 26px;
       border: 1px solid var(--line);
-      border-radius: 9px;
+      border-radius: 10px;
       overflow: hidden;
-      box-sizing: border-box;
     }
-    .summary-cell {
+    .result-summary-card {
       min-width: 0;
-      min-height: 88px;
-      padding: 15px;
+      min-height: 110px;
+      padding: 19px;
       border-right: 1px solid var(--line-soft);
-      background: rgba(255, 255, 255, .015);
-      box-sizing: border-box;
+      background: rgba(255,255,255,.015);
     }
-    .summary-cell:last-child {
+    .result-summary-card:last-child {
       border-right: 0;
     }
-    .summary-label {
-      margin-bottom: 10px;
+    .result-summary-label {
+      margin-bottom: 9px;
       color: var(--dim);
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: .08em;
       text-transform: uppercase;
-      white-space: nowrap;
     }
-    .summary-value {
-      min-width: 0;
+    .result-summary-value {
       color: var(--ink);
-      font-family: var(--mono);
-      font-size: 20px;
-      line-height: 1.2;
+      font-size: 27px;
+      line-height: 1.15;
+      font-weight: 600;
       overflow-wrap: anywhere;
-      word-break: break-word;
     }
-    .summary-value.green {
+    .result-summary-card.overall .result-summary-value {
       color: var(--green2);
+      font-size: 36px;
     }
-    .score-grid {
+    .result-summary-sub {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    /* Dimension results */
+    .results-heading {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .result-dimension-grid {
       display: grid;
-      grid-template-columns:
-        repeat(6, minmax(0, 1fr));
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      gap: 9px;
-      margin-top: 12px;
-      box-sizing: border-box;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
     }
-    .score-card {
+    .result-dimension-card {
       min-width: 0;
-      padding: 14px;
+      padding: 16px;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, .015);
-      box-sizing: border-box;
+      border-radius: 9px;
+      background: rgba(255,255,255,.015);
     }
-    .score-card span {
-      display: block;
-      margin-bottom: 8px;
+    .result-dimension-card .label {
+      min-height: 34px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .result-dimension-card .score {
+      margin-top: 10px;
+      color: var(--ink);
+      font-size: 25px;
+      font-weight: 600;
+    }
+    .result-dimension-card .score span {
       color: var(--dim);
-      font-size: 9px;
-      line-height: 1.35;
-      overflow-wrap: anywhere;
+      font-size: 12px;
+      font-weight: 400;
     }
-    .score-card strong {
-      display: block;
-      color: var(--green2);
+    /* Performance */
+    .performance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .performance-card {
+      padding: 16px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(255,255,255,.012);
+    }
+    .performance-card-label {
+      margin-bottom: 7px;
+      color: var(--dim);
       font-family: var(--mono);
-      font-size: 17px;
-      line-height: 1.2;
-      overflow-wrap: anywhere;
+      font-size: 10px;
+      text-transform: uppercase;
     }
-    .results-cases {
+    .performance-card-value {
+      color: var(--ink);
+      font-size: 17px;
+      font-weight: 600;
+    }
+    /* Table */
+    .results-table-container {
       width: 100%;
       max-width: 100%;
       min-width: 0;
-      box-sizing: border-box;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
     }
-    /*
-      The table itself may need more width than a phone.
-      Only this wrapper is allowed to scroll horizontally.
-    */
-    .results-table-wrap {
-      display: block;
+    .results-table-scroll {
       width: 100%;
       max-width: 100%;
       min-width: 0;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      box-sizing: border-box;
     }
-    .case-table {
+    .results-table {
       width: 100%;
-      min-width: 620px;
+      min-width: 780px;
       border-collapse: collapse;
-      table-layout: auto;
+      table-layout: fixed;
     }
-    .case-table th,
-    .case-table td {
-      padding: 11px 9px;
+    .results-table th,
+    .results-table td {
+      padding: 14px 15px;
       border-bottom: 1px solid var(--line-soft);
       text-align: left;
-      font-size: 10px;
+      vertical-align: top;
+      font-size: 13px;
     }
-    .case-table th {
+    .results-table th {
       color: var(--dim);
+      background: rgba(255,255,255,.02);
       font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .08em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .05em;
       text-transform: uppercase;
       white-space: nowrap;
     }
-    .case-table td {
+    .results-table td {
       color: var(--muted);
-      white-space: nowrap;
     }
-    .case-table td:nth-child(4) {
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .results-table tr:last-child td {
+      border-bottom: 0;
     }
-    .case-number {
+    .results-table td:first-child {
       color: var(--ink);
+      font-weight: 500;
+    }
+    .result-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 5px;
       font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
-    .pass {
-      color: var(--green2) !important;
+    .result-status.pass {
+      color: var(--green2);
+      background: rgba(62,207,142,.08);
     }
-    .fail {
-      color: #e5a0a0 !important;
+    .result-status.fail {
+      color: #ffb1b1;
+      background: rgba(255,80,80,.08);
+    }
+    .result-status.error {
+      color: #ffd58a;
+      background: rgba(255,180,70,.08);
     }
     .results-note {
-      width: 100%;
-      max-width: 100%;
-      margin-top: 14px;
+      margin-top: 16px;
       color: var(--dim);
-      font-size: 9px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-      box-sizing: border-box;
+      font-size: 12px;
+      line-height: 1.7;
     }
-    /* =========================================================
+    /* ---------------------------------------------------------
+       UTILITY
+       --------------------------------------------------------- */
+    .hidden {
+      display: none !important;
+    }
+    /* ---------------------------------------------------------
        RESPONSIVE
-       ========================================================= */
-    @media (max-width: 1050px) {
-      .runner-layout {
-        grid-template-columns: 1fr;
+       --------------------------------------------------------- */
+    @media (max-width: 1100px) {
+      .status-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .runner-sidebar {
-        position: static;
+      .result-dimension-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .mode-list {
-        grid-template-columns: repeat(3, 1fr);
+      .result-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .stress-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .score-grid {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
-      }
-      .results-summary {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
-      }
-      .summary-cell:nth-child(3) {
+      .result-summary-card:nth-child(3) {
         border-right: 0;
       }
-    }
-    @media (max-width: 760px) {
-      .benchmark-hero {
-        padding: 55px 0 40px;
+      .result-summary-card:last-child {
+        border-right: 0;
       }
-      .runner-panel {
-        padding: 20px;
+      .stress-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 850px) {
+      .benchmark-page {
+        padding: 54px 20px 80px;
+      }
+      .benchmark-section {
+        padding: 24px;
+      }
+      .mode-grid {
+        grid-template-columns: 1fr;
+      }
+      .mode-card {
+        min-height: auto;
       }
       .form-grid,
-      .form-grid.three,
-      .provider-grid,
-      .repro-grid,
-      .evaluation-options {
+      .form-grid.three {
         grid-template-columns: 1fr;
       }
-      .field-full {
-        grid-column: auto;
-      }
-      .mode-list {
+      .repro-grid {
         grid-template-columns: 1fr;
       }
-      .dataset-card {
-        flex-direction: column;
+      .dimension-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .dataset-meta {
-        justify-content: flex-start;
-      }
-      .stress-grid,
-      .score-grid,
-      .results-summary {
-        grid-template-columns:
-          minmax(0, 1fr)
-          minmax(0, 1fr);
-      }
-      .action-bar {
-        flex-direction: column;
+      .run-layout {
         align-items: stretch;
+        flex-direction: column;
       }
       .run-button {
         width: 100%;
       }
-      .results-panel {
-        padding: 20px;
+      .result-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .results-summary .summary-cell {
+      .result-summary-card {
         border-right: 1px solid var(--line-soft);
       }
-      .results-summary .summary-cell:nth-child(2n) {
+      .result-summary-card:nth-child(even) {
         border-right: 0;
       }
-      .results-panel .runner-header {
-        gap: 14px;
+      .result-dimension-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .results-panel .run-id {
-        flex-shrink: 0;
-      }
-    }
-    @media (max-width: 500px) {
-      .benchmark-hero h1 {
-        font-size: 44px;
-      }
-      .stress-grid,
-      .score-grid,
-      .results-summary {
+      .performance-grid {
         grid-template-columns: 1fr;
       }
-      .runner-header {
-        flex-direction: column;
+    }
+    @media (max-width: 600px) {
+      .benchmark-page {
+        padding: 36px 15px 65px;
       }
-      .run-id {
+      .benchmark-hero {
+        padding: 20px 0 42px;
+      }
+      .benchmark-hero h1 {
+        font-size: 46px;
+      }
+      .benchmark-hero p {
+        font-size: 16px;
+      }
+      .benchmark-section {
+        margin-top: 16px;
+        padding: 20px;
+        border-radius: 11px;
+      }
+      .benchmark-section-header {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 22px;
+      }
+      .benchmark-section-title {
+        font-size: 22px;
+      }
+      .section-status {
         align-self: flex-start;
       }
-      .results-panel {
-        padding: 16px;
+      .status-grid,
+      .stress-grid,
+      .dimension-grid,
+      .result-summary,
+      .result-dimension-grid {
+        grid-template-columns: 1fr;
       }
-      .results-summary .summary-cell {
+      .result-summary-card,
+      .result-summary-card:nth-child(even),
+      .result-summary-card:nth-child(3) {
         border-right: 0;
         border-bottom: 1px solid var(--line-soft);
       }
-      .results-summary .summary-cell:last-child {
+      .result-summary-card:last-child {
         border-bottom: 0;
       }
-      .results-panel .runner-header {
-        flex-direction: column;
-        align-items: flex-start;
+      .result-summary-card.overall .result-summary-value {
+        font-size: 32px;
       }
-      .results-panel .run-id {
-        align-self: flex-start;
+      .result-dimension-card {
+        min-height: auto;
+      }
+      .dataset-title-row,
+      .result-run-header {
+        flex-direction: column;
+      }
+      .run-id {
+        max-width: 100%;
+        width: 100%;
+      }
+      .section-number {
+        width: 34px;
+        height: 34px;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mode-card,
+      .run-button,
+      .form-control {
+        transition: none;
       }
     }
   </style>
 </head>
 <body>
+  <!-- =======================================================
+       GLOBAL HEADER
+       ======================================================= -->
   <div class="page-progress" id="pageProgress"></div>
   <div class="background-grid"></div>
   <div class="background-glow"></div>
@@ -924,2281 +1031,2301 @@
         <span class="status-dot"></span>
         <span class="mono-label">EVALLOOP AI</span>
         <span class="announcement-divider"></span>
-        <span class="announcement-text">
-          AI EVALUATION INFRASTRUCTURE
-        </span>
+        <span class="announcement-text">AI EVALUATION INFRASTRUCTURE</span>
       </div>
-      <a class="announcement-link" href="/app/">
-        OPEN EVALUATOR →
-      </a>
-    </div>
+  <a class="announcement-link" href="/app/">
+    OPEN EVALUATOR →
+  </a>
+</div>
   </div>
   <header class="site-header">
     <div class="nav-inner">
+  <a class="brand" href="/">
+    EvalLoop AI<span class="brand-cursor">_</span>
+  </a>
+  <nav class="desktop-nav" aria-label="Primary navigation">
+    <a href="/app/">Evaluator</a>
+    <a href="/benchmarks/">Benchmarks</a>
+    <a href="/labs/">Labs</a>
+    <a href="/knowledge/">Knowledge</a>
+    <a href="/pricing/">Pricing</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="nav-login" href="/login/">Sign in</a>
+    <a class="button button-small" href="/signup/">
+      Get started →
+    </a>
+  </div>
+  <button
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    type="button"
+    aria-label="Open navigation"
+    aria-expanded="false"
+  >
+    <span></span>
+    <span></span>
+  </button>
+</div>
+<nav
+  class="mobile-nav"
+  id="mobileNav"
+  aria-label="Mobile navigation"
+>
+  <a href="/app/">Evaluator</a>
+  <a href="/benchmarks/">Benchmarks</a>
+  <a href="/labs/">Labs</a>
+  <a href="/knowledge/">Knowledge</a>
+  <a href="/pricing/">Pricing</a>
+  <div class="mobile-nav-actions">
+    <a class="nav-login" href="/login/">Sign in</a>
+    <a class="button button-small" href="/signup/">
+      Get started →
+    </a>
+  </div>
+</nav>
+  </header>
+  <!-- =======================================================
+       MAIN
+       ======================================================= -->
+  <main class="benchmark-page">
+<!-- HERO -->
+<section class="benchmark-hero reveal">
+  <div class="benchmark-eyebrow">
+    BENCHMARK ENGINE
+  </div>
+  <h1>
+    Test. Measure.<br />
+    Understand.
+  </h1>
+  <p>
+    Run reproducible evaluations across AI models, benchmark
+    suites and stress configurations. Measure model quality
+    across factuality, instruction following, relevance,
+    completeness, safety and fluency.
+  </p>
+</section>
+<!-- =====================================================
+     01 TEST MODE
+     ===================================================== -->
+<section class="benchmark-section reveal">
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">01</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Test mode
+        </h2>
+        <p class="benchmark-section-description">
+          Choose what you want to measure.
+        </p>
+      </div>
+    </div>
+    <div class="section-status">
+      <span class="section-status-dot"></span>
+      ENGINE READY
+    </div>
+  </div>
+  <div class="mode-grid">
+    <label class="mode-card active" data-mode-card="single">
+      <input
+        type="radio"
+        name="testMode"
+        value="single"
+        checked
+      />
+      <div class="mode-card-top">
+        <span class="mode-index">MODE 01</span>
+        <span class="mode-check"></span>
+      </div>
+      <h3>Single case</h3>
+      <p>
+        Evaluate one prompt and model response against
+        an expected answer.
+      </p>
+    </label>
+    <label class="mode-card" data-mode-card="suite">
+      <input
+        type="radio"
+        name="testMode"
+        value="suite"
+      />
+      <div class="mode-card-top">
+        <span class="mode-index">MODE 02</span>
+        <span class="mode-check"></span>
+      </div>
+      <h3>Benchmark suite</h3>
+      <p>
+        Run multiple benchmark cases to measure
+        overall model quality.
+      </p>
+    </label>
+    <label class="mode-card" data-mode-card="stress">
+      <input
+        type="radio"
+        name="testMode"
+        value="stress"
+      />
+      <div class="mode-card-top">
+        <span class="mode-index">MODE 03</span>
+        <span class="mode-check"></span>
+      </div>
+      <h3>Stress test</h3>
+      <p>
+        Examine system performance and reliability
+        under repeated request load.
+      </p>
+    </label>
+  </div>
+</section>
+<!-- =====================================================
+     02 TARGET MODEL
+     ===================================================== -->
+<section class="benchmark-section reveal">
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">02</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Target model
+        </h2>
+        <p class="benchmark-section-description">
+          Configure the model that will be evaluated.
+        </p>
+      </div>
+    </div>
+    <div class="section-status">
+      TARGET CONNECTION
+    </div>
+  </div>
+  <div class="form-grid">
+    <div class="form-field">
+      <label class="form-label" for="provider">
+        Provider
+      </label>
+      <select class="form-control" id="provider">
+        <option value="OpenAI">OpenAI</option>
+        <option value="Google">Google</option>
+        <option value="Anthropic">Anthropic</option>
+        <option value="Groq" selected>Groq</option>
+        <option value="Mistral">Mistral</option>
+        <option value="DeepSeek">DeepSeek</option>
+        <option value="xAI">xAI</option>
+        <option value="OpenRouter">OpenRouter</option>
+        <option value="Together AI">Together AI</option>
+        <option value="Fireworks AI">Fireworks AI</option>
+        <option value="Cohere">Cohere</option>
+        <option value="Hugging Face">Hugging Face</option>
+        <option value="Ollama">Ollama</option>
+        <option value="Azure AI">Azure AI</option>
+        <option value="AWS Bedrock">AWS Bedrock</option>
+        <option value="Custom / New LLM">
+          Custom / New LLM
+        </option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="model">
+        Model ID
+      </label>
+      <select class="form-control" id="model">
+        <option value="openai/gpt-oss-120b" selected>
+          GPT-OSS 120B
+        </option>
+        <option value="openai/gpt-oss-20b">
+          GPT-OSS 20B
+        </option>
+        <option value="qwen/qwen3.8-27b">
+          Qwen 3.8 27B
+        </option>
+      </select>
+      <p class="form-helper">
+        Current benchmark backend executes supported models
+        through Groq.
+      </p>
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="apiKey">
+        API key
+      </label>
+      <input
+        class="form-control"
+        id="apiKey"
+        type="password"
+        placeholder="Provider API key"
+        autocomplete="off"
+      />
+      <p class="form-helper">
+        Provider key support depends on the backend provider.
+      </p>
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="temperature">
+        Temperature
+      </label>
+      <input
+        class="form-control"
+        id="temperature"
+        type="number"
+        value="0.2"
+        min="0"
+        max="2"
+        step="0.1"
+      />
+    </div>
+  </div>
+  <!-- CUSTOM API -->
+  <div
+    class="custom-api-panel"
+    id="customApiPanel"
+  >
+    <div class="panel-heading">
+      <h3>Custom API connection</h3>
+      <p>
+        Configure a custom OpenAI-compatible endpoint.
+      </p>
+    </div>
+    <div class="form-grid">
+      <div class="form-field full">
+        <label class="form-label" for="customEndpoint">
+          Endpoint
+        </label>
+        <input
+          class="form-control"
+          id="customEndpoint"
+          type="url"
+          placeholder="https://api.example.com/v1/chat/completions"
+        />
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="authType">
+          Authentication
+        </label>
+        <select class="form-control" id="authType">
+          <option value="bearer">
+            Bearer
+          </option>
+          <option value="api-key">
+            API key header
+          </option>
+          <option value="none">
+            None
+          </option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="authHeader">
+          Authentication header
+        </label>
+        <input
+          class="form-control"
+          id="authHeader"
+          type="text"
+          placeholder="Authorization"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="status-grid">
+    <div class="status-card">
+      <div class="status-card-label">Provider</div>
+      <div class="status-card-value" id="statusProvider">
+        Groq
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="status-card-label">Model</div>
+      <div
+        class="status-card-value"
+        id="statusModel"
+      >
+        GPT-OSS 120B
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="status-card-label">Evaluator</div>
+      <div class="status-card-value">
+        EVP.Aureon
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="status-card-label">Engine</div>
+      <div class="status-card-value">
+        READY
+      </div>
+    </div>
+  </div>
+</section>
+<!-- =====================================================
+     03 BENCHMARK DATASET
+     ===================================================== -->
+<section
+  class="benchmark-section reveal"
+  id="datasetSection"
+>
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">03</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Benchmark dataset
+        </h2>
+        <p class="benchmark-section-description">
+          Define the cases used for model evaluation.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- SINGLE CASE -->
+  <div
+    class="conditional-panel visible"
+    id="singlePanel"
+  >
+    <div class="panel-heading">
+      <h3>Single evaluation case</h3>
+      <p>
+        Provide the prompt, candidate response and
+        expected answer.
+      </p>
+    </div>
+    <div class="form-grid">
+      <div class="form-field full">
+        <label class="form-label" for="singlePrompt">
+          Prompt
+        </label>
+        <textarea
+          class="form-control"
+          id="singlePrompt"
+          placeholder="Enter the prompt you want to evaluate..."
+        ></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="singleResponse">
+          Model response
+        </label>
+        <textarea
+          class="form-control"
+          id="singleResponse"
+          placeholder="Enter the model response..."
+        ></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="singleReference">
+          Expected answer
+        </label>
+        <textarea
+          class="form-control"
+          id="singleReference"
+          placeholder="Enter the expected answer or reference..."
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <!-- BENCHMARK SUITE -->
+  <div
+    class="conditional-panel"
+    id="suitePanel"
+  >
+    <div class="panel-heading">
+      <h3>Benchmark suite</h3>
+      <p>
+        Select the number of benchmark cases to run.
+      </p>
+    </div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label" for="testSize">
+          Case count
+        </label>
+        <select class="form-control" id="testSize">
+          <option value="10">10 cases</option>
+          <option value="25">25 cases</option>
+          <option value="50">50 cases</option>
+          <option value="100">100 cases</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div
+        class="form-field hidden"
+        id="customCaseField"
+      >
+        <label
+          class="form-label"
+          for="customCaseCount"
+        >
+          Custom case count
+        </label>
+        <input
+          class="form-control"
+          id="customCaseCount"
+          type="number"
+          min="1"
+          max="100"
+          value="10"
+        />
+      </div>
+    </div>
+    <div class="dataset-card">
+      <div class="dataset-title-row">
+        <div class="dataset-name">
+          EVP.Aureon — General Purpose Quality
+        </div>
+        <div class="dataset-version">
+          v1.0
+        </div>
+      </div>
+      <p class="dataset-description">
+        General-purpose quality benchmark covering
+        factuality, instruction following, relevance,
+        completeness, safety and fluency.
+      </p>
+      <div class="dataset-tags">
+        <span class="dataset-tag">
+          factuality
+        </span>
+        <span class="dataset-tag">
+          instruction following
+        </span>
+        <span class="dataset-tag">
+          relevance
+        </span>
+        <span class="dataset-tag">
+          completeness
+        </span>
+        <span class="dataset-tag">
+          safety
+        </span>
+        <span class="dataset-tag">
+          fluency
+        </span>
+      </div>
+    </div>
+  </div>
+  <!-- STRESS TEST -->
+  <div
+    class="conditional-panel"
+    id="stressPanel"
+  >
+    <div class="panel-heading">
+      <h3>Stress test configuration</h3>
+      <p>
+        Configure the request volume and execution window.
+      </p>
+    </div>
+    <div class="stress-grid">
+      <div class="form-field">
+        <label class="form-label" for="concurrency">
+          Concurrency
+        </label>
+        <input
+          class="form-control"
+          id="concurrency"
+          type="number"
+          min="1"
+          max="100"
+          value="1"
+        />
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="totalRequests">
+          Total requests
+        </label>
+        <input
+          class="form-control"
+          id="totalRequests"
+          type="number"
+          min="1"
+          max="100"
+          value="10"
+        />
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="requestDelay">
+          Request delay
+        </label>
+        <input
+          class="form-control"
+          id="requestDelay"
+          type="number"
+          min="0"
+          value="0"
+        />
+      </div>
+      <div class="form-field">
+        <label
+          class="form-label"
+          for="maximumDuration"
+        >
+          Maximum duration
+        </label>
+        <input
+          class="form-control"
+          id="maximumDuration"
+          type="number"
+          min="1"
+          value="300"
+        />
+      </div>
+    </div>
+    <div class="form-field" style="margin-top:20px;">
+      <label class="form-label" for="stressPrompt">
+        Stress prompt
+      </label>
+      <textarea
+        class="form-control"
+        id="stressPrompt"
+        placeholder="Enter the prompt used during the stress test..."
+      ></textarea>
+    </div>
+    <div class="stress-explanation">
+      <strong>
+        Suite vs stress test
+      </strong>
+      <span>
+        A benchmark suite measures model quality across
+        many cases. A stress test examines system
+        performance and reliability under repeated load.
+      </span>
+    </div>
+  </div>
+</section>
+<!-- =====================================================
+     04 EVALUATION CONFIGURATION
+     ===================================================== -->
+<section class="benchmark-section reveal">
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">04</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Evaluation configuration
+        </h2>
+        <p class="benchmark-section-description">
+          Select the quality dimensions and assign their
+          evaluation weights.
+        </p>
+      </div>
+    </div>
+    <div class="section-status">
+      EVP.AUREON · 0–100
+    </div>
+  </div>
+  <div class="dimension-grid">
+    <!-- FACTUALITY -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Factuality
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="factuality"
+        >
+          20%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures whether claims are accurate and
+        supported by the available information.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="20"
+          data-weight="factuality"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="factuality"
+        >
+          20
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="factuality"
+        />
+        Include dimension
+      </label>
+    </div>
+    <!-- INSTRUCTION -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Instruction following
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="instruction_following"
+        >
+          20%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures how accurately the response follows
+        the user's explicit instructions.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="20"
+          data-weight="instruction_following"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="instruction_following"
+        >
+          20
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="instruction_following"
+        />
+        Include dimension
+      </label>
+    </div>
+    <!-- RELEVANCE -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Relevance
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="relevance"
+        >
+          15%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures whether the response directly addresses
+        the task without unnecessary content.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="15"
+          data-weight="relevance"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="relevance"
+        >
+          15
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="relevance"
+        />
+        Include dimension
+      </label>
+    </div>
+    <!-- COMPLETENESS -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Completeness
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="completeness"
+        >
+          15%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures whether important parts of the requested
+        task are covered.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="15"
+          data-weight="completeness"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="completeness"
+        >
+          15
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="completeness"
+        />
+        Include dimension
+      </label>
+    </div>
+    <!-- SAFETY -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Safety
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="safety"
+        >
+          20%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures whether the response avoids harmful,
+        unsafe or policy-inconsistent content.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="20"
+          data-weight="safety"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="safety"
+        >
+          20
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="safety"
+        />
+        Include dimension
+      </label>
+    </div>
+    <!-- FLUENCY -->
+    <div class="dimension-card">
+      <div class="dimension-top">
+        <span class="dimension-name">
+          Fluency
+        </span>
+        <span
+          class="dimension-weight"
+          data-weight-label="fluency"
+        >
+          10%
+        </span>
+      </div>
+      <div class="dimension-description">
+        Measures clarity, readability, grammar and
+        natural language quality.
+      </div>
+      <div class="weight-control">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="10"
+          data-weight="fluency"
+        />
+        <span
+          class="weight-number"
+          data-weight-number="fluency"
+        >
+          10
+        </span>
+      </div>
+      <label class="dimension-toggle">
+        <input
+          type="checkbox"
+          checked
+          data-dimension="fluency"
+        />
+        Include dimension
+      </label>
+    </div>
+  </div>
+  <div class="weight-total">
+    <span class="weight-total-label">
+      Active dimension weights
+    </span>
+    <span
+      class="weight-total-value"
+      id="weightTotal"
+    >
+      100%
+    </span>
+  </div>
+</section>
+<!-- =====================================================
+     05 REPRODUCIBILITY
+     ===================================================== -->
+<section class="benchmark-section reveal">
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">05</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Reproducibility
+        </h2>
+        <p class="benchmark-section-description">
+          Record the benchmark and evaluator configuration
+          used for this run.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="repro-grid">
+    <div class="repro-card">
+      <div class="repro-label">
+        Benchmark version
+      </div>
+      <div class="repro-value">
+        EVP.Aureon v1.0
+      </div>
+    </div>
+    <div class="repro-card">
+      <div class="repro-label">
+        Evaluator version
+      </div>
+      <div class="repro-value">
+        EVP.Aureon Judge v1.0
+      </div>
+    </div>
+    <div class="repro-card">
+      <div class="repro-label">
+        Sampling mode
+      </div>
+      <div class="repro-value">
+        Fixed configuration
+      </div>
+    </div>
+  </div>
+</section>
+<!-- =====================================================
+     06 RUN
+     ===================================================== -->
+<section class="benchmark-section run-section reveal">
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">06</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Run benchmark
+        </h2>
+        <p class="benchmark-section-description">
+          Start the configured evaluation.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="run-layout">
+    <div class="run-copy">
+      <h2>
+        Ready to evaluate.
+      </h2>
+      <p>
+        EvalLoop AI will send the configured benchmark
+        cases to the selected model and evaluate the
+        returned responses using EVP.Aureon.
+      </p>
+    </div>
+    <button
+      class="run-button"
+      id="runBenchmark"
+      type="button"
+    >
+      Run benchmark →
+    </button>
+  </div>
+  <div
+    class="run-message"
+    id="runMessage"
+  ></div>
+</section>
+<!-- =====================================================
+     07 RESULTS
+     ===================================================== -->
+<section
+  class="benchmark-section reveal"
+  id="resultsSection"
+>
+  <div class="benchmark-section-header">
+    <div class="benchmark-section-heading">
+      <div class="section-number">07</div>
+      <div>
+        <h2 class="benchmark-section-title">
+          Evaluation results
+        </h2>
+        <p class="benchmark-section-description">
+          Results from the latest benchmark execution.
+        </p>
+      </div>
+    </div>
+    <div class="section-status">
+      RESULTS
+    </div>
+  </div>
+  <!-- EMPTY STATE -->
+  <div
+    class="results-empty"
+    id="resultsEmpty"
+  >
+    <strong>
+      No benchmark run yet
+    </strong>
+    <span>
+      Configure the benchmark above and select
+      “Run benchmark” to generate results.
+    </span>
+  </div>
+  <!-- RESULTS -->
+  <div
+    class="results-panel"
+    id="resultsPanel"
+  >
+    <div class="result-run-header">
+      <div>
+        <h3 id="resultTitle">
+          Benchmark complete
+        </h3>
+        <p id="resultDescription">
+          Evaluation results generated by EVP.Aureon.
+        </p>
+      </div>
+      <div
+        class="run-id"
+        id="resultRunId"
+      >
+        RUN —
+      </div>
+    </div>
+    <!-- SUMMARY -->
+    <div class="result-summary">
+      <div class="result-summary-card overall">
+        <div class="result-summary-label">
+          Overall
+        </div>
+        <div
+          class="result-summary-value"
+          id="resultOverall"
+        >
+          —
+        </div>
+        <div class="result-summary-sub">
+          Weighted score / 100
+        </div>
+      </div>
+      <div class="result-summary-card">
+        <div class="result-summary-label">
+          Cases
+        </div>
+        <div
+          class="result-summary-value"
+          id="resultCases"
+        >
+          —
+        </div>
+        <div class="result-summary-sub">
+          Evaluated
+        </div>
+      </div>
+      <div class="result-summary-card">
+        <div class="result-summary-label">
+          Passed
+        </div>
+        <div
+          class="result-summary-value"
+          id="resultPassed"
+        >
+          —
+        </div>
+        <div class="result-summary-sub">
+          Score ≥ 70
+        </div>
+      </div>
+      <div class="result-summary-card">
+        <div class="result-summary-label">
+          Failed
+        </div>
+        <div
+          class="result-summary-value"
+          id="resultFailed"
+        >
+          —
+        </div>
+        <div class="result-summary-sub">
+          Below threshold
+        </div>
+      </div>
+      <div class="result-summary-card">
+        <div class="result-summary-label">
+          Duration
+        </div>
+        <div
+          class="result-summary-value"
+          id="resultDuration"
+        >
+          —
+        </div>
+        <div class="result-summary-sub">
+          Total runtime
+        </div>
+      </div>
+    </div>
+    <!-- DIMENSIONS -->
+    <h3 class="results-heading">
+      Quality dimensions
+    </h3>
+    <div class="result-dimension-grid">
+      <div class="result-dimension-card">
+        <div class="label">
+          Factuality
+        </div>
+        <div
+          class="score"
+          id="dimensionFactuality"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+      <div class="result-dimension-card">
+        <div class="label">
+          Instruction following
+        </div>
+        <div
+          class="score"
+          id="dimensionInstruction"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+      <div class="result-dimension-card">
+        <div class="label">
+          Relevance
+        </div>
+        <div
+          class="score"
+          id="dimensionRelevance"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+      <div class="result-dimension-card">
+        <div class="label">
+          Completeness
+        </div>
+        <div
+          class="score"
+          id="dimensionCompleteness"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+      <div class="result-dimension-card">
+        <div class="label">
+          Safety
+        </div>
+        <div
+          class="score"
+          id="dimensionSafety"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+      <div class="result-dimension-card">
+        <div class="label">
+          Fluency
+        </div>
+        <div
+          class="score"
+          id="dimensionFluency"
+        >
+          —
+          <span>/100</span>
+        </div>
+      </div>
+    </div>
+    <!-- PERFORMANCE -->
+    <h3 class="results-heading">
+      Performance
+    </h3>
+    <div class="performance-grid">
+      <div class="performance-card">
+        <div class="performance-card-label">
+          P50 latency
+        </div>
+        <div
+          class="performance-card-value"
+          id="performanceP50"
+        >
+          —
+        </div>
+      </div>
+      <div class="performance-card">
+        <div class="performance-card-label">
+          P95 latency
+        </div>
+        <div
+          class="performance-card-value"
+          id="performanceP95"
+        >
+          —
+        </div>
+      </div>
+      <div class="performance-card">
+        <div class="performance-card-label">
+          P99 latency
+        </div>
+        <div
+          class="performance-card-value"
+          id="performanceP99"
+        >
+          —
+        </div>
+      </div>
+    </div>
+    <!-- CASE TABLE -->
+    <h3 class="results-heading">
+      Individual results
+    </h3>
+    <div class="results-table-container">
+      <div class="results-table-scroll">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">
+                Case
+              </th>
+              <th style="width:13%;">
+                Status
+              </th>
+              <th style="width:13%;">
+                Score
+              </th>
+              <th style="width:24%;">
+                Category
+              </th>
+              <th style="width:20%;">
+                Latency
+              </th>
+            </tr>
+          </thead>
+          <tbody id="caseResults"></tbody>
+        </table>
+      </div>
+    </div>
+    <p
+      class="results-note"
+      id="resultsNote"
+    >
+      Benchmark results are generated from the selected
+      configuration. A score threshold of 70 is used by
+      the operational results interface and is not a
+      universal scientific quality threshold.
+    </p>
+  </div>
+</section>
+  </main>
+  <!-- =======================================================
+       GLOBAL FOOTER
+       ======================================================= -->
+  <footer class="site-footer">
+<div class="container">
+  <div class="footer-top">
+    <div class="footer-brand">
       <a class="brand" href="/">
         EvalLoop AI<span class="brand-cursor">_</span>
       </a>
-      <nav class="desktop-nav" aria-label="Primary navigation">
+      <p>
+        AI evaluation infrastructure for measurable
+        model quality.
+      </p>
+    </div>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <div class="footer-label">
+          PRODUCT
+        </div>
         <a href="/app/">Evaluator</a>
         <a href="/benchmarks/">Benchmarks</a>
         <a href="/labs/">Labs</a>
-        <a href="/knowledge/">Knowledge</a>
         <a href="/pricing/">Pricing</a>
-      </nav>
-      <div class="nav-actions">
-        <a class="nav-login" href="/login/">Sign in</a>
-        <a class="button button-small" href="/signup/">
-          Get started →
-        </a>
       </div>
-      <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
-        type="button"
-        aria-label="Open navigation"
-        aria-expanded="false"
-      >
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-    <nav
-      class="mobile-nav"
-      id="mobileNav"
-      aria-label="Mobile navigation"
-    >
-      <a href="/app/">Evaluator</a>
-      <a href="/benchmarks/">Benchmarks</a>
-      <a href="/labs/">Labs</a>
-      <a href="/knowledge/">Knowledge</a>
-      <a href="/pricing/">Pricing</a>
-      <div class="mobile-nav-actions">
-        <a class="nav-login" href="/login/">Sign in</a>
-        <a class="button button-small" href="/signup/">
-          Get started →
-        </a>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <!-- =====================================================
-         HERO
-         ===================================================== -->
-    <section class="benchmark-hero">
-      <div class="container reveal">
-        <div class="benchmark-eyebrow">
-          BENCHMARK ENGINE
+      <div class="footer-column">
+        <div class="footer-label">
+          RESOURCES
         </div>
-        <h1>
-          Test. Measure.<br />
-          <span style="color: #3ECF8E;">
-            Understand.
-          </span>
-        </h1>
-        <p>
-          Run reproducible evaluations across AI models, benchmark
-          suites, custom datasets, and controlled stress tests.
-          One evaluation layer for any model or provider.
-        </p>
+        <a href="/knowledge/">Knowledge</a>
+        <a href="/docs/">Docs</a>
+        <a href="/ai-usage/">AI Usage</a>
       </div>
-    </section>
-    <!-- =====================================================
-         BENCHMARK RUNNER
-         ===================================================== -->
-    <section class="benchmark-shell">
-      <div class="container">
-        <div class="runner-layout">
-          <!-- =================================================
-               SIDEBAR
-               ================================================= -->
-          <aside class="runner-sidebar">
-            <div class="panel sidebar-panel">
-              <div class="panel-label">
-                TEST MODE
-              </div>
-              <div class="mode-list">
-                <button
-                  class="mode-button active"
-                  type="button"
-                  data-mode="single"
-                >
-                  <span class="mode-radio"></span>
-                  <span class="mode-copy">
-                    <strong>Single case</strong>
-                    <span>
-                      Inspect one model response.
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="mode-button"
-                  type="button"
-                  data-mode="suite"
-                >
-                  <span class="mode-radio"></span>
-                  <span class="mode-copy">
-                    <strong>Benchmark suite</strong>
-                    <span>
-                      Run 10–100+ evaluation cases.
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="mode-button"
-                  type="button"
-                  data-mode="stress"
-                >
-                  <span class="mode-radio"></span>
-                  <span class="mode-copy">
-                    <strong>Stress test</strong>
-                    <span>
-                      Measure load, latency and reliability.
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div class="sidebar-divider"></div>
-              <div class="panel-label">
-                RUN STATUS
-              </div>
-              <div class="sidebar-status">
-                <span>Target connection</span>
-                <span
-                  class="status-value ready"
-                  id="connectionStatus"
-                >
-                  READY
-                </span>
-              </div>
-              <div class="sidebar-status">
-                <span>Benchmark</span>
-                <span class="status-value">
-                  AUREON v1.0
-                </span>
-              </div>
-              <div class="sidebar-status">
-                <span>Evaluator</span>
-                <span class="status-value">
-                  EVP.AUREON
-                </span>
-              </div>
-              <div class="sidebar-status">
-                <span>Engine</span>
-                <span class="status-value">
-                  READY
-                </span>
-              </div>
-            </div>
-          </aside>
-          <!-- =================================================
-               MAIN RUNNER
-               ================================================= -->
-          <div class="runner-main">
-            <div class="panel runner-panel">
-              <div class="runner-header">
-                <div>
-                  <h2 id="runnerTitle">
-                    Single Case Evaluation
-                  </h2>
-                  <p id="runnerDescription">
-                    Test one response against a defined evaluation rubric.
-                  </p>
-                </div>
-                <div class="run-id">
-                  RUN: AUTO
-                </div>
-              </div>
-              <!-- =================================================
-                   01 TARGET MODEL
-                   ================================================= -->
-              <section class="config-section">
-                <div class="section-heading">
-                  <span class="section-number">
-                    01
-                  </span>
-                  <div>
-                    <h3>Target model</h3>
-                    <span>Connection</span>
-                  </div>
-                </div>
-                <div class="provider-grid">
-                  <div>
-                    <label
-                      class="field-label"
-                      for="provider"
-                    >
-                      Provider
-                    </label>
-                    <select
-                      class="select"
-                      id="provider"
-                    >
-                      <option value="openai">
-                        OpenAI
-                      </option>
-                      <option value="google">
-                        Google
-                      </option>
-                      <option value="anthropic">
-                        Anthropic
-                      </option>
-                      <option value="groq">
-                        Groq
-                      </option>
-                      <option value="mistral">
-                        Mistral
-                      </option>
-                      <option value="deepseek">
-                        DeepSeek
-                      </option>
-                      <option value="xai">
-                        xAI
-                      </option>
-                      <option value="openrouter">
-                        OpenRouter
-                      </option>
-                      <option value="together">
-                        Together AI
-                      </option>
-                      <option value="fireworks">
-                        Fireworks AI
-                      </option>
-                      <option value="cohere">
-                        Cohere
-                      </option>
-                      <option value="huggingface">
-                        Hugging Face
-                      </option>
-                      <option value="ollama">
-                        Ollama
-                      </option>
-                      <option value="azure">
-                        Azure AI
-                      </option>
-                      <option value="bedrock">
-                        AWS Bedrock
-                      </option>
-                      <option value="custom">
-                        Custom / New LLM
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      class="field-label"
-                      for="modelId"
-                    >
-                      Model ID
-                    </label>
-                    <input
-                      class="input"
-                      id="modelId"
-                      type="text"
-                      placeholder="e.g. openai/gpt-oss-120b"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="form-grid"
-                  style="margin-top:16px;"
-                >
-                  <div>
-                    <label
-                      class="field-label"
-                      for="apiKey"
-                    >
-                      API key
-                    </label>
-                    <input
-                      class="input"
-                      id="apiKey"
-                      type="password"
-                      placeholder="••••••••••••••••"
-                      autocomplete="off"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      class="field-label"
-                      for="temperature"
-                    >
-                      Temperature
-                    </label>
-                    <input
-                      class="input"
-                      id="temperature"
-                      type="number"
-                      value="0"
-                      min="0"
-                      max="2"
-                      step="0.1"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="custom-api"
-                  id="customApiPanel"
-                >
-                  <div class="custom-api-title">
-                    Custom API connection
-                  </div>
-                  <div class="form-grid">
-                    <div class="field-full">
-                      <label
-                        class="field-label"
-                        for="endpoint"
-                      >
-                        API endpoint
-                      </label>
-                      <input
-                        class="input"
-                        id="endpoint"
-                        type="url"
-                        placeholder="https://api.example.com/v1/chat/completions"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        class="field-label"
-                        for="authType"
-                      >
-                        Authentication
-                      </label>
-                      <select
-                        class="select"
-                        id="authType"
-                      >
-                        <option value="bearer">
-                          Bearer token
-                        </option>
-                        <option value="api-key">
-                          API key header
-                        </option>
-                        <option value="none">
-                          No authentication
-                        </option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        class="field-label"
-                        for="authHeader"
-                      >
-                        Authentication header
-                      </label>
-                      <input
-                        class="input"
-                        id="authHeader"
-                        type="text"
-                        value="Authorization"
-                        placeholder="Authorization"
-                      />
-                    </div>
-                  </div>
-                  <div class="connection-note">
-                    Use this connection for new, private, internal,
-                    local, or provider-compatible models that are not
-                    listed above.
-                  </div>
-                </div>
-              </section>
-              <!-- =================================================
-                   SINGLE CASE
-                   ================================================= -->
-              <section
-                class="mode-content active"
-                id="singleMode"
-                data-content="single"
-              >
-                <section class="config-section">
-                  <div class="section-heading">
-                    <span class="section-number">
-                      02
-                    </span>
-                    <div>
-                      <h3>Test case</h3>
-                      <span>Single input</span>
-                    </div>
-                  </div>
-                  <div class="form-grid">
-                    <div class="field-full">
-                      <label
-                        class="field-label"
-                        for="singlePrompt"
-                      >
-                        Prompt
-                      </label>
-                      <textarea
-                        class="textarea"
-                        id="singlePrompt"
-                        placeholder="Enter the prompt that should be evaluated..."
-                      ></textarea>
-                    </div>
-                    <div>
-                      <label
-                        class="field-label"
-                        for="singleResponse"
-                      >
-                        Model response
-                      </label>
-                      <textarea
-                        class="textarea"
-                        id="singleResponse"
-                        placeholder="Paste or enter the target model response..."
-                      ></textarea>
-                    </div>
-                    <div>
-                      <label
-                        class="field-label"
-                        for="singleReference"
-                      >
-                        Expected answer
-                        <span class="optional">
-                          (optional)
-                        </span>
-                      </label>
-                      <textarea
-                        class="textarea"
-                        id="singleReference"
-                        placeholder="Reference answer, expected behavior, or grading context..."
-                      ></textarea>
-                    </div>
-                  </div>
-                </section>
-              </section>
-              <!-- =================================================
-                   BENCHMARK SUITE
-                   ================================================= -->
-              <section
-                class="mode-content"
-                id="suiteMode"
-                data-content="suite"
-              >
-                <section class="config-section">
-                  <div class="section-heading">
-                    <span class="section-number">
-                      02
-                    </span>
-                    <div>
-                      <h3>Benchmark suite</h3>
-                      <span>Dataset execution</span>
-                    </div>
-                  </div>
-                  <div class="config-section">
-                    <label class="field-label">
-                      Number of cases
-                    </label>
-                    <div class="case-counts">
-                      <div class="count-option">
-                        <input
-                          type="radio"
-                          name="caseCount"
-                          id="count10"
-                          value="10"
-                          checked
-                        />
-                        <label for="count10">
-                          10
-                        </label>
-                      </div>
-                      <div class="count-option">
-                        <input
-                          type="radio"
-                          name="caseCount"
-                          id="count25"
-                          value="25"
-                        />
-                        <label for="count25">
-                          25
-                        </label>
-                      </div>
-                      <div class="count-option">
-                        <input
-                          type="radio"
-                          name="caseCount"
-                          id="count50"
-                          value="50"
-                        />
-                        <label for="count50">
-                          50
-                        </label>
-                      </div>
-                      <div class="count-option">
-                        <input
-                          type="radio"
-                          name="caseCount"
-                          id="count100"
-                          value="100"
-                        />
-                        <label for="count100">
-                          100
-                        </label>
-                      </div>
-                      <div class="count-option">
-                        <input
-                          type="radio"
-                          name="caseCount"
-                          id="countCustom"
-                          value="custom"
-                        />
-                        <label for="countCustom">
-                          Custom
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="custom-count-wrap"
-                      id="customCountWrap"
-                    >
-                      <input
-                        class="input"
-                        id="customCount"
-                        type="number"
-                        min="1"
-                        max="10000"
-                        placeholder="Number of cases"
-                      />
-                    </div>
-                  </div>
-                  <div class="config-section">
-                    <label class="field-label">
-                      Dataset
-                    </label>
-                    <div class="dataset-card">
-                      <div class="dataset-info">
-                        <strong>
-                          EVP.Aureon — General Purpose Quality
-                        </strong>
-                        <p>
-                          General-purpose evaluation dataset covering
-                          factuality, instruction following, relevance,
-                          completeness, safety and fluency.
-                        </p>
-                      </div>
-                      <div class="dataset-meta">
-                        <span class="meta-chip active">
-                          CURRENT
-                        </span>
-                        <span class="meta-chip">
-                          v1.0
-                        </span>
-                        <span class="meta-chip">
-                          GENERAL
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="info-box">
-                    <strong>Suite execution:</strong>
-                    each selected case is sent to the target model and
-                    then evaluated independently. Aggregate scores are
-                    calculated only after individual case results are
-                    available.
-                  </div>
-                </section>
-              </section>
-              <!-- =================================================
-                   STRESS TEST
-                   ================================================= -->
-              <section
-                class="mode-content"
-                id="stressMode"
-                data-content="stress"
-              >
-                <section class="config-section">
-                  <div class="section-heading">
-                    <span class="section-number">
-                      02
-                    </span>
-                    <div>
-                      <h3>Stress configuration</h3>
-                      <span>Performance test</span>
-                    </div>
-                  </div>
-                  <div class="stress-grid">
-                    <div>
-                      <label class="field-label">
-                        Concurrency
-                      </label>
-                      <div class="metric-input">
-                        <input
-                          class="input"
-                          id="concurrency"
-                          type="number"
-                          value="5"
-                          min="1"
-                          max="1000"
-                        />
-                        <span class="metric-unit">
-                          REQ
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <label class="field-label">
-                        Total requests
-                      </label>
-                      <div class="metric-input">
-                        <input
-                          class="input"
-                          id="totalRequests"
-                          type="number"
-                          value="100"
-                          min="1"
-                          max="100000"
-                        />
-                        <span class="metric-unit">
-                          REQ
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <label class="field-label">
-                        Request delay
-                      </label>
-                      <div class="metric-input">
-                        <input
-                          class="input"
-                          id="requestDelay"
-                          type="number"
-                          value="0"
-                          min="0"
-                        />
-                        <span class="metric-unit">
-                          MS
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <label class="field-label">
-                        Maximum duration
-                      </label>
-                      <div class="metric-input">
-                        <input
-                          class="input"
-                          id="maxDuration"
-                          type="number"
-                          value="10"
-                          min="1"
-                        />
-                        <span class="metric-unit">
-                          MIN
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="margin-top:16px;">
-                    <div class="info-box">
-                      <strong>
-                        Stress tests measure system behavior.
-                      </strong>
-                      Results will focus on throughput, latency,
-                      failures, timeouts, rate limits and reliability
-                      rather than treating performance as a model-quality
-                      score.
-                    </div>
-                  </div>
-                </section>
-                <section class="config-section">
-                  <div class="section-heading">
-                    <span class="section-number">
-                      03
-                    </span>
-                    <div>
-                      <h3>Stress prompt</h3>
-                      <span>Request payload</span>
-                    </div>
-                  </div>
-                  <textarea
-                    class="textarea"
-                    id="stressPrompt"
-                    placeholder="Enter the request that will be repeatedly sent during the stress test..."
-                  ></textarea>
-                </section>
-              </section>
-              <!-- =================================================
-                   EVALUATION
-                   ================================================= -->
-              <section class="config-section">
-                <div class="section-heading">
-                  <span
-                    class="section-number"
-                    id="evaluationNumber"
-                  >
-                    03
-                  </span>
-                  <div>
-                    <h3>Evaluation configuration</h3>
-                    <span>Scoring</span>
-                  </div>
-                </div>
-                <div class="evaluation-options">
-                  <div class="evaluation-option">
-                    <strong>
-                      Deterministic metrics
-                    </strong>
-                    <span>
-                      Exact match, schema validation, numerical and
-                      rule-based checks where applicable.
-                    </span>
-                  </div>
-                  <div class="evaluation-option">
-                    <strong>
-                      LLM judge
-                    </strong>
-                    <span>
-                      Rubric-based evaluation for qualitative dimensions
-                      such as relevance and completeness.
-                    </span>
-                  </div>
-                  <div class="evaluation-option">
-                    <strong>
-                      Human calibration
-                    </strong>
-                    <span>
-                      Preserve human-labelled examples for evaluator
-                      agreement and calibration.
-                    </span>
-                  </div>
-                </div>
-                <div class="rubric-box">
-                  <div class="rubric-row">
-                    <span>Factuality</span>
-                    <input
-                      class="weight-input"
-                      value="20"
-                    />
-                  </div>
-                  <div class="rubric-row">
-                    <span>Instruction following</span>
-                    <input
-                      class="weight-input"
-                      value="20"
-                    />
-                  </div>
-                  <div class="rubric-row">
-                    <span>Relevance</span>
-                    <input
-                      class="weight-input"
-                      value="15"
-                    />
-                  </div>
-                  <div class="rubric-row">
-                    <span>Completeness</span>
-                    <input
-                      class="weight-input"
-                      value="15"
-                    />
-                  </div>
-                  <div class="rubric-row">
-                    <span>Safety</span>
-                    <input
-                      class="weight-input"
-                      value="20"
-                    />
-                  </div>
-                  <div class="rubric-row">
-                    <span>Fluency</span>
-                    <input
-                      class="weight-input"
-                      value="10"
-                    />
-                  </div>
-                </div>
-                <div class="connection-note">
-                  Evaluator: EVP.Aureon · Score range: 0–100 ·
-                  Evaluator version: 1.0
-                </div>
-              </section>
-              <!-- =================================================
-                   REPRODUCIBILITY
-                   ================================================= -->
-              <section class="config-section">
-                <div class="section-heading">
-                  <span class="section-number">
-                    04
-                  </span>
-                  <div>
-                    <h3>Reproducibility</h3>
-                    <span>Run metadata</span>
-                  </div>
-                </div>
-                <div class="repro-grid">
-                  <div>
-                    <label class="field-label">
-                      Benchmark version
-                    </label>
-                    <input
-                      class="input"
-                      value="EVP.Aureon v1.0"
-                      readonly
-                    />
-                  </div>
-                  <div>
-                    <label class="field-label">
-                      Evaluator version
-                    </label>
-                    <input
-                      class="input"
-                      value="EVP.Aureon Judge v1.0"
-                      readonly
-                    />
-                  </div>
-                  <div>
-                    <label class="field-label">
-                      Sampling mode
-                    </label>
-                    <select
-                      class="select"
-                      id="samplingMode"
-                    >
-                      <option value="fixed">
-                        Fixed configuration
-                      </option>
-                      <option value="default">
-                        Provider default
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="connection-note">
-                  A completed run should preserve the model, provider,
-                  dataset, benchmark version, evaluator version,
-                  parameters, case count and execution metadata.
-                </div>
-              </section>
-              <!-- =================================================
-                   ACTION
-                   ================================================= -->
-              <div class="action-bar">
-                <div class="action-copy">
-                  <strong id="actionSummary">
-                    Ready to evaluate 1 case.
-                  </strong>
-                  <br />
-                  Backend execution will use the selected target
-                  connection.
-                </div>
-                <button
-                  class="button button-primary run-button"
-                  id="runBenchmark"
-                  type="button"
-                >
-                  RUN EVALUATION →
-                </button>
-              </div>
-            </div>
-            <!-- =================================================
-                 RESULTS
-                 ================================================= -->
-            <div class="results-shell">
-              <div
-                class="panel results-empty"
-                id="resultsEmpty"
-              >
-                <div class="results-empty-icon">
-                  ◎
-                </div>
-                <h3>
-                  Results will appear here
-                </h3>
-                <p>
-                  Configure a target model and evaluation mode above.
-                  EvalLoop will preserve individual case results
-                  together with the aggregate evaluation once the
-                  execution backend is connected.
-                </p>
-              </div>
-              <div
-                class="panel results-panel"
-                id="resultsPanel"
-              >
-                <div class="runner-header">
-                  <div>
-                    <h2>
-                      Evaluation Results
-                    </h2>
-                    <p>
-                      Aggregate metrics and individual execution
-                      results.
-                    </p>
-                  </div>
-                  <div class="run-id">
-                    RUN: DEMO
-                  </div>
-                </div>
-                <!-- =================================================
-                     SUMMARY
-                     ================================================= -->
-                <div class="results-summary">
-                  <div class="summary-cell">
-                    <div class="summary-label">
-                      Overall
-                    </div>
-                    <div
-                      class="summary-value green"
-                      id="resultOverall"
-                    >
-                      —
-                    </div>
-                  </div>
-                  <div class="summary-cell">
-                    <div class="summary-label">
-                      Cases
-                    </div>
-                    <div
-                      class="summary-value"
-                      id="resultCases"
-                    >
-                      —
-                    </div>
-                  </div>
-                  <div class="summary-cell">
-                    <div class="summary-label">
-                      Passed
-                    </div>
-                    <div
-                      class="summary-value"
-                      id="resultPassed"
-                    >
-                      —
-                    </div>
-                  </div>
-                  <div class="summary-cell">
-                    <div class="summary-label">
-                      Failed
-                    </div>
-                    <div
-                      class="summary-value"
-                      id="resultFailed"
-                    >
-                      —
-                    </div>
-                  </div>
-                  <div class="summary-cell">
-                    <div class="summary-label">
-                      Duration
-                    </div>
-                    <div
-                      class="summary-value"
-                      id="resultDuration"
-                    >
-                      —
-                    </div>
-                  </div>
-                </div>
-                <!-- =================================================
-                     DIMENSION SCORES
-                     ================================================= -->
-                <div class="score-grid">
-                  <div class="score-card">
-                    <span>FACTUALITY</span>
-                    <strong>—</strong>
-                  </div>
-                  <div class="score-card">
-                    <span>INSTRUCTION</span>
-                    <strong>—</strong>
-                  </div>
-                  <div class="score-card">
-                    <span>RELEVANCE</span>
-                    <strong>—</strong>
-                  </div>
-                  <div class="score-card">
-                    <span>COMPLETENESS</span>
-                    <strong>—</strong>
-                  </div>
-                  <div class="score-card">
-                    <span>SAFETY</span>
-                    <strong>—</strong>
-                  </div>
-                  <div class="score-card">
-                    <span>FLUENCY</span>
-                    <strong>—</strong>
-                  </div>
-                </div>
-                <!-- =================================================
-                     CASE RESULTS
-                     ================================================= -->
-                <div
-                  class="results-cases"
-                  style="margin-top:28px;"
-                >
-                  <div class="section-heading">
-                    <span class="section-number">
-                      CASES
-                    </span>
-                    <div>
-                      <h3>Individual results</h3>
-                      <span>Per-case evidence</span>
-                    </div>
-                  </div>
-                  <div class="results-table-wrap">
-                    <table class="case-table">
-                      <thead>
-                        <tr>
-                          <th>Case</th>
-                          <th>Status</th>
-                          <th>Score</th>
-                          <th>Category</th>
-                          <th>Latency</th>
-                        </tr>
-                      </thead>
-                      <tbody id="caseResults">
-                        <tr>
-                          <td class="case-number">
-                            #001
-                          </td>
-                          <td>—</td>
-                          <td>—</td>
-                          <td>—</td>
-                          <td>—</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="results-note">
-                    Individual case evidence should remain available so
-                    aggregate scores can always be traced back to the
-                    underlying model responses and evaluator decisions.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="footer-column">
+        <div class="footer-label">
+          COMPANY
         </div>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
       </div>
-    </section>
-  </main>
-  <!-- =========================================================
-       FOOTER
-       ========================================================= -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a class="brand" href="/">
-            EvalLoop AI<span class="brand-cursor">_</span>
-          </a>
-          <p>
-            AI evaluation infrastructure for measurable model quality.
-          </p>
+      <div class="footer-column">
+        <div class="footer-label">
+          LEGAL
         </div>
-        <div class="footer-columns">
-          <div class="footer-column">
-            <div class="footer-label">
-              PRODUCT
-            </div>
-            <a href="/app/">Evaluator</a>
-            <a href="/benchmarks/">Benchmarks</a>
-            <a href="/labs/">Labs</a>
-            <a href="/pricing/">Pricing</a>
-          </div>
-          <div class="footer-column">
-            <div class="footer-label">
-              RESOURCES
-            </div>
-            <a href="/knowledge/">Knowledge</a>
-            <a href="/docs/">Docs</a>
-            <a href="/ai-usage/">AI Usage</a>
-          </div>
-          <div class="footer-column">
-            <div class="footer-label">
-              COMPANY
-            </div>
-            <a href="/about/">About</a>
-            <a href="/contact/">Contact</a>
-          </div>
-          <div class="footer-column">
-            <div class="footer-label">
-              LEGAL
-            </div>
-            <a href="/privacy/">Privacy</a>
-            <a href="/terms/">Terms</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>
-          © 2026 EVALLOOP AI
-        </span>
-        <span>
-          BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
-        </span>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
       </div>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <span>
+      © 2026 EVALLOOP AI
+    </span>
+    <span>
+      BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
+    </span>
+  </div>
+</div>
   </footer>
+  <!-- =======================================================
+       BENCHMARK JAVASCRIPT
+       Connects directly to /api/benchmark
+       ======================================================= -->
   <script>
     /* =========================================================
        GLOBAL NAVIGATION
        ========================================================= */
     const mobileMenuButton =
-      document.getElementById(
-        "mobileMenuButton"
-      );
+      document.getElementById("mobileMenuButton");
     const mobileNav =
-      document.getElementById(
-        "mobileNav"
-      );
-    if (
-      mobileMenuButton &&
-      mobileNav
-    ) {
-      mobileMenuButton.addEventListener(
-        "click",
-        () => {
-          const active =
-            mobileNav.classList.toggle(
-              "active"
-            );
-          mobileMenuButton.classList.toggle(
-            "active",
-            active
-          );
-          mobileMenuButton.setAttribute(
-            "aria-expanded",
-            String(active)
-          );
-          document.body.classList.toggle(
-            "menu-open",
-            active
-          );
-        }
-      );
+      document.getElementById("mobileNav");
+    if (mobileMenuButton && mobileNav) {
+      mobileMenuButton.addEventListener("click", () => {
+        const active =
+          mobileNav.classList.toggle("active");
+        mobileMenuButton.classList.toggle(
+          "active",
+          active
+        );
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          String(active)
+        );
+        document.body.classList.toggle(
+          "menu-open",
+          active
+        );
+      });
       mobileNav
         .querySelectorAll("a")
-        .forEach(
-          (link) => {
-            link.addEventListener(
-              "click",
-              () => {
-                mobileNav.classList.remove(
-                  "active"
-                );
-                mobileMenuButton.classList.remove(
-                  "active"
-                );
-                mobileMenuButton.setAttribute(
-                  "aria-expanded",
-                  "false"
-                );
-                document.body.classList.remove(
-                  "menu-open"
-                );
-              }
+        .forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileNav.classList.remove("active");
+            mobileMenuButton.classList.remove(
+              "active"
             );
-          }
-        );
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+            document.body.classList.remove(
+              "menu-open"
+            );
+          });
+        });
     }
     /* =========================================================
        PAGE PROGRESS
        ========================================================= */
     const pageProgress =
-      document.getElementById(
-        "pageProgress"
-      );
+      document.getElementById("pageProgress");
     if (pageProgress) {
-      const updateProgress =
-        () => {
-          const scrollTop =
-            window.scrollY;
-          const docHeight =
-            document.documentElement
-              .scrollHeight -
-            window.innerHeight;
-          const progress =
-            docHeight > 0
-              ? (
-                  scrollTop /
-                  docHeight
-                ) * 100
-              : 0;
-          pageProgress.style.width =
-            `${progress}%`;
-        };
+      const updateProgress = () => {
+        const scrollTop =
+          window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight -
+          window.innerHeight;
+        const progress =
+          docHeight > 0
+            ? (scrollTop / docHeight) * 100
+            : 0;
+        pageProgress.style.width =
+          `${progress}%`;
+      };
       window.addEventListener(
         "scroll",
         updateProgress,
-        {
-          passive: true
-        }
+        { passive: true }
       );
       updateProgress();
     }
     /* =========================================================
-       REVEAL
+       REVEAL ANIMATIONS
        ========================================================= */
     const revealItems =
-      document.querySelectorAll(
-        ".reveal"
-      );
+      document.querySelectorAll(".reveal");
     if (
       "IntersectionObserver" in window &&
       revealItems.length
     ) {
       const observer =
         new IntersectionObserver(
-          (
-            entries
-          ) => {
-            entries.forEach(
-              (
-                entry
-              ) => {
-                if (
-                  entry.isIntersecting
-                ) {
-                  entry.target.classList.add(
-                    "visible"
-                  );
-                  observer.unobserve(
-                    entry.target
-                  );
-                }
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add(
+                  "visible"
+                );
+                observer.unobserve(
+                  entry.target
+                );
               }
-            );
+            });
           },
-          {
-            threshold: 0.12
-          }
+          { threshold: 0.08 }
         );
-      revealItems.forEach(
-        (item) =>
-          observer.observe(
-            item
-          )
-      );
+      revealItems.forEach((item) => {
+        observer.observe(item);
+      });
     } else {
-      revealItems.forEach(
-        (item) =>
-          item.classList.add(
-            "visible"
-          )
-      );
+      revealItems.forEach((item) => {
+        item.classList.add("visible");
+      });
     }
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
+    const provider =
+      document.getElementById("provider");
+    const model =
+      document.getElementById("model");
+    const temperature =
+      document.getElementById("temperature");
+    const apiKey =
+      document.getElementById("apiKey");
+    const customApiPanel =
+      document.getElementById("customApiPanel");
+    const statusProvider =
+      document.getElementById("statusProvider");
+    const statusModel =
+      document.getElementById("statusModel");
+    const singlePanel =
+      document.getElementById("singlePanel");
+    const suitePanel =
+      document.getElementById("suitePanel");
+    const stressPanel =
+      document.getElementById("stressPanel");
+    const datasetSection =
+      document.getElementById("datasetSection");
+    const testSize =
+      document.getElementById("testSize");
+    const customCaseField =
+      document.getElementById("customCaseField");
+    const customCaseCount =
+      document.getElementById("customCaseCount");
+    const runButton =
+      document.getElementById("runBenchmark");
+    const runMessage =
+      document.getElementById("runMessage");
+    const resultsSection =
+      document.getElementById("resultsSection");
+    const resultsEmpty =
+      document.getElementById("resultsEmpty");
+    const resultsPanel =
+      document.getElementById("resultsPanel");
+    /* =========================================================
+       TEST MODE
+       ========================================================= */
+    function getMode() {
+      const selected =
+        document.querySelector(
+          'input[name="testMode"]:checked'
+        );
+      return selected
+        ? selected.value
+        : "single";
+    }
+    function updateMode() {
+      const mode = getMode();
+      document
+        .querySelectorAll("[data-mode-card]")
+        .forEach((card) => {
+          card.classList.toggle(
+            "active",
+            card.dataset.modeCard === mode
+          );
+        });
+      singlePanel.classList.toggle(
+        "visible",
+        mode === "single"
+      );
+      suitePanel.classList.toggle(
+        "visible",
+        mode === "suite"
+      );
+      stressPanel.classList.toggle(
+        "visible",
+        mode === "stress"
+      );
+      /*
+       * Keep dataset section visible for all modes.
+       * The backend still receives the selected mode.
+       */
+      if (datasetSection) {
+        datasetSection.dataset.mode = mode;
+      }
+    }
+    document
+      .querySelectorAll(
+        'input[name="testMode"]'
+      )
+      .forEach((input) => {
+        input.addEventListener(
+          "change",
+          updateMode
+        );
+      });
+    document
+      .querySelectorAll("[data-mode-card]")
+      .forEach((card) => {
+        card.addEventListener("click", () => {
+          const input =
+            card.querySelector(
+              'input[name="testMode"]'
+            );
+          if (input) {
+            input.checked = true;
+            updateMode();
+          }
+        });
+      });
+    updateMode();
     /* =========================================================
        PROVIDER
        ========================================================= */
-    const provider =
-      document.getElementById(
-        "provider"
-      );
-    const customApiPanel =
-      document.getElementById(
-        "customApiPanel"
-      );
-    const modelId =
-      document.getElementById(
-        "modelId"
-      );
-    const providerDefaults = {
-      openai:
-        "gpt-5",
-      google:
-        "gemini",
-      anthropic:
-        "claude",
-      groq:
-        "openai/gpt-oss-120b",
-      mistral:
-        "mistral-large",
-      deepseek:
-        "deepseek-chat",
-      xai:
-        "grok",
-      openrouter:
-        "provider/model",
-      together:
-        "provider/model",
-      fireworks:
-        "provider/model",
-      cohere:
-        "command",
-      huggingface:
-        "model-id",
-      ollama:
-        "local-model",
-      azure:
-        "deployment-name",
-      bedrock:
-        "model-id",
-      custom:
-        ""
-    };
     function updateProvider() {
-      if (!provider) {
-        return;
-      }
       const value =
         provider.value;
-      if (customApiPanel) {
-        customApiPanel.classList.toggle(
-          "visible",
-          value === "custom"
-        );
-      }
-      if (
-        modelId &&
-        providerDefaults[value] !==
-          undefined &&
-        (
-          !modelId.value ||
-          Object.values(
-            providerDefaults
-          ).includes(
-            modelId.value
-          )
-        )
-      ) {
-        modelId.value =
-          providerDefaults[value];
-      }
+      statusProvider.textContent =
+        value;
+      customApiPanel.classList.toggle(
+        "visible",
+        value === "Custom / New LLM"
+      );
     }
-    if (provider) {
-      provider.addEventListener(
-        "change",
-        updateProvider
-      );
-      updateProvider();
-    }
-    /* =========================================================
-       TEST MODES
-       ========================================================= */
-    const modeButtons =
-      document.querySelectorAll(
-        ".mode-button"
-      );
-    const modeContents =
-      document.querySelectorAll(
-        ".mode-content"
-      );
-    const runnerTitle =
-      document.getElementById(
-        "runnerTitle"
-      );
-    const runnerDescription =
-      document.getElementById(
-        "runnerDescription"
-      );
-    const actionSummary =
-      document.getElementById(
-        "actionSummary"
-      );
-    const evaluationNumber =
-      document.getElementById(
-        "evaluationNumber"
-      );
-    let currentMode =
-      "single";
-    function updateMode(
-      mode
-    ) {
-      currentMode =
-        mode;
-      modeButtons.forEach(
-        (
-          button
-        ) => {
-          button.classList.toggle(
-            "active",
-            button.dataset.mode ===
-              mode
-          );
-        }
-      );
-      modeContents.forEach(
-        (
-          content
-        ) => {
-          content.classList.toggle(
-            "active",
-            content.dataset.content ===
-              mode
-          );
-        }
-      );
-      if (
-        mode ===
-        "single"
-      ) {
-        runnerTitle.textContent =
-          "Single Case Evaluation";
-        runnerDescription.textContent =
-          "Test one response against a defined evaluation rubric.";
-        evaluationNumber.textContent =
-          "03";
-        actionSummary.textContent =
-          "Ready to evaluate 1 case.";
-      }
-      if (
-        mode ===
-        "suite"
-      ) {
-        runnerTitle.textContent =
-          "Benchmark Suite";
-        runnerDescription.textContent =
-          "Run a versioned evaluation dataset across multiple cases.";
-        evaluationNumber.textContent =
-          "03";
-        updateSuiteSummary();
-      }
-      if (
-        mode ===
-        "stress"
-      ) {
-        runnerTitle.textContent =
-          "Stress Test";
-        runnerDescription.textContent =
-          "Measure target-system performance under controlled load.";
-        evaluationNumber.textContent =
-          "04";
-        updateStressSummary();
-      }
-    }
-    modeButtons.forEach(
-      (
-        button
-      ) => {
-        button.addEventListener(
-          "click",
-          () => {
-            updateMode(
-              button.dataset.mode
-            );
-          }
-        );
-      }
+    provider.addEventListener(
+      "change",
+      updateProvider
     );
-    /* =========================================================
-       CASE COUNT
-       ========================================================= */
-    const countInputs =
-      document.querySelectorAll(
-        'input[name="caseCount"]'
-      );
-    const customCountWrap =
-      document.getElementById(
-        "customCountWrap"
-      );
-    const customCount =
-      document.getElementById(
-        "customCount"
-      );
-    function getCaseCount() {
-      const selected =
-        document.querySelector(
-          'input[name="caseCount"]:checked'
-        );
-      if (!selected) {
-        return 10;
-      }
-      if (
-        selected.value ===
-        "custom"
-      ) {
-        const custom =
-          Number(
-            customCount?.value
-          );
-        return custom > 0
-          ? Math.min(
-              custom,
-              100
-            )
-          : 0;
-      }
-      return Number(
-        selected.value
-      );
-    }
-    function updateSuiteSummary() {
-      const count =
-        getCaseCount();
-      actionSummary.textContent =
-        count > 0
-          ? `Ready to evaluate ${count} cases.`
-          : "Enter a valid custom case count.";
-    }
-    countInputs.forEach(
-      (
-        input
-      ) => {
-        input.addEventListener(
-          "change",
-          () => {
-            if (
-              customCountWrap
-            ) {
-              customCountWrap.classList.toggle(
-                "visible",
-                input.value ===
-                  "custom" &&
-                  input.checked
-              );
-            }
-            updateSuiteSummary();
-          }
-        );
-      }
-    );
-    if (customCount) {
-      customCount.addEventListener(
-        "input",
-        updateSuiteSummary
-      );
-    }
-    /* =========================================================
-       STRESS SUMMARY
-       ========================================================= */
-    const concurrency =
-      document.getElementById(
-        "concurrency"
-      );
-    const totalRequests =
-      document.getElementById(
-        "totalRequests"
-      );
-    const requestDelay =
-      document.getElementById(
-        "requestDelay"
-      );
-    const maxDuration =
-      document.getElementById(
-        "maxDuration"
-      );
-    function updateStressSummary() {
-      const requests =
-        Number(
-          totalRequests?.value
-        ) || 0;
-      const workers =
-        Number(
-          concurrency?.value
-        ) || 0;
-      const delay =
-        Number(
-          requestDelay?.value
-        ) || 0;
-      const duration =
-        Number(
-          maxDuration?.value
-        ) || 0;
-      actionSummary.textContent =
-        `${requests} requests · ${workers} concurrent · ` +
-        `${delay} ms delay · ${duration} min maximum`;
-    }
-    [
-      concurrency,
-      totalRequests,
-      requestDelay,
-      maxDuration
-    ]
-      .filter(Boolean)
-      .forEach(
-        (
-          element
-        ) => {
-          element.addEventListener(
-            "input",
-            () => {
-              if (
-                currentMode ===
-                "stress"
-              ) {
-                updateStressSummary();
-              }
-            }
-          );
-        }
-      );
-    /* =========================================================
-       RESULT ELEMENTS
-       ========================================================= */
-    const runBenchmark =
-      document.getElementById(
-        "runBenchmark"
-      );
-    const resultsEmpty =
-      document.getElementById(
-        "resultsEmpty"
-      );
-    const resultsPanel =
-      document.getElementById(
-        "resultsPanel"
-      );
-    const resultCases =
-      document.getElementById(
-        "resultCases"
-      );
-    const resultPassed =
-      document.getElementById(
-        "resultPassed"
-      );
-    const resultFailed =
-      document.getElementById(
-        "resultFailed"
-      );
-    const resultOverall =
-      document.getElementById(
-        "resultOverall"
-      );
-    const resultDuration =
-      document.getElementById(
-        "resultDuration"
-      );
-    const caseResults =
-      document.getElementById(
-        "caseResults"
-      );
-    /* =========================================================
-       DIMENSION WEIGHTS
-       ========================================================= */
-    const DEFAULT_WEIGHTS = {
-      factuality:
-        20,
-      instruction_following:
-        20,
-      relevance:
-        15,
-      completeness:
-        15,
-      safety:
-        20,
-      fluency:
-        10
-    };
-    /* =========================================================
-       SELECTED DIMENSIONS
-       ========================================================= */
-    function getSelectedDimensions() {
-      const dimensionInputs =
-        document.querySelectorAll(
-          'input[name="dimension"]'
-        );
-      if (
-        !dimensionInputs.length
-      ) {
-        return Object.keys(
-          DEFAULT_WEIGHTS
-        );
-      }
-      const selected =
-        Array.from(
-          dimensionInputs
-        )
-          .filter(
-            (
-              input
-            ) =>
-              input.checked
-          )
-          .map(
-            (
-              input
-            ) =>
-              input.value
-          )
-          .filter(
-            (
-              value
-            ) =>
-              Object.prototype.hasOwnProperty.call(
-                DEFAULT_WEIGHTS,
-                value
-              )
-          );
-      return selected.length
-        ? selected
-        : Object.keys(
-            DEFAULT_WEIGHTS
-          );
-    }
-    /* =========================================================
-       GET WEIGHTS
-       ========================================================= */
-    function getWeights() {
-      const dimensions =
-        getSelectedDimensions();
-      const weights = {};
-      dimensions.forEach(
-        (
-          dimension
-        ) => {
-          weights[dimension] =
-            DEFAULT_WEIGHTS[
-              dimension
-            ];
-        }
-      );
-      return weights;
-    }
+    updateProvider();
     /* =========================================================
        MODEL
        ========================================================= */
-    function getModelValue() {
-      return (
-        modelId?.value ||
-        ""
-      ).trim();
+    function updateModelStatus() {
+      const selected =
+        model.options[
+          model.selectedIndex
+        ];
+      statusModel.textContent =
+        selected
+          ? selected.textContent.trim()
+          : model.value;
+    }
+    model.addEventListener(
+      "change",
+      updateModelStatus
+    );
+    updateModelStatus();
+    /* =========================================================
+       CASE COUNT
+       ========================================================= */
+    testSize.addEventListener(
+      "change",
+      () => {
+        const custom =
+          testSize.value === "custom";
+        customCaseField.classList.toggle(
+          "hidden",
+          !custom
+        );
+      }
+    );
+    /* =========================================================
+       DIMENSION WEIGHTS
+       ========================================================= */
+    const weightInputs =
+      document.querySelectorAll(
+        "[data-weight]"
+      );
+    const dimensionCheckboxes =
+      document.querySelectorAll(
+        "[data-dimension]"
+      );
+    const weightTotal =
+      document.getElementById("weightTotal");
+    function updateWeights() {
+      let total = 0;
+      weightInputs.forEach((input) => {
+        const key =
+          input.dataset.weight;
+        const value =
+          Number(input.value) || 0;
+        const label =
+          document.querySelector(
+            `[data-weight-label="${key}"]`
+          );
+        const number =
+          document.querySelector(
+            `[data-weight-number="${key}"]`
+          );
+        if (label) {
+          label.textContent =
+            `${value}%`;
+        }
+        if (number) {
+          number.textContent =
+            String(value);
+        }
+      });
+      dimensionCheckboxes.forEach(
+        (checkbox) => {
+          if (checkbox.checked) {
+            const input =
+              document.querySelector(
+                `[data-weight="${checkbox.dataset.dimension}"]`
+              );
+            if (input) {
+              total +=
+                Number(input.value) || 0;
+            }
+          }
+        }
+      );
+      weightTotal.textContent =
+        `${total}%`;
+      weightTotal.style.color =
+        total === 100
+          ? "var(--green2)"
+          : "#ffcc80";
+    }
+    weightInputs.forEach((input) => {
+      input.addEventListener(
+        "input",
+        updateWeights
+      );
+    });
+    dimensionCheckboxes.forEach(
+      (checkbox) => {
+        checkbox.addEventListener(
+          "change",
+          updateWeights
+        );
+      }
+    );
+    updateWeights();
+    /* =========================================================
+       HELPERS
+       ========================================================= */
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    function formatNumber(value, decimals = 1) {
+      const number =
+        Number(value);
+      if (!Number.isFinite(number)) {
+        return "—";
+      }
+      return number.toFixed(decimals);
+    }
+    function formatLatency(value) {
+      const number =
+        Number(value);
+      if (!Number.isFinite(number)) {
+        return "—";
+      }
+      return `${Math.round(number)} ms`;
+    }
+    function showMessage(
+      message,
+      isError = false
+    ) {
+      runMessage.textContent =
+        message;
+      runMessage.classList.add(
+        "visible"
+      );
+      runMessage.classList.toggle(
+        "error",
+        isError
+      );
+    }
+    function clearMessage() {
+      runMessage.textContent = "";
+      runMessage.classList.remove(
+        "visible",
+        "error"
+      );
     }
     /* =========================================================
-       BENCHMARK PAYLOAD
+       COLLECT DIMENSIONS
        ========================================================= */
-    function buildBenchmarkPayload() {
-      const model =
-        getModelValue();
+    function collectDimensions() {
+      const dimensions = [];
+      dimensionCheckboxes.forEach(
+        (checkbox) => {
+          if (!checkbox.checked) {
+            return;
+          }
+          dimensions.push(
+            checkbox.dataset.dimension
+          );
+        }
+      );
+      return dimensions;
+    }
+    /* =========================================================
+       COLLECT WEIGHTS
+       ========================================================= */
+    function collectWeights() {
+      const weights = {};
+      weightInputs.forEach((input) => {
+        weights[
+          input.dataset.weight
+        ] =
+          Number(input.value) || 0;
+      });
+      return weights;
+    }
+    /* =========================================================
+       CASE COUNT
+       ========================================================= */
+    function getTestSize() {
+      if (testSize.value === "custom") {
+        const custom =
+          Number(
+            customCaseCount.value
+          );
+        return Math.min(
+          100,
+          Math.max(
+            1,
+            custom || 1
+          )
+        );
+      }
+      return Number(
+        testSize.value
+      ) || 10;
+    }
+    /* =========================================================
+       PAYLOAD
+       ========================================================= */
+    function buildPayload() {
+      const mode =
+        getMode();
       const dimensions =
-        getSelectedDimensions();
+        collectDimensions();
       const weights =
-        getWeights();
+        collectWeights();
       const payload = {
-        mode:
-          currentMode,
+        mode,
         provider:
-          provider?.value ||
-          "groq",
-        model,
+          provider.value,
+        model:
+          model.value,
         benchmark:
           "General Quality",
         dataset:
           "EVP.Aureon — General Purpose Quality",
         dimensions,
-        weights
-      };
-      if (
-        currentMode ===
-        "single"
-      ) {
-        payload.testSize =
-          1;
-      }
-      if (
-        currentMode ===
-        "suite"
-      ) {
-        payload.testSize =
-          getCaseCount();
-      }
-      if (
-        currentMode ===
-        "stress"
-      ) {
-        payload.testSize =
+        weights,
+        testSize:
+          mode === "single"
+            ? 1
+            : getTestSize(),
+        temperature:
           Number(
-            totalRequests?.value
-          ) || 1;
-        payload.stress = {
+            temperature.value
+          ) || 0.2,
+        stress: {
           concurrency:
             Number(
-              concurrency?.value
+              document.getElementById(
+                "concurrency"
+              ).value
             ) || 1,
           totalRequests:
             Number(
-              totalRequests?.value
-            ) || 1,
+              document.getElementById(
+                "totalRequests"
+              ).value
+            ) || 10,
           requestDelay:
             Number(
-              requestDelay?.value
+              document.getElementById(
+                "requestDelay"
+              ).value
             ) || 0,
-          maxDuration:
+          maximumDuration:
             Number(
-              maxDuration?.value
-            ) || 1
-        };
+              document.getElementById(
+                "maximumDuration"
+              ).value
+            ) || 300,
+          prompt:
+            document.getElementById(
+              "stressPrompt"
+            ).value.trim()
+        }
+      };
+      /*
+       * The backend currently uses its own benchmark
+       * dataset. These fields are still sent for the
+       * single-case UI so the interface remains ready
+       * for future backend support.
+       */
+      if (mode === "single") {
+        payload.prompt =
+          document.getElementById(
+            "singlePrompt"
+          ).value.trim();
+        payload.response =
+          document.getElementById(
+            "singleResponse"
+          ).value.trim();
+        payload.reference =
+          document.getElementById(
+            "singleReference"
+          ).value.trim();
+      }
+      /*
+       * API key is intentionally included only when the
+       * user has entered one. The current backend does not
+       * require this for Groq because its server-side
+       * GROQ_API_KEY is used.
+       */
+      if (
+        apiKey.value.trim()
+      ) {
+        payload.apiKey =
+          apiKey.value.trim();
       }
       return payload;
     }
     /* =========================================================
-       BUTTON STATE
+       RESULT DIMENSIONS
        ========================================================= */
-    function setRunningState(
-      running
+    function readDimension(
+      dimensions,
+      key
     ) {
-      if (!runBenchmark) {
-        return;
+      if (!dimensions) {
+        return null;
       }
-      runBenchmark.disabled =
-        running;
-      if (running) {
-        runBenchmark.dataset.originalText =
-          runBenchmark.textContent;
-        runBenchmark.textContent =
-          "Running benchmark...";
-        runBenchmark.classList.add(
-          "is-running"
-        );
-      } else {
-        runBenchmark.textContent =
-          runBenchmark.dataset.originalText ||
-          "Run benchmark";
-        runBenchmark.classList.remove(
-          "is-running"
-        );
-      }
-    }
-    /* =========================================================
-       FORMAT HELPERS
-       ========================================================= */
-    function formatDuration(
-      milliseconds
-    ) {
-      const ms =
-        Number(
-          milliseconds
-        );
-      if (
-        !Number.isFinite(
-          ms
-        )
-      ) {
-        return "—";
-      }
-      if (
-        ms < 1000
-      ) {
-        return `${Math.round(ms)} ms`;
-      }
-      return `${(
-        ms / 1000
-      ).toFixed(2)} s`;
-    }
-    function formatScore(
-      score
-    ) {
       const value =
-        Number(
-          score
-        );
+        dimensions[key];
       if (
-        !Number.isFinite(
-          value
+        value &&
+        typeof value === "object"
+      ) {
+        if (
+          Number.isFinite(
+            Number(value.score)
+          )
+        ) {
+          return Number(
+            value.score
+          );
+        }
+        if (
+          Number.isFinite(
+            Number(value.average)
+          )
+        ) {
+          return Number(
+            value.average
+          );
+        }
+      }
+      if (
+        Number.isFinite(
+          Number(value)
         )
       ) {
-        return "—";
+        return Number(value);
       }
-      return `${value.toFixed(
-        1
-      )}`;
+      return null;
     }
     /* =========================================================
-       DISPLAY RESULTS
+       RENDER RESULTS
        ========================================================= */
-    function displayBenchmarkResults(
-      data
-    ) {
-      if (!data) {
-        return;
-      }
-      if (resultsEmpty) {
-        resultsEmpty.classList.add(
-          "hidden"
-        );
-      }
-      if (resultsPanel) {
-        resultsPanel.classList.add(
-          "visible"
-        );
-      }
+    function renderResults(data) {
+      resultsEmpty.style.display =
+        "none";
+      resultsPanel.classList.add(
+        "visible"
+      );
       const summary =
-        data.summary ||
-        {};
-      /* -------------------------------------------------------
-         SUMMARY CARDS
-         ------------------------------------------------------- */
-      if (resultCases) {
-        resultCases.textContent =
-          summary.requested ??
-          data.testSize ??
-          "—";
-      }
-      if (resultPassed) {
-        resultPassed.textContent =
-          summary.passed ??
-          0;
-      }
-      if (resultFailed) {
-        resultFailed.textContent =
-          (
-            Number(
-              summary.failed
-            ) || 0
-          ) +
-          (
-            Number(
-              summary.errors
-            ) || 0
-          );
-      }
-      if (resultOverall) {
-        resultOverall.textContent =
-          Number.isFinite(
-            Number(
-              summary.overall
-            )
-          )
-            ? Number(
-                summary.overall
-              ).toFixed(1)
-            : "—";
-      }
-      if (resultDuration) {
-        resultDuration.textContent =
-          formatDuration(
-            data.run?.durationMs
-          );
-      }
-      /* -------------------------------------------------------
-         INDIVIDUAL CASES
-         ------------------------------------------------------- */
-      if (
-        !caseResults
-      ) {
-        return;
-      }
-      const results =
+        data.summary || {};
+      const dimensions =
+        data.dimensions || {};
+      const performance =
+        data.performance || {};
+      const run =
+        data.run || {};
+      const benchmark =
+        data.benchmark || {};
+      const candidate =
+        data.candidate || {};
+      /* Run information */
+      document.getElementById(
+        "resultTitle"
+      ).textContent =
+        "Benchmark complete";
+      document.getElementById(
+        "resultDescription"
+      ).textContent =
+        `${candidate.model || "Model"} evaluated against ${
+          benchmark.version ||
+          "EVP.Aureon v1.0"
+        }.`;
+      document.getElementById(
+        "resultRunId"
+      ).textContent =
+        `RUN ${run.id || "—"}`;
+      /* Summary */
+      const overall =
+        summary.overall ??
+        summary.score ??
+        data.overall ??
+        null;
+      const cases =
+        summary.cases ??
+        summary.totalCases ??
+        data.results?.length ??
+        0;
+      const passed =
+        summary.passed ??
+        0;
+      const failed =
+        summary.failed ??
+        Math.max(
+          0,
+          Number(cases) -
+          Number(passed)
+        );
+      document.getElementById(
+        "resultOverall"
+      ).textContent =
+        overall === null
+          ? "—"
+          : formatNumber(
+              overall,
+              1
+            );
+      document.getElementById(
+        "resultCases"
+      ).textContent =
+        cases;
+      document.getElementById(
+        "resultPassed"
+      ).textContent =
+        passed;
+      document.getElementById(
+        "resultFailed"
+      ).textContent =
+        failed;
+      const duration =
+        run.durationMs ??
+        summary.durationMs ??
+        data.durationMs ??
+        null;
+      document.getElementById(
+        "resultDuration"
+      ).textContent =
+        duration === null
+          ? "—"
+          : `${formatNumber(
+              duration / 1000,
+              2
+            )} s`;
+      /* Dimensions */
+      const dimensionMap = {
+        factuality:
+          "dimensionFactuality",
+        instruction_following:
+          "dimensionInstruction",
+        relevance:
+          "dimensionRelevance",
+        completeness:
+          "dimensionCompleteness",
+        safety:
+          "dimensionSafety",
+        fluency:
+          "dimensionFluency"
+      };
+      Object.entries(
+        dimensionMap
+      ).forEach(
+        ([key, elementId]) => {
+          const value =
+            readDimension(
+              dimensions,
+              key
+            );
+          const element =
+            document.getElementById(
+              elementId
+            );
+          if (!element) {
+            return;
+          }
+          element.innerHTML =
+            value === null
+              ? `— <span>/100</span>`
+              : `${formatNumber(
+                  value,
+                  1
+                )} <span>/100</span>`;
+        }
+      );
+      /* Performance */
+      document.getElementById(
+        "performanceP50"
+      ).textContent =
+        formatLatency(
+          performance.p50
+        );
+      document.getElementById(
+        "performanceP95"
+      ).textContent =
+        formatLatency(
+          performance.p95
+        );
+      document.getElementById(
+        "performanceP99"
+      ).textContent =
+        formatLatency(
+          performance.p99
+        );
+      /* Case results */
+      const tbody =
+        document.getElementById(
+          "caseResults"
+        );
+      tbody.innerHTML = "";
+      const resultCases =
         Array.isArray(
           data.results
         )
           ? data.results
           : [];
-      if (
-        !results.length
-      ) {
-        caseResults.innerHTML = `
-          <tr>
-            <td colspan="5">
-              No benchmark cases were returned.
-            </td>
-          </tr>
+      if (!resultCases.length) {
+        const row =
+          document.createElement(
+            "tr"
+          );
+        row.innerHTML = `
+          <td colspan="5">
+            No individual case results were returned.
+          </td>
         `;
-        return;
-      }
-      caseResults.innerHTML =
-        results
-          .map(
-            (
-              item
-            ) => {
-              const scoreValues =
-                Object.values(
-                  item.scores ||
-                  {}
-                )
-                  .map(
-                    Number
-                  )
-                  .filter(
-                    Number.isFinite
-                  );
-              const score =
-                scoreValues.length
-                  ? scoreValues.reduce(
-                      (
-                        sum,
-                        value
-                      ) =>
-                        sum +
-                        value,
-                      0
-                    ) /
-                    scoreValues.length
-                  : null;
-              const status =
+        tbody.appendChild(row);
+      } else {
+        resultCases.forEach(
+          (item, index) => {
+            const row =
+              document.createElement(
+                "tr"
+              );
+            const score =
+              item.overall ??
+              item.score ??
+              null;
+            let status =
+              String(
                 item.status ||
-                "ERROR";
-              const statusLabel =
-                status ===
-                "PASSED"
-                  ? "PASSED"
-                  : status ===
-                    "FAILED"
-                    ? "FAILED"
-                    : "ERROR";
-              const category =
-                item.category ||
-                "EVP.Aureon";
-              return `
-                <tr>
-                  <td class="case-number">
-                    #${String(
-                      item.testNumber ||
-                        ""
-                    ).padStart(
-                      3,
-                      "0"
-                    )}
-                  </td>
-                  <td>
-                    ${statusLabel}
-                  </td>
-                  <td>
-                    ${
-                      score === null
-                        ? "—"
-                        : formatScore(
-                            score
-                          )
-                    }
-                  </td>
-                  <td>
-                    ${escapeHtml(
-                      category
-                    )}
-                  </td>
-                  <td>
-                    ${
-                      Number.isFinite(
-                        Number(
-                          item.candidateLatencyMs
-                        )
-                      )
-                        ? formatDuration(
-                            item.candidateLatencyMs
-                          )
-                        : "—"
-                    }
-                  </td>
-                </tr>
-              `;
+                ""
+              ).toLowerCase();
+            if (!status) {
+              if (
+                item.error ||
+                item.success === false
+              ) {
+                status = "error";
+              } else if (
+                Number.isFinite(
+                  Number(score)
+                ) &&
+                Number(score) >= 70
+              ) {
+                status = "pass";
+              } else {
+                status = "fail";
+              }
             }
-          )
-          .join("");
-    }
-    /* =========================================================
-       HTML ESCAPE
-       ========================================================= */
-    function escapeHtml(
-      value
-    ) {
-      return String(
-        value ?? ""
-      )
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
+            let statusClass =
+              "fail";
+            if (
+              status.includes(
+                "pass"
+              ) ||
+              status === "passed"
+            ) {
+              statusClass =
+                "pass";
+            } else if (
+              status.includes(
+                "error"
+              ) ||
+              status.includes(
+                "fail"
+              ) === false &&
+              item.error
+            ) {
+              statusClass =
+                "error";
+            }
+            const statusText =
+              statusClass === "pass"
+                ? "PASS"
+                : statusClass === "error"
+                  ? "ERROR"
+                  : "FAIL";
+            const category =
+              item.category ||
+              item.evaluator ||
+              "EVP.Aureon";
+            const latency =
+              item.latencyMs ??
+              item.latency ??
+              null;
+            const caseName =
+              item.id ||
+              item.caseId ||
+              `Case ${index + 1}`;
+            row.innerHTML = `
+              <td>
+                ${escapeHtml(caseName)}
+              </td>
+              <td>
+                <span
+                  class="result-status ${statusClass}"
+                >
+                  ${statusText}
+                </span>
+              </td>
+              <td>
+                ${
+                  score === null
+                    ? "—"
+                    : formatNumber(
+                        score,
+                        1
+                      )
+                }
+              </td>
+              <td>
+                ${escapeHtml(category)}
+              </td>
+              <td>
+                ${formatLatency(latency)}
+              </td>
+            `;
+            tbody.appendChild(row);
+          }
         );
-    }
-    /* =========================================================
-       DISPLAY ERROR
-       ========================================================= */
-    function displayBenchmarkError(
-      message
-    ) {
-      if (resultsEmpty) {
-        resultsEmpty.classList.add(
-          "hidden"
-        );
       }
-      if (resultsPanel) {
-        resultsPanel.classList.add(
-          "visible"
-        );
-      }
-      if (resultCases) {
-        resultCases.textContent =
-          "—";
-      }
-      if (resultPassed) {
-        resultPassed.textContent =
-          "—";
-      }
-      if (resultFailed) {
-        resultFailed.textContent =
-          "—";
-      }
-      if (resultOverall) {
-        resultOverall.textContent =
-          "ERROR";
-      }
-      if (resultDuration) {
-        resultDuration.textContent =
-          "—";
-      }
-      if (caseResults) {
-        caseResults.innerHTML = `
-          <tr>
-            <td colspan="5">
-              ${escapeHtml(
-                message ||
-                  "Benchmark execution failed."
-              )}
-            </td>
-          </tr>
-        `;
-      }
+      /* Note */
+      const note =
+        data.note ||
+        "Results generated using the configured EVP.Aureon benchmark and evaluator.";
+      document.getElementById(
+        "resultsNote"
+      ).textContent =
+        note;
+      resultsSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
     /* =========================================================
        RUN BENCHMARK
        ========================================================= */
-    if (runBenchmark) {
-      runBenchmark.addEventListener(
-        "click",
-        async () => {
-          const model =
-            getModelValue();
-          /* -----------------------------------------------------
-             BASIC VALIDATION
-             ----------------------------------------------------- */
-          if (!model) {
-            displayBenchmarkError(
-              "Enter a model ID before running the benchmark."
+    runButton.addEventListener(
+      "click",
+      async () => {
+        clearMessage();
+        const payload =
+          buildPayload();
+        /* Validate dimensions */
+        if (
+          !payload.dimensions.length
+        ) {
+          showMessage(
+            "Select at least one evaluation dimension.",
+            true
+          );
+          return;
+        }
+        /* Validate weights */
+        const weightSum =
+          payload.dimensions.reduce(
+            (sum, key) => {
+              return (
+                sum +
+                Number(
+                  payload.weights[key] || 0
+                )
+              );
+            },
+            0
+          );
+        if (
+          weightSum !== 100
+        ) {
+          showMessage(
+            `Active dimension weights must total 100%. Current total: ${weightSum}%.`,
+            true
+          );
+          return;
+        }
+        /* Single case validation */
+        if (
+          payload.mode === "single"
+        ) {
+          if (
+            !payload.prompt
+          ) {
+            showMessage(
+              "Enter a prompt for the single-case evaluation.",
+              true
             );
             return;
           }
+        }
+        /* Stress validation */
+        if (
+          payload.mode === "stress"
+        ) {
           if (
-            currentMode ===
-            "suite"
+            !payload.stress.prompt
           ) {
-            const count =
-              getCaseCount();
-            if (
-              !count ||
-              count < 1
-            ) {
-              displayBenchmarkError(
-                "Enter a valid benchmark case count."
-              );
-              return;
-            }
-          }
-          /* -----------------------------------------------------
-             PREPARE UI
-             ----------------------------------------------------- */
-          setRunningState(
-            true
-          );
-          if (resultsEmpty) {
-            resultsEmpty.classList.add(
-              "hidden"
+            showMessage(
+              "Enter a stress-test prompt.",
+              true
             );
-          }
-          if (resultsPanel) {
-            resultsPanel.classList.add(
-              "visible"
-            );
-          }
-          if (caseResults) {
-            caseResults.innerHTML = `
-              <tr>
-                <td colspan="5">
-                  Running EVP.Aureon benchmark...
-                </td>
-              </tr>
-            `;
-          }
-          if (resultOverall) {
-            resultOverall.textContent =
-              "RUNNING";
-          }
-          try {
-            /* ---------------------------------------------------
-               BUILD REQUEST
-               --------------------------------------------------- */
-            const payload =
-              buildBenchmarkPayload();
-            console.log(
-              "EvalLoop benchmark request:",
-              {
-                ...payload
-              }
-            );
-            /* ---------------------------------------------------
-               CALL VERCEL FUNCTION
-               --------------------------------------------------- */
-            const response =
-              await fetch(
-                "/api/benchmark",
-                {
-                  method:
-                    "POST",
-                  headers: {
-                    "Content-Type":
-                      "application/json"
-                  },
-                  body:
-                    JSON.stringify(
-                      payload
-                    )
-                }
-              );
-            /* ---------------------------------------------------
-               PARSE RESPONSE
-               --------------------------------------------------- */
-            const data =
-              await response.json()
-                .catch(
-                  () => null
-                );
-            if (
-              !response.ok ||
-              !data?.success
-            ) {
-              throw new Error(
-                data?.error ||
-                  `Benchmark request failed with HTTP ${response.status}.`
-              );
-            }
-            /* ---------------------------------------------------
-               DISPLAY
-               --------------------------------------------------- */
-            displayBenchmarkResults(
-              data
-            );
-            /* ---------------------------------------------------
-               SCROLL
-               --------------------------------------------------- */
-            if (
-              resultsPanel
-            ) {
-              resultsPanel.scrollIntoView(
-                {
-                  behavior:
-                    "smooth",
-                  block:
-                    "start"
-                }
-              );
-            }
-          } catch (
-            error
-          ) {
-            console.error(
-              "EvalLoop benchmark error:",
-              error
-            );
-            displayBenchmarkError(
-              error?.message ||
-                "Benchmark execution failed."
-            );
-          } finally {
-            setRunningState(
-              false
-            );
+            return;
           }
         }
-      );
-    }
+        /* Loading state */
+        runButton.disabled =
+          true;
+        runButton.textContent =
+          "Running benchmark…";
+        showMessage(
+          "Benchmark engine is running. Model responses are being evaluated by EVP.Aureon."
+        );
+        try {
+          const response =
+            await fetch(
+              "/api/benchmark",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body:
+                  JSON.stringify(
+                    payload
+                  )
+              }
+            );
+          let data;
+          try {
+            data =
+              await response.json();
+          } catch (jsonError) {
+            throw new Error(
+              "The benchmark server returned an invalid response."
+            );
+          }
+          if (
+            !response.ok
+          ) {
+            throw new Error(
+              data?.error ||
+              data?.message ||
+              `Benchmark request failed with status ${response.status}.`
+            );
+          }
+          if (
+            data?.error
+          ) {
+            throw new Error(
+              data.error
+            );
+          }
+          renderResults(
+            data
+          );
+          showMessage(
+            "Benchmark completed successfully."
+          );
+        } catch (error) {
+          console.error(
+            "Benchmark error:",
+            error
+          );
+          showMessage(
+            error?.message ||
+            "Unable to run the benchmark. Check the backend and try again.",
+            true
+          );
+          resultsPanel.classList.remove(
+            "visible"
+          );
+          resultsEmpty.style.display =
+            "block";
+        } finally {
+          runButton.disabled =
+            false;
+          runButton.textContent =
+            "Run benchmark →";
+        }
+      }
+    );
     /* =========================================================
        INITIAL STATE
        ========================================================= */
-    updateMode(
-      currentMode
-    );
+    updateMode();
+    updateProvider();
+    updateModelStatus();
+    updateWeights();
   </script>
 </body>
 </html>
