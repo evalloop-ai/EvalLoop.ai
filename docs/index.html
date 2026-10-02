@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docs — EvalLoop AI</title>
+  <meta
+    name="description"
+    content="Documentation for EvalLoop AI evaluation engines, evaluation dimensions, benchmarks, and API usage."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --line: rgba(241, 241, 239, 0.14);
+      --line-soft: rgba(241, 241, 239, 0.08);
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "DM Mono", monospace;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      min-height: 100%;
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(62, 207, 142, 0.075),
+          transparent 35%
+        ),
+        var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    /* =========================================
+       BACKGROUND
+       ========================================= */
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-image:
+        linear-gradient(
+          rgba(241, 241, 239, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241, 241, 239, 0.025) 1px,
+          transparent 1px
+        );
+      background-size: 48px 48px;
+      mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        rgba(0, 0, 0, 0.55) 55%,
+        transparent 100%
+      );
+    }
+    .background-glow {
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      left: 50%;
+      top: -500px;
+      transform: translateX(-50%);
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(
+        circle,
+        rgba(62, 207, 142, 0.085),
+        transparent 68%
+      );
+      filter: blur(10px);
+    }
+    /* =========================================
+       HEADER
+       ========================================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(16, 18, 17, 0.78);
+      backdrop-filter: blur(16px);
+    }
+    .nav-inner {
+      width: min(calc(100% - 48px), 1200px);
+      min-height: 76px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 17px;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+    .brand-cursor {
+      color: var(--green);
+      animation: cursorBlink 1s steps(1, end) infinite;
+    }
+    @keyframes cursorBlink {
+      0%,
+      45% {
+        opacity: 1;
+      }
+      46%,
+      100% {
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .brand-cursor {
+        animation: none;
+        opacity: 1;
+      }
+    }
+    .back {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      transition: color 0.25s ease;
+    }
+    .back:hover {
+      color: var(--green2);
+    }
+    /* =========================================
+       MAIN
+       ========================================= */
+    main {
+      width: min(calc(100% - 48px), 1200px);
+      margin: 0 auto;
+      padding: 105px 0 120px;
+    }
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.10em;
+    }
+    .kicker-line {
+      width: 28px;
+      height: 1px;
+      background: var(--green);
+    }
+    h1 {
+      margin-top: 24px;
+      font-size: clamp(58px, 9vw, 105px);
+      line-height: 0.9;
+      font-weight: 300;
+      letter-spacing: -0.05em;
+    }
+    h1 span {
+      color: var(--green);
+    }
+    .intro {
+      max-width: 720px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+    /* =========================================
+       SECTION HEADERS
+       ========================================= */
+    .section-header {
+      margin-top: 85px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .section-label {
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      white-space: nowrap;
+    }
+    .section-description {
+      max-width: 500px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: right;
+    }
+    /* =========================================
+       DOCUMENTATION GRID
+       ========================================= */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .doc-card {
+      position: relative;
+      min-height: 250px;
+      padding: 30px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, 0.58);
+      transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+    }
+    .doc-card:hover {
+      background: var(--panel);
+      border-color: rgba(62, 207, 142, 0.28);
+      transform: translateY(-2px);
+    }
+    .doc-number {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+    .doc-status {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+    }
+    .doc-status.current {
+      color: var(--green2);
+    }
+    .doc-title {
+      margin-top: 45px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+    }
+    .doc-description {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+    /* =========================================
+       TEXT DOCUMENTATION
+       ========================================= */
+    .content-panel {
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .content-block {
+      padding: 34px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, 0.58);
+    }
+    .content-block h3 {
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+    .content-block h3 span {
+      color: var(--green);
+    }
+    .content-block p {
+      max-width: 900px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .content-list {
+      max-width: 900px;
+      margin-top: 18px;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+    .content-list strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+    /* =========================================
+       CODE
+       ========================================= */
+    .code-block {
+      margin-top: 22px;
+      padding: 24px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      background: #0c0f0d;
+      color: #dce5df;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.8;
+      white-space: pre;
+    }
+    .code-label {
+      margin-bottom: 10px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+    }
+    .method {
+      color: var(--green2);
+    }
+    .endpoint {
+      color: var(--ink);
+    }
+    /* =========================================
+       DIMENSIONS
+       ========================================= */
+    .dimension-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 24px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .dimension {
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(16, 18, 17, 0.45);
+    }
+    .dimension-name {
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    .dimension-description {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+    /* =========================================
+       API
+       ========================================= */
+    .api-route {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+    .api-method {
+      color: var(--green);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+    .api-path {
+      color: var(--ink);
+    }
+    .note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 2px solid var(--green);
+      background: rgba(62, 207, 142, 0.045);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .note strong {
+      color: var(--green2);
+      font-weight: 400;
+    }
+    /* =========================================
+       CTA
+       ========================================= */
+    .cta {
+      margin-top: 85px;
+      padding: 45px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(62, 207, 142, 0.07),
+          rgba(23, 27, 24, 0.55)
+        );
+    }
+    .cta-label {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+    .cta h2 {
+      margin-top: 15px;
+      color: var(--ink);
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      font-weight: 300;
+      letter-spacing: -0.04em;
+    }
+    .cta p {
+      max-width: 650px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .cta-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      transition:
+        color 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+    }
+    .cta-link:hover {
+      color: var(--green2);
+      border-color: rgba(62, 207, 142, 0.35);
+      background: rgba(62, 207, 142, 0.04);
+    }
+    /* =========================================
+       FOOTER
+       ========================================= */
+    footer {
+      border-top: 1px solid var(--line-soft);
+      padding: 22px 0;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.05em;
+    }
+    .footer-inner {
+      width: min(calc(100% - 48px), 1200px);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    /* =========================================
+       TABLET
+       ========================================= */
+    @media (max-width: 1050px) {
+      .docs-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .dimension-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    /* =========================================
+       MOBILE
+       ========================================= */
+    @media (max-width: 600px) {
+      .nav-inner,
+      main,
+      .footer-inner {
+        width: min(calc(100% - 32px), 1200px);
+      }
+      .nav-inner {
+        min-height: 66px;
+      }
+      .brand {
+        font-size: 15px;
+      }
+      .back {
+        font-size: 8px;
+      }
+      main {
+        padding: 75px 0 90px;
+      }
+      .kicker {
+        font-size: 10px;
+      }
+      h1 {
+        font-size: clamp(52px, 16vw, 78px);
+      }
+      .intro {
+        font-size: 15px;
+      }
+      .section-header {
+        margin-top: 65px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .section-label {
+        font-size: 10px;
+      }
+      .section-description {
+        max-width: 100%;
+        font-size: 13px;
+        text-align: left;
+      }
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+      .dimension-grid {
+        grid-template-columns: 1fr;
+      }
+      .doc-card {
+        min-height: 230px;
+      }
+      .content-block {
+        padding: 25px;
+      }
+      .code-block {
+        padding: 18px;
+        font-size: 10px;
+      }
+      .cta {
+        padding: 28px;
+      }
+      .cta h2 {
+        font-size: 32px;
+      }
+      .footer-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    /* =========================================
+       VERY SMALL DEVICES
+       ========================================= */
+    @media (max-width: 380px) {
+      .nav-inner,
+      main,
+      .footer-inner {
+        width: calc(100% - 28px);
+      }
+      .back {
+        font-size: 7px;
+      }
+      .doc-card,
+      .content-block {
+        padding: 22px;
+      }
+      .doc-status {
+        top: 22px;
+        right: 22px;
+      }
+      .code-block {
+        font-size: 9px;
+      }
+    }
+    /* =========================================
+       REDUCED MOTION
+       ========================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before {
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-grid"></div>
+  <div class="background-glow"></div>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="/" class="brand" aria-label="EvalLoop AI">
+        EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
+      <a href="/" class="back">
+        ← BACK TO EVALLOOP AI
+      </a>
+    </div>
+  </header>
+  <!-- MAIN -->
+  <main>
+    <div class="kicker">
+      <span class="kicker-line"></span>
+      DOCUMENTATION
+    </div>
+    <h1>
+      Measure. Evaluate.<br>
+      <span>Improve.</span>
+    </h1>
+    <p class="intro">
+      Documentation for EvalLoop AI evaluation engines,
+      evaluation dimensions, benchmark architecture,
+      and the EvalLoop evaluation API.
+    </p>
+    <!-- =========================================
+         DOCUMENTATION SECTIONS
+         ========================================= -->
+    <div class="section-header">
+      <div class="section-label">
+        DOCUMENTATION
+      </div>
+      <p class="section-description">
+        Start with the core evaluation concepts, then explore
+        evaluation profiles, benchmarks, API usage, and security.
+      </p>
+    </div>
+    <section class="docs-grid">
+      <!-- DOC 01 -->
+      <a href="#getting-started" class="doc-card">
+        <span class="doc-number">
+          DOC.01
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          Getting Started
+        </h2>
+        <p class="doc-description">
+          Understand how EvalLoop AI evaluates an AI response,
+          what inputs are required, and how evaluation results
+          are returned.
+        </p>
+      </a>
+      <!-- DOC 02 -->
+      <a href="#evaluation" class="doc-card">
+        <span class="doc-number">
+          DOC.02
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          Evaluation
+        </h2>
+        <p class="doc-description">
+          Learn about the six evaluation dimensions currently
+          used by EVP.Aureon to measure AI response quality.
+        </p>
+      </a>
+      <!-- DOC 03 -->
+      <a href="#profiles" class="doc-card">
+        <span class="doc-number">
+          DOC.03
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          Evaluation Profiles
+        </h2>
+        <p class="doc-description">
+          Explore the EVP architecture and the specialized
+          evaluation capabilities planned across EvalLoop AI.
+        </p>
+      </a>
+      <!-- DOC 04 -->
+      <a href="#benchmarks" class="doc-card">
+        <span class="doc-number">
+          DOC.04
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          Benchmarks
+        </h2>
+        <p class="doc-description">
+          Understand how benchmark datasets, target AI systems,
+          evaluation engines, scores, and history fit together.
+        </p>
+      </a>
+      <!-- DOC 05 -->
+      <a href="#api" class="doc-card">
+        <span class="doc-number">
+          DOC.05
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          API
+        </h2>
+        <p class="doc-description">
+          Integrate the current EvalLoop evaluation endpoint
+          using a prompt, AI response, and optional reference.
+        </p>
+      </a>
+      <!-- DOC 06 -->
+      <a href="#security" class="doc-card">
+        <span class="doc-number">
+          DOC.06
+        </span>
+        <span class="doc-status current">
+          ● AVAILABLE
+        </span>
+        <h2 class="doc-title">
+          Security
+        </h2>
+        <p class="doc-description">
+          Learn how API credentials are handled and which
+          secrets must remain on the server side.
+        </p>
+      </a>
+    </section>
+    <!-- =========================================
+         GETTING STARTED
+         ========================================= -->
+    <div class="section-header" id="getting-started">
+      <div class="section-label">
+        GETTING STARTED
+      </div>
+      <p class="section-description">
+        The basic EvalLoop evaluation flow.
+      </p>
+    </div>
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>
+          Evaluate an AI response with EVP.<span>Aureon</span>
+        </h3>
+        <p>
+          EvalLoop AI currently provides a general-purpose evaluation
+          flow through EVP.Aureon. The evaluator receives the original
+          prompt, the AI-generated response, and an optional reference
+          answer.
+        </p>
+        <p>
+          It evaluates the supplied response across six dimensions,
+          normalizes the dimension scores to a 0–100 range, and returns
+          a calculated overall score together with issues, summary,
+          and recommendation.
+        </p>
+        <div class="code-block"><div class="code-label">EVALUATION FLOW</div>TARGET PROMPT
+       ↓
+AI RESPONSE
+       ↓
+OPTIONAL REFERENCE
+       ↓
+EVP.AUREON
+       ↓
+SIX EVALUATION DIMENSIONS
+       ↓
+OVERALL SCORE
+       ↓
+ISSUES + SUMMARY + RECOMMENDATION</div>
+      </div>
+    </section>
+    <!-- =========================================
+         EVALUATION
+         ========================================= -->
+    <div class="section-header" id="evaluation">
+      <div class="section-label">
+        EVALUATION DIMENSIONS
+      </div>
+      <p class="section-description">
+        EVP.Aureon currently evaluates six core dimensions.
+        Each dimension produces a score from 0 to 100.
+      </p>
+    </div>
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>
+          Six dimensions. <span>One quality signal.</span>
+        </h3>
+        <p>
+          The current evaluator uses six dimensions to provide a
+          structured view of AI response quality.
+        </p>
+        <div class="dimension-grid">
+          <div class="dimension">
+            <div class="dimension-name">
+              Factuality
+            </div>
+            <p class="dimension-description">
+              Measures whether the response is factually accurate
+              and avoids unsupported claims.
+            </p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">
+              Instruction Following
+            </div>
+            <p class="dimension-description">
+              Measures whether the response follows the user's
+              stated instructions and requirements.
+            </p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">
+              Relevance
+            </div>
+            <p class="dimension-description">
+              Measures how directly the response addresses the
+              requested task or question.
+            </p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">
+              Completeness
+            </div>
+            <p class="dimension-description">
+              Measures whether the response adequately covers
+              the important parts of the requested task.
+            </p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">
+              Safety
+            </div>
+            <p class="dimension-description">
+              Measures whether the response avoids relevant
+              safety failures and harmful behavior.
+            </p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">
+              Fluency
+            </div>
+            <p class="dimension-description">
+              Measures clarity, readability, language quality,
+              and overall response fluency.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- =========================================
+         EVALUATION PROFILES
+         ========================================= -->
+    <div class="section-header" id="profiles">
+      <div class="section-label">
+        EVALUATION PROFILES
+      </div>
+      <p class="section-description">
+        Specialized evaluation profiles planned around
+        different AI quality requirements.
+      </p>
+    </div>
+    <section class="docs-grid">
+      <div class="doc-card">
+        <span class="doc-status current">
+          ● CURRENT
+        </span>
+        <div class="doc-number">
+          EVP.01
+        </div>
+        <h2 class="doc-title">
+          EVP.Aureon
+        </h2>
+        <p class="doc-description">
+          General-purpose evaluation across factuality,
+          instruction following, relevance, completeness,
+          safety, and fluency.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.02
+        </div>
+        <h2 class="doc-title">
+          EVP.Lunara
+        </h2>
+        <p class="doc-description">
+          Reasoning evaluation for logical consistency,
+          problem solving, and structured reasoning quality.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.03
+        </div>
+        <h2 class="doc-title">
+          EVP.Aethera
+        </h2>
+        <p class="doc-description">
+          RAG evaluation focused on retrieval quality,
+          groundedness, context usage, and unsupported claims.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.04
+        </div>
+        <h2 class="doc-title">
+          EVP.Vespera
+        </h2>
+        <p class="doc-description">
+          Safety evaluation covering harmful outputs,
+          jailbreaks, prompt injection, and policy compliance.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.05
+        </div>
+        <h2 class="doc-title">
+          EVP.Nebryx
+        </h2>
+        <p class="doc-description">
+          Multimodal evaluation across text, image, audio,
+          video understanding, and cross-modal consistency.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.06
+        </div>
+        <h2 class="doc-title">
+          EVP.Celestia
+        </h2>
+        <p class="doc-description">
+          Agent evaluation covering planning, tool usage,
+          task execution, trajectories, and recovery.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.07
+        </div>
+        <h2 class="doc-title">
+          EVP.Nexora
+        </h2>
+        <p class="doc-description">
+          Planned orchestration layer for coordinating
+          specialized evaluation capabilities.
+        </p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-status">
+          ○ COMING SOON
+        </span>
+        <div class="doc-number">
+          EVP.08
+        </div>
+        <h2 class="doc-title">
+          EVP.Stellara
+        </h2>
+        <p class="doc-description">
+          Planned benchmark evaluation engine for datasets,
+          regression testing, repeatability, and tracking.
+        </p>
+      </div>
+    </section>
+    <!-- =========================================
+         BENCHMARKS
+         ========================================= -->
+    <div class="section-header" id="benchmarks">
+      <div class="section-label">
+        BENCHMARKS
+      </div>
+      <p class="section-description">
+        A benchmark runs a defined dataset through a target
+        AI system and evaluates the resulting responses.
+      </p>
+    </div>
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>
+          Benchmark <span>architecture</span>
+        </h3>
+        <p>
+          EvalLoop AI benchmarks are designed to separate the target
+          AI system from the evaluation engine. The target system
+          generates responses, while the evaluation engine measures
+          those responses against the selected benchmark criteria.
+        </p>
+        <div class="code-block"><div class="code-label">BENCHMARK FLOW</div>TARGET AI SYSTEM
+       ↓
+CUSTOM API / PROVIDER API / UPLOAD
+       ↓
+BENCHMARK DATASET
+       ↓
+TARGET AI GENERATES RESPONSES
+       ↓
+EVP.AUREON
+       ↓
+DIMENSION SCORES
+       ↓
+BENCHMARK RESULT
+       ↓
+HISTORY</div>
+        <p>
+          The current benchmark experience is centered on General
+          Quality evaluation. Specialized benchmark engines and
+          suites are planned for future releases.
+        </p>
+      </div>
+    </section>
+    <!-- =========================================
+         API
+         ========================================= -->
+    <div class="section-header" id="api">
+      <div class="section-label">
+        API
+      </div>
+      <p class="section-description">
+        Current evaluation API endpoint and request/response format.
+      </p>
+    </div>
+    <section class="content-panel">
+      <!-- ENDPOINT -->
+      <div class="content-block">
+        <h3>
+          Evaluate a response
+        </h3>
+        <div class="api-route">
+          <span class="api-method">
+            POST
+          </span>
+          <span class="api-path">
+            /api/evaluate
+          </span>
+        </div>
+        <p>
+          Send an AI prompt and its generated response to the
+          EvalLoop evaluator. A reference answer can optionally
+          be supplied to provide additional evaluation context.
+        </p>
+        <div class="code-block"><div class="code-label">REQUEST</div>{
+  "prompt": "What is the capital of France?",
+  "response": "The capital of France is Paris.",
+  "reference": "France's capital city is Paris."
+}</div>
+        <p>
+          The request must use JSON. The <strong>prompt</strong> and
+          <strong>response</strong> fields are required non-empty strings.
+          The <strong>reference</strong> field is optional.
+        </p>
+      </div>
+      <!-- RESPONSE -->
+      <div class="content-block">
+        <h3>
+          Evaluation <span>response</span>
+        </h3>
+        <p>
+          A successful evaluation returns the overall score, the six
+          dimension scores, detected issues, a summary, and a recommendation.
+        </p>
+        <div class="code-block"><div class="code-label">RESPONSE</div>{
+  "overall_score": 100,
+  "overall_text": "Strong response.",
+  "scores": {
+    "factuality": 100,
+    "instruction_following": 100,
+    "relevance": 100,
+    "completeness": 100,
+    "safety": 100,
+    "fluency": 100
+  },
+  "issues": [],
+  "summary": "The response accurately answers the user's question.",
+  "recommendation": "No major improvements are required."
+}</div>
+        <div class="note">
+          <strong>Important:</strong>
+          The example scores and text are illustrative.
+          Actual evaluation results depend on the supplied prompt,
+          response, reference, and evaluator output.
+        </div>
+      </div>
+      <!-- SCORE CALCULATION -->
+      <div class="content-block">
+        <h3>
+          Overall score <span>calculation</span>
+        </h3>
+        <p>
+          The backend does not trust an overall score supplied by the
+          evaluator model. It calculates the final overall score from
+          the six normalized dimension scores.
+        </p>
+        <div class="code-block"><div class="code-label">CALCULATION</div>overall_score =
+ROUND(
+  (
+    factuality +
+    instruction_following +
+    relevance +
+    completeness +
+    safety +
+    fluency
+  ) / 6
+)</div>
+        <p>
+          Each dimension is normalized to an integer from 0 to 100
+          before the overall score is calculated.
+        </p>
+      </div>
+      <!-- ISSUES -->
+      <div class="content-block">
+        <h3>
+          Evaluation <span>issues</span>
+        </h3>
+        <p>
+          The evaluator can return up to ten issues. Each issue contains
+          a type and description.
+        </p>
+        <div class="code-block"><div class="code-label">ISSUE FORMAT</div>{
+  "type": "factuality",
+  "description": "The response contains an unsupported claim."
+}</div>
+        <p>
+          Invalid issue entries are filtered by the backend before the
+          final response is returned.
+        </p>
+      </div>
+      <!-- ERRORS -->
+      <div class="content-block">
+        <h3>
+          API <span>errors</span>
+        </h3>
+        <p>
+          The current endpoint returns standard HTTP error responses
+          for invalid requests, configuration failures, upstream
+          evaluation failures, and unexpected server errors.
+        </p>
+        <ul class="content-list">
+          <li>
+            <strong>405</strong> — Method not allowed.
+          </li>
+          <li>
+            <strong>400</strong> — Prompt is required.
+          </li>
+          <li>
+            <strong>400</strong> — AI response is required.
+          </li>
+          <li>
+            <strong>500</strong> — GROQ_API_KEY is not configured.
+          </li>
+          <li>
+            <strong>502</strong> — Groq evaluation request failed.
+          </li>
+          <li>
+            <strong>502</strong> — Groq returned an empty response.
+          </li>
+          <li>
+            <strong>502</strong> — Groq returned invalid evaluation JSON.
+          </li>
+          <li>
+            <strong>500</strong> — Unexpected server error.
+          </li>
+        </ul>
+      </div>
+      <!-- API LIMITATION -->
+      <div class="content-block">
+        <h3>
+          Current API <span>scope</span>
+        </h3>
+        <p>
+          The current <strong>/api/evaluate</strong> endpoint evaluates
+          a prompt and response supplied directly in the request.
+          It does not currently act as a general-purpose proxy for
+          arbitrary external AI provider APIs.
+        </p>
+        <p>
+          Benchmark target connections and provider integrations are
+          part of the broader benchmark architecture and may require
+          additional implementation.
+        </p>
+      </div>
+    </section>
+    <!-- =========================================
+         SECURITY
+         ========================================= -->
+    <div class="section-header" id="security">
+      <div class="section-label">
+        SECURITY
+      </div>
+      <p class="section-description">
+        Keep provider credentials on the server and never expose
+        secret API keys in client-side code.
+      </p>
+    </div>
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>
+          Server-side <span>credentials</span>
+        </h3>
+        <p>
+          The current evaluation backend reads the Groq API credential
+          from the server-side environment variable
+          <strong>GROQ_API_KEY</strong>.
+        </p>
+        <div class="note">
+          <strong>Never expose GROQ_API_KEY</strong>
+          in browser JavaScript, public HTML, GitHub repositories,
+          or client-side configuration.
+        </div>
+        <p>
+          Client applications should communicate with the EvalLoop
+          backend endpoint rather than embedding provider credentials
+          in the browser.
+        </p>
+      </div>
+      <div class="content-block">
+        <h3>
+          Evaluation <span>provider</span>
+        </h3>
+        <p>
+          The current evaluator uses Groq's OpenAI-compatible chat
+          completions endpoint with the configured evaluation model.
+          The provider credential remains on the server.
+        </p>
+        <p>
+          Future evaluation profiles and benchmark integrations may
+          introduce additional providers or execution paths as the
+          EvalLoop platform develops.
+        </p>
+      </div>
+    </section>
+    <!-- =========================================
+         CTA
+         ========================================= -->
+    <section class="cta">
+      <div class="cta-label">
+        READY TO EVALUATE?
+      </div>
+      <h2>
+        Test an AI response.
+      </h2>
+      <p>
+        Use the EvalLoop evaluator to measure an AI response across
+        factuality, instruction following, relevance, completeness,
+        safety, and fluency.
+      </p>
+      <div class="cta-links">
+        <a href="/app/" class="cta-link">
+          OPEN EVALUATOR →
+        </a>
+        <a href="/benchmarks/" class="cta-link">
+          VIEW BENCHMARKS →
+        </a>
+        <a href="/" class="cta-link">
+          BACK TO EVALLOOP AI →
+        </a>
+      </div>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span>
+        © 2026 EvalLoop AI
+      </span>
+      <span>
+        BUILT FOR BETTER AI
+      </span>
+      <span>
+        HYDERABAD · INDIA
+      </span>
+    </div>
+  </footer>
+</body>
+</html>
