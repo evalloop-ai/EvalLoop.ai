@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EvalLoop AI — Practical AI Products</title>
+  <meta
+    name="description"
+    content="EvalLoop AI builds practical AI products for documents, writing, translation, coding, data analysis, customer service, and everyday AI workflows."
+  />
+  <meta name="theme-color" content="#101211" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <!-- PAGE PROGRESS -->
+  <div class="page-progress" aria-hidden="true">
+    <span></span>
+  </div>
+  <a class="skip" href="#main">Skip to content</a>
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement">
+    <div class="wrap announcement-inner">
+      <span class="announcement-label">EVALLOOP AI</span>
+      <span>Practical AI products, built one at a time.</span>
+      <span class="announcement-status">
+        <i></i>
+        BUILDING
+      </span>
+    </div>
+  </div>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="logo" href="#top" aria-label="EvalLoop AI home">
+        <span>EvalLoop</span><b>AI</b>
+      </a>
+      <nav class="navmenu" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#document-ai">Document AI</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+      <div class="navright">
+        <a class="nav-cta" href="#products">Explore</a>
+        <button
+          class="menu-toggle"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobileNav"
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <a href="#about">About</a>
+      <a href="#products">Products</a>
+      <a href="#document-ai">Document AI</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero wrap" id="top">
+      <div class="hero-copy reveal">
+        <div class="kicker">
+          <span class="kicker-line"></span>
+          AI PRODUCT HUB / 01
+        </div>
+        <h1>
+          Practical AI
+          <em>for real work.</em>
+        </h1>
+        <p class="hero-description">
+          EvalLoop AI is building a focused collection of useful AI products
+          for documents, writing, translation, coding, data, support, and
+          everyday workflows.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#products">
+            Explore products
+            <span>↗</span>
+          </a>
+          <a class="button button-ghost" href="#document-ai">
+            Meet Document AI
+          </a>
+        </div>
+        <div class="hero-note">
+          <span class="live-dot"></span>
+          PRODUCT HUB / ONE PRODUCT AT A TIME
+        </div>
+      </div>
+      <!-- AI HUB VISUAL -->
+      <div class="hub-stage reveal reveal-delay">
+        <div class="hub-label hub-label-top">
+          <span>AI HUB / SYSTEM</span>
+          <span>LIVE</span>
+        </div>
+        <div class="hub-canvas">
+          <div class="hub-grid"></div>
+          <!-- CONNECTIONS -->
+          <svg class="hub-lines" viewBox="0 0 600 520" aria-hidden="true">
+            <line class="hub-line line-1"
+              x1="300" y1="260" x2="120" y2="110" />
+            <line class="hub-line line-2"
+              x1="300" y1="260" x2="480" y2="110" />
+            <line class="hub-line line-3"
+              x1="300" y1="260" x2="105" y2="390" />
+            <line class="hub-line line-4"
+              x1="300" y1="260" x2="495" y2="390" />
+            <line class="hub-line line-5"
+              x1="300" y1="260" x2="300" y2="65" />
+          </svg>
+          <!-- CENTRAL HUB -->
+          <div class="hub-core">
+            <div class="hub-core-inner">
+              <span class="hub-core-small">EVALLOOP</span>
+              <strong>AI</strong>
+              <span class="hub-core-status">
+                <i></i>
+                PRODUCT HUB
+              </span>
+            </div>
+          </div>
+          <!-- PRODUCTS -->
+          <a class="hub-node node-document" href="#document-ai">
+            <span class="node-index">01</span>
+            <strong>Document AI</strong>
+            <small>AVAILABLE</small>
+          </a>
+          <div class="hub-node node-writing">
+            <span class="node-index">02</span>
+            <strong>Writing AI</strong>
+            <small>BUILDING</small>
+          </div>
+          <div class="hub-node node-translation">
+            <span class="node-index">03</span>
+            <strong>Translation AI</strong>
+            <small>PLANNED</small>
+          </div>
+          <div class="hub-node node-coding">
+            <span class="node-index">04</span>
+            <strong>Coding AI</strong>
+            <small>PLANNED</small>
+          </div>
+          <div class="hub-node node-data">
+            <span class="node-index">05</span>
+            <strong>Data AI</strong>
+            <small>PLANNED</small>
+          </div>
+          <div class="hub-scan"></div>
+        </div>
+        <div class="hub-footer">
+          <span>FOCUSED</span>
+          <span>PRACTICAL</span>
+          <span>ITERATIVE</span>
+        </div>
+      </div>
+    </section>
+    <!-- ABOUT -->
+    <section class="section wrap" id="about">
+      <div class="section-head reveal">
+        <span class="kicker">ABOUT / 01</span>
+        <h2>
+          AI should be useful
+          <span>before it is impressive.</span>
+        </h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-number reveal">
+          01
+        </div>
+        <div class="about-content reveal">
+          <p class="large-copy">
+            EvalLoop AI is an AI product studio focused on building practical
+            tools that solve specific problems well.
+          </p>
+          <p>
+            Instead of trying to build everything at once, we are creating a
+            growing hub of focused AI products — each designed around a real
+            workflow and improved through actual use.
+          </p>
+          <div class="about-meta">
+            <div>
+              <span>MODEL</span>
+              <strong>Practical AI</strong>
+            </div>
+            <div>
+              <span>STYLE</span>
+              <strong>Focused products</strong>
+            </div>
+            <div>
+              <span>STATUS</span>
+              <strong>Building</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- PRODUCTS -->
+    <section class="section wrap" id="products">
+      <div class="section-head split reveal">
+        <div>
+          <span class="kicker">PRODUCTS / 02</span>
+          <h2>
+            One hub.
+            <span>Many useful tools.</span>
+          </h2>
+        </div>
+        <p>
+          A growing collection of focused AI products, each built around a
+          practical use case.
+        </p>
+      </div>
+      <div class="product-grid">
+        <!-- DOCUMENT -->
+        <a class="product-card product-card-main reveal" href="#document-ai">
+          <div class="card-top">
+            <span>01 / AVAILABLE</span>
+            <span class="card-arrow">↗</span>
+          </div>
+          <div class="product-icon document-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <h3>Document AI</h3>
+          <p>
+            Read, understand, summarize, rewrite, question, and transform
+            documents with AI.
+          </p>
+          <div class="card-bottom">
+            <span>PDF</span>
+            <span>OCR</span>
+            <span>AI</span>
+          </div>
+        </a>
+        <!-- WRITING -->
+        <div class="product-card reveal reveal-delay-1">
+          <div class="card-top">
+            <span>02 / BUILDING</span>
+            <span>—</span>
+          </div>
+          <h3>Writing AI</h3>
+          <p>
+            Draft, rewrite, refine, and transform everyday writing.
+          </p>
+          <div class="card-status">
+            <i></i>
+            IN DEVELOPMENT
+          </div>
+        </div>
+        <!-- TRANSLATION -->
+        <div class="product-card reveal reveal-delay-2">
+          <div class="card-top">
+            <span>03 / PLANNED</span>
+            <span>—</span>
+          </div>
+          <h3>Translation AI</h3>
+          <p>
+            Translate text and documents while preserving useful context.
+          </p>
+          <div class="card-status muted-status">
+            ROADMAP
+          </div>
+        </div>
+        <!-- CODING -->
+        <div class="product-card reveal">
+          <div class="card-top">
+            <span>04 / PLANNED</span>
+            <span>—</span>
+          </div>
+          <h3>Coding AI</h3>
+          <p>
+            A practical coding assistant for building and understanding
+            software.
+          </p>
+          <div class="card-status muted-status">
+            ROADMAP
+          </div>
+        </div>
+        <!-- DATA -->
+        <div class="product-card reveal reveal-delay-1">
+          <div class="card-top">
+            <span>05 / PLANNED</span>
+            <span>—</span>
+          </div>
+          <h3>Data AI</h3>
+          <p>
+            Turn spreadsheets and datasets into useful analysis and insights.
+          </p>
+          <div class="card-status muted-status">
+            ROADMAP
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- DOCUMENT AI -->
+    <section class="section document-section wrap" id="document-ai">
+      <div class="section-head split reveal">
+        <div>
+          <span class="kicker">PRODUCT / 01</span>
+          <h2>
+            Meet
+            <span>Document AI.</span>
+          </h2>
+        </div>
+        <p>
+          The first EvalLoop AI product turns documents into something you can
+          understand, work with, and transform.
+        </p>
+      </div>
+      <div class="document-layout">
+        <div class="document-copy reveal">
+          <span class="product-status">
+            <i></i>
+            FIRST PRODUCT
+          </span>
+          <h3>
+            From document
+            <br>
+            to useful result.
+          </h3>
+          <p>
+            Upload a document, extract its contents, use AI to understand or
+            transform it, and create a useful output.
+          </p>
+          <a class="text-link" href="#">
+            Product coming soon
+            <span>↗</span>
+          </a>
+        </div>
+        <div class="document-workflow reveal reveal-delay">
+          <div class="workflow-header">
+            <span>DOCUMENT WORKFLOW</span>
+            <span>01 → 03</span>
+          </div>
+          <div class="workflow">
+            <div class="workflow-step">
+              <span class="workflow-number">01</span>
+              <div>
+                <small>INPUT</small>
+                <strong>document.pdf</strong>
+                <p>PDF / image / office document</p>
+              </div>
+            </div>
+            <div class="workflow-connector">
+              <span></span>
+            </div>
+            <div class="workflow-step active-step">
+              <span class="workflow-number">02</span>
+              <div>
+                <small>AI PROCESSING</small>
+                <strong>Understand</strong>
+                <p>Extract · OCR · Summarize · Rewrite</p>
+              </div>
+              <div class="processing-pulse"></div>
+            </div>
+            <div class="workflow-connector">
+              <span></span>
+            </div>
+            <div class="workflow-step">
+              <span class="workflow-number">03</span>
+              <div>
+                <small>OUTPUT</small>
+                <strong>Useful result</strong>
+                <p>Text · answer · summary · document</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="capability-grid">
+        <div class="capability reveal">
+          <span>01</span>
+          <strong>PDF → Text</strong>
+          <p>Extract usable text from digital documents.</p>
+        </div>
+        <div class="capability reveal reveal-delay-1">
+          <span>02</span>
+          <strong>OCR</strong>
+          <p>Work with scanned and image-based documents.</p>
+        </div>
+        <div class="capability reveal reveal-delay-2">
+          <span>03</span>
+          <strong>Summarize</strong>
+          <p>Turn long documents into concise information.</p>
+        </div>
+        <div class="capability reveal">
+          <span>04</span>
+          <strong>Ask Questions</strong>
+          <p>Ask questions about the content of a document.</p>
+        </div>
+        <div class="capability reveal reveal-delay-1">
+          <span>05</span>
+          <strong>Rewrite</strong>
+          <p>Transform document content into clearer writing.</p>
+        </div>
+        <div class="capability reveal reveal-delay-2">
+          <span>06</span>
+          <strong>Generate</strong>
+          <p>Create useful document outputs from AI-assisted content.</p>
+        </div>
+      </div>
+    </section>
+    <!-- ROADMAP -->
+    <section class="section wrap" id="roadmap">
+      <div class="section-head split reveal">
+        <div>
+          <span class="kicker">ROADMAP / 03</span>
+          <h2>
+            The hub
+            <span>keeps growing.</span>
+          </h2>
+        </div>
+        <p>
+          Products will be introduced gradually. The focus is usefulness,
+          reliability, and a clear experience.
+        </p>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap-row active reveal">
+          <span class="roadmap-number">01</span>
+          <div class="roadmap-main">
+            <h3>Document AI</h3>
+            <p>Documents, OCR, extraction, understanding and transformation.</p>
+          </div>
+          <span class="roadmap-state">NOW</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">02</span>
+          <div class="roadmap-main">
+            <h3>Writing AI</h3>
+            <p>Practical writing, rewriting and drafting assistance.</p>
+          </div>
+          <span class="roadmap-state">NEXT</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">03</span>
+          <div class="roadmap-main">
+            <h3>Translation AI</h3>
+            <p>Language translation for text and documents.</p>
+          </div>
+          <span class="roadmap-state">PLANNED</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">04</span>
+          <div class="roadmap-main">
+            <h3>Coding AI</h3>
+            <p>Useful assistance for understanding and creating software.</p>
+          </div>
+          <span class="roadmap-state">PLANNED</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">05</span>
+          <div class="roadmap-main">
+            <h3>Data Analysis AI</h3>
+            <p>Work with spreadsheets, datasets and analytical workflows.</p>
+          </div>
+          <span class="roadmap-state">PLANNED</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">06</span>
+          <div class="roadmap-main">
+            <h3>AI Customer Service</h3>
+            <p>Practical AI support experiences for businesses.</p>
+          </div>
+          <span class="roadmap-state">PLANNED</span>
+        </div>
+        <div class="roadmap-row reveal">
+          <span class="roadmap-number">07</span>
+          <div class="roadmap-main">
+            <h3>General AI Assistant</h3>
+            <p>A broader assistant built from the lessons of the hub.</p>
+          </div>
+          <span class="roadmap-state">PLANNED</span>
+        </div>
+      </div>
+    </section>
+    <!-- APPROACH -->
+    <section class="section wrap">
+      <div class="approach-grid">
+        <div class="approach-intro reveal">
+          <span class="kicker">APPROACH / 04</span>
+          <h2>
+            Small products.
+            <span>Real workflows.</span>
+          </h2>
+        </div>
+        <div class="approach-items">
+          <div class="approach-item reveal">
+            <span>01</span>
+            <div>
+              <h3>Focused</h3>
+              <p>
+                Each product starts with a clear problem instead of an
+                oversized feature list.
+              </p>
+            </div>
+          </div>
+          <div class="approach-item reveal">
+            <span>02</span>
+            <div>
+              <h3>Practical</h3>
+              <p>
+                The goal is to make AI genuinely useful in everyday work.
+              </p>
+            </div>
+          </div>
+          <div class="approach-item reveal">
+            <span>03</span>
+            <div>
+              <h3>Iterative</h3>
+              <p>
+                Products improve gradually as real workflows reveal what
+                matters.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ -->
+    <section class="section wrap faq-section">
+      <div class="section-head reveal">
+        <span class="kicker">FAQ / 05</span>
+        <h2>
+          A few
+          <span>answers.</span>
+        </h2>
+      </div>
+      <div class="faq">
+        <details class="reveal">
+          <summary>
+            <span>What is EvalLoop AI?</span>
+            <b>+</b>
+          </summary>
+          <div class="faq-answer">
+            EvalLoop AI is a practical AI product studio building a focused
+            collection of useful AI tools.
+          </div>
+        </details>
+        <details class="reveal">
+          <summary>
+            <span>What is the first product?</span>
+            <b>+</b>
+          </summary>
+          <div class="faq-answer">
+            Document AI is the first product, focused on extracting,
+            understanding, summarizing, questioning and transforming documents.
+          </div>
+        </details>
+        <details class="reveal">
+          <summary>
+            <span>Will there be more products?</span>
+            <b>+</b>
+          </summary>
+          <div class="faq-answer">
+            Yes. Writing, translation, coding, data analysis, customer service
+            and broader AI assistant products are planned.
+          </div>
+        </details>
+        <details class="reveal">
+          <summary>
+            <span>When will Document AI launch?</span>
+            <b>+</b>
+          </summary>
+          <div class="faq-answer">
+            The product is currently being built. The first version will focus
+            on a small set of useful document workflows before expanding.
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- CTA -->
+    <section class="cta" id="contact">
+      <div class="wrap cta-inner reveal">
+        <span class="kicker cta-kicker">EVALLOOP AI / 06</span>
+        <h2>
+          Practical AI.
+          <br>
+          Built carefully.
+        </h2>
+        <p>
+          Explore the hub as new products come online.
+        </p>
+        <a class="button button-dark" href="#products">
+          Explore EvalLoop AI
+          <span>↗</span>
+        </a>
+      </div>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <a class="logo" href="#top">
+          <span>EvalLoop</span><b>AI</b>
+        </a>
+        <p>
+          Practical AI products for real work.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#document-ai">Document AI</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+      <div class="footer-meta">
+        <span>BUILDING</span>
+        <span>© 2026 EVALLOOP AI</span>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
