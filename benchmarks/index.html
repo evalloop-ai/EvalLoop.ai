@@ -1590,93 +1590,105 @@
   </div>
 </div>
   </footer>
-  <script>
-    /* =========================================================
-       GLOBAL NAVIGATION
-       ========================================================= */
-    const mobileMenuButton =
-      document.getElementById("mobileMenuButton");
-    const mobileNav =
-      document.getElementById("mobileNav");
-    if (mobileMenuButton && mobileNav) {
-      mobileMenuButton.addEventListener(
-        "click",
-        () => {
-          const active =
-            mobileNav.classList.toggle("active");
-          mobileMenuButton.classList.toggle(
-            "active",
-            active
-          );
-          mobileMenuButton.setAttribute(
-            "aria-expanded",
-            String(active)
-          );
-          document.body.classList.toggle(
-            "menu-open",
-            active
-          );
-        }
-      );
-      mobileNav
-        .querySelectorAll("a")
-        .forEach((link) => {
-          link.addEventListener(
-            "click",
-            () => {
-              mobileNav.classList.remove("active");
-              mobileMenuButton.classList.remove("active");
-              mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-              document.body.classList.remove(
-                "menu-open"
-              );
-            }
-          );
-        });
-    }
-    /* =========================================================
-       PAGE PROGRESS
-       ========================================================= */
-    const pageProgress =
-      document.getElementById("pageProgress");
-    if (pageProgress) {
-      const updateProgress = () => {
-        const scrollTop =
-          window.scrollY;
-        const docHeight =
-          document.documentElement.scrollHeight -
-          window.innerHeight;
-        const progress =
-          docHeight > 0
-            ? (scrollTop / docHeight) * 100
-            : 0;
-        pageProgress.style.width =
-          `${progress}%`;
-      };
-      window.addEventListener(
-        "scroll",
-        updateProgress,
-        { passive: true }
-      );
-      updateProgress();
-    }
-    /* =========================================================
-       REVEAL
-       ========================================================= */
-    const revealItems =
-      document.querySelectorAll(".reveal");
-    if (
-      "IntersectionObserver" in window &&
-      revealItems.length
-    ) {
-      const observer =
-        new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
+ <script>
+  /* =========================================================
+     GLOBAL NAVIGATION
+     ========================================================= */
+  const mobileMenuButton =
+    document.getElementById("mobileMenuButton");
+  const mobileNav =
+    document.getElementById("mobileNav");
+  if (mobileMenuButton && mobileNav) {
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+        const active =
+          mobileNav.classList.toggle("active");
+        mobileMenuButton.classList.toggle(
+          "active",
+          active
+        );
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          String(active)
+        );
+        document.body.classList.toggle(
+          "menu-open",
+          active
+        );
+      }
+    );
+    mobileNav
+      .querySelectorAll("a")
+      .forEach((link) => {
+        link.addEventListener(
+          "click",
+          () => {
+            mobileNav.classList.remove(
+              "active"
+            );
+            mobileMenuButton.classList.remove(
+              "active"
+            );
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+            document.body.classList.remove(
+              "menu-open"
+            );
+          }
+        );
+      });
+  }
+  /* =========================================================
+     PAGE PROGRESS
+     ========================================================= */
+  const pageProgress =
+    document.getElementById(
+      "pageProgress"
+    );
+  if (pageProgress) {
+    const updateProgress = () => {
+      const scrollTop =
+        window.scrollY;
+      const docHeight =
+        document.documentElement
+          .scrollHeight -
+        window.innerHeight;
+      const progress =
+        docHeight > 0
+          ? (scrollTop / docHeight) * 100
+          : 0;
+      pageProgress.style.width =
+        `${progress}%`;
+    };
+    window.addEventListener(
+      "scroll",
+      updateProgress,
+      { passive: true }
+    );
+    updateProgress();
+  }
+  /* =========================================================
+     REVEAL
+     ========================================================= */
+  const revealItems =
+    document.querySelectorAll(
+      ".reveal"
+    );
+  if (
+    "IntersectionObserver" in window &&
+    revealItems.length
+  ) {
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach(
+            (entry) => {
+              if (
+                entry.isIntersecting
+              ) {
                 entry.target.classList.add(
                   "visible"
                 );
@@ -1684,426 +1696,1006 @@
                   entry.target
                 );
               }
-            });
-          },
-          { threshold: 0.12 }
-        );
-      revealItems.forEach(
-        (item) => observer.observe(item)
+            }
+          );
+        },
+        {
+          threshold: 0.12
+        }
       );
-    } else {
-      revealItems.forEach(
-        (item) =>
-          item.classList.add("visible")
-      );
-    }
-    /* =========================================================
-       PROVIDER
-       ========================================================= */
-    const provider =
-      document.getElementById("provider");
-    const customApiPanel =
-      document.getElementById("customApiPanel");
-    const modelId =
-      document.getElementById("modelId");
-    const providerDefaults = {
-      openai:
-        "gpt-5",
-      google:
-        "gemini",
-      anthropic:
-        "claude",
-      groq:
-        "openai/gpt-oss-120b",
-      mistral:
-        "mistral-large",
-      deepseek:
-        "deepseek-chat",
-      xai:
-        "grok",
-      openrouter:
-        "provider/model",
-      together:
-        "provider/model",
-      fireworks:
-        "provider/model",
-      cohere:
-        "command",
-      huggingface:
-        "model-id",
-      ollama:
-        "local-model",
-      azure:
-        "deployment-name",
-      bedrock:
-        "model-id",
-      custom:
-        ""
-    };
-    function updateProvider() {
-      const value =
-        provider.value;
-      if (value === "custom") {
-        customApiPanel.classList.add(
+    revealItems.forEach(
+      (item) =>
+        observer.observe(item)
+    );
+  } else {
+    revealItems.forEach(
+      (item) =>
+        item.classList.add(
           "visible"
-        );
-      } else {
-        customApiPanel.classList.remove(
-          "visible"
-        );
-      }
-      if (
-        providerDefaults[value] !== undefined &&
-        (
-          !modelId.value ||
-          Object.values(providerDefaults)
-            .includes(modelId.value)
         )
-      ) {
-        modelId.value =
-          providerDefaults[value];
-      }
+    );
+  }
+  /* =========================================================
+     PROVIDER
+     ========================================================= */
+  const provider =
+    document.getElementById(
+      "provider"
+    );
+  const customApiPanel =
+    document.getElementById(
+      "customApiPanel"
+    );
+  const modelId =
+    document.getElementById(
+      "modelId"
+    );
+  const providerDefaults = {
+    openai:
+      "gpt-5",
+    google:
+      "gemini",
+    anthropic:
+      "claude",
+    groq:
+      "openai/gpt-oss-120b",
+    mistral:
+      "mistral-large",
+    deepseek:
+      "deepseek-chat",
+    xai:
+      "grok",
+    openrouter:
+      "provider/model",
+    together:
+      "provider/model",
+    fireworks:
+      "provider/model",
+    cohere:
+      "command",
+    huggingface:
+      "model-id",
+    ollama:
+      "local-model",
+    azure:
+      "deployment-name",
+    bedrock:
+      "model-id",
+    custom:
+      ""
+  };
+  function updateProvider() {
+    if (!provider) {
+      return;
     }
+    const value =
+      provider.value;
+    if (customApiPanel) {
+      customApiPanel.classList.toggle(
+        "visible",
+        value === "custom"
+      );
+    }
+    if (
+      modelId &&
+      providerDefaults[value] !==
+        undefined &&
+      (
+        !modelId.value ||
+        Object.values(
+          providerDefaults
+        ).includes(
+          modelId.value
+        )
+      )
+    ) {
+      modelId.value =
+        providerDefaults[value];
+    }
+  }
+  if (provider) {
     provider.addEventListener(
       "change",
       updateProvider
     );
     updateProvider();
-    /* =========================================================
-       TEST MODES
-       ========================================================= */
-    const modeButtons =
-      document.querySelectorAll(
-        ".mode-button"
-      );
-    const modeContents =
-      document.querySelectorAll(
-        ".mode-content"
-      );
-    const runnerTitle =
-      document.getElementById(
-        "runnerTitle"
-      );
-    const runnerDescription =
-      document.getElementById(
-        "runnerDescription"
-      );
-    const actionSummary =
-      document.getElementById(
-        "actionSummary"
-      );
-    const evaluationNumber =
-      document.getElementById(
-        "evaluationNumber"
-      );
-    let currentMode =
-      "single";
-    function updateMode(mode) {
-      currentMode = mode;
-      modeButtons.forEach(
-        (button) => {
-          button.classList.toggle(
-            "active",
-            button.dataset.mode === mode
-          );
-        }
-      );
-      modeContents.forEach(
-        (content) => {
-          content.classList.toggle(
-            "active",
-            content.dataset.content === mode
-          );
-        }
-      );
-      if (mode === "single") {
-        runnerTitle.textContent =
-          "Single Case Evaluation";
-        runnerDescription.textContent =
-          "Test one response against a defined evaluation rubric.";
-        evaluationNumber.textContent =
-          "03";
-        actionSummary.textContent =
-          "Ready to evaluate 1 case.";
-      }
-      if (mode === "suite") {
-        runnerTitle.textContent =
-          "Benchmark Suite";
-        runnerDescription.textContent =
-          "Run a versioned evaluation dataset across multiple cases.";
-        evaluationNumber.textContent =
-          "03";
-        updateSuiteSummary();
-      }
-      if (mode === "stress") {
-        runnerTitle.textContent =
-          "Stress Test";
-        runnerDescription.textContent =
-          "Measure target-system performance under controlled load.";
-        evaluationNumber.textContent =
-          "04";
-        updateStressSummary();
-      }
-    }
+  }
+  /* =========================================================
+     TEST MODES
+     ========================================================= */
+  const modeButtons =
+    document.querySelectorAll(
+      ".mode-button"
+    );
+  const modeContents =
+    document.querySelectorAll(
+      ".mode-content"
+    );
+  const runnerTitle =
+    document.getElementById(
+      "runnerTitle"
+    );
+  const runnerDescription =
+    document.getElementById(
+      "runnerDescription"
+    );
+  const actionSummary =
+    document.getElementById(
+      "actionSummary"
+    );
+  const evaluationNumber =
+    document.getElementById(
+      "evaluationNumber"
+    );
+  let currentMode =
+    "single";
+  function updateMode(mode) {
+    currentMode =
+      mode;
     modeButtons.forEach(
       (button) => {
-        button.addEventListener(
-          "click",
-          () => {
-            updateMode(
-              button.dataset.mode
-            );
-          }
+        button.classList.toggle(
+          "active",
+          button.dataset.mode ===
+            mode
         );
       }
     );
-    /* =========================================================
-       CASE COUNT
-       ========================================================= */
-    const countInputs =
-      document.querySelectorAll(
-        'input[name="caseCount"]'
-      );
-    const customCountWrap =
-      document.getElementById(
-        "customCountWrap"
-      );
-    const customCount =
-      document.getElementById(
-        "customCount"
-      );
-    function getCaseCount() {
-      const selected =
-        document.querySelector(
-          'input[name="caseCount"]:checked'
+    modeContents.forEach(
+      (content) => {
+        content.classList.toggle(
+          "active",
+          content.dataset.content ===
+            mode
         );
-      if (!selected) {
-        return 10;
       }
-      if (selected.value === "custom") {
-        const custom =
-          Number(customCount.value);
-        return custom > 0
-          ? custom
-          : 0;
-      }
-      return Number(selected.value);
-    }
-    function updateSuiteSummary() {
-      const count =
-        getCaseCount();
+    );
+    if (mode === "single") {
+      runnerTitle.textContent =
+        "Single Case Evaluation";
+      runnerDescription.textContent =
+        "Test one response against a defined evaluation rubric.";
+      evaluationNumber.textContent =
+        "03";
       actionSummary.textContent =
-        count > 0
-          ? `Ready to evaluate ${count} cases.`
-          : "Enter a valid custom case count.";
+        "Ready to evaluate 1 case.";
     }
-    countInputs.forEach(
-      (input) => {
-        input.addEventListener(
-          "change",
-          () => {
+    if (mode === "suite") {
+      runnerTitle.textContent =
+        "Benchmark Suite";
+      runnerDescription.textContent =
+        "Run a versioned evaluation dataset across multiple cases.";
+      evaluationNumber.textContent =
+        "03";
+      updateSuiteSummary();
+    }
+    if (mode === "stress") {
+      runnerTitle.textContent =
+        "Stress Test";
+      runnerDescription.textContent =
+        "Measure target-system performance under controlled load.";
+      evaluationNumber.textContent =
+        "04";
+      updateStressSummary();
+    }
+  }
+  modeButtons.forEach(
+    (button) => {
+      button.addEventListener(
+        "click",
+        () => {
+          updateMode(
+            button.dataset.mode
+          );
+        }
+      );
+    }
+  );
+  /* =========================================================
+     CASE COUNT
+     ========================================================= */
+  const countInputs =
+    document.querySelectorAll(
+      'input[name="caseCount"]'
+    );
+  const customCountWrap =
+    document.getElementById(
+      "customCountWrap"
+    );
+  const customCount =
+    document.getElementById(
+      "customCount"
+    );
+  function getCaseCount() {
+    const selected =
+      document.querySelector(
+        'input[name="caseCount"]:checked'
+      );
+    if (!selected) {
+      return 10;
+    }
+    if (
+      selected.value ===
+      "custom"
+    ) {
+      const custom =
+        Number(
+          customCount?.value
+        );
+      return custom > 0
+        ? Math.min(
+            custom,
+            100
+          )
+        : 0;
+    }
+    return Number(
+      selected.value
+    );
+  }
+  function updateSuiteSummary() {
+    const count =
+      getCaseCount();
+    actionSummary.textContent =
+      count > 0
+        ? `Ready to evaluate ${count} cases.`
+        : "Enter a valid custom case count.";
+  }
+  countInputs.forEach(
+    (input) => {
+      input.addEventListener(
+        "change",
+        () => {
+          if (customCountWrap) {
             customCountWrap.classList.toggle(
               "visible",
-              input.value === "custom" &&
-              input.checked
+              input.value ===
+                "custom" &&
+                input.checked
             );
-            updateSuiteSummary();
           }
-        );
-      }
-    );
+          updateSuiteSummary();
+        }
+      );
+    }
+  );
+  if (customCount) {
     customCount.addEventListener(
       "input",
       updateSuiteSummary
     );
-    /* =========================================================
-       STRESS SUMMARY
-       ========================================================= */
-    const concurrency =
-      document.getElementById(
-        "concurrency"
-      );
-    const totalRequests =
-      document.getElementById(
-        "totalRequests"
-      );
-    const requestDelay =
-      document.getElementById(
-        "requestDelay"
-      );
-    const maxDuration =
-      document.getElementById(
-        "maxDuration"
-      );
-    function updateStressSummary() {
-      const requests =
-        Number(totalRequests.value) || 0;
-      const workers =
-        Number(concurrency.value) || 0;
-      const delay =
-        Number(requestDelay.value) || 0;
-      const duration =
-        Number(maxDuration.value) || 0;
-      actionSummary.textContent =
-        `${requests} requests · ${workers} concurrent · ` +
-        `${delay} ms delay · ${duration} min maximum`;
-    }
-    [
-      concurrency,
-      totalRequests,
-      requestDelay,
-      maxDuration
-    ].forEach(
+  }
+  /* =========================================================
+     STRESS SUMMARY
+     ========================================================= */
+  const concurrency =
+    document.getElementById(
+      "concurrency"
+    );
+  const totalRequests =
+    document.getElementById(
+      "totalRequests"
+    );
+  const requestDelay =
+    document.getElementById(
+      "requestDelay"
+    );
+  const maxDuration =
+    document.getElementById(
+      "maxDuration"
+    );
+  function updateStressSummary() {
+    const requests =
+      Number(
+        totalRequests?.value
+      ) || 0;
+    const workers =
+      Number(
+        concurrency?.value
+      ) || 0;
+    const delay =
+      Number(
+        requestDelay?.value
+      ) || 0;
+    const duration =
+      Number(
+        maxDuration?.value
+      ) || 0;
+    actionSummary.textContent =
+      `${requests} requests · ${workers} concurrent · ` +
+      `${delay} ms delay · ${duration} min maximum`;
+  }
+  [
+    concurrency,
+    totalRequests,
+    requestDelay,
+    maxDuration
+  ]
+    .filter(Boolean)
+    .forEach(
       (element) => {
         element.addEventListener(
           "input",
           () => {
-            if (currentMode === "stress") {
+            if (
+              currentMode ===
+              "stress"
+            ) {
               updateStressSummary();
             }
           }
         );
       }
     );
-    /* =========================================================
-       RESULTS
-       ========================================================= */
-    const runBenchmark =
-      document.getElementById(
-        "runBenchmark"
+  /* =========================================================
+     RESULT ELEMENTS
+     ========================================================= */
+  const runBenchmark =
+    document.getElementById(
+      "runBenchmark"
+    );
+  const resultsEmpty =
+    document.getElementById(
+      "resultsEmpty"
+    );
+  const resultsPanel =
+    document.getElementById(
+      "resultsPanel"
+    );
+  const resultCases =
+    document.getElementById(
+      "resultCases"
+    );
+  const resultPassed =
+    document.getElementById(
+      "resultPassed"
+    );
+  const resultFailed =
+    document.getElementById(
+      "resultFailed"
+    );
+  const resultOverall =
+    document.getElementById(
+      "resultOverall"
+    );
+  const resultDuration =
+    document.getElementById(
+      "resultDuration"
+    );
+  const caseResults =
+    document.getElementById(
+      "caseResults"
+    );
+  /* =========================================================
+     DIMENSION WEIGHTS
+     ========================================================= */
+  /*
+   * These are the same weights defined by the benchmark
+   * architecture.
+   */
+  const DEFAULT_WEIGHTS = {
+    factuality: 20,
+    instruction_following: 20,
+    relevance: 15,
+    completeness: 15,
+    safety: 20,
+    fluency: 10
+  };
+  /* =========================================================
+     SELECTED DIMENSIONS
+     ========================================================= */
+  function getSelectedDimensions() {
+    /*
+     * If the benchmark page contains dimension checkboxes,
+     * read them.
+     *
+     * Otherwise use all six dimensions.
+     */
+    const dimensionInputs =
+      document.querySelectorAll(
+        'input[name="dimension"]'
       );
-    const resultsEmpty =
-      document.getElementById(
-        "resultsEmpty"
+    if (
+      !dimensionInputs.length
+    ) {
+      return Object.keys(
+        DEFAULT_WEIGHTS
       );
-    const resultsPanel =
-      document.getElementById(
-        "resultsPanel"
-      );
-    const resultCases =
-      document.getElementById(
-        "resultCases"
-      );
-    const resultPassed =
-      document.getElementById(
-        "resultPassed"
-      );
-    const resultFailed =
-      document.getElementById(
-        "resultFailed"
-      );
-    const resultOverall =
-      document.getElementById(
-        "resultOverall"
-      );
-    const resultDuration =
-      document.getElementById(
-        "resultDuration"
-      );
-    const caseResults =
-      document.getElementById(
-        "caseResults"
-      );
-    runBenchmark.addEventListener(
-      "click",
-      () => {
-        /*
-         * IMPORTANT:
-         *
-         * This UI intentionally does not invent benchmark scores.
-         * The actual execution endpoint will be connected here later.
-         *
-         * The request payload should eventually follow:
-         *
-         * {
-         *   mode,
-         *   provider,
-         *   model,
-         *   benchmark,
-         *   dataset,
-         *   cases,
-         *   stress,
-         *   evaluation
-         * }
-         *
-         * Results must come from the backend evaluator.
-         */
-        resultsEmpty.classList.add(
-          "hidden"
+    }
+    const selected =
+      Array.from(
+        dimensionInputs
+      )
+        .filter(
+          (input) =>
+            input.checked
+        )
+        .map(
+          (input) =>
+            input.value
+        )
+        .filter(
+          (value) =>
+            Object.prototype.hasOwnProperty.call(
+              DEFAULT_WEIGHTS,
+              value
+            )
         );
-        resultsPanel.classList.add(
-          "visible"
+    return selected.length
+      ? selected
+      : Object.keys(
+          DEFAULT_WEIGHTS
         );
-        if (currentMode === "single") {
-          resultCases.textContent = "1";
-          resultPassed.textContent = "—";
-          resultFailed.textContent = "—";
-          resultOverall.textContent = "—";
-          resultDuration.textContent = "—";
-          caseResults.innerHTML = `
-            <tr>
-              <td class="case-number">#001</td>
-              <td>WAITING</td>
-              <td>—</td>
-              <td>Single case</td>
-              <td>—</td>
-            </tr>
-          `;
-        }
-        if (currentMode === "suite") {
-          const count =
-            getCaseCount();
-          resultCases.textContent =
-            count || "—";
-          resultPassed.textContent =
-            "—";
-          resultFailed.textContent =
-            "—";
-          resultOverall.textContent =
-            "—";
-          resultDuration.textContent =
-            "—";
-          caseResults.innerHTML = `
-            <tr>
-              <td class="case-number">#001–#${String(
-                count || 0
-              ).padStart(3, "0")}</td>
-              <td>WAITING</td>
-              <td>—</td>
-              <td>EVP.Aureon</td>
-              <td>—</td>
-            </tr>
-          `;
-        }
-        if (currentMode === "stress") {
-          const requests =
-            Number(totalRequests.value) || 0;
-          resultCases.textContent =
-            requests || "—";
-          resultPassed.textContent =
-            "—";
-          resultFailed.textContent =
-            "—";
-          resultOverall.textContent =
-            "—";
-          resultDuration.textContent =
-            "—";
-          caseResults.innerHTML = `
-            <tr>
-              <td class="case-number">STRESS</td>
-              <td>WAITING</td>
-              <td>—</td>
-              <td>Performance</td>
-              <td>—</td>
-            </tr>
-          `;
-        }
-        resultsPanel.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+  }
+  /* =========================================================
+     GET WEIGHTS
+     ========================================================= */
+  function getWeights() {
+    const dimensions =
+      getSelectedDimensions();
+    const weights = {};
+    dimensions.forEach(
+      (dimension) => {
+        weights[dimension] =
+          DEFAULT_WEIGHTS[
+            dimension
+          ];
       }
     );
-  </script>
+    return weights;
+  }
+  /* =========================================================
+     MODEL
+     ========================================================= */
+  function getModelValue() {
+    return (
+      modelId?.value ||
+      ""
+    ).trim();
+  }
+  /* =========================================================
+     BENCHMARK PAYLOAD
+     ========================================================= */
+  function buildBenchmarkPayload() {
+    const model =
+      getModelValue();
+    const dimensions =
+      getSelectedDimensions();
+    const weights =
+      getWeights();
+    const payload = {
+      mode:
+        currentMode,
+      provider:
+        provider?.value ||
+        "groq",
+      model,
+      benchmark:
+        "General Quality",
+      dataset:
+        "EVP.Aureon — General Purpose Quality",
+      dimensions,
+      weights
+    };
+    if (
+      currentMode ===
+      "single"
+    ) {
+      payload.testSize =
+        1;
+    }
+    if (
+      currentMode ===
+      "suite"
+    ) {
+      payload.testSize =
+        getCaseCount();
+    }
+    if (
+      currentMode ===
+      "stress"
+    ) {
+      payload.testSize =
+        Number(
+          totalRequests?.value
+        ) || 1;
+      payload.stress = {
+        concurrency:
+          Number(
+            concurrency?.value
+          ) || 1,
+        totalRequests:
+          Number(
+            totalRequests?.value
+          ) || 1,
+        requestDelay:
+          Number(
+            requestDelay?.value
+          ) || 0,
+        maxDuration:
+          Number(
+            maxDuration?.value
+          ) || 1
+      };
+    }
+    return payload;
+  }
+  /* =========================================================
+     BUTTON STATE
+     ========================================================= */
+  function setRunningState(
+    running
+  ) {
+    if (!runBenchmark) {
+      return;
+    }
+    runBenchmark.disabled =
+      running;
+    if (running) {
+      runBenchmark.dataset.originalText =
+        runBenchmark.textContent;
+      runBenchmark.textContent =
+        "Running benchmark...";
+      runBenchmark.classList.add(
+        "is-running"
+      );
+    } else {
+      runBenchmark.textContent =
+        runBenchmark.dataset.originalText ||
+        "Run benchmark";
+      runBenchmark.classList.remove(
+        "is-running"
+      );
+    }
+  }
+  /* =========================================================
+     FORMAT HELPERS
+     ========================================================= */
+  function formatDuration(
+    milliseconds
+  ) {
+    const ms =
+      Number(milliseconds);
+    if (
+      !Number.isFinite(ms)
+    ) {
+      return "—";
+    }
+    if (ms < 1000) {
+      return `${Math.round(ms)} ms`;
+    }
+    return `${(
+      ms / 1000
+    ).toFixed(2)} s`;
+  }
+  function formatScore(
+    score
+  ) {
+    const value =
+      Number(score);
+    if (
+      !Number.isFinite(value)
+    ) {
+      return "—";
+    }
+    return `${value.toFixed(
+      1
+    )}`;
+  }
+  /* =========================================================
+     DISPLAY RESULTS
+     ========================================================= */
+  function displayBenchmarkResults(
+    data
+  ) {
+    if (!data) {
+      return;
+    }
+    if (resultsEmpty) {
+      resultsEmpty.classList.add(
+        "hidden"
+      );
+    }
+    if (resultsPanel) {
+      resultsPanel.classList.add(
+        "visible"
+      );
+    }
+    const summary =
+      data.summary || {};
+    /* -------------------------------------------------------
+       SUMMARY CARDS
+       ------------------------------------------------------- */
+    if (resultCases) {
+      resultCases.textContent =
+        summary.requested ??
+        data.testSize ??
+        "—";
+    }
+    if (resultPassed) {
+      resultPassed.textContent =
+        summary.passed ??
+        0;
+    }
+    if (resultFailed) {
+      resultFailed.textContent =
+        (
+          Number(
+            summary.failed
+          ) || 0
+        ) +
+        (
+          Number(
+            summary.errors
+          ) || 0
+        );
+    }
+    if (resultOverall) {
+      resultOverall.textContent =
+        Number.isFinite(
+          Number(
+            summary.overall
+          )
+        )
+          ? Number(
+              summary.overall
+            ).toFixed(1)
+          : "—";
+    }
+    if (resultDuration) {
+      resultDuration.textContent =
+        formatDuration(
+          data.run?.durationMs
+        );
+    }
+    /* -------------------------------------------------------
+       INDIVIDUAL CASES
+       ------------------------------------------------------- */
+    if (
+      !caseResults
+    ) {
+      return;
+    }
+    const results =
+      Array.isArray(
+        data.results
+      )
+        ? data.results
+        : [];
+    if (!results.length) {
+      caseResults.innerHTML = `
+        <tr>
+          <td colspan="5">
+            No benchmark cases were returned.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    caseResults.innerHTML =
+      results
+        .map(
+          (item) => {
+            const scoreValues =
+              Object.values(
+                item.scores || {}
+              )
+                .map(
+                  Number
+                )
+                .filter(
+                  Number.isFinite
+                );
+            const score =
+              scoreValues.length
+                ? scoreValues.reduce(
+                    (
+                      sum,
+                      value
+                    ) =>
+                      sum +
+                      value,
+                    0
+                  ) /
+                  scoreValues.length
+                : null;
+            const status =
+              item.status ||
+              "ERROR";
+            const statusLabel =
+              status ===
+              "PASSED"
+                ? "PASSED"
+                : status ===
+                  "FAILED"
+                  ? "FAILED"
+                  : "ERROR";
+            const category =
+              item.category ||
+              "EVP.Aureon";
+            return `
+              <tr>
+                <td class="case-number">
+                  #${String(
+                    item.testNumber ||
+                      ""
+                  ).padStart(
+                    3,
+                    "0"
+                  )}
+                </td>
+                <td>
+                  ${statusLabel}
+                </td>
+                <td>
+                  ${
+                    score === null
+                      ? "—"
+                      : formatScore(
+                          score
+                        )
+                  }
+                </td>
+                <td>
+                  ${escapeHtml(
+                    category
+                  )}
+                </td>
+                <td>
+                  ${
+                    Number.isFinite(
+                      Number(
+                        item.candidateLatencyMs
+                      )
+                    )
+                      ? formatDuration(
+                          item.candidateLatencyMs
+                        )
+                      : "—"
+                  }
+                </td>
+              </tr>
+            `;
+          }
+        )
+        .join("");
+  }
+  /* =========================================================
+     HTML ESCAPE
+     ========================================================= */
+  function escapeHtml(
+    value
+  ) {
+    return String(
+      value ?? ""
+    )
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+  }
+  /* =========================================================
+     DISPLAY ERROR
+     ========================================================= */
+  function displayBenchmarkError(
+    message
+  ) {
+    if (resultsEmpty) {
+      resultsEmpty.classList.add(
+        "hidden"
+      );
+    }
+    if (resultsPanel) {
+      resultsPanel.classList.add(
+        "visible"
+      );
+    }
+    if (resultCases) {
+      resultCases.textContent =
+        "—";
+    }
+    if (resultPassed) {
+      resultPassed.textContent =
+        "—";
+    }
+    if (resultFailed) {
+      resultFailed.textContent =
+        "—";
+    }
+    if (resultOverall) {
+      resultOverall.textContent =
+        "ERROR";
+    }
+    if (resultDuration) {
+      resultDuration.textContent =
+        "—";
+    }
+    if (caseResults) {
+      caseResults.innerHTML = `
+        <tr>
+          <td colspan="5">
+            ${escapeHtml(
+              message ||
+                "Benchmark execution failed."
+            )}
+          </td>
+        </tr>
+      `;
+    }
+  }
+  /* =========================================================
+     RUN BENCHMARK
+     ========================================================= */
+  if (runBenchmark) {
+    runBenchmark.addEventListener(
+      "click",
+      async () => {
+        const model =
+          getModelValue();
+        /* -----------------------------------------------------
+           BASIC VALIDATION
+           ----------------------------------------------------- */
+        if (!model) {
+          displayBenchmarkError(
+            "Enter a model ID before running the benchmark."
+          );
+          return;
+        }
+        if (
+          currentMode ===
+          "suite"
+        ) {
+          const count =
+            getCaseCount();
+          if (
+            !count ||
+            count < 1
+          ) {
+            displayBenchmarkError(
+              "Enter a valid benchmark case count."
+            );
+            return;
+          }
+        }
+        /* -----------------------------------------------------
+           PREPARE UI
+           ----------------------------------------------------- */
+        setRunningState(
+          true
+        );
+        if (resultsEmpty) {
+          resultsEmpty.classList.add(
+            "hidden"
+          );
+        }
+        if (resultsPanel) {
+          resultsPanel.classList.add(
+            "visible"
+          );
+        }
+        if (caseResults) {
+          caseResults.innerHTML = `
+            <tr>
+              <td colspan="5">
+                Running EVP.Aureon benchmark...
+              </td>
+            </tr>
+          `;
+        }
+        if (resultOverall) {
+          resultOverall.textContent =
+            "RUNNING";
+        }
+        try {
+          /* ---------------------------------------------------
+             BUILD REQUEST
+             --------------------------------------------------- */
+          const payload =
+            buildBenchmarkPayload();
+          console.log(
+            "EvalLoop benchmark request:",
+            {
+              ...payload
+            }
+          );
+          /* ---------------------------------------------------
+             CALL VERCEL FUNCTION
+             --------------------------------------------------- */
+          const response =
+            await fetch(
+              "/api/benchmark",
+              {
+                method:
+                  "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body:
+                  JSON.stringify(
+                    payload
+                  )
+              }
+            );
+          /* ---------------------------------------------------
+             PARSE RESPONSE
+             --------------------------------------------------- */
+          const data =
+            await response.json()
+              .catch(
+                () => null
+              );
+          if (
+            !response.ok ||
+            !data?.success
+          ) {
+            throw new Error(
+              data?.error ||
+                `Benchmark request failed with HTTP ${response.status}.`
+            );
+          }
+          /* ---------------------------------------------------
+             DISPLAY
+             --------------------------------------------------- */
+          displayBenchmarkResults(
+            data
+          );
+          /* ---------------------------------------------------
+             SCROLL
+             --------------------------------------------------- */
+          if (
+            resultsPanel
+          ) {
+            resultsPanel.scrollIntoView(
+              {
+                behavior:
+                  "smooth",
+                block:
+                  "start"
+              }
+            );
+          }
+        } catch (
+          error
+        ) {
+          console.error(
+            "EvalLoop benchmark error:",
+            error
+          );
+          displayBenchmarkError(
+            error?.message ||
+              "Benchmark execution failed."
+          );
+        } finally {
+          setRunningState(
+            false
+          );
+        }
+      }
+    );
+  }
+  /* =========================================================
+     INITIAL STATE
+     ========================================================= */
+  updateMode(
+    currentMode
+  );
+</script>
 </body>
 </html>
