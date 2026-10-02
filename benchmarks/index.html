@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -146,9 +145,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       padding: 11px 0;
       border-bottom: 1px solid var(--line-soft);
       font-size: 12px;
+      min-width: 0;
     }
     .sidebar-status:last-child {
       border-bottom: 0;
@@ -157,6 +158,7 @@
       color: var(--muted);
       font-family: var(--mono);
       font-size: 10px;
+      white-space: nowrap;
     }
     .status-value.ready {
       color: var(--green2);
@@ -164,7 +166,6 @@
     .runner-main {
       min-width: 0;
       max-width: 100%;
-      overflow: hidden;
     }
     .runner-panel {
       padding: 28px;
@@ -185,7 +186,7 @@
     }
     .runner-header > div:first-child {
       min-width: 0;
-      max-width: 100%;
+      flex: 1 1 auto;
     }
     .runner-header h2 {
       margin: 0 0 7px;
@@ -209,7 +210,7 @@
       font-size: 9px;
       letter-spacing: .08em;
       white-space: nowrap;
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .config-section {
       margin-bottom: 30px;
@@ -573,19 +574,13 @@
       flex-shrink: 0;
     }
     /* =========================================================
-       RESULTS CONTAINMENT
+       RESULTS
        ========================================================= */
     .results-shell {
       width: 100%;
       max-width: 100%;
       min-width: 0;
       margin-top: 20px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .results-shell > * {
-      min-width: 0;
-      max-width: 100%;
       box-sizing: border-box;
     }
     .results-empty {
@@ -595,7 +590,6 @@
       padding: 42px 28px;
       text-align: center;
       box-sizing: border-box;
-      overflow: hidden;
     }
     .results-empty-icon {
       width: 42px;
@@ -629,19 +623,23 @@
       max-width: 100%;
       min-width: 0;
       box-sizing: border-box;
-      overflow: hidden;
     }
     .results-panel.visible {
       display: block;
     }
+    /*
+      IMPORTANT:
+      Do not use overflow:hidden on the Results panel.
+      The table has its own horizontal scroll container.
+    */
     .results-panel .runner-header {
       min-width: 0;
       max-width: 100%;
-      overflow: hidden;
+      overflow: visible;
     }
     .results-panel .runner-header > div:first-child {
       min-width: 0;
-      max-width: 100%;
+      flex: 1 1 auto;
     }
     .results-panel .runner-header h2,
     .results-panel .runner-header p {
@@ -649,7 +647,9 @@
     }
     .results-summary {
       display: grid;
-      grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr));
+      grid-template-columns:
+        minmax(110px, 1.2fr)
+        repeat(4, minmax(80px, 1fr));
       width: 100%;
       max-width: 100%;
       min-width: 0;
@@ -665,7 +665,6 @@
       border-right: 1px solid var(--line-soft);
       background: rgba(255, 255, 255, .015);
       box-sizing: border-box;
-      overflow: hidden;
     }
     .summary-cell:last-child {
       border-right: 0;
@@ -684,14 +683,17 @@
       color: var(--ink);
       font-family: var(--mono);
       font-size: 20px;
+      line-height: 1.2;
       overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .summary-value.green {
       color: var(--green2);
     }
     .score-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(6, minmax(0, 1fr));
       width: 100%;
       max-width: 100%;
       min-width: 0;
@@ -706,7 +708,6 @@
       border-radius: 8px;
       background: rgba(255, 255, 255, .015);
       box-sizing: border-box;
-      overflow: hidden;
     }
     .score-card span {
       display: block;
@@ -717,9 +718,11 @@
       overflow-wrap: anywhere;
     }
     .score-card strong {
+      display: block;
       color: var(--green2);
       font-family: var(--mono);
       font-size: 17px;
+      line-height: 1.2;
       overflow-wrap: anywhere;
     }
     .results-cases {
@@ -728,7 +731,12 @@
       min-width: 0;
       box-sizing: border-box;
     }
+    /*
+      The table itself may need more width than a phone.
+      Only this wrapper is allowed to scroll horizontally.
+    */
     .results-table-wrap {
+      display: block;
       width: 100%;
       max-width: 100%;
       min-width: 0;
@@ -762,6 +770,11 @@
       color: var(--muted);
       white-space: nowrap;
     }
+    .case-table td:nth-child(4) {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .case-number {
       color: var(--ink);
       font-family: var(--mono);
@@ -773,6 +786,7 @@
       color: #e5a0a0 !important;
     }
     .results-note {
+      width: 100%;
       max-width: 100%;
       margin-top: 14px;
       color: var(--dim);
@@ -780,14 +794,6 @@
       line-height: 1.6;
       overflow-wrap: anywhere;
       box-sizing: border-box;
-    }
-    .results-panel *,
-    .results-empty * {
-      box-sizing: border-box;
-      max-width: 100%;
-    }
-    .hidden {
-      display: none !important;
     }
     /* =========================================================
        RESPONSIVE
@@ -806,10 +812,12 @@
         grid-template-columns: repeat(2, 1fr);
       }
       .score-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
       }
       .results-summary {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
       }
       .summary-cell:nth-child(3) {
         border-right: 0;
@@ -844,7 +852,9 @@
       .stress-grid,
       .score-grid,
       .results-summary {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(0, 1fr);
       }
       .action-bar {
         flex-direction: column;
@@ -858,6 +868,15 @@
       }
       .results-summary .summary-cell {
         border-right: 1px solid var(--line-soft);
+      }
+      .results-summary .summary-cell:nth-child(2n) {
+        border-right: 0;
+      }
+      .results-panel .runner-header {
+        gap: 14px;
+      }
+      .results-panel .run-id {
+        flex-shrink: 0;
       }
     }
     @media (max-width: 500px) {
@@ -878,6 +897,20 @@
       .results-panel {
         padding: 16px;
       }
+      .results-summary .summary-cell {
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .results-summary .summary-cell:last-child {
+        border-bottom: 0;
+      }
+      .results-panel .runner-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .results-panel .run-id {
+        align-self: flex-start;
+      }
     }
   </style>
 </head>
@@ -891,956 +924,1132 @@
         <span class="status-dot"></span>
         <span class="mono-label">EVALLOOP AI</span>
         <span class="announcement-divider"></span>
-        <span class="announcement-text">AI EVALUATION INFRASTRUCTURE</span>
+        <span class="announcement-text">
+          AI EVALUATION INFRASTRUCTURE
+        </span>
       </div>
-      <a class="announcement-link" href="/app/">OPEN EVALUATOR →</a>
+      <a class="announcement-link" href="/app/">
+        OPEN EVALUATOR →
+      </a>
     </div>
   </div>
   <header class="site-header">
     <div class="nav-inner">
-  <a class="brand" href="/">
-    EvalLoop AI<span class="brand-cursor">_</span>
-  </a>
-  <nav class="desktop-nav" aria-label="Primary navigation">
-    <a href="/app/">Evaluator</a>
-    <a href="/benchmarks/">Benchmarks</a>
-    <a href="/labs/">Labs</a>
-    <a href="/knowledge/">Knowledge</a>
-    <a href="/pricing/">Pricing</a>
-  </nav>
-  <div class="nav-actions">
-    <a class="nav-login" href="/login/">Sign in</a>
-    <a class="button button-small" href="/signup/">Get started →</a>
-  </div>
-  <button
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    type="button"
-    aria-label="Open navigation"
-    aria-expanded="false"
-  >
-    <span></span>
-    <span></span>
-  </button>
-</div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-  <a href="/app/">Evaluator</a>
-  <a href="/benchmarks/">Benchmarks</a>
-  <a href="/labs/">Labs</a>
-  <a href="/knowledge/">Knowledge</a>
-  <a href="/pricing/">Pricing</a>
-  <div class="mobile-nav-actions">
-    <a class="nav-login" href="/login/">Sign in</a>
-    <a class="button button-small" href="/signup/">Get started →</a>
-  </div>
-</nav>
+      <a class="brand" href="/">
+        EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="/app/">Evaluator</a>
+        <a href="/benchmarks/">Benchmarks</a>
+        <a href="/labs/">Labs</a>
+        <a href="/knowledge/">Knowledge</a>
+        <a href="/pricing/">Pricing</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-login" href="/login/">Sign in</a>
+        <a class="button button-small" href="/signup/">
+          Get started →
+        </a>
+      </div>
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <nav
+      class="mobile-nav"
+      id="mobileNav"
+      aria-label="Mobile navigation"
+    >
+      <a href="/app/">Evaluator</a>
+      <a href="/benchmarks/">Benchmarks</a>
+      <a href="/labs/">Labs</a>
+      <a href="/knowledge/">Knowledge</a>
+      <a href="/pricing/">Pricing</a>
+      <div class="mobile-nav-actions">
+        <a class="nav-login" href="/login/">Sign in</a>
+        <a class="button button-small" href="/signup/">
+          Get started →
+        </a>
+      </div>
+    </nav>
   </header>
   <main>
-<!-- =====================================================
-     HERO
-     ===================================================== -->
-<section class="benchmark-hero">
-  <div class="container reveal">
-    <div class="benchmark-eyebrow">
-      BENCHMARK ENGINE
-    </div>
-    <h1>
-      Test. Measure.<br />
-      <span style="color: #3ECF8E;">Understand.</span>
-    </h1>
-    <p>
-      Run reproducible evaluations across AI models, benchmark suites,
-      custom datasets, and controlled stress tests. One evaluation layer
-      for any model or provider.
-    </p>
-  </div>
-</section>
-<!-- =====================================================
-     BENCHMARK RUNNER
-     ===================================================== -->
-<section class="benchmark-shell">
-  <div class="container">
-    <div class="runner-layout">
-      <!-- =================================================
-           SIDEBAR
-           ================================================= -->
-      <aside class="runner-sidebar">
-        <div class="panel sidebar-panel">
-          <div class="panel-label">TEST MODE</div>
-          <div class="mode-list">
-            <button
-              class="mode-button active"
-              type="button"
-              data-mode="single"
-            >
-              <span class="mode-radio"></span>
-              <span class="mode-copy">
-                <strong>Single case</strong>
-                <span>Inspect one model response.</span>
-              </span>
-            </button>
-            <button
-              class="mode-button"
-              type="button"
-              data-mode="suite"
-            >
-              <span class="mode-radio"></span>
-              <span class="mode-copy">
-                <strong>Benchmark suite</strong>
-                <span>Run 10–100+ evaluation cases.</span>
-              </span>
-            </button>
-            <button
-              class="mode-button"
-              type="button"
-              data-mode="stress"
-            >
-              <span class="mode-radio"></span>
-              <span class="mode-copy">
-                <strong>Stress test</strong>
-                <span>Measure load, latency and reliability.</span>
-              </span>
-            </button>
-          </div>
-          <div class="sidebar-divider"></div>
-          <div class="panel-label">RUN STATUS</div>
-          <div class="sidebar-status">
-            <span>Target connection</span>
-            <span class="status-value ready" id="connectionStatus">
-              READY
-            </span>
-          </div>
-          <div class="sidebar-status">
-            <span>Benchmark</span>
-            <span class="status-value">AUREON v1.0</span>
-          </div>
-          <div class="sidebar-status">
-            <span>Evaluator</span>
-            <span class="status-value">EVP.AUREON</span>
-          </div>
-          <div class="sidebar-status">
-            <span>Engine</span>
-            <span class="status-value">READY</span>
-          </div>
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <section class="benchmark-hero">
+      <div class="container reveal">
+        <div class="benchmark-eyebrow">
+          BENCHMARK ENGINE
         </div>
-      </aside>
-      <!-- =================================================
-           MAIN RUNNER
-           ================================================= -->
-      <div class="runner-main">
-        <div class="panel runner-panel">
-          <div class="runner-header">
-            <div>
-              <h2 id="runnerTitle">
-                Single Case Evaluation
-              </h2>
-              <p id="runnerDescription">
-                Test one response against a defined evaluation rubric.
-              </p>
-            </div>
-            <div class="run-id">
-              RUN: AUTO
-            </div>
-          </div>
+        <h1>
+          Test. Measure.<br />
+          <span style="color: #3ECF8E;">
+            Understand.
+          </span>
+        </h1>
+        <p>
+          Run reproducible evaluations across AI models, benchmark
+          suites, custom datasets, and controlled stress tests.
+          One evaluation layer for any model or provider.
+        </p>
+      </div>
+    </section>
+    <!-- =====================================================
+         BENCHMARK RUNNER
+         ===================================================== -->
+    <section class="benchmark-shell">
+      <div class="container">
+        <div class="runner-layout">
           <!-- =================================================
-               01 TARGET MODEL
+               SIDEBAR
                ================================================= -->
-          <section class="config-section">
-            <div class="section-heading">
-              <span class="section-number">01</span>
-              <div>
-                <h3>Target model</h3>
-                <span>Connection</span>
+          <aside class="runner-sidebar">
+            <div class="panel sidebar-panel">
+              <div class="panel-label">
+                TEST MODE
+              </div>
+              <div class="mode-list">
+                <button
+                  class="mode-button active"
+                  type="button"
+                  data-mode="single"
+                >
+                  <span class="mode-radio"></span>
+                  <span class="mode-copy">
+                    <strong>Single case</strong>
+                    <span>
+                      Inspect one model response.
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="mode-button"
+                  type="button"
+                  data-mode="suite"
+                >
+                  <span class="mode-radio"></span>
+                  <span class="mode-copy">
+                    <strong>Benchmark suite</strong>
+                    <span>
+                      Run 10–100+ evaluation cases.
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="mode-button"
+                  type="button"
+                  data-mode="stress"
+                >
+                  <span class="mode-radio"></span>
+                  <span class="mode-copy">
+                    <strong>Stress test</strong>
+                    <span>
+                      Measure load, latency and reliability.
+                    </span>
+                  </span>
+                </button>
+              </div>
+              <div class="sidebar-divider"></div>
+              <div class="panel-label">
+                RUN STATUS
+              </div>
+              <div class="sidebar-status">
+                <span>Target connection</span>
+                <span
+                  class="status-value ready"
+                  id="connectionStatus"
+                >
+                  READY
+                </span>
+              </div>
+              <div class="sidebar-status">
+                <span>Benchmark</span>
+                <span class="status-value">
+                  AUREON v1.0
+                </span>
+              </div>
+              <div class="sidebar-status">
+                <span>Evaluator</span>
+                <span class="status-value">
+                  EVP.AUREON
+                </span>
+              </div>
+              <div class="sidebar-status">
+                <span>Engine</span>
+                <span class="status-value">
+                  READY
+                </span>
               </div>
             </div>
-            <div class="provider-grid">
-              <div>
-                <label class="field-label" for="provider">
-                  Provider
-                </label>
-                <select class="select" id="provider">
-                  <option value="openai">OpenAI</option>
-                  <option value="google">Google</option>
-                  <option value="anthropic">Anthropic</option>
-                  <option value="groq">Groq</option>
-                  <option value="mistral">Mistral</option>
-                  <option value="deepseek">DeepSeek</option>
-                  <option value="xai">xAI</option>
-                  <option value="openrouter">OpenRouter</option>
-                  <option value="together">Together AI</option>
-                  <option value="fireworks">Fireworks AI</option>
-                  <option value="cohere">Cohere</option>
-                  <option value="huggingface">Hugging Face</option>
-                  <option value="ollama">Ollama</option>
-                  <option value="azure">Azure AI</option>
-                  <option value="bedrock">AWS Bedrock</option>
-                  <option value="custom">Custom / New LLM</option>
-                </select>
-              </div>
-              <div>
-                <label class="field-label" for="modelId">
-                  Model ID
-                </label>
-                <input
-                  class="input"
-                  id="modelId"
-                  type="text"
-                  placeholder="e.g. openai/gpt-oss-120b"
-                />
-              </div>
-            </div>
-            <div class="form-grid" style="margin-top:16px;">
-              <div>
-                <label class="field-label" for="apiKey">
-                  API key
-                </label>
-                <input
-                  class="input"
-                  id="apiKey"
-                  type="password"
-                  placeholder="••••••••••••••••"
-                  autocomplete="off"
-                />
-              </div>
-              <div>
-                <label class="field-label" for="temperature">
-                  Temperature
-                </label>
-                <input
-                  class="input"
-                  id="temperature"
-                  type="number"
-                  value="0"
-                  min="0"
-                  max="2"
-                  step="0.1"
-                />
-              </div>
-            </div>
-            <div class="custom-api" id="customApiPanel">
-              <div class="custom-api-title">
-                Custom API connection
-              </div>
-              <div class="form-grid">
-                <div class="field-full">
-                  <label class="field-label" for="endpoint">
-                    API endpoint
-                  </label>
-                  <input
-                    class="input"
-                    id="endpoint"
-                    type="url"
-                    placeholder="https://api.example.com/v1/chat/completions"
-                  />
-                </div>
-                <div>
-                  <label class="field-label" for="authType">
-                    Authentication
-                  </label>
-                  <select class="select" id="authType">
-                    <option value="bearer">
-                      Bearer token
-                    </option>
-                    <option value="api-key">
-                      API key header
-                    </option>
-                    <option value="none">
-                      No authentication
-                    </option>
-                  </select>
-                </div>
-                <div>
-                  <label class="field-label" for="authHeader">
-                    Authentication header
-                  </label>
-                  <input
-                    class="input"
-                    id="authHeader"
-                    type="text"
-                    value="Authorization"
-                    placeholder="Authorization"
-                  />
-                </div>
-              </div>
-              <div class="connection-note">
-                Use this connection for new, private, internal, local,
-                or provider-compatible models that are not listed above.
-              </div>
-            </div>
-          </section>
+          </aside>
           <!-- =================================================
-               SINGLE CASE
+               MAIN RUNNER
                ================================================= -->
-          <section
-            class="mode-content active"
-            id="singleMode"
-            data-content="single"
-          >
-            <section class="config-section">
-              <div class="section-heading">
-                <span class="section-number">02</span>
+          <div class="runner-main">
+            <div class="panel runner-panel">
+              <div class="runner-header">
                 <div>
-                  <h3>Test case</h3>
-                  <span>Single input</span>
+                  <h2 id="runnerTitle">
+                    Single Case Evaluation
+                  </h2>
+                  <p id="runnerDescription">
+                    Test one response against a defined evaluation rubric.
+                  </p>
+                </div>
+                <div class="run-id">
+                  RUN: AUTO
                 </div>
               </div>
-              <div class="form-grid">
-                <div class="field-full">
-                  <label class="field-label" for="singlePrompt">
-                    Prompt
-                  </label>
-                  <textarea
-                    class="textarea"
-                    id="singlePrompt"
-                    placeholder="Enter the prompt that should be evaluated..."
-                  ></textarea>
-                </div>
-                <div>
-                  <label class="field-label" for="singleResponse">
-                    Model response
-                  </label>
-                  <textarea
-                    class="textarea"
-                    id="singleResponse"
-                    placeholder="Paste or enter the target model response..."
-                  ></textarea>
-                </div>
-                <div>
-                  <label class="field-label" for="singleReference">
-                    Expected answer
-                    <span class="optional">(optional)</span>
-                  </label>
-                  <textarea
-                    class="textarea"
-                    id="singleReference"
-                    placeholder="Reference answer, expected behavior, or grading context..."
-                  ></textarea>
-                </div>
-              </div>
-            </section>
-          </section>
-          <!-- =================================================
-               BENCHMARK SUITE
-               ================================================= -->
-          <section
-            class="mode-content"
-            id="suiteMode"
-            data-content="suite"
-          >
-            <section class="config-section">
-              <div class="section-heading">
-                <span class="section-number">02</span>
-                <div>
-                  <h3>Benchmark suite</h3>
-                  <span>Dataset execution</span>
-                </div>
-              </div>
-              <div class="config-section">
-                <label class="field-label">
-                  Number of cases
-                </label>
-                <div class="case-counts">
-                  <div class="count-option">
-                    <input
-                      type="radio"
-                      name="caseCount"
-                      id="count10"
-                      value="10"
-                      checked
-                    />
-                    <label for="count10">
-                      10
-                    </label>
+              <!-- =================================================
+                   01 TARGET MODEL
+                   ================================================= -->
+              <section class="config-section">
+                <div class="section-heading">
+                  <span class="section-number">
+                    01
+                  </span>
+                  <div>
+                    <h3>Target model</h3>
+                    <span>Connection</span>
                   </div>
-                  <div class="count-option">
-                    <input
-                      type="radio"
-                      name="caseCount"
-                      id="count25"
-                      value="25"
-                    />
-                    <label for="count25">
-                      25
+                </div>
+                <div class="provider-grid">
+                  <div>
+                    <label
+                      class="field-label"
+                      for="provider"
+                    >
+                      Provider
                     </label>
+                    <select
+                      class="select"
+                      id="provider"
+                    >
+                      <option value="openai">
+                        OpenAI
+                      </option>
+                      <option value="google">
+                        Google
+                      </option>
+                      <option value="anthropic">
+                        Anthropic
+                      </option>
+                      <option value="groq">
+                        Groq
+                      </option>
+                      <option value="mistral">
+                        Mistral
+                      </option>
+                      <option value="deepseek">
+                        DeepSeek
+                      </option>
+                      <option value="xai">
+                        xAI
+                      </option>
+                      <option value="openrouter">
+                        OpenRouter
+                      </option>
+                      <option value="together">
+                        Together AI
+                      </option>
+                      <option value="fireworks">
+                        Fireworks AI
+                      </option>
+                      <option value="cohere">
+                        Cohere
+                      </option>
+                      <option value="huggingface">
+                        Hugging Face
+                      </option>
+                      <option value="ollama">
+                        Ollama
+                      </option>
+                      <option value="azure">
+                        Azure AI
+                      </option>
+                      <option value="bedrock">
+                        AWS Bedrock
+                      </option>
+                      <option value="custom">
+                        Custom / New LLM
+                      </option>
+                    </select>
                   </div>
-                  <div class="count-option">
-                    <input
-                      type="radio"
-                      name="caseCount"
-                      id="count50"
-                      value="50"
-                    />
-                    <label for="count50">
-                      50
+                  <div>
+                    <label
+                      class="field-label"
+                      for="modelId"
+                    >
+                      Model ID
                     </label>
-                  </div>
-                  <div class="count-option">
                     <input
-                      type="radio"
-                      name="caseCount"
-                      id="count100"
-                      value="100"
+                      class="input"
+                      id="modelId"
+                      type="text"
+                      placeholder="e.g. openai/gpt-oss-120b"
                     />
-                    <label for="count100">
-                      100
-                    </label>
-                  </div>
-                  <div class="count-option">
-                    <input
-                      type="radio"
-                      name="caseCount"
-                      id="countCustom"
-                      value="custom"
-                    />
-                    <label for="countCustom">
-                      Custom
-                    </label>
                   </div>
                 </div>
                 <div
-                  class="custom-count-wrap"
-                  id="customCountWrap"
+                  class="form-grid"
+                  style="margin-top:16px;"
                 >
-                  <input
-                    class="input"
-                    id="customCount"
-                    type="number"
-                    min="1"
-                    max="10000"
-                    placeholder="Number of cases"
-                  />
-                </div>
-              </div>
-              <div class="config-section">
-                <label class="field-label">
-                  Dataset
-                </label>
-                <div class="dataset-card">
-                  <div class="dataset-info">
-                    <strong>
-                      EVP.Aureon — General Purpose Quality
-                    </strong>
-                    <p>
-                      General-purpose evaluation dataset covering
-                      factuality, instruction following, relevance,
-                      completeness, safety and fluency.
-                    </p>
-                  </div>
-                  <div class="dataset-meta">
-                    <span class="meta-chip active">
-                      CURRENT
-                    </span>
-                    <span class="meta-chip">
-                      v1.0
-                    </span>
-                    <span class="meta-chip">
-                      GENERAL
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="info-box">
-                <strong>Suite execution:</strong>
-                each selected case is sent to the target model and then
-                evaluated independently. Aggregate scores are calculated
-                only after individual case results are available.
-              </div>
-            </section>
-          </section>
-          <!-- =================================================
-               STRESS TEST
-               ================================================= -->
-          <section
-            class="mode-content"
-            id="stressMode"
-            data-content="stress"
-          >
-            <section class="config-section">
-              <div class="section-heading">
-                <span class="section-number">02</span>
-                <div>
-                  <h3>Stress configuration</h3>
-                  <span>Performance test</span>
-                </div>
-              </div>
-              <div class="stress-grid">
-                <div>
-                  <label class="field-label">
-                    Concurrency
-                  </label>
-                  <div class="metric-input">
+                  <div>
+                    <label
+                      class="field-label"
+                      for="apiKey"
+                    >
+                      API key
+                    </label>
                     <input
                       class="input"
-                      id="concurrency"
-                      type="number"
-                      value="5"
-                      min="1"
-                      max="1000"
+                      id="apiKey"
+                      type="password"
+                      placeholder="••••••••••••••••"
+                      autocomplete="off"
                     />
-                    <span class="metric-unit">
-                      REQ
-                    </span>
                   </div>
-                </div>
-                <div>
-                  <label class="field-label">
-                    Total requests
-                  </label>
-                  <div class="metric-input">
+                  <div>
+                    <label
+                      class="field-label"
+                      for="temperature"
+                    >
+                      Temperature
+                    </label>
                     <input
                       class="input"
-                      id="totalRequests"
-                      type="number"
-                      value="100"
-                      min="1"
-                      max="100000"
-                    />
-                    <span class="metric-unit">
-                      REQ
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label class="field-label">
-                    Request delay
-                  </label>
-                  <div class="metric-input">
-                    <input
-                      class="input"
-                      id="requestDelay"
+                      id="temperature"
                       type="number"
                       value="0"
                       min="0"
+                      max="2"
+                      step="0.1"
                     />
-                    <span class="metric-unit">
-                      MS
+                  </div>
+                </div>
+                <div
+                  class="custom-api"
+                  id="customApiPanel"
+                >
+                  <div class="custom-api-title">
+                    Custom API connection
+                  </div>
+                  <div class="form-grid">
+                    <div class="field-full">
+                      <label
+                        class="field-label"
+                        for="endpoint"
+                      >
+                        API endpoint
+                      </label>
+                      <input
+                        class="input"
+                        id="endpoint"
+                        type="url"
+                        placeholder="https://api.example.com/v1/chat/completions"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="field-label"
+                        for="authType"
+                      >
+                        Authentication
+                      </label>
+                      <select
+                        class="select"
+                        id="authType"
+                      >
+                        <option value="bearer">
+                          Bearer token
+                        </option>
+                        <option value="api-key">
+                          API key header
+                        </option>
+                        <option value="none">
+                          No authentication
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        class="field-label"
+                        for="authHeader"
+                      >
+                        Authentication header
+                      </label>
+                      <input
+                        class="input"
+                        id="authHeader"
+                        type="text"
+                        value="Authorization"
+                        placeholder="Authorization"
+                      />
+                    </div>
+                  </div>
+                  <div class="connection-note">
+                    Use this connection for new, private, internal,
+                    local, or provider-compatible models that are not
+                    listed above.
+                  </div>
+                </div>
+              </section>
+              <!-- =================================================
+                   SINGLE CASE
+                   ================================================= -->
+              <section
+                class="mode-content active"
+                id="singleMode"
+                data-content="single"
+              >
+                <section class="config-section">
+                  <div class="section-heading">
+                    <span class="section-number">
+                      02
+                    </span>
+                    <div>
+                      <h3>Test case</h3>
+                      <span>Single input</span>
+                    </div>
+                  </div>
+                  <div class="form-grid">
+                    <div class="field-full">
+                      <label
+                        class="field-label"
+                        for="singlePrompt"
+                      >
+                        Prompt
+                      </label>
+                      <textarea
+                        class="textarea"
+                        id="singlePrompt"
+                        placeholder="Enter the prompt that should be evaluated..."
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label
+                        class="field-label"
+                        for="singleResponse"
+                      >
+                        Model response
+                      </label>
+                      <textarea
+                        class="textarea"
+                        id="singleResponse"
+                        placeholder="Paste or enter the target model response..."
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label
+                        class="field-label"
+                        for="singleReference"
+                      >
+                        Expected answer
+                        <span class="optional">
+                          (optional)
+                        </span>
+                      </label>
+                      <textarea
+                        class="textarea"
+                        id="singleReference"
+                        placeholder="Reference answer, expected behavior, or grading context..."
+                      ></textarea>
+                    </div>
+                  </div>
+                </section>
+              </section>
+              <!-- =================================================
+                   BENCHMARK SUITE
+                   ================================================= -->
+              <section
+                class="mode-content"
+                id="suiteMode"
+                data-content="suite"
+              >
+                <section class="config-section">
+                  <div class="section-heading">
+                    <span class="section-number">
+                      02
+                    </span>
+                    <div>
+                      <h3>Benchmark suite</h3>
+                      <span>Dataset execution</span>
+                    </div>
+                  </div>
+                  <div class="config-section">
+                    <label class="field-label">
+                      Number of cases
+                    </label>
+                    <div class="case-counts">
+                      <div class="count-option">
+                        <input
+                          type="radio"
+                          name="caseCount"
+                          id="count10"
+                          value="10"
+                          checked
+                        />
+                        <label for="count10">
+                          10
+                        </label>
+                      </div>
+                      <div class="count-option">
+                        <input
+                          type="radio"
+                          name="caseCount"
+                          id="count25"
+                          value="25"
+                        />
+                        <label for="count25">
+                          25
+                        </label>
+                      </div>
+                      <div class="count-option">
+                        <input
+                          type="radio"
+                          name="caseCount"
+                          id="count50"
+                          value="50"
+                        />
+                        <label for="count50">
+                          50
+                        </label>
+                      </div>
+                      <div class="count-option">
+                        <input
+                          type="radio"
+                          name="caseCount"
+                          id="count100"
+                          value="100"
+                        />
+                        <label for="count100">
+                          100
+                        </label>
+                      </div>
+                      <div class="count-option">
+                        <input
+                          type="radio"
+                          name="caseCount"
+                          id="countCustom"
+                          value="custom"
+                        />
+                        <label for="countCustom">
+                          Custom
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="custom-count-wrap"
+                      id="customCountWrap"
+                    >
+                      <input
+                        class="input"
+                        id="customCount"
+                        type="number"
+                        min="1"
+                        max="10000"
+                        placeholder="Number of cases"
+                      />
+                    </div>
+                  </div>
+                  <div class="config-section">
+                    <label class="field-label">
+                      Dataset
+                    </label>
+                    <div class="dataset-card">
+                      <div class="dataset-info">
+                        <strong>
+                          EVP.Aureon — General Purpose Quality
+                        </strong>
+                        <p>
+                          General-purpose evaluation dataset covering
+                          factuality, instruction following, relevance,
+                          completeness, safety and fluency.
+                        </p>
+                      </div>
+                      <div class="dataset-meta">
+                        <span class="meta-chip active">
+                          CURRENT
+                        </span>
+                        <span class="meta-chip">
+                          v1.0
+                        </span>
+                        <span class="meta-chip">
+                          GENERAL
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="info-box">
+                    <strong>Suite execution:</strong>
+                    each selected case is sent to the target model and
+                    then evaluated independently. Aggregate scores are
+                    calculated only after individual case results are
+                    available.
+                  </div>
+                </section>
+              </section>
+              <!-- =================================================
+                   STRESS TEST
+                   ================================================= -->
+              <section
+                class="mode-content"
+                id="stressMode"
+                data-content="stress"
+              >
+                <section class="config-section">
+                  <div class="section-heading">
+                    <span class="section-number">
+                      02
+                    </span>
+                    <div>
+                      <h3>Stress configuration</h3>
+                      <span>Performance test</span>
+                    </div>
+                  </div>
+                  <div class="stress-grid">
+                    <div>
+                      <label class="field-label">
+                        Concurrency
+                      </label>
+                      <div class="metric-input">
+                        <input
+                          class="input"
+                          id="concurrency"
+                          type="number"
+                          value="5"
+                          min="1"
+                          max="1000"
+                        />
+                        <span class="metric-unit">
+                          REQ
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="field-label">
+                        Total requests
+                      </label>
+                      <div class="metric-input">
+                        <input
+                          class="input"
+                          id="totalRequests"
+                          type="number"
+                          value="100"
+                          min="1"
+                          max="100000"
+                        />
+                        <span class="metric-unit">
+                          REQ
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="field-label">
+                        Request delay
+                      </label>
+                      <div class="metric-input">
+                        <input
+                          class="input"
+                          id="requestDelay"
+                          type="number"
+                          value="0"
+                          min="0"
+                        />
+                        <span class="metric-unit">
+                          MS
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="field-label">
+                        Maximum duration
+                      </label>
+                      <div class="metric-input">
+                        <input
+                          class="input"
+                          id="maxDuration"
+                          type="number"
+                          value="10"
+                          min="1"
+                        />
+                        <span class="metric-unit">
+                          MIN
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:16px;">
+                    <div class="info-box">
+                      <strong>
+                        Stress tests measure system behavior.
+                      </strong>
+                      Results will focus on throughput, latency,
+                      failures, timeouts, rate limits and reliability
+                      rather than treating performance as a model-quality
+                      score.
+                    </div>
+                  </div>
+                </section>
+                <section class="config-section">
+                  <div class="section-heading">
+                    <span class="section-number">
+                      03
+                    </span>
+                    <div>
+                      <h3>Stress prompt</h3>
+                      <span>Request payload</span>
+                    </div>
+                  </div>
+                  <textarea
+                    class="textarea"
+                    id="stressPrompt"
+                    placeholder="Enter the request that will be repeatedly sent during the stress test..."
+                  ></textarea>
+                </section>
+              </section>
+              <!-- =================================================
+                   EVALUATION
+                   ================================================= -->
+              <section class="config-section">
+                <div class="section-heading">
+                  <span
+                    class="section-number"
+                    id="evaluationNumber"
+                  >
+                    03
+                  </span>
+                  <div>
+                    <h3>Evaluation configuration</h3>
+                    <span>Scoring</span>
+                  </div>
+                </div>
+                <div class="evaluation-options">
+                  <div class="evaluation-option">
+                    <strong>
+                      Deterministic metrics
+                    </strong>
+                    <span>
+                      Exact match, schema validation, numerical and
+                      rule-based checks where applicable.
+                    </span>
+                  </div>
+                  <div class="evaluation-option">
+                    <strong>
+                      LLM judge
+                    </strong>
+                    <span>
+                      Rubric-based evaluation for qualitative dimensions
+                      such as relevance and completeness.
+                    </span>
+                  </div>
+                  <div class="evaluation-option">
+                    <strong>
+                      Human calibration
+                    </strong>
+                    <span>
+                      Preserve human-labelled examples for evaluator
+                      agreement and calibration.
                     </span>
                   </div>
                 </div>
-                <div>
-                  <label class="field-label">
-                    Maximum duration
-                  </label>
-                  <div class="metric-input">
+                <div class="rubric-box">
+                  <div class="rubric-row">
+                    <span>Factuality</span>
+                    <input
+                      class="weight-input"
+                      value="20"
+                    />
+                  </div>
+                  <div class="rubric-row">
+                    <span>Instruction following</span>
+                    <input
+                      class="weight-input"
+                      value="20"
+                    />
+                  </div>
+                  <div class="rubric-row">
+                    <span>Relevance</span>
+                    <input
+                      class="weight-input"
+                      value="15"
+                    />
+                  </div>
+                  <div class="rubric-row">
+                    <span>Completeness</span>
+                    <input
+                      class="weight-input"
+                      value="15"
+                    />
+                  </div>
+                  <div class="rubric-row">
+                    <span>Safety</span>
+                    <input
+                      class="weight-input"
+                      value="20"
+                    />
+                  </div>
+                  <div class="rubric-row">
+                    <span>Fluency</span>
+                    <input
+                      class="weight-input"
+                      value="10"
+                    />
+                  </div>
+                </div>
+                <div class="connection-note">
+                  Evaluator: EVP.Aureon · Score range: 0–100 ·
+                  Evaluator version: 1.0
+                </div>
+              </section>
+              <!-- =================================================
+                   REPRODUCIBILITY
+                   ================================================= -->
+              <section class="config-section">
+                <div class="section-heading">
+                  <span class="section-number">
+                    04
+                  </span>
+                  <div>
+                    <h3>Reproducibility</h3>
+                    <span>Run metadata</span>
+                  </div>
+                </div>
+                <div class="repro-grid">
+                  <div>
+                    <label class="field-label">
+                      Benchmark version
+                    </label>
                     <input
                       class="input"
-                      id="maxDuration"
-                      type="number"
-                      value="10"
-                      min="1"
+                      value="EVP.Aureon v1.0"
+                      readonly
                     />
-                    <span class="metric-unit">
-                      MIN
-                    </span>
+                  </div>
+                  <div>
+                    <label class="field-label">
+                      Evaluator version
+                    </label>
+                    <input
+                      class="input"
+                      value="EVP.Aureon Judge v1.0"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label">
+                      Sampling mode
+                    </label>
+                    <select
+                      class="select"
+                      id="samplingMode"
+                    >
+                      <option value="fixed">
+                        Fixed configuration
+                      </option>
+                      <option value="default">
+                        Provider default
+                      </option>
+                    </select>
                   </div>
                 </div>
-              </div>
-              <div style="margin-top:16px;">
-                <div class="info-box">
-                  <strong>Stress tests measure system behavior.</strong>
-                  Results will focus on throughput, latency, failures,
-                  timeouts, rate limits and reliability rather than
-                  treating performance as a model-quality score.
+                <div class="connection-note">
+                  A completed run should preserve the model, provider,
+                  dataset, benchmark version, evaluator version,
+                  parameters, case count and execution metadata.
                 </div>
-              </div>
-            </section>
-            <section class="config-section">
-              <div class="section-heading">
-                <span class="section-number">03</span>
-                <div>
-                  <h3>Stress prompt</h3>
-                  <span>Request payload</span>
+              </section>
+              <!-- =================================================
+                   ACTION
+                   ================================================= -->
+              <div class="action-bar">
+                <div class="action-copy">
+                  <strong id="actionSummary">
+                    Ready to evaluate 1 case.
+                  </strong>
+                  <br />
+                  Backend execution will use the selected target
+                  connection.
                 </div>
-              </div>
-              <textarea
-                class="textarea"
-                id="stressPrompt"
-                placeholder="Enter the request that will be repeatedly sent during the stress test..."
-              ></textarea>
-            </section>
-          </section>
-          <!-- =================================================
-               EVALUATION
-               ================================================= -->
-          <section class="config-section">
-            <div class="section-heading">
-              <span class="section-number" id="evaluationNumber">
-                03
-              </span>
-              <div>
-                <h3>Evaluation configuration</h3>
-                <span>Scoring</span>
+                <button
+                  class="button button-primary run-button"
+                  id="runBenchmark"
+                  type="button"
+                >
+                  RUN EVALUATION →
+                </button>
               </div>
             </div>
-            <div class="evaluation-options">
-              <div class="evaluation-option">
-                <strong>
-                  Deterministic metrics
-                </strong>
-                <span>
-                  Exact match, schema validation, numerical and
-                  rule-based checks where applicable.
-                </span>
-              </div>
-              <div class="evaluation-option">
-                <strong>
-                  LLM judge
-                </strong>
-                <span>
-                  Rubric-based evaluation for qualitative dimensions
-                  such as relevance and completeness.
-                </span>
-              </div>
-              <div class="evaluation-option">
-                <strong>
-                  Human calibration
-                </strong>
-                <span>
-                  Preserve human-labelled examples for evaluator
-                  agreement and calibration.
-                </span>
-              </div>
-            </div>
-            <div class="rubric-box">
-              <div class="rubric-row">
-                <span>Factuality</span>
-                <input class="weight-input" value="20" />
-              </div>
-              <div class="rubric-row">
-                <span>Instruction following</span>
-                <input class="weight-input" value="20" />
-              </div>
-              <div class="rubric-row">
-                <span>Relevance</span>
-                <input class="weight-input" value="15" />
-              </div>
-              <div class="rubric-row">
-                <span>Completeness</span>
-                <input class="weight-input" value="15" />
-              </div>
-              <div class="rubric-row">
-                <span>Safety</span>
-                <input class="weight-input" value="20" />
-              </div>
-              <div class="rubric-row">
-                <span>Fluency</span>
-                <input class="weight-input" value="10" />
-              </div>
-            </div>
-            <div class="connection-note">
-              Evaluator: EVP.Aureon · Score range: 0–100 ·
-              Evaluator version: 1.0
-            </div>
-          </section>
-          <!-- =================================================
-               REPRODUCIBILITY
-               ================================================= -->
-          <section class="config-section">
-            <div class="section-heading">
-              <span class="section-number">04</span>
-              <div>
-                <h3>Reproducibility</h3>
-                <span>Run metadata</span>
-              </div>
-            </div>
-            <div class="repro-grid">
-              <div>
-                <label class="field-label">
-                  Benchmark version
-                </label>
-                <input
-                  class="input"
-                  value="EVP.Aureon v1.0"
-                  readonly
-                />
-              </div>
-              <div>
-                <label class="field-label">
-                  Evaluator version
-                </label>
-                <input
-                  class="input"
-                  value="EVP.Aureon Judge v1.0"
-                  readonly
-                />
-              </div>
-              <div>
-                <label class="field-label">
-                  Sampling mode
-                </label>
-                <select class="select" id="samplingMode">
-                  <option value="fixed">
-                    Fixed configuration
-                  </option>
-                  <option value="default">
-                    Provider default
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="connection-note">
-              A completed run should preserve the model, provider,
-              dataset, benchmark version, evaluator version, parameters,
-              case count and execution metadata.
-            </div>
-          </section>
-          <!-- =================================================
-               ACTION
-               ================================================= -->
-          <div class="action-bar">
-            <div class="action-copy">
-              <strong id="actionSummary">
-                Ready to evaluate 1 case.
-              </strong>
-              <br />
-              Backend execution will use the selected target connection.
-            </div>
-            <button
-              class="button button-primary run-button"
-              id="runBenchmark"
-              type="button"
-            >
-              RUN EVALUATION →
-            </button>
-          </div>
-        </div>
-        <!-- =================================================
-             RESULTS
-             ================================================= -->
-        <div class="results-shell">
-          <div class="panel results-empty" id="resultsEmpty">
-            <div class="results-empty-icon">
-              ◎
-            </div>
-            <h3>
-              Results will appear here
-            </h3>
-            <p>
-              Configure a target model and evaluation mode above.
-              EvalLoop will preserve individual case results together
-              with the aggregate evaluation once the execution backend
-              is connected.
-            </p>
-          </div>
-          <div class="panel results-panel" id="resultsPanel">
-            <div class="runner-header">
-              <div>
-                <h2>
-                  Evaluation Results
-                </h2>
+            <!-- =================================================
+                 RESULTS
+                 ================================================= -->
+            <div class="results-shell">
+              <div
+                class="panel results-empty"
+                id="resultsEmpty"
+              >
+                <div class="results-empty-icon">
+                  ◎
+                </div>
+                <h3>
+                  Results will appear here
+                </h3>
                 <p>
-                  Aggregate metrics and individual execution results.
+                  Configure a target model and evaluation mode above.
+                  EvalLoop will preserve individual case results
+                  together with the aggregate evaluation once the
+                  execution backend is connected.
                 </p>
               </div>
-              <div class="run-id">
-                RUN: DEMO
-              </div>
-            </div>
-            <div class="results-summary">
-              <div class="summary-cell">
-                <div class="summary-label">
-                  Overall
+              <div
+                class="panel results-panel"
+                id="resultsPanel"
+              >
+                <div class="runner-header">
+                  <div>
+                    <h2>
+                      Evaluation Results
+                    </h2>
+                    <p>
+                      Aggregate metrics and individual execution
+                      results.
+                    </p>
+                  </div>
+                  <div class="run-id">
+                    RUN: DEMO
+                  </div>
                 </div>
+                <!-- =================================================
+                     SUMMARY
+                     ================================================= -->
+                <div class="results-summary">
+                  <div class="summary-cell">
+                    <div class="summary-label">
+                      Overall
+                    </div>
+                    <div
+                      class="summary-value green"
+                      id="resultOverall"
+                    >
+                      —
+                    </div>
+                  </div>
+                  <div class="summary-cell">
+                    <div class="summary-label">
+                      Cases
+                    </div>
+                    <div
+                      class="summary-value"
+                      id="resultCases"
+                    >
+                      —
+                    </div>
+                  </div>
+                  <div class="summary-cell">
+                    <div class="summary-label">
+                      Passed
+                    </div>
+                    <div
+                      class="summary-value"
+                      id="resultPassed"
+                    >
+                      —
+                    </div>
+                  </div>
+                  <div class="summary-cell">
+                    <div class="summary-label">
+                      Failed
+                    </div>
+                    <div
+                      class="summary-value"
+                      id="resultFailed"
+                    >
+                      —
+                    </div>
+                  </div>
+                  <div class="summary-cell">
+                    <div class="summary-label">
+                      Duration
+                    </div>
+                    <div
+                      class="summary-value"
+                      id="resultDuration"
+                    >
+                      —
+                    </div>
+                  </div>
+                </div>
+                <!-- =================================================
+                     DIMENSION SCORES
+                     ================================================= -->
+                <div class="score-grid">
+                  <div class="score-card">
+                    <span>FACTUALITY</span>
+                    <strong>—</strong>
+                  </div>
+                  <div class="score-card">
+                    <span>INSTRUCTION</span>
+                    <strong>—</strong>
+                  </div>
+                  <div class="score-card">
+                    <span>RELEVANCE</span>
+                    <strong>—</strong>
+                  </div>
+                  <div class="score-card">
+                    <span>COMPLETENESS</span>
+                    <strong>—</strong>
+                  </div>
+                  <div class="score-card">
+                    <span>SAFETY</span>
+                    <strong>—</strong>
+                  </div>
+                  <div class="score-card">
+                    <span>FLUENCY</span>
+                    <strong>—</strong>
+                  </div>
+                </div>
+                <!-- =================================================
+                     CASE RESULTS
+                     ================================================= -->
                 <div
-                  class="summary-value green"
-                  id="resultOverall"
+                  class="results-cases"
+                  style="margin-top:28px;"
                 >
-                  —
+                  <div class="section-heading">
+                    <span class="section-number">
+                      CASES
+                    </span>
+                    <div>
+                      <h3>Individual results</h3>
+                      <span>Per-case evidence</span>
+                    </div>
+                  </div>
+                  <div class="results-table-wrap">
+                    <table class="case-table">
+                      <thead>
+                        <tr>
+                          <th>Case</th>
+                          <th>Status</th>
+                          <th>Score</th>
+                          <th>Category</th>
+                          <th>Latency</th>
+                        </tr>
+                      </thead>
+                      <tbody id="caseResults">
+                        <tr>
+                          <td class="case-number">
+                            #001
+                          </td>
+                          <td>—</td>
+                          <td>—</td>
+                          <td>—</td>
+                          <td>—</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="results-note">
+                    Individual case evidence should remain available so
+                    aggregate scores can always be traced back to the
+                    underlying model responses and evaluator decisions.
+                  </div>
                 </div>
-              </div>
-              <div class="summary-cell">
-                <div class="summary-label">
-                  Cases
-                </div>
-                <div
-                  class="summary-value"
-                  id="resultCases"
-                >
-                  —
-                </div>
-              </div>
-              <div class="summary-cell">
-                <div class="summary-label">
-                  Passed
-                </div>
-                <div
-                  class="summary-value"
-                  id="resultPassed"
-                >
-                  —
-                </div>
-              </div>
-              <div class="summary-cell">
-                <div class="summary-label">
-                  Failed
-                </div>
-                <div
-                  class="summary-value"
-                  id="resultFailed"
-                >
-                  —
-                </div>
-              </div>
-              <div class="summary-cell">
-                <div class="summary-label">
-                  Duration
-                </div>
-                <div
-                  class="summary-value"
-                  id="resultDuration"
-                >
-                  —
-                </div>
-              </div>
-            </div>
-            <div class="score-grid">
-              <div class="score-card">
-                <span>FACTUALITY</span>
-                <strong>—</strong>
-              </div>
-              <div class="score-card">
-                <span>INSTRUCTION</span>
-                <strong>—</strong>
-              </div>
-              <div class="score-card">
-                <span>RELEVANCE</span>
-                <strong>—</strong>
-              </div>
-              <div class="score-card">
-                <span>COMPLETENESS</span>
-                <strong>—</strong>
-              </div>
-              <div class="score-card">
-                <span>SAFETY</span>
-                <strong>—</strong>
-              </div>
-              <div class="score-card">
-                <span>FLUENCY</span>
-                <strong>—</strong>
-              </div>
-            </div>
-            <div
-              class="results-cases"
-              style="margin-top:28px;"
-            >
-              <div class="section-heading">
-                <span class="section-number">
-                  CASES
-                </span>
-                <div>
-                  <h3>Individual results</h3>
-                  <span>Per-case evidence</span>
-                </div>
-              </div>
-              <div class="results-table-wrap">
-                <table class="case-table">
-                  <thead>
-                    <tr>
-                      <th>Case</th>
-                      <th>Status</th>
-                      <th>Score</th>
-                      <th>Category</th>
-                      <th>Latency</th>
-                    </tr>
-                  </thead>
-                  <tbody id="caseResults">
-                    <tr>
-                      <td class="case-number">
-                        #001
-                      </td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="results-note">
-                Individual case evidence should remain available so
-                aggregate scores can always be traced back to the
-                underlying model responses and evaluator decisions.
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
   </main>
   <!-- =========================================================
        FOOTER
        ========================================================= -->
   <footer class="site-footer">
-<div class="container">
-  <div class="footer-top">
-    <div class="footer-brand">
-      <a class="brand" href="/">
-        EvalLoop AI<span class="brand-cursor">_</span>
-      </a>
-      <p>
-        AI evaluation infrastructure for measurable model quality.
-      </p>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            EvalLoop AI<span class="brand-cursor">_</span>
+          </a>
+          <p>
+            AI evaluation infrastructure for measurable model quality.
+          </p>
+        </div>
+        <div class="footer-columns">
+          <div class="footer-column">
+            <div class="footer-label">
+              PRODUCT
+            </div>
+            <a href="/app/">Evaluator</a>
+            <a href="/benchmarks/">Benchmarks</a>
+            <a href="/labs/">Labs</a>
+            <a href="/pricing/">Pricing</a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              RESOURCES
+            </div>
+            <a href="/knowledge/">Knowledge</a>
+            <a href="/docs/">Docs</a>
+            <a href="/ai-usage/">AI Usage</a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              COMPANY
+            </div>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-label">
+              LEGAL
+            </div>
+            <a href="/privacy/">Privacy</a>
+            <a href="/terms/">Terms</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>
+          © 2026 EVALLOOP AI
+        </span>
+        <span>
+          BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
+        </span>
+      </div>
     </div>
-    <div class="footer-columns">
-      <div class="footer-column">
-        <div class="footer-label">
-          PRODUCT
-        </div>
-        <a href="/app/">Evaluator</a>
-        <a href="/benchmarks/">Benchmarks</a>
-        <a href="/labs/">Labs</a>
-        <a href="/pricing/">Pricing</a>
-      </div>
-      <div class="footer-column">
-        <div class="footer-label">
-          RESOURCES
-        </div>
-        <a href="/knowledge/">Knowledge</a>
-        <a href="/docs/">Docs</a>
-        <a href="/ai-usage/">AI Usage</a>
-      </div>
-      <div class="footer-column">
-        <div class="footer-label">
-          COMPANY
-        </div>
-        <a href="/about/">About</a>
-        <a href="/contact/">Contact</a>
-      </div>
-      <div class="footer-column">
-        <div class="footer-label">
-          LEGAL
-        </div>
-        <a href="/privacy/">Privacy</a>
-        <a href="/terms/">Terms</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>
-      © 2026 EVALLOOP AI
-    </span>
-    <span>
-      BUILDING BETTER AI STARTS WITH BETTER EVALUATION.
-    </span>
-  </div>
-</div>
   </footer>
   <script>
     /* =========================================================
        GLOBAL NAVIGATION
        ========================================================= */
     const mobileMenuButton =
-      document.getElementById("mobileMenuButton");
+      document.getElementById(
+        "mobileMenuButton"
+      );
     const mobileNav =
-      document.getElementById("mobileNav");
-    if (mobileMenuButton && mobileNav) {
+      document.getElementById(
+        "mobileNav"
+      );
+    if (
+      mobileMenuButton &&
+      mobileNav
+    ) {
       mobileMenuButton.addEventListener(
         "click",
         () => {
           const active =
-            mobileNav.classList.toggle("active");
+            mobileNav.classList.toggle(
+              "active"
+            );
           mobileMenuButton.classList.toggle(
             "active",
             active
@@ -1857,26 +2066,28 @@
       );
       mobileNav
         .querySelectorAll("a")
-        .forEach((link) => {
-          link.addEventListener(
-            "click",
-            () => {
-              mobileNav.classList.remove(
-                "active"
-              );
-              mobileMenuButton.classList.remove(
-                "active"
-              );
-              mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-              document.body.classList.remove(
-                "menu-open"
-              );
-            }
-          );
-        });
+        .forEach(
+          (link) => {
+            link.addEventListener(
+              "click",
+              () => {
+                mobileNav.classList.remove(
+                  "active"
+                );
+                mobileMenuButton.classList.remove(
+                  "active"
+                );
+                mobileMenuButton.setAttribute(
+                  "aria-expanded",
+                  "false"
+                );
+                document.body.classList.remove(
+                  "menu-open"
+                );
+              }
+            );
+          }
+        );
     }
     /* =========================================================
        PAGE PROGRESS
@@ -1886,24 +2097,30 @@
         "pageProgress"
       );
     if (pageProgress) {
-      const updateProgress = () => {
-        const scrollTop =
-          window.scrollY;
-        const docHeight =
-          document.documentElement
-            .scrollHeight -
-          window.innerHeight;
-        const progress =
-          docHeight > 0
-            ? (scrollTop / docHeight) * 100
-            : 0;
-        pageProgress.style.width =
-          `${progress}%`;
-      };
+      const updateProgress =
+        () => {
+          const scrollTop =
+            window.scrollY;
+          const docHeight =
+            document.documentElement
+              .scrollHeight -
+            window.innerHeight;
+          const progress =
+            docHeight > 0
+              ? (
+                  scrollTop /
+                  docHeight
+                ) * 100
+              : 0;
+          pageProgress.style.width =
+            `${progress}%`;
+        };
       window.addEventListener(
         "scroll",
         updateProgress,
-        { passive: true }
+        {
+          passive: true
+        }
       );
       updateProgress();
     }
@@ -1920,9 +2137,13 @@
     ) {
       const observer =
         new IntersectionObserver(
-          (entries) => {
+          (
+            entries
+          ) => {
             entries.forEach(
-              (entry) => {
+              (
+                entry
+              ) => {
                 if (
                   entry.isIntersecting
                 ) {
@@ -1942,7 +2163,9 @@
         );
       revealItems.forEach(
         (item) =>
-          observer.observe(item)
+          observer.observe(
+            item
+          )
       );
     } else {
       revealItems.forEach(
@@ -2066,11 +2289,15 @@
       );
     let currentMode =
       "single";
-    function updateMode(mode) {
+    function updateMode(
+      mode
+    ) {
       currentMode =
         mode;
       modeButtons.forEach(
-        (button) => {
+        (
+          button
+        ) => {
           button.classList.toggle(
             "active",
             button.dataset.mode ===
@@ -2079,7 +2306,9 @@
         }
       );
       modeContents.forEach(
-        (content) => {
+        (
+          content
+        ) => {
           content.classList.toggle(
             "active",
             content.dataset.content ===
@@ -2087,7 +2316,10 @@
           );
         }
       );
-      if (mode === "single") {
+      if (
+        mode ===
+        "single"
+      ) {
         runnerTitle.textContent =
           "Single Case Evaluation";
         runnerDescription.textContent =
@@ -2097,7 +2329,10 @@
         actionSummary.textContent =
           "Ready to evaluate 1 case.";
       }
-      if (mode === "suite") {
+      if (
+        mode ===
+        "suite"
+      ) {
         runnerTitle.textContent =
           "Benchmark Suite";
         runnerDescription.textContent =
@@ -2106,7 +2341,10 @@
           "03";
         updateSuiteSummary();
       }
-      if (mode === "stress") {
+      if (
+        mode ===
+        "stress"
+      ) {
         runnerTitle.textContent =
           "Stress Test";
         runnerDescription.textContent =
@@ -2117,7 +2355,9 @@
       }
     }
     modeButtons.forEach(
-      (button) => {
+      (
+        button
+      ) => {
         button.addEventListener(
           "click",
           () => {
@@ -2179,11 +2419,15 @@
           : "Enter a valid custom case count.";
     }
     countInputs.forEach(
-      (input) => {
+      (
+        input
+      ) => {
         input.addEventListener(
           "change",
           () => {
-            if (customCountWrap) {
+            if (
+              customCountWrap
+            ) {
               customCountWrap.classList.toggle(
                 "visible",
                 input.value ===
@@ -2250,7 +2494,9 @@
     ]
       .filter(Boolean)
       .forEach(
-        (element) => {
+        (
+          element
+        ) => {
           element.addEventListener(
             "input",
             () => {
@@ -2307,12 +2553,18 @@
        DIMENSION WEIGHTS
        ========================================================= */
     const DEFAULT_WEIGHTS = {
-      factuality: 20,
-      instruction_following: 20,
-      relevance: 15,
-      completeness: 15,
-      safety: 20,
-      fluency: 10
+      factuality:
+        20,
+      instruction_following:
+        20,
+      relevance:
+        15,
+      completeness:
+        15,
+      safety:
+        20,
+      fluency:
+        10
     };
     /* =========================================================
        SELECTED DIMENSIONS
@@ -2334,15 +2586,21 @@
           dimensionInputs
         )
           .filter(
-            (input) =>
+            (
+              input
+            ) =>
               input.checked
           )
           .map(
-            (input) =>
+            (
+              input
+            ) =>
               input.value
           )
           .filter(
-            (value) =>
+            (
+              value
+            ) =>
               Object.prototype.hasOwnProperty.call(
                 DEFAULT_WEIGHTS,
                 value
@@ -2362,7 +2620,9 @@
         getSelectedDimensions();
       const weights = {};
       dimensions.forEach(
-        (dimension) => {
+        (
+          dimension
+        ) => {
           weights[dimension] =
             DEFAULT_WEIGHTS[
               dimension
@@ -2482,13 +2742,19 @@
       milliseconds
     ) {
       const ms =
-        Number(milliseconds);
+        Number(
+          milliseconds
+        );
       if (
-        !Number.isFinite(ms)
+        !Number.isFinite(
+          ms
+        )
       ) {
         return "—";
       }
-      if (ms < 1000) {
+      if (
+        ms < 1000
+      ) {
         return `${Math.round(ms)} ms`;
       }
       return `${(
@@ -2499,9 +2765,13 @@
       score
     ) {
       const value =
-        Number(score);
+        Number(
+          score
+        );
       if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+          value
+        )
       ) {
         return "—";
       }
@@ -2529,7 +2799,8 @@
         );
       }
       const summary =
-        data.summary || {};
+        data.summary ||
+        {};
       /* -------------------------------------------------------
          SUMMARY CARDS
          ------------------------------------------------------- */
@@ -2589,7 +2860,9 @@
         )
           ? data.results
           : [];
-      if (!results.length) {
+      if (
+        !results.length
+      ) {
         caseResults.innerHTML = `
           <tr>
             <td colspan="5">
@@ -2602,10 +2875,13 @@
       caseResults.innerHTML =
         results
           .map(
-            (item) => {
+            (
+              item
+            ) => {
               const scoreValues =
                 Object.values(
-                  item.scores || {}
+                  item.scores ||
+                  {}
                 )
                   .map(
                     Number
