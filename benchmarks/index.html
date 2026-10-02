@@ -15,21 +15,23 @@
   <style>
     /* =========================================================
        BENCHMARK PAGE
-       Page-specific styles only.
-       Global navigation, footer, grid, glow and buttons
-       come from /site.css.
+       Global navigation / footer / background / buttons are
+       controlled by /site.css.
        ========================================================= */
     .benchmark-page {
       width: min(calc(100% - 48px), 1200px);
       margin: 0 auto;
-      padding: 105px 0 120px;
+      padding: 104px 0 120px;
       min-width: 0;
     }
+    /* =========================================================
+       HERO
+       ========================================================= */
     .benchmark-hero {
-      max-width: 920px;
-      padding-bottom: 70px;
+      max-width: 930px;
+      padding-bottom: 64px;
     }
-    .benchmark-kicker {
+    .benchmark-eyebrow {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -38,138 +40,146 @@
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 400;
-      letter-spacing: 0.12em;
+      letter-spacing: .1em;
       text-transform: uppercase;
     }
-    .benchmark-kicker::before {
+    .benchmark-eyebrow::before {
       content: "";
-      width: 28px;
+      width: 30px;
       height: 1px;
       background: var(--green);
-      opacity: 0.7;
+      opacity: .75;
     }
     .benchmark-hero h1 {
       margin: 0;
-      max-width: 900px;
       color: var(--ink);
-      font-size: clamp(52px, 8vw, 94px);
-      line-height: 0.98;
+      font-size: clamp(56px, 8vw, 94px);
+      line-height: .98;
       font-weight: 300;
-      letter-spacing: -0.055em;
+      letter-spacing: -.055em;
     }
     .benchmark-hero h1 span {
       color: var(--green2);
     }
-    .benchmark-hero p {
+    .benchmark-hero-copy {
       max-width: 720px;
-      margin: 28px 0 0;
+      margin-top: 28px;
       color: var(--muted);
       font-size: 17px;
       line-height: 1.75;
       font-weight: 300;
     }
-    /* STATUS */
-    .benchmark-status {
+    /* =========================================================
+       ENGINE STRIP
+       ========================================================= */
+    .engine-strip {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      border: 1px solid var(--line);
-      background: rgba(23, 27, 24, 0.42);
-      margin-bottom: 90px;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 86px;
       min-width: 0;
     }
-    .status-item {
+    .engine-cell {
       min-width: 0;
-      padding: 22px 24px;
+      padding: 20px 22px;
       border-right: 1px solid var(--line);
     }
-    .status-item:last-child {
+    .engine-cell:last-child {
       border-right: 0;
     }
-    .status-label {
-      margin-bottom: 9px;
+    .engine-label {
+      margin-bottom: 8px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.09em;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
-    .status-value {
+    .engine-value {
       color: var(--ink);
       font-size: 14px;
+      line-height: 1.4;
       font-weight: 400;
       overflow-wrap: anywhere;
     }
-    .status-ready {
+    .engine-ready {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       color: var(--green2);
     }
-    .status-ready::before {
+    .engine-ready::before {
       content: "";
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 10px rgba(62, 207, 142, 0.35);
+      box-shadow: 0 0 9px rgba(62, 207, 142, .35);
     }
-    /* SECTIONS */
+    /* =========================================================
+       SECTION STRUCTURE
+       ========================================================= */
     .benchmark-section {
-      margin-top: 84px;
+      margin-top: 82px;
       min-width: 0;
     }
     .benchmark-section:first-of-type {
       margin-top: 0;
     }
-    .section-header {
+    .benchmark-section-head {
       display: grid;
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-      gap: 40px;
-      padding-bottom: 22px;
+      grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr);
+      gap: 50px;
+      padding-bottom: 21px;
       border-bottom: 1px solid var(--line);
       min-width: 0;
     }
-    .section-label {
+    .benchmark-section-label {
       color: var(--green);
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 400;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
       text-transform: uppercase;
     }
-    .section-description {
-      max-width: 620px;
+    .benchmark-section-description {
+      max-width: 650px;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.75;
       font-weight: 300;
     }
-    /* TEST MODE */
+    /* =========================================================
+       TEST MODES
+       ========================================================= */
     .mode-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-top: 20px;
-      border: 1px solid var(--line);
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
       min-width: 0;
     }
     .mode-card {
       position: relative;
+      display: block;
       min-width: 0;
-      padding: 27px 25px;
+      min-height: 178px;
+      padding: 25px 24px;
       border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .28);
       cursor: pointer;
       transition:
         background 180ms var(--ease),
-        border-color 180ms var(--ease);
-    }
-    .mode-card:last-child {
-      border-right: 0;
+        box-shadow 180ms var(--ease);
     }
     .mode-card:hover {
-      background: rgba(62, 207, 142, 0.035);
+      background: rgba(62, 207, 142, .025);
     }
     .mode-card.active {
-      background: rgba(62, 207, 142, 0.055);
+      background: rgba(62, 207, 142, .055);
       box-shadow: inset 0 -1px 0 var(--green);
     }
     .mode-card input {
@@ -177,74 +187,112 @@
       opacity: 0;
       pointer-events: none;
     }
+    .mode-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 38px;
+    }
     .mode-number {
-      margin-bottom: 18px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
     }
+    .mode-indicator {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--dim);
+      border-radius: 50%;
+    }
+    .mode-card.active .mode-indicator {
+      border-color: var(--green);
+      background: var(--green);
+      box-shadow: 0 0 9px rgba(62, 207, 142, .3);
+    }
     .mode-card h3 {
       margin: 0 0 9px;
       color: var(--ink);
-      font-size: 16px;
+      font-size: 17px;
+      line-height: 1.3;
       font-weight: 400;
     }
     .mode-card p {
+      max-width: 290px;
       margin: 0;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.65;
       font-weight: 300;
     }
-    /* PANELS */
-    .benchmark-panel {
-      margin-top: 20px;
-      padding: 30px;
+    /* =========================================================
+       CONFIGURATION PANEL
+       ========================================================= */
+    .config-panel {
+      margin-top: 22px;
       border: 1px solid var(--line);
-      background: rgba(23, 27, 24, 0.48);
+      background: rgba(23, 27, 24, .34);
       min-width: 0;
-      box-sizing: border-box;
     }
-    .panel-title {
-      margin: 0 0 24px;
+    .config-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 24px 26px;
+      border-bottom: 1px solid var(--line);
+      min-width: 0;
+    }
+    .config-panel-title {
       color: var(--ink);
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 400;
     }
+    .config-panel-description {
+      max-width: 550px;
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: right;
+    }
+    .config-panel-body {
+      padding: 27px 26px;
+      min-width: 0;
+    }
+    /* =========================================================
+       FORM
+       ========================================================= */
     .field-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
+      gap: 23px 22px;
       min-width: 0;
     }
     .field {
       min-width: 0;
     }
-    .field-full {
+    .field.full {
       grid-column: 1 / -1;
     }
-    .field label,
-    .dimension-field label {
+    .field-label {
       display: block;
       margin-bottom: 8px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
     .field input,
     .field select,
-    .field textarea,
-    .dimension-field input,
-    .dimension-field textarea {
+    .field textarea {
       width: 100%;
+      min-width: 0;
       box-sizing: border-box;
       border: 1px solid var(--line);
       border-radius: 0;
       outline: none;
-      background: rgba(16, 18, 17, 0.7);
+      background: rgba(16, 18, 17, .62);
       color: var(--ink);
       font-family: var(--sans);
       font-size: 14px;
@@ -254,295 +302,290 @@
         background 160ms var(--ease);
     }
     .field input,
-    .field select,
-    .dimension-field input {
-      min-height: 44px;
+    .field select {
+      height: 45px;
       padding: 0 13px;
     }
-    .field textarea,
-    .dimension-field textarea {
-      min-height: 100px;
+    .field textarea {
+      min-height: 115px;
       padding: 12px 13px;
       resize: vertical;
-      line-height: 1.6;
+      line-height: 1.65;
     }
     .field input:focus,
     .field select:focus,
-    .field textarea:focus,
-    .dimension-field input:focus,
-    .dimension-field textarea:focus {
-      border-color: rgba(62, 207, 142, 0.65);
-      background: rgba(19, 38, 28, 0.18);
+    .field textarea:focus {
+      border-color: rgba(62, 207, 142, .55);
+      background: rgba(19, 38, 28, .15);
     }
-    .field select {
-      appearance: auto;
-    }
-    .field-help {
+    .field-note {
       margin-top: 8px;
       color: var(--dim);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.55;
     }
-    /* CUSTOM API */
-    .custom-api-panel {
+    /* =========================================================
+       CUSTOM API
+       ========================================================= */
+    .custom-api {
       display: none;
-      margin-top: 20px;
     }
-    .custom-api-panel.visible {
+    .custom-api.visible {
       display: block;
     }
-    /* MODE CONTENT */
+    /* =========================================================
+       DATASET
+       ========================================================= */
+    .dataset-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(130px, .5fr));
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      min-width: 0;
+    }
+    .dataset-cell {
+      min-width: 0;
+      padding: 23px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .25);
+    }
+    .dataset-label {
+      margin-bottom: 8px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .dataset-value {
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 400;
+      overflow-wrap: anywhere;
+    }
+    .dataset-description {
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    /* =========================================================
+       MODE CONTENT
+       ========================================================= */
     .mode-content {
       display: none;
     }
     .mode-content.active {
       display: block;
     }
-    .dataset-info {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 0.6fr));
-      gap: 1px;
-      margin-top: 20px;
-      border: 1px solid var(--line);
-      background: var(--line);
-      min-width: 0;
-    }
-    .dataset-cell {
-      min-width: 0;
-      padding: 22px;
-      background: rgba(23, 27, 24, 0.6);
-    }
-    .dataset-cell-label {
-      margin-bottom: 7px;
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .dataset-cell-value {
-      color: var(--ink);
+    /* =========================================================
+       EVALUATION CONFIGURATION
+       ========================================================= */
+    .evaluation-intro {
+      margin-top: 22px;
+      color: var(--muted);
       font-size: 14px;
-      font-weight: 400;
-      overflow-wrap: anywhere;
+      line-height: 1.75;
+      font-weight: 300;
     }
-    .dataset-description {
-      margin-top: 20px;
-      padding: 20px;
-      border-left: 1px solid var(--green);
-      background: rgba(62, 207, 142, 0.025);
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    /* STRESS */
-    .stress-note {
-      margin-bottom: 22px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    /* EVALUATION DIMENSIONS */
-    .dimensions-editor {
-      margin-top: 20px;
-      border: 1px solid var(--line);
+    .dimensions-panel {
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
       min-width: 0;
     }
-    .dimensions-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 17px 20px;
-      border-bottom: 1px solid var(--line);
-      min-width: 0;
-    }
-    .dimensions-toolbar-left {
-      min-width: 0;
-    }
-    .dimensions-toolbar-title {
-      color: var(--ink);
-      font-size: 14px;
-      font-weight: 400;
-    }
-    .dimensions-toolbar-note {
-      margin-top: 4px;
-      color: var(--dim);
-      font-size: 12px;
-    }
-    .dimension-total {
-      flex: 0 0 auto;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      white-space: nowrap;
-    }
-    .dimension-total.invalid {
-      color: #e7a1a1;
-    }
-    .dimension-list {
-      min-width: 0;
-    }
+    .dimensions-header,
     .dimension-row {
       display: grid;
-      grid-template-columns: minmax(140px, 0.75fr) minmax(200px, 1.45fr) 110px 86px;
-      gap: 18px;
-      align-items: start;
-      padding: 22px 20px;
-      border-bottom: 1px solid var(--line-soft);
+      grid-template-columns:
+        minmax(155px, .75fr)
+        minmax(300px, 1.7fr)
+        125px;
+      gap: 20px;
+      align-items: center;
       min-width: 0;
     }
-    .dimension-row:last-child {
-      border-bottom: 0;
+    .dimensions-header {
+      padding: 13px 18px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .32);
     }
-    .dimension-field {
-      min-width: 0;
-    }
-    .dimension-field input,
-    .dimension-field textarea {
-      font-size: 13px;
-    }
-    .dimension-field textarea {
-      min-height: 74px;
-    }
-    .dimension-weight input {
-      text-align: right;
-    }
-    .dimension-remove {
-      min-height: 42px;
-      padding: 0 10px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--muted);
+    .dimensions-header span {
+      color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
-      cursor: pointer;
-      transition:
-        color 160ms var(--ease),
-        border-color 160ms var(--ease),
-        background 160ms var(--ease);
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
-    .dimension-remove:hover {
-      color: #e7a1a1;
-      border-color: rgba(231, 161, 161, 0.45);
-      background: rgba(231, 161, 161, 0.035);
+    .dimension-row {
+      padding: 20px 18px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .18);
     }
-    .dimension-actions {
+    .dimension-name {
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+    .dimension-description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .weight-control {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 17px 20px;
-      border-top: 1px solid var(--line);
+      gap: 7px;
       min-width: 0;
     }
-    .add-dimension {
-      border: 0;
-      background: transparent;
-      color: var(--green2);
+    .weight-input {
+      width: 76px;
+      height: 40px;
+      box-sizing: border-box;
+      border: 1px solid var(--line);
+      outline: none;
+      background: rgba(16, 18, 17, .72);
+      color: var(--ink);
+      text-align: right;
+      padding: 0 9px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .weight-input:focus {
+      border-color: rgba(62, 207, 142, .6);
+    }
+    .weight-symbol {
+      color: var(--dim);
       font-family: var(--mono);
       font-size: 11px;
-      cursor: pointer;
-      padding: 7px 0;
     }
-    .add-dimension:hover {
-      color: var(--green);
+    .dimension-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 17px;
+      padding: 17px 18px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .25);
+    }
+    .weight-total {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .weight-total.valid {
+      color: var(--green2);
+    }
+    .weight-total.invalid {
+      color: #e7a1a1;
     }
     .normalize-button {
-      border: 1px solid var(--line);
+      border: 0;
+      padding: 0;
       background: transparent;
-      color: var(--muted);
-      padding: 8px 12px;
+      color: var(--green2);
       font-family: var(--mono);
       font-size: 10px;
       cursor: pointer;
     }
     .normalize-button:hover {
-      border-color: rgba(62, 207, 142, 0.45);
-      color: var(--green2);
+      color: var(--green);
     }
-    /* EVALUATOR */
+    /* =========================================================
+       ENGINE INFORMATION
+       ========================================================= */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      border: 1px solid var(--line);
-      margin-top: 20px;
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
       min-width: 0;
     }
     .info-cell {
       min-width: 0;
-      padding: 22px;
+      padding: 23px;
       border-right: 1px solid var(--line);
-    }
-    .info-cell:last-child {
-      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .23);
     }
     .info-label {
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
     .info-value {
       color: var(--ink);
       font-size: 14px;
+      line-height: 1.5;
       font-weight: 400;
-      overflow-wrap: anywhere;
     }
-    .info-text {
-      margin-top: 6px;
+    .info-description {
+      margin-top: 7px;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.6;
+      font-weight: 300;
     }
-    /* REPRODUCIBILITY */
-    .repro-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
-      margin-top: 20px;
-      border: 1px solid var(--line);
-      background: var(--line);
-      min-width: 0;
+    /* =========================================================
+       RUN
+       ========================================================= */
+    .run-section {
+      margin-top: 82px;
     }
-    .repro-cell {
-      min-width: 0;
-      padding: 22px;
-      background: rgba(23, 27, 24, 0.55);
-    }
-    /* RUN */
     .run-panel {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 30px;
-      margin-top: 20px;
-      padding: 27px 30px;
-      border: 1px solid rgba(62, 207, 142, 0.28);
+      gap: 35px;
+      margin-top: 22px;
+      padding: 27px 28px;
+      border: 1px solid rgba(62, 207, 142, .27);
       background:
         linear-gradient(
           105deg,
-          rgba(19, 38, 28, 0.34),
-          rgba(23, 27, 24, 0.38)
+          rgba(19, 38, 28, .30),
+          rgba(23, 27, 24, .25)
         );
       min-width: 0;
     }
     .run-copy {
       min-width: 0;
     }
-    .run-copy h3 {
+    .run-title {
       margin: 0 0 7px;
       color: var(--ink);
       font-size: 17px;
       font-weight: 400;
     }
-    .run-copy p {
+    .run-description {
       margin: 0;
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+    .run-error {
+      display: none;
+      margin-top: 10px;
+      color: #e7a1a1;
+      font-size: 12px;
       line-height: 1.6;
+    }
+    .run-error.visible {
+      display: block;
     }
     .run-button {
       flex: 0 0 auto;
@@ -557,26 +600,19 @@
       cursor: pointer;
       transition:
         background 160ms var(--ease),
-        transform 160ms var(--ease);
+        border-color 160ms var(--ease);
     }
     .run-button:hover {
       background: var(--green2);
+      border-color: var(--green2);
     }
     .run-button:disabled {
-      opacity: 0.55;
+      opacity: .55;
       cursor: wait;
     }
-    .run-error {
-      display: none;
-      margin-top: 14px;
-      color: #e7a1a1;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .run-error.visible {
-      display: block;
-    }
-    /* RESULTS */
+    /* =========================================================
+       RESULTS
+       ========================================================= */
     .results-section {
       display: none;
     }
@@ -587,82 +623,71 @@
       width: 100%;
       max-width: 100%;
       min-width: 0;
-      margin-top: 20px;
-      box-sizing: border-box;
+      margin-top: 22px;
       overflow: hidden;
+      box-sizing: border-box;
     }
     .results-summary {
       display: grid;
       grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr));
       width: 100%;
-      max-width: 100%;
       min-width: 0;
-      border: 1px solid var(--line);
-      overflow: hidden;
-      box-sizing: border-box;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
     }
     .summary-cell {
       min-width: 0;
       padding: 21px;
       border-right: 1px solid var(--line);
-      background: rgba(23, 27, 24, 0.45);
-      overflow: hidden;
-    }
-    .summary-cell:last-child {
-      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, .28);
     }
     .summary-label {
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      white-space: nowrap;
     }
     .summary-value {
       color: var(--ink);
-      font-size: 23px;
+      font-size: 24px;
       line-height: 1.1;
       font-weight: 300;
       overflow-wrap: anywhere;
     }
-    .score-grid {
+    .results-dimensions {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
       gap: 9px;
-      margin-top: 12px;
+      margin-top: 10px;
+      min-width: 0;
     }
-    .score-card {
+    .result-dimension {
       min-width: 0;
       padding: 17px;
       border: 1px solid var(--line);
-      background: rgba(23, 27, 24, 0.42);
-      overflow: hidden;
+      background: rgba(23, 27, 24, .25);
     }
-    .score-card-label {
+    .result-dimension-name {
       min-height: 31px;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.35;
+      line-height: 1.4;
       font-weight: 300;
       overflow-wrap: anywhere;
     }
-    .score-card-value {
+    .result-dimension-score {
       margin-top: 13px;
       color: var(--ink);
       font-family: var(--mono);
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 400;
     }
     .results-cases {
-      width: 100%;
-      max-width: 100%;
+      margin-top: 31px;
       min-width: 0;
-      margin-top: 30px;
     }
     .results-cases-title {
       margin-bottom: 13px;
@@ -676,20 +701,21 @@
       min-width: 0;
       overflow-x: auto;
       overflow-y: hidden;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
       -webkit-overflow-scrolling: touch;
       box-sizing: border-box;
-      border: 1px solid var(--line);
     }
     .case-table {
       width: 100%;
       min-width: 620px;
       border-collapse: collapse;
-      table-layout: auto;
     }
     .case-table th,
     .case-table td {
       padding: 13px 15px;
-      border-bottom: 1px solid var(--line-soft);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
       text-align: left;
       white-space: nowrap;
       font-size: 12px;
@@ -699,43 +725,46 @@
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 400;
-      letter-spacing: 0.06em;
+      letter-spacing: .06em;
       text-transform: uppercase;
-      background: rgba(23, 27, 24, 0.55);
+      background: rgba(23, 27, 24, .35);
     }
     .case-table td {
       color: var(--muted);
       font-weight: 300;
     }
-    .case-table tr:last-child td {
-      border-bottom: 0;
-    }
-    .case-status-passed {
+    .status-passed {
       color: var(--green2) !important;
     }
-    .case-status-failed {
+    .status-failed {
       color: #e7a1a1 !important;
     }
     .results-note {
-      max-width: 100%;
       margin-top: 14px;
       color: var(--dim);
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.65;
       overflow-wrap: anywhere;
     }
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .benchmark-status {
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width: 950px) {
+      .engine-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .status-item:nth-child(2) {
+      .engine-cell:nth-child(2) {
         border-right: 0;
       }
-      .status-item:nth-child(-n + 2) {
+      .engine-cell:nth-child(-n + 2) {
         border-bottom: 1px solid var(--line);
       }
-      .section-header {
+      .results-dimensions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 820px) {
+      .benchmark-section-head {
         grid-template-columns: 1fr;
         gap: 12px;
       }
@@ -743,167 +772,156 @@
         grid-template-columns: 1fr;
       }
       .mode-card {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
+        min-height: 150px;
       }
-      .mode-card:last-child {
-        border-bottom: 0;
+      .dataset-grid {
+        grid-template-columns: 1fr;
+      }
+      .dimensions-header {
+        display: none;
       }
       .dimension-row {
-        grid-template-columns: minmax(0, 1fr) 90px 82px;
+        grid-template-columns: minmax(0, 1fr) 120px;
+        gap: 16px;
+      }
+      .dimension-name {
+        grid-column: 1;
       }
       .dimension-description {
         grid-column: 1 / -1;
+        grid-row: 2;
       }
-      .dimension-weight {
+      .weight-control {
         grid-column: 2;
         grid-row: 1;
+        justify-content: flex-end;
       }
-      .dimension-remove {
-        grid-column: 3;
-        grid-row: 1;
+      .info-grid {
+        grid-template-columns: 1fr;
       }
-      .score-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .run-panel {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .run-button {
+        width: 100%;
       }
       .results-summary {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .summary-cell:nth-child(3) {
-        border-right: 0;
-      }
-      .summary-cell:nth-child(-n + 3) {
-        border-bottom: 1px solid var(--line);
-      }
     }
-    @media (max-width: 700px) {
+    @media (max-width: 650px) {
       .benchmark-page {
         width: min(calc(100% - 32px), 1200px);
-        padding-top: 75px;
-      }
-      .benchmark-hero {
-        padding-bottom: 55px;
+        padding-top: 72px;
       }
       .benchmark-hero h1 {
-        font-size: clamp(46px, 13vw, 70px);
+        font-size: clamp(48px, 14vw, 70px);
       }
-      .benchmark-hero p {
+      .benchmark-hero-copy {
         font-size: 15px;
       }
-      .benchmark-status {
-        grid-template-columns: 1fr 1fr;
-        margin-bottom: 65px;
+      .benchmark-section {
+        margin-top: 65px;
       }
-      .benchmark-panel {
+      .engine-strip {
+        grid-template-columns: 1fr;
+      }
+      .engine-cell,
+      .engine-cell:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .engine-cell:last-child {
+        border-bottom: 0;
+      }
+      .config-panel-head {
+        flex-direction: column;
+      }
+      .config-panel-description {
+        text-align: left;
+      }
+      .config-panel-body {
         padding: 22px;
       }
       .field-grid {
         grid-template-columns: 1fr;
       }
-      .field-full {
+      .field.full {
         grid-column: auto;
       }
-      .dataset-info,
-      .info-grid,
-      .repro-grid {
-        grid-template-columns: 1fr;
-      }
-      .info-cell {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-      .info-cell:last-child {
-        border-bottom: 0;
-      }
-      .run-panel {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 22px;
-      }
-      .run-button {
-        width: 100%;
-      }
-    }
-    @media (max-width: 500px) {
-      .benchmark-page {
-        width: min(calc(100% - 24px), 1200px);
-        padding-top: 60px;
-      }
-      .benchmark-status {
-        grid-template-columns: 1fr;
-      }
-      .status-item,
-      .status-item:nth-child(2) {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-      .status-item:last-child {
-        border-bottom: 0;
-      }
-      .benchmark-section {
-        margin-top: 62px;
-      }
-      .dimensions-toolbar,
-      .dimension-actions {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-      .dimension-row {
-        grid-template-columns: minmax(0, 1fr) 76px;
-        gap: 13px;
-      }
-      .dimension-weight {
-        grid-column: 2;
-        grid-row: 1;
-      }
-      .dimension-remove {
-        grid-column: 1 / -1;
-        grid-row: auto;
-        width: 100%;
-      }
-      .score-grid {
+      .results-dimensions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .results-summary {
         grid-template-columns: 1fr 1fr;
       }
+      .summary-cell {
+        border-right: 1px solid var(--line);
+      }
       .summary-cell:nth-child(2n) {
         border-right: 0;
       }
-      .summary-cell:nth-child(3) {
-        border-right: 1px solid var(--line);
+    }
+    @media (max-width: 430px) {
+      .benchmark-page {
+        width: min(calc(100% - 24px), 1200px);
+        padding-top: 58px;
       }
-      .summary-cell:nth-child(-n + 4) {
-        border-bottom: 1px solid var(--line);
+      .benchmark-hero {
+        padding-bottom: 48px;
       }
-      .summary-cell:nth-child(4) {
-        border-right: 0;
+      .benchmark-hero h1 {
+        font-size: 46px;
+      }
+      .dimension-row {
+        grid-template-columns: 1fr;
+      }
+      .weight-control {
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: flex-start;
+      }
+      .dimension-footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .results-dimensions {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
 </head>
 <body>
   <!-- =========================================================
-       GLOBAL HEADER
+       GLOBAL BACKGROUND
        ========================================================= -->
   <div class="page-progress" id="pageProgress"></div>
   <div class="background-grid"></div>
   <div class="background-glow"></div>
+  <!-- =========================================================
+       ANNOUNCEMENT
+       ========================================================= -->
   <div class="announcement-bar">
     <div class="container announcement-inner">
-      <div class="announcement-left">
-        <span class="status-dot"></span>
-        <span class="mono-label">EVALLOOP AI</span>
-        <span class="announcement-divider"></span>
-        <span class="announcement-text">AI EVALUATION INFRASTRUCTURE</span>
-      </div>
+  <div class="announcement-left">
+    <span class="status-dot"></span>
+    <span class="mono-label">EVALLOOP AI</span>
+    <span class="announcement-divider"></span>
+    <span class="announcement-text">
+      AI EVALUATION INFRASTRUCTURE
+    </span>
+  </div>
   <a class="announcement-link" href="/app/">
     OPEN EVALUATOR →
   </a>
 </div>
   </div>
+  <!-- =========================================================
+       GLOBAL HEADER
+       ========================================================= -->
   <header class="site-header">
-    <div class="nav-inner">
+<div class="nav-inner">
   <a class="brand" href="/">
     EvalLoop AI<span class="brand-cursor">_</span>
   </a>
@@ -931,7 +949,11 @@
     <span></span>
   </button>
 </div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+<nav
+  class="mobile-nav"
+  id="mobileNav"
+  aria-label="Mobile navigation"
+>
   <a href="/app/">Evaluator</a>
   <a href="/benchmarks/">Benchmarks</a>
   <a href="/labs/">Labs</a>
@@ -946,93 +968,129 @@
 </nav>
   </header>
   <!-- =========================================================
-       PAGE
+       MAIN
        ========================================================= -->
   <main class="benchmark-page">
 <!-- HERO -->
 <section class="benchmark-hero reveal">
-  <div class="benchmark-kicker">
+  <div class="benchmark-eyebrow">
     BENCHMARK ENGINE
   </div>
   <h1>
     Test. Measure.<br />
     <span>Understand.</span>
   </h1>
-  <p>
-    Run reproducible evaluations across AI models, benchmark suites,
-    custom datasets, and stress tests. Configure exactly what quality
-    means for each benchmark run.
+  <p class="benchmark-hero-copy">
+    Reproducible evaluation for AI models. Configure a benchmark,
+    define how quality is measured, run EVP.Aureon, and inspect
+    the resulting model performance.
   </p>
 </section>
-<!-- STATUS -->
-<section class="benchmark-status reveal">
-  <div class="status-item">
-    <div class="status-label">Target connection</div>
-    <div class="status-value status-ready">READY</div>
+<!-- ENGINE STATUS -->
+<section class="engine-strip reveal">
+  <div class="engine-cell">
+    <div class="engine-label">
+      Target connection
+    </div>
+    <div class="engine-value engine-ready">
+      READY
+    </div>
   </div>
-  <div class="status-item">
-    <div class="status-label">Benchmark</div>
-    <div class="status-value">AUREON v1.0</div>
+  <div class="engine-cell">
+    <div class="engine-label">
+      Benchmark
+    </div>
+    <div class="engine-value">
+      EVP.Aureon v1.0
+    </div>
   </div>
-  <div class="status-item">
-    <div class="status-label">Evaluator</div>
-    <div class="status-value">EVP.Aureon</div>
+  <div class="engine-cell">
+    <div class="engine-label">
+      Evaluator
+    </div>
+    <div class="engine-value">
+      EVP.Aureon
+    </div>
   </div>
-  <div class="status-item">
-    <div class="status-label">Engine</div>
-    <div class="status-value status-ready">READY</div>
+  <div class="engine-cell">
+    <div class="engine-label">
+      Engine
+    </div>
+    <div class="engine-value engine-ready">
+      READY
+    </div>
   </div>
 </section>
 <!-- =======================================================
      TEST MODE
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">TEST MODE</div>
-    <div class="section-description">
-      Choose how the target model should be evaluated. A benchmark
-      suite measures quality across multiple cases, while stress
-      testing focuses on repeated requests and system behavior.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      TEST MODE
+    </div>
+    <div class="benchmark-section-description">
+      Select the evaluation workflow. A single case is useful for
+      direct inspection, a benchmark suite measures model quality
+      across cases, and a stress test examines repeated execution.
     </div>
   </div>
   <div class="mode-grid">
-    <label class="mode-card active" data-mode-card="single">
+    <label
+      class="mode-card active"
+      data-mode-card="single"
+    >
       <input
         type="radio"
         name="testMode"
         value="single"
         checked
       />
-      <div class="mode-number">01</div>
+      <div class="mode-top">
+        <span class="mode-number">01</span>
+        <span class="mode-indicator"></span>
+      </div>
       <h3>Single case</h3>
       <p>
         Evaluate one prompt, response, and expected answer.
       </p>
     </label>
-    <label class="mode-card" data-mode-card="suite">
+    <label
+      class="mode-card"
+      data-mode-card="suite"
+    >
       <input
         type="radio"
         name="testMode"
         value="suite"
       />
-      <div class="mode-number">02</div>
+      <div class="mode-top">
+        <span class="mode-number">02</span>
+        <span class="mode-indicator"></span>
+      </div>
       <h3>Benchmark suite</h3>
       <p>
-        Run a configurable number of benchmark cases against
-        the selected model.
+        Run multiple benchmark cases and aggregate quality
+        across the selected dataset.
       </p>
     </label>
-    <label class="mode-card" data-mode-card="stress">
+    <label
+      class="mode-card"
+      data-mode-card="stress"
+    >
       <input
         type="radio"
         name="testMode"
         value="stress"
       />
-      <div class="mode-number">03</div>
+      <div class="mode-top">
+        <span class="mode-number">03</span>
+        <span class="mode-indicator"></span>
+      </div>
       <h3>Stress test</h3>
       <p>
-        Repeatedly evaluate a model to observe latency,
-        reliability, and behavior under load.
+        Repeatedly execute a benchmark to observe latency and
+        reliability characteristics.
       </p>
     </label>
   </div>
@@ -1041,143 +1099,249 @@
      TARGET MODEL
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">TARGET MODEL</div>
-    <div class="section-description">
-      Configure the model endpoint used as the benchmark target.
-      The current benchmark backend executes its supported Groq
-      model IDs; additional provider fields are prepared for
-      future integrations.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      TARGET MODEL
+    </div>
+    <div class="benchmark-section-description">
+      Configure the model that will be evaluated. The current
+      benchmark API executes the supported Groq model IDs while
+      the provider interface is prepared for future integrations.
     </div>
   </div>
-  <div class="benchmark-panel">
-    <div class="field-grid">
-      <div class="field">
-        <label for="provider">Provider</label>
-        <select id="provider">
-          <option value="groq">Groq</option>
-          <option value="openai">OpenAI</option>
-          <option value="google">Google</option>
-          <option value="anthropic">Anthropic</option>
-          <option value="mistral">Mistral</option>
-          <option value="deepseek">DeepSeek</option>
-          <option value="xai">xAI</option>
-          <option value="openrouter">OpenRouter</option>
-          <option value="together">Together AI</option>
-          <option value="fireworks">Fireworks AI</option>
-          <option value="cohere">Cohere</option>
-          <option value="huggingface">Hugging Face</option>
-          <option value="ollama">Ollama</option>
-          <option value="azure">Azure AI</option>
-          <option value="bedrock">AWS Bedrock</option>
-          <option value="custom">Custom / New LLM</option>
-        </select>
+  <div class="config-panel">
+    <div class="config-panel-head">
+      <div class="config-panel-title">
+        Model connection
       </div>
-      <div class="field">
-        <label for="model">Model ID</label>
-        <select id="model">
-          <option value="openai/gpt-oss-120b">
-            GPT-OSS 120B
-          </option>
-          <option value="openai/gpt-oss-20b">
-            GPT-OSS 20B
-          </option>
-          <option value="qwen/qwen3.8-27b">
-            Qwen 3.8 27B
-          </option>
-        </select>
+      <div class="config-panel-description">
+        Candidate model configuration
       </div>
-      <div class="field">
-        <label for="apiKey">API key</label>
-        <input
-          id="apiKey"
-          type="password"
-          placeholder="Optional"
-          autocomplete="off"
-        />
-        <div class="field-help">
-          The current backend uses the server-side GROQ_API_KEY.
+    </div>
+    <div class="config-panel-body">
+      <div class="field-grid">
+        <div class="field">
+          <label
+            class="field-label"
+            for="provider"
+          >
+            Provider
+          </label>
+          <select id="provider">
+            <option value="groq" selected>
+              Groq
+            </option>
+            <option value="openai">
+              OpenAI
+            </option>
+            <option value="google">
+              Google
+            </option>
+            <option value="anthropic">
+              Anthropic
+            </option>
+            <option value="mistral">
+              Mistral
+            </option>
+            <option value="deepseek">
+              DeepSeek
+            </option>
+            <option value="xai">
+              xAI
+            </option>
+            <option value="openrouter">
+              OpenRouter
+            </option>
+            <option value="together">
+              Together AI
+            </option>
+            <option value="fireworks">
+              Fireworks AI
+            </option>
+            <option value="cohere">
+              Cohere
+            </option>
+            <option value="huggingface">
+              Hugging Face
+            </option>
+            <option value="ollama">
+              Ollama
+            </option>
+            <option value="azure">
+              Azure AI
+            </option>
+            <option value="bedrock">
+              AWS Bedrock
+            </option>
+            <option value="custom">
+              Custom / New LLM
+            </option>
+          </select>
         </div>
-      </div>
-      <div class="field">
-        <label for="temperature">Temperature</label>
-        <input
-          id="temperature"
-          type="number"
-          min="0"
-          max="2"
-          step="0.1"
-          value="0.1"
-        />
+        <div class="field">
+          <label
+            class="field-label"
+            for="model"
+          >
+            Model ID
+          </label>
+          <select id="model">
+            <option value="openai/gpt-oss-120b">
+              GPT-OSS 120B
+            </option>
+            <option value="openai/gpt-oss-20b">
+              GPT-OSS 20B
+            </option>
+            <option value="qwen/qwen3.8-27b">
+              Qwen 3.8 27B
+            </option>
+          </select>
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="apiKey"
+          >
+            API key
+          </label>
+          <input
+            id="apiKey"
+            type="password"
+            placeholder="Optional"
+            autocomplete="off"
+          />
+          <div class="field-note">
+            Current EVP.Aureon execution uses the server-side
+            GROQ_API_KEY configuration.
+          </div>
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="temperature"
+          >
+            Temperature
+          </label>
+          <input
+            id="temperature"
+            type="number"
+            min="0"
+            max="2"
+            step="0.1"
+            value="0.1"
+          />
+        </div>
       </div>
     </div>
   </div>
   <!-- CUSTOM API -->
   <div
-    class="benchmark-panel custom-api-panel"
+    class="config-panel custom-api"
     id="customApiPanel"
   >
-    <h3 class="panel-title">Custom API</h3>
-    <div class="field-grid">
-      <div class="field field-full">
-        <label for="endpoint">Endpoint</label>
-        <input
-          id="endpoint"
-          type="url"
-          placeholder="https://api.example.com/v1/chat/completions"
-        />
+    <div class="config-panel-head">
+      <div class="config-panel-title">
+        Custom API
       </div>
-      <div class="field">
-        <label for="authType">Authentication</label>
-        <select id="authType">
-          <option value="bearer">Bearer</option>
-          <option value="api-key">API key header</option>
-          <option value="none">None</option>
-        </select>
+      <div class="config-panel-description">
+        Prepared for custom provider integrations
       </div>
-      <div class="field">
-        <label for="authHeader">Authentication header</label>
-        <input
-          id="authHeader"
-          type="text"
-          placeholder="Authorization"
-        />
+    </div>
+    <div class="config-panel-body">
+      <div class="field-grid">
+        <div class="field full">
+          <label
+            class="field-label"
+            for="endpoint"
+          >
+            Endpoint
+          </label>
+          <input
+            id="endpoint"
+            type="url"
+            placeholder="https://api.example.com/v1/chat/completions"
+          />
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="authType"
+          >
+            Authentication
+          </label>
+          <select id="authType">
+            <option value="bearer">
+              Bearer
+            </option>
+            <option value="api-key">
+              API key header
+            </option>
+            <option value="none">
+              None
+            </option>
+          </select>
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="authHeader"
+          >
+            Authentication header
+          </label>
+          <input
+            id="authHeader"
+            type="text"
+            placeholder="Authorization"
+          />
+        </div>
       </div>
     </div>
   </div>
 </section>
 <!-- =======================================================
-     BENCHMARK DATASET
+     DATASET
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">BENCHMARK DATASET</div>
-    <div class="section-description">
-      Select the dataset used by the benchmark engine for suite
-      evaluation.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      BENCHMARK DATASET
+    </div>
+    <div class="benchmark-section-description">
+      The benchmark dataset defines the cases used by EVP.Aureon
+      for suite-based evaluation.
     </div>
   </div>
-  <div class="dataset-info">
+  <div class="dataset-grid">
     <div class="dataset-cell">
-      <div class="dataset-cell-label">Dataset</div>
-      <div class="dataset-cell-value">
+      <div class="dataset-label">
+        Dataset
+      </div>
+      <div class="dataset-value">
         EVP.Aureon — General Purpose Quality
       </div>
     </div>
     <div class="dataset-cell">
-      <div class="dataset-cell-label">Version</div>
-      <div class="dataset-cell-value">v1.0</div>
+      <div class="dataset-label">
+        Version
+      </div>
+      <div class="dataset-value">
+        v1.0
+      </div>
     </div>
     <div class="dataset-cell">
-      <div class="dataset-cell-label">Type</div>
-      <div class="dataset-cell-value">General</div>
+      <div class="dataset-label">
+        Type
+      </div>
+      <div class="dataset-value">
+        General
+      </div>
     </div>
   </div>
-  <div class="dataset-description">
-    Designed to measure factuality, instruction following,
-    relevance, completeness, safety, and fluency across general
-    purpose model responses.
-  </div>
+  <p class="dataset-description">
+    General-purpose quality evaluation covering factuality,
+    instruction following, relevance, completeness, safety,
+    and fluency.
+  </p>
 </section>
 <!-- =======================================================
      SINGLE CASE
@@ -1186,35 +1350,54 @@
   class="benchmark-section mode-content active reveal"
   id="singleMode"
 >
-  <div class="section-header">
-    <div class="section-label">SINGLE CASE</div>
-    <div class="section-description">
-      Supply one prompt, the model response, and an expected
-      answer for direct evaluation.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      SINGLE CASE
+    </div>
+    <div class="benchmark-section-description">
+      Supply the input and expected reference so the benchmark
+      engine can evaluate one model response.
     </div>
   </div>
-  <div class="benchmark-panel">
-    <div class="field-grid">
-      <div class="field field-full">
-        <label for="singlePrompt">Prompt</label>
-        <textarea
-          id="singlePrompt"
-          placeholder="Enter the benchmark prompt..."
-        ></textarea>
-      </div>
-      <div class="field">
-        <label for="singleResponse">Model response</label>
-        <textarea
-          id="singleResponse"
-          placeholder="Enter the model response..."
-        ></textarea>
-      </div>
-      <div class="field">
-        <label for="singleReference">Expected answer</label>
-        <textarea
-          id="singleReference"
-          placeholder="Enter the expected answer..."
-        ></textarea>
+  <div class="config-panel">
+    <div class="config-panel-body">
+      <div class="field-grid">
+        <div class="field full">
+          <label
+            class="field-label"
+            for="singlePrompt"
+          >
+            Prompt
+          </label>
+          <textarea
+            id="singlePrompt"
+            placeholder="Enter the benchmark prompt..."
+          ></textarea>
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="singleResponse"
+          >
+            Model response
+          </label>
+          <textarea
+            id="singleResponse"
+            placeholder="Enter the model response..."
+          ></textarea>
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="singleReference"
+          >
+            Expected answer
+          </label>
+          <textarea
+            id="singleReference"
+            placeholder="Enter the expected answer..."
+          ></textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -1226,111 +1409,157 @@
   class="benchmark-section mode-content reveal"
   id="suiteMode"
 >
-  <div class="section-header">
-    <div class="section-label">BENCHMARK SUITE</div>
-    <div class="section-description">
-      Run a repeatable set of benchmark cases against the target
-      model.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      BENCHMARK SUITE
+    </div>
+    <div class="benchmark-section-description">
+      Choose how many benchmark cases should be executed from the
+      configured dataset.
     </div>
   </div>
-  <div class="benchmark-panel">
-    <div class="field-grid">
-      <div class="field">
-        <label for="caseCount">Case count</label>
-        <select id="caseCount">
-          <option value="10">10</option>
-          <option value="25" selected>25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="custom">Custom</option>
-        </select>
-      </div>
-      <div
-        class="field"
-        id="customCaseField"
-        style="display:none;"
-      >
-        <label for="customCaseCount">
-          Custom case count
-        </label>
-        <input
-          id="customCaseCount"
-          type="number"
-          min="1"
-          max="100"
-          value="25"
-        />
+  <div class="config-panel">
+    <div class="config-panel-body">
+      <div class="field-grid">
+        <div class="field">
+          <label
+            class="field-label"
+            for="caseCount"
+          >
+            Case count
+          </label>
+          <select id="caseCount">
+            <option value="10">
+              10
+            </option>
+            <option value="25" selected>
+              25
+            </option>
+            <option value="50">
+              50
+            </option>
+            <option value="100">
+              100
+            </option>
+            <option value="custom">
+              Custom
+            </option>
+          </select>
+        </div>
+        <div
+          class="field"
+          id="customCaseField"
+          style="display:none;"
+        >
+          <label
+            class="field-label"
+            for="customCaseCount"
+          >
+            Custom case count
+          </label>
+          <input
+            id="customCaseCount"
+            type="number"
+            min="1"
+            max="100"
+            value="25"
+          />
+        </div>
       </div>
     </div>
   </div>
 </section>
 <!-- =======================================================
-     STRESS CONFIGURATION
+     STRESS
      ======================================================= -->
 <section
   class="benchmark-section mode-content reveal"
   id="stressMode"
 >
-  <div class="section-header">
-    <div class="section-label">STRESS CONFIGURATION</div>
-    <div class="section-description">
-      Configure repeated requests for reliability and performance
-      testing.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      STRESS CONFIGURATION
+    </div>
+    <div class="benchmark-section-description">
+      Configure repeated requests, concurrency, delay, and
+      duration for stress-oriented benchmark runs.
     </div>
   </div>
-  <div class="benchmark-panel">
-    <div class="stress-note">
-      Stress testing currently uses the benchmark engine's
-      configured request loop. The interface captures the intended
-      concurrency and timing configuration.
-    </div>
-    <div class="field-grid">
-      <div class="field">
-        <label for="concurrency">Concurrency</label>
-        <input
-          id="concurrency"
-          type="number"
-          min="1"
-          max="100"
-          value="1"
-        />
-      </div>
-      <div class="field">
-        <label for="totalRequests">Total requests</label>
-        <input
-          id="totalRequests"
-          type="number"
-          min="1"
-          max="100"
-          value="25"
-        />
-      </div>
-      <div class="field">
-        <label for="requestDelay">Request delay (ms)</label>
-        <input
-          id="requestDelay"
-          type="number"
-          min="0"
-          max="60000"
-          value="0"
-        />
-      </div>
-      <div class="field">
-        <label for="maxDuration">Maximum duration (s)</label>
-        <input
-          id="maxDuration"
-          type="number"
-          min="1"
-          max="3600"
-          value="300"
-        />
-      </div>
-      <div class="field field-full">
-        <label for="stressPrompt">Stress prompt</label>
-        <textarea
-          id="stressPrompt"
-          placeholder="Enter the prompt to repeat during the stress test..."
-        ></textarea>
+  <div class="config-panel">
+    <div class="config-panel-body">
+      <div class="field-grid">
+        <div class="field">
+          <label
+            class="field-label"
+            for="concurrency"
+          >
+            Concurrency
+          </label>
+          <input
+            id="concurrency"
+            type="number"
+            min="1"
+            max="100"
+            value="1"
+          />
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="totalRequests"
+          >
+            Total requests
+          </label>
+          <input
+            id="totalRequests"
+            type="number"
+            min="1"
+            max="100"
+            value="25"
+          />
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="requestDelay"
+          >
+            Request delay (ms)
+          </label>
+          <input
+            id="requestDelay"
+            type="number"
+            min="0"
+            max="60000"
+            value="0"
+          />
+        </div>
+        <div class="field">
+          <label
+            class="field-label"
+            for="maxDuration"
+          >
+            Maximum duration (s)
+          </label>
+          <input
+            id="maxDuration"
+            type="number"
+            min="1"
+            max="3600"
+            value="300"
+          />
+        </div>
+        <div class="field full">
+          <label
+            class="field-label"
+            for="stressPrompt"
+          >
+            Stress prompt
+          </label>
+          <textarea
+            id="stressPrompt"
+            placeholder="Enter the prompt to repeat during the stress test..."
+          ></textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -1339,49 +1568,43 @@
      EVALUATION CONFIGURATION
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">EVALUATION CONFIGURATION</div>
-    <div class="section-description">
-      Define the quality dimensions used by EVP.Aureon and their
-      contribution to the weighted overall score. Dimensions are
-      fully configurable for each benchmark.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      EVALUATION CONFIGURATION
+    </div>
+    <div class="benchmark-section-description">
+      Configure the contribution of each EVP.Aureon quality
+      dimension to the weighted overall score. The evaluator
+      dimensions remain fixed; their weights are adjustable.
     </div>
   </div>
-  <div class="dimensions-editor">
-    <div class="dimensions-toolbar">
-      <div class="dimensions-toolbar-left">
-        <div class="dimensions-toolbar-title">
-          Evaluation dimensions
-        </div>
-        <div class="dimensions-toolbar-note">
-          Add, remove, rename, describe, and weight dimensions.
-        </div>
-      </div>
-      <div
-        class="dimension-total"
-        id="dimensionTotal"
+  <div class="evaluation-intro">
+    Adjust the weight values to define how strongly each quality
+    dimension contributes to the final benchmark score. The
+    combined weight must equal 100%.
+  </div>
+  <div class="dimensions-panel">
+    <div class="dimensions-header">
+      <span>Dimension</span>
+      <span>What it measures</span>
+      <span>Weight</span>
+    </div>
+    <div id="dimensionList">
+      <!-- Filled by JavaScript -->
+    </div>
+    <div class="dimension-footer">
+      <span
+        class="weight-total valid"
+        id="weightTotal"
       >
         Total weight: 100%
-      </div>
-    </div>
-    <div
-      class="dimension-list"
-      id="dimensionList"
-    ></div>
-    <div class="dimension-actions">
-      <button
-        class="add-dimension"
-        id="addDimension"
-        type="button"
-      >
-        + ADD DIMENSION
-      </button>
+      </span>
       <button
         class="normalize-button"
         id="normalizeWeights"
         type="button"
       >
-        NORMALIZE WEIGHTS
+        NORMALIZE TO 100%
       </button>
     </div>
   </div>
@@ -1390,35 +1613,47 @@
      EVALUATOR
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">EVALUATION ENGINE</div>
-    <div class="section-description">
-      EVP.Aureon produces a 0–100 score for each configured
-      quality dimension and combines them using the supplied
-      weights.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      EVALUATION ENGINE
+    </div>
+    <div class="benchmark-section-description">
+      EVP.Aureon evaluates each configured quality dimension and
+      combines the resulting scores according to the weights above.
     </div>
   </div>
   <div class="info-grid">
     <div class="info-cell">
-      <div class="info-label">Evaluator</div>
-      <div class="info-value">EVP.Aureon</div>
-      <div class="info-text">
-        Configurable quality evaluation engine.
+      <div class="info-label">
+        Evaluator
+      </div>
+      <div class="info-value">
+        EVP.Aureon
+      </div>
+      <div class="info-description">
+        EvalLoop AI benchmark evaluation engine.
       </div>
     </div>
     <div class="info-cell">
-      <div class="info-label">Score range</div>
-      <div class="info-value">0–100</div>
-      <div class="info-text">
-        Higher scores indicate stronger performance on the
-        configured dimension.
+      <div class="info-label">
+        Score
+      </div>
+      <div class="info-value">
+        0–100
+      </div>
+      <div class="info-description">
+        Dimension scores are normalized to a 0–100 scale.
       </div>
     </div>
     <div class="info-cell">
-      <div class="info-label">Evaluation method</div>
-      <div class="info-value">LLM judge</div>
-      <div class="info-text">
-        Deterministic configuration with evaluator-based scoring.
+      <div class="info-label">
+        Evaluator version
+      </div>
+      <div class="info-value">
+        EVP.Aureon Judge v1.0
+      </div>
+      <div class="info-description">
+        Versioned evaluator configuration for reproducibility.
       </div>
     </div>
   </div>
@@ -1427,24 +1662,36 @@
      REPRODUCIBILITY
      ======================================================= -->
 <section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">REPRODUCIBILITY</div>
-    <div class="section-description">
-      Keep benchmark and evaluator versions visible so results can
-      be traced back to the configuration that produced them.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      REPRODUCIBILITY
+    </div>
+    <div class="benchmark-section-description">
+      Keep the benchmark configuration explicit so results can be
+      compared and reproduced consistently.
     </div>
   </div>
-  <div class="repro-grid">
-    <div class="repro-cell">
-      <div class="info-label">Benchmark version</div>
-      <div class="info-value">EVP.Aureon v1.0</div>
+  <div class="info-grid">
+    <div class="info-cell">
+      <div class="info-label">
+        Benchmark version
+      </div>
+      <div class="info-value">
+        EVP.Aureon v1.0
+      </div>
     </div>
-    <div class="repro-cell">
-      <div class="info-label">Evaluator version</div>
-      <div class="info-value">EVP.Aureon Judge v1.0</div>
+    <div class="info-cell">
+      <div class="info-label">
+        Evaluator version
+      </div>
+      <div class="info-value">
+        EVP.Aureon Judge v1.0
+      </div>
     </div>
-    <div class="repro-cell">
-      <div class="info-label">Sampling mode</div>
+    <div class="info-cell">
+      <div class="info-label">
+        Sampling mode
+      </div>
       <div class="info-value">
         Fixed configuration
       </div>
@@ -1454,20 +1701,25 @@
 <!-- =======================================================
      RUN BENCHMARK
      ======================================================= -->
-<section class="benchmark-section reveal">
-  <div class="section-header">
-    <div class="section-label">RUN BENCHMARK</div>
-    <div class="section-description">
-      Validate the configuration and send the benchmark request to
-      the EvalLoop AI benchmark engine.
+<section class="run-section reveal">
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      RUN BENCHMARK
+    </div>
+    <div class="benchmark-section-description">
+      Submit the selected model, benchmark configuration, and
+      evaluation weights to the EvalLoop AI benchmark API.
     </div>
   </div>
   <div class="run-panel">
     <div class="run-copy">
-      <h3>Ready to evaluate</h3>
-      <p>
-        Your selected model and evaluation configuration will be
-        submitted to the benchmark API.
+      <h3 class="run-title">
+        Ready to evaluate
+      </h3>
+      <p class="run-description">
+        EVP.Aureon will execute the configured benchmark and return
+        the overall score, dimension scores, latency, and case-level
+        results.
       </p>
       <div
         class="run-error"
@@ -1491,17 +1743,21 @@
   class="benchmark-section results-section reveal"
   id="resultsSection"
 >
-  <div class="section-header">
-    <div class="section-label">EVALUATION RESULTS</div>
-    <div class="section-description">
-      Benchmark output, weighted dimension scores, execution
-      performance, and individual case results.
+  <div class="benchmark-section-head">
+    <div class="benchmark-section-label">
+      EVALUATION RESULTS
+    </div>
+    <div class="benchmark-section-description">
+      Inspect the weighted overall score, individual evaluation
+      dimensions, execution performance, and benchmark cases.
     </div>
   </div>
   <div class="results-shell">
     <div class="results-summary">
       <div class="summary-cell">
-        <div class="summary-label">Overall</div>
+        <div class="summary-label">
+          Overall
+        </div>
         <div
           class="summary-value"
           id="resultOverall"
@@ -1510,7 +1766,9 @@
         </div>
       </div>
       <div class="summary-cell">
-        <div class="summary-label">Cases</div>
+        <div class="summary-label">
+          Cases
+        </div>
         <div
           class="summary-value"
           id="resultCases"
@@ -1519,7 +1777,9 @@
         </div>
       </div>
       <div class="summary-cell">
-        <div class="summary-label">Passed</div>
+        <div class="summary-label">
+          Passed
+        </div>
         <div
           class="summary-value"
           id="resultPassed"
@@ -1528,7 +1788,9 @@
         </div>
       </div>
       <div class="summary-cell">
-        <div class="summary-label">Failed</div>
+        <div class="summary-label">
+          Failed
+        </div>
         <div
           class="summary-value"
           id="resultFailed"
@@ -1537,7 +1799,9 @@
         </div>
       </div>
       <div class="summary-cell">
-        <div class="summary-label">Duration</div>
+        <div class="summary-label">
+          Duration
+        </div>
         <div
           class="summary-value"
           id="resultDuration"
@@ -1547,8 +1811,8 @@
       </div>
     </div>
     <div
-      class="score-grid"
-      id="scoreGrid"
+      class="results-dimensions"
+      id="resultsDimensions"
     ></div>
     <div class="results-cases">
       <div class="results-cases-title">
@@ -1592,25 +1856,33 @@
     </div>
     <div class="footer-columns">
       <div class="footer-column">
-        <div class="footer-label">PRODUCT</div>
+        <div class="footer-label">
+          PRODUCT
+        </div>
         <a href="/app/">Evaluator</a>
         <a href="/benchmarks/">Benchmarks</a>
         <a href="/labs/">Labs</a>
         <a href="/pricing/">Pricing</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">RESOURCES</div>
+        <div class="footer-label">
+          RESOURCES
+        </div>
         <a href="/knowledge/">Knowledge</a>
         <a href="/docs/">Docs</a>
         <a href="/ai-usage/">AI Usage</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">COMPANY</div>
+        <div class="footer-label">
+          COMPANY
+        </div>
         <a href="/about/">About</a>
         <a href="/contact/">Contact</a>
       </div>
       <div class="footer-column">
-        <div class="footer-label">LEGAL</div>
+        <div class="footer-label">
+          LEGAL
+        </div>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
       </div>
@@ -1625,7 +1897,9 @@
 </div>
   </footer>
   <!-- =========================================================
-       PAGE JAVASCRIPT
+       BENCHMARK PAGE JAVASCRIPT
+       Connects directly to /api/benchmark.
+       Does NOT load api/benchmark.js as a browser script.
        ========================================================= -->
   <script>
     /* =========================================================
@@ -1636,48 +1910,62 @@
     const mobileNav =
       document.getElementById("mobileNav");
     if (mobileMenuButton && mobileNav) {
-      mobileMenuButton.addEventListener("click", () => {
-        const active =
-          mobileNav.classList.toggle("active");
-        mobileMenuButton.classList.toggle(
-          "active",
-          active
-        );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          String(active)
-        );
-        document.body.classList.toggle(
-          "menu-open",
-          active
-        );
-      });
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
+          const active =
+            mobileNav.classList.toggle("active");
+          mobileMenuButton.classList.toggle(
+            "active",
+            active
+          );
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            String(active)
+          );
+          document.body.classList.toggle(
+            "menu-open",
+            active
+          );
+        }
+      );
       mobileNav
         .querySelectorAll("a")
         .forEach((link) => {
-          link.addEventListener("click", () => {
-            mobileNav.classList.remove("active");
-            mobileMenuButton.classList.remove("active");
-            mobileMenuButton.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-            document.body.classList.remove(
-              "menu-open"
-            );
-          });
+          link.addEventListener(
+            "click",
+            () => {
+              mobileNav.classList.remove(
+                "active"
+              );
+              mobileMenuButton.classList.remove(
+                "active"
+              );
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+              document.body.classList.remove(
+                "menu-open"
+              );
+            }
+          );
         });
     }
     /* =========================================================
        PAGE PROGRESS
        ========================================================= */
     const pageProgress =
-      document.getElementById("pageProgress");
+      document.getElementById(
+        "pageProgress"
+      );
     if (pageProgress) {
       const updateProgress = () => {
-        const scrollTop = window.scrollY;
+        const scrollTop =
+          window.scrollY;
         const docHeight =
-          document.documentElement.scrollHeight -
+          document.documentElement
+            .scrollHeight -
           window.innerHeight;
         const progress =
           docHeight > 0
@@ -1697,7 +1985,9 @@
        REVEAL
        ========================================================= */
     const revealItems =
-      document.querySelectorAll(".reveal");
+      document.querySelectorAll(
+        ".reveal"
+      );
     if (
       "IntersectionObserver" in window &&
       revealItems.length
@@ -1705,1217 +1995,1090 @@
       const observer =
         new IntersectionObserver(
           (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add(
-                  "visible"
-                );
-                observer.unobserve(
-                  entry.target
-                );
+            entries.forEach(
+              (entry) => {
+                if (
+                  entry.isIntersecting
+                ) {
+                  entry.target.classList.add(
+                    "visible"
+                  );
+                  observer.unobserve(
+                    entry.target
+                  );
+                }
               }
-            });
+            );
           },
           {
             threshold: 0.12
           }
         );
-      revealItems.forEach((item) => {
-        observer.observe(item);
-      });
+      revealItems.forEach(
+        (item) =>
+          observer.observe(item)
+      );
     } else {
-      revealItems.forEach((item) => {
-        item.classList.add("visible");
-      });
+      revealItems.forEach(
+        (item) =>
+          item.classList.add("visible")
+      );
     }
     /* =========================================================
-       STATE
+       FIXED EVALUATION DIMENSIONS
+       ONLY WEIGHTS ARE EDITABLE.
        ========================================================= */
-    const state = {
-      dimensions: [
-        {
-          name: "factuality",
-          label: "Factuality",
-          description:
-            "Measures whether the response is factually accurate and supported by the available evidence.",
-          weight: 20
-        },
-        {
-          name: "instruction_following",
-          label: "Instruction Following",
-          description:
-            "Measures whether the response follows the requested instructions and constraints.",
-          weight: 20
-        },
-        {
-          name: "relevance",
-          label: "Relevance",
-          description:
-            "Measures whether the response directly addresses the task without unnecessary content.",
-          weight: 15
-        },
-        {
-          name: "completeness",
-          label: "Completeness",
-          description:
-            "Measures whether the response covers the important requirements of the task.",
-          weight: 15
-        },
-        {
-          name: "safety",
-          label: "Safety",
-          description:
-            "Measures whether the response avoids unsafe or inappropriate content.",
-          weight: 20
-        },
-        {
-          name: "fluency",
-          label: "Fluency",
-          description:
-            "Measures clarity, readability, grammar, and natural language quality.",
-          weight: 10
-        }
-      ]
-    };
-    /* =========================================================
-       ELEMENTS
-       ========================================================= */
+    const evaluationDimensions = [
+      {
+        name: "factuality",
+        label: "Factuality",
+        description:
+          "Whether the response is factually accurate and supported by the available evidence.",
+        weight: 20
+      },
+      {
+        name: "instruction_following",
+        label: "Instruction Following",
+        description:
+          "Whether the response follows the requested instructions, constraints, and output requirements.",
+        weight: 20
+      },
+      {
+        name: "relevance",
+        label: "Relevance",
+        description:
+          "Whether the response directly addresses the task and avoids unnecessary information.",
+        weight: 15
+      },
+      {
+        name: "completeness",
+        label: "Completeness",
+        description:
+          "Whether the response covers the important requirements and information needed to complete the task.",
+        weight: 15
+      },
+      {
+        name: "safety",
+        label: "Safety",
+        description:
+          "Whether the response avoids unsafe, harmful, or inappropriate content.",
+        weight: 20
+      },
+      {
+        name: "fluency",
+        label: "Fluency",
+        description:
+          "Whether the response is clear, readable, grammatically sound, and natural.",
+        weight: 10
+      }
+    ];
     const dimensionList =
-      document.getElementById("dimensionList");
-    const dimensionTotal =
-      document.getElementById("dimensionTotal");
-    const addDimensionButton =
-      document.getElementById("addDimension");
-    const normalizeWeightsButton =
-      document.getElementById("normalizeWeights");
+      document.getElementById(
+        "dimensionList"
+      );
+    const weightTotal =
+      document.getElementById(
+        "weightTotal"
+      );
+    const normalizeWeights =
+      document.getElementById(
+        "normalizeWeights"
+      );
     /* =========================================================
-       DIMENSION HELPERS
+       DIMENSION RENDERING
        ========================================================= */
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-    function slugifyDimension(value) {
-      return String(value)
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "_")
-        .replace(/^_+|_+$/g, "")
-        .slice(0, 60);
-    }
-    function getWeightTotal() {
-      return state.dimensions.reduce(
-        (total, dimension) => {
-          const weight =
-            Number(dimension.weight);
-          return total +
-            (Number.isFinite(weight)
-              ? weight
-              : 0);
-        },
-        0
-      );
-    }
-    function updateWeightStatus() {
-      const total =
-        getWeightTotal();
-      dimensionTotal.textContent =
-        "Total weight: " +
-        Number(total.toFixed(2)) +
-        "%";
-      dimensionTotal.classList.toggle(
-        "invalid",
-        Math.abs(total - 100) > 0.01
-      );
-    }
     function renderDimensions() {
       dimensionList.innerHTML = "";
-      state.dimensions.forEach(
+      evaluationDimensions.forEach(
         (dimension, index) => {
           const row =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
           row.className =
             "dimension-row";
-          row.dataset.index =
-            String(index);
           row.innerHTML = `
-            <div class="dimension-field">
-              <label for="dimension-name-${index}">
-                Dimension
-              </label>
-              <input
-                id="dimension-name-${index}"
-                class="dimension-name"
-                type="text"
-                value="${escapeHtml(
-                  dimension.label
-                )}"
-                placeholder="Dimension name"
-              />
+            <div class="dimension-name">
+              ${dimension.label}
             </div>
-            <div class="dimension-field dimension-description">
-              <label for="dimension-description-${index}">
-                Description
-              </label>
-              <textarea
-                id="dimension-description-${index}"
-                class="dimension-description-input"
-                placeholder="Describe what this dimension measures..."
-              >${escapeHtml(
-                dimension.description
-              )}</textarea>
-        </div>
-        <div class="dimension-field dimension-weight">
-          <label for="dimension-weight-${index}">
-            Weight %
-          </label>
-          <input
-            id="dimension-weight-${index}"
-            class="dimension-weight-input"
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-            value="${Number(
+            <div class="dimension-description">
+              ${dimension.description}
+            </div>
+            <div class="weight-control">
+              <input
+                class="weight-input"
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                value="${dimension.weight}"
+                data-dimension-index="${index}"
+                aria-label="${dimension.label} weight"
+              />
+              <span class="weight-symbol">%</span>
+            </div>
+          `;
+          dimensionList.appendChild(
+            row
+          );
+        }
+      );
+      updateWeightTotal();
+    }
+    /* =========================================================
+       WEIGHT VALIDATION
+       ========================================================= */
+    function updateWeightTotal() {
+      const total =
+        evaluationDimensions.reduce(
+          (
+            sum,
+            dimension
+          ) =>
+            sum +
+            Number(
               dimension.weight
-            )}"
-          />
-        </div>
-        <button
-          class="dimension-remove"
-          type="button"
-          data-remove-dimension="${index}"
-        >
-          REMOVE
-        </button>
-      `;
-      dimensionList.appendChild(row);
-    }
-  );
-  updateWeightStatus();
-}
-function readDimensionsFromUI() {
-  const rows =
-    dimensionList.querySelectorAll(
-      ".dimension-row"
-    );
-  rows.forEach((row, index) => {
-    const nameInput =
-      row.querySelector(
-        ".dimension-name"
-      );
-    const descriptionInput =
-      row.querySelector(
-        ".dimension-description-input"
-      );
-    const weightInput =
-      row.querySelector(
-        ".dimension-weight-input"
-      );
-    if (!state.dimensions[index]) {
-      return;
-    }
-    const label =
-      nameInput.value.trim() ||
-      "Unnamed Dimension";
-    state.dimensions[index].label =
-      label;
-    state.dimensions[index].name =
-      slugifyDimension(label) ||
-      "custom_dimension_" +
-        (index + 1);
-    state.dimensions[index].description =
-      descriptionInput.value.trim();
-    let weight =
-      Number(weightInput.value);
-    if (!Number.isFinite(weight)) {
-      weight = 0;
-    }
-    weight =
-      Math.max(
-        0,
-        Math.min(100, weight)
-      );
-    state.dimensions[index].weight =
-      weight;
-    weightInput.value =
-      String(weight);
-  });
-  updateWeightStatus();
-}
-/* =========================================================
-   DIMENSION INPUT EVENTS
-   ========================================================= */
-dimensionList.addEventListener(
-  "input",
-  (event) => {
-    const row =
-      event.target.closest(
-        ".dimension-row"
-      );
-    if (!row) {
-      return;
-    }
-    const index =
-      Number(row.dataset.index);
-    if (
-      !Number.isInteger(index) ||
-      !state.dimensions[index]
-    ) {
-      return;
-    }
-    if (
-      event.target.classList.contains(
-        "dimension-name"
-      )
-    ) {
-      const label =
-        event.target.value.trim();
-      state.dimensions[index].label =
-        event.target.value;
-      state.dimensions[index].name =
-        slugifyDimension(label) ||
-        "custom_dimension_" +
-          (index + 1);
-    }
-    if (
-      event.target.classList.contains(
-        "dimension-description-input"
-      )
-    ) {
-      state.dimensions[index]
-        .description =
-        event.target.value;
-    }
-    if (
-      event.target.classList.contains(
-        "dimension-weight-input"
-      )
-    ) {
-      let weight =
-        Number(event.target.value);
-      if (!Number.isFinite(weight)) {
-        weight = 0;
-      }
-      weight =
-        Math.max(
-          0,
-          Math.min(100, weight)
+            ),
+          0
         );
-      state.dimensions[index].weight =
-        weight;
-      updateWeightStatus();
-    }
-  }
-);
-/* =========================================================
-   REMOVE DIMENSION
-   ========================================================= */
-dimensionList.addEventListener(
-  "click",
-  (event) => {
-    const button =
-      event.target.closest(
-        "[data-remove-dimension]"
-      );
-    if (!button) {
-      return;
-    }
-    const index =
-      Number(
-        button.dataset.removeDimension
-      );
-    if (
-      !Number.isInteger(index) ||
-      !state.dimensions[index]
-    ) {
-      return;
-    }
-    if (state.dimensions.length <= 1) {
-      return;
-    }
-    state.dimensions.splice(
-      index,
-      1
-    );
-    renderDimensions();
-  }
-);
-/* =========================================================
-   ADD DIMENSION
-   ========================================================= */
-addDimensionButton.addEventListener(
-  "click",
-  () => {
-    state.dimensions.push({
-      name:
-        "custom_dimension_" +
-        (state.dimensions.length + 1),
-      label:
-        "New Dimension",
-      description:
-        "Describe what this dimension measures.",
-      weight: 0
-    });
-    renderDimensions();
-    const rows =
-      dimensionList.querySelectorAll(
-        ".dimension-row"
-      );
-    const lastRow =
-      rows[rows.length - 1];
-    if (lastRow) {
-      const input =
-        lastRow.querySelector(
-          ".dimension-name"
+      const rounded =
+        Number(
+          total.toFixed(2)
         );
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    }
-  }
-);
-/* =========================================================
-   NORMALIZE WEIGHTS
-   ========================================================= */
-normalizeWeightsButton.addEventListener(
-  "click",
-  () => {
-    readDimensionsFromUI();
-    if (!state.dimensions.length) {
-      return;
-    }
-    const total =
-      getWeightTotal();
-    if (total <= 0) {
-      const equalWeight =
-        100 /
-        state.dimensions.length;
-      state.dimensions.forEach(
-        (dimension) => {
-          dimension.weight =
-            Number(
-              equalWeight.toFixed(2)
-            );
-        }
+      weightTotal.textContent =
+        "Total weight: " +
+        rounded +
+        "%";
+      const valid =
+        Math.abs(
+          total - 100
+        ) < 0.01;
+      weightTotal.classList.toggle(
+        "valid",
+        valid
       );
-    } else {
-      state.dimensions.forEach(
-        (dimension) => {
-          dimension.weight =
-            Number(
-              (
-                (dimension.weight /
-                  total) *
-                100
-              ).toFixed(2)
-            );
-        }
+      weightTotal.classList.toggle(
+        "invalid",
+        !valid
       );
+      return valid;
     }
-    const correctedTotal =
-      getWeightTotal();
-    const difference =
-      Number(
-        (
-          100 -
-          correctedTotal
-        ).toFixed(2)
-      );
-    if (
-      state.dimensions.length &&
-      Math.abs(difference) > 0
-    ) {
-      state.dimensions[
-        state.dimensions.length - 1
-      ].weight += difference;
-    }
-    renderDimensions();
-  }
-);
-/* =========================================================
-   INITIAL DIMENSIONS
-   ========================================================= */
-renderDimensions();
-/* =========================================================
-   TEST MODE
-   ========================================================= */
-const modeCards =
-  document.querySelectorAll(
-    "[data-mode-card]"
-  );
-const modeContents = {
-  single:
-    document.getElementById(
-      "singleMode"
-    ),
-  suite:
-    document.getElementById(
-      "suiteMode"
-    ),
-  stress:
-    document.getElementById(
-      "stressMode"
-    )
-};
-function getSelectedMode() {
-  const selected =
-    document.querySelector(
-      'input[name="testMode"]:checked'
-    );
-  return selected
-    ? selected.value
-    : "single";
-}
-function updateMode() {
-  const mode =
-    getSelectedMode();
-  modeCards.forEach(
-    (card) => {
-      card.classList.toggle(
-        "active",
-        card.dataset.modeCard === mode
-      );
-    }
-  );
-  Object.entries(modeContents)
-    .forEach(
-      ([key, element]) => {
-        if (!element) {
+    dimensionList.addEventListener(
+      "input",
+      (event) => {
+        const input =
+          event.target.closest(
+            ".weight-input"
+          );
+        if (!input) {
           return;
         }
-        element.classList.toggle(
-          "active",
-          key === mode
-        );
+        const index =
+          Number(
+            input.dataset.dimensionIndex
+          );
+        let value =
+          Number(input.value);
+        if (!Number.isFinite(value)) {
+          value = 0;
+        }
+        value =
+          Math.max(
+            0,
+            Math.min(
+              100,
+              value
+            )
+          );
+        evaluationDimensions[index]
+          .weight = value;
+        updateWeightTotal();
       }
     );
-}
-document
-  .querySelectorAll(
-    'input[name="testMode"]'
-  )
-  .forEach((input) => {
-    input.addEventListener(
-      "change",
-      updateMode
-    );
-  });
-modeCards.forEach(
-  (card) => {
-    card.addEventListener(
+    /* =========================================================
+       NORMALIZE WEIGHTS
+       ========================================================= */
+    normalizeWeights.addEventListener(
       "click",
       () => {
-        const input =
-          card.querySelector(
-            'input[type="radio"]'
+        const total =
+          evaluationDimensions.reduce(
+            (
+              sum,
+              dimension
+            ) =>
+              sum +
+              Number(
+                dimension.weight
+              ),
+            0
           );
-        if (input) {
-          input.checked = true;
-          updateMode();
+        if (total <= 0) {
+          const equal =
+            100 /
+            evaluationDimensions.length;
+          evaluationDimensions.forEach(
+            (dimension) => {
+              dimension.weight =
+                Number(
+                  equal.toFixed(2)
+                );
+            }
+          );
+        } else {
+          evaluationDimensions.forEach(
+            (dimension) => {
+              dimension.weight =
+                Number(
+                  (
+                    dimension.weight /
+                    total *
+                    100
+                  ).toFixed(2)
+                );
+            }
+          );
         }
-      }
-    );
-  }
-);
-/* =========================================================
-   PROVIDER
-   ========================================================= */
-const provider =
-  document.getElementById(
-    "provider"
-  );
-const model =
-  document.getElementById(
-    "model"
-  );
-const customApiPanel =
-  document.getElementById(
-    "customApiPanel"
-  );
-provider.addEventListener(
-  "change",
-  () => {
-    customApiPanel.classList.toggle(
-      "visible",
-      provider.value === "custom"
-    );
-  }
-);
-/* =========================================================
-   CASE COUNT
-   ========================================================= */
-const caseCount =
-  document.getElementById(
-    "caseCount"
-  );
-const customCaseField =
-  document.getElementById(
-    "customCaseField"
-  );
-caseCount.addEventListener(
-  "change",
-  () => {
-    customCaseField.style.display =
-      caseCount.value === "custom"
-        ? "block"
-        : "none";
-  }
-);
-/* =========================================================
-   VALUE HELPERS
-   ========================================================= */
-function numberValue(
-  id,
-  fallback,
-  minimum,
-  maximum
-) {
-  const element =
-    document.getElementById(id);
-  let value =
-    Number(element.value);
-  if (!Number.isFinite(value)) {
-    value = fallback;
-  }
-  return Math.max(
-    minimum,
-    Math.min(maximum, value)
-  );
-}
-function getTestSize() {
-  const mode =
-    getSelectedMode();
-  if (mode === "single") {
-    return 1;
-  }
-  if (mode === "stress") {
-    return numberValue(
-      "totalRequests",
-      25,
-      1,
-      100
-    );
-  }
-  if (caseCount.value === "custom") {
-    return numberValue(
-      "customCaseCount",
-      25,
-      1,
-      100
-    );
-  }
-  return Number(
-    caseCount.value
-  );
-}
-/* =========================================================
-   BUILD CUSTOM DIMENSIONS
-   ========================================================= */
-function getDimensionPayload() {
-  readDimensionsFromUI();
-  return state.dimensions
-    .filter(
-      (dimension) =>
-        dimension.label.trim()
-    )
-    .map((dimension) => ({
-      name:
-        slugifyDimension(
-          dimension.label
-        ) ||
-        "custom_dimension",
-      label:
-        dimension.label.trim(),
-      description:
-        dimension.description.trim(),
-      weight:
-        Number(dimension.weight)
-    }));
-}
-function getWeightsPayload(
-  dimensions
-) {
-  const weights = {};
-  dimensions.forEach(
-    (dimension) => {
-      weights[dimension.name] =
-        Number(
-          dimension.weight
-        );
-    }
-  );
-  return weights;
-}
-/* =========================================================
-   RESULTS HELPERS
-   ========================================================= */
-function formatNumber(value) {
-  const number =
-    Number(value);
-  if (!Number.isFinite(number)) {
-    return "—";
-  }
-  return number.toFixed(1);
-}
-function formatDuration(ms) {
-  const value =
-    Number(ms);
-  if (
-    !Number.isFinite(value) ||
-    value < 0
-  ) {
-    return "—";
-  }
-  if (value < 1000) {
-    return (
-      Math.round(value) +
-      " ms"
-    );
-  }
-  return (
-    (value / 1000).toFixed(2) +
-    " s"
-  );
-}
-function getCaseScore(result) {
-  const direct =
-    Number(
-      result.score ??
-      result.overall
-    );
-  if (Number.isFinite(direct)) {
-    return direct;
-  }
-  const scores =
-    result.scores;
-  if (
-    scores &&
-    typeof scores === "object"
-  ) {
-    const values =
-      Object.values(scores)
-        .map(Number)
-        .filter(Number.isFinite);
-    if (values.length) {
-      return (
-        values.reduce(
-          (sum, value) =>
-            sum + value,
-          0
-        ) /
-        values.length
-      );
-    }
-  }
-  return null;
-}
-function getDimensionScore(
-  dimensions,
-  key
-) {
-  if (
-    !dimensions ||
-    typeof dimensions !== "object"
-  ) {
-    return null;
-  }
-  const value =
-    dimensions[key];
-  if (
-    typeof value === "object" &&
-    value !== null
-  ) {
-    const score =
-      Number(value.score);
-    return Number.isFinite(score)
-      ? score
-      : null;
-  }
-  const score =
-    Number(value);
-  return Number.isFinite(score)
-    ? score
-    : null;
-}
-function renderResults(data, elapsedMs) {
-  const resultsSection =
-    document.getElementById(
-      "resultsSection"
-    );
-  const resultOverall =
-    document.getElementById(
-      "resultOverall"
-    );
-  const resultCases =
-    document.getElementById(
-      "resultCases"
-    );
-  const resultPassed =
-    document.getElementById(
-      "resultPassed"
-    );
-  const resultFailed =
-    document.getElementById(
-      "resultFailed"
-    );
-  const resultDuration =
-    document.getElementById(
-      "resultDuration"
-    );
-  const caseResults =
-    document.getElementById(
-      "caseResults"
-    );
-  const resultsNote =
-    document.getElementById(
-      "resultsNote"
-    );
-  const scoreGrid =
-    document.getElementById(
-      "scoreGrid"
-    );
-  const summary =
-    data.summary || {};
-  const performance =
-    data.performance || {};
-  const run =
-    data.run || {};
-  const overall =
-    Number(
-      summary.overall ??
-      summary.overallScore ??
-      data.overall
-    );
-  const results =
-    Array.isArray(data.results)
-      ? data.results
-      : [];
-  const cases =
-    Number(
-      summary.cases ??
-      results.length
-    );
-  const passed =
-    Number(
-      summary.passed ??
-      results.filter(
-        (result) =>
-          String(
-            result.status
-          ).toLowerCase() ===
-          "passed"
-      ).length
-    );
-  const failed =
-    Number(
-      summary.failed ??
-      Math.max(
-        0,
-        cases - passed
-      )
-    );
-  const duration =
-    performance.durationMs ??
-    run.durationMs ??
-    elapsedMs;
-  resultOverall.textContent =
-    Number.isFinite(overall)
-      ? formatNumber(overall)
-      : "—";
-  resultCases.textContent =
-    Number.isFinite(cases)
-      ? String(cases)
-      : "—";
-  resultPassed.textContent =
-    Number.isFinite(passed)
-      ? String(passed)
-      : "—";
-  resultFailed.textContent =
-    Number.isFinite(failed)
-      ? String(failed)
-      : "—";
-  resultDuration.textContent =
-    formatDuration(duration);
-  /* DIMENSION RESULTS */
-  scoreGrid.innerHTML = "";
-  const configuredDimensions =
-    getDimensionPayload();
-  const returnedDimensions =
-    data.dimensions || {};
-  configuredDimensions.forEach(
-    (dimension) => {
-      let score =
-        getDimensionScore(
-          returnedDimensions,
-          dimension.name
-        );
-      if (
-        score === null
-      ) {
-        score =
-          getDimensionScore(
-            returnedDimensions,
-            dimension.label
+        /* Correct rounding difference */
+        const normalizedTotal =
+          evaluationDimensions.reduce(
+            (
+              sum,
+              dimension
+            ) =>
+              sum +
+              dimension.weight,
+            0
           );
+        const difference =
+          Number(
+            (
+              100 -
+              normalizedTotal
+            ).toFixed(2)
+          );
+        evaluationDimensions[
+          evaluationDimensions.length - 1
+        ].weight += difference;
+        renderDimensions();
       }
-      const card =
-        document.createElement(
-          "div"
-        );
-      card.className =
-        "score-card";
-      card.innerHTML = `
-        <div class="score-card-label">
-          ${escapeHtml(
-            dimension.label
-          )}
-        </div>
-        <div class="score-card-value">
-          ${
-            score === null
-              ? "—"
-              : formatNumber(score)
-          }
-        </div>
-      `;
-      scoreGrid.appendChild(
-        card
-      );
-    }
-  );
-  /* CASE TABLE */
-  caseResults.innerHTML = "";
-  results.forEach(
-    (result, index) => {
-      const row =
-        document.createElement(
-          "tr"
-        );
-      const status =
-        String(
-          result.status ??
-          "unknown"
-        );
-      const normalizedStatus =
-        status.toLowerCase();
-      const score =
-        getCaseScore(result);
-      const latency =
-        result.latencyMs ??
-        result.latency;
-      const category =
-        result.category ??
-        "EVP.Aureon";
-      const caseName =
-        result.case ??
-        result.caseId ??
-        result.id ??
-        "Case " +
-          (index + 1);
-      let statusClass = "";
-      if (
-        normalizedStatus ===
-        "passed"
-      ) {
-        statusClass =
-          "case-status-passed";
-      }
-      if (
-        normalizedStatus ===
-        "failed"
-      ) {
-        statusClass =
-          "case-status-failed";
-      }
-      row.innerHTML = `
-        <td>
-          ${escapeHtml(caseName)}
-        </td>
-        <td class="${statusClass}">
-          ${escapeHtml(status)}
-        </td>
-        <td>
-          ${
-            score === null
-              ? "—"
-              : formatNumber(score)
-          }
-        </td>
-        <td>
-          ${escapeHtml(category)}
-        </td>
-        <td>
-          ${formatDuration(latency)}
-        </td>
-      `;
-      caseResults.appendChild(
-        row
-      );
-    }
-  );
-  if (!results.length) {
-    const row =
-      document.createElement(
-        "tr"
-      );
-    row.innerHTML = `
-      <td colspan="5">
-        No individual case results were returned.
-      </td>
-    `;
-    caseResults.appendChild(
-      row
     );
-  }
-  resultsNote.textContent =
-    data.note ||
-    "Benchmark completed successfully.";
-  resultsSection.classList.add(
-    "visible"
-  );
-  resultsSection.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
-/* =========================================================
-   RUN BENCHMARK
-   ========================================================= */
-const runButton =
-  document.getElementById(
-    "runBenchmark"
-  );
-const runError =
-  document.getElementById(
-    "runError"
-  );
-runButton.addEventListener(
-  "click",
-  async () => {
-    runError.classList.remove(
-      "visible"
-    );
-    runError.textContent = "";
-    const dimensions =
-      getDimensionPayload();
-    if (!dimensions.length) {
-      runError.textContent =
-        "Add at least one evaluation dimension.";
-      runError.classList.add(
-        "visible"
+    renderDimensions();
+    /* =========================================================
+       TEST MODE
+       ========================================================= */
+    const modeCards =
+      document.querySelectorAll(
+        "[data-mode-card]"
       );
-      return;
-    }
-    const totalWeight =
-      dimensions.reduce(
-        (sum, dimension) =>
-          sum +
-          Number(dimension.weight),
-        0
-      );
-    if (
-      Math.abs(
-        totalWeight - 100
-      ) > 0.01
-    ) {
-      runError.textContent =
-        "Evaluation dimension weights must total 100%. Use “Normalize weights” or adjust the weights manually.";
-      runError.classList.add(
-        "visible"
-      );
-      return;
-    }
-    const selectedMode =
-      getSelectedMode();
-    const stress = {
-      concurrency:
-        numberValue(
-          "concurrency",
-          1,
-          1,
-          100
+    const modeContent = {
+      single:
+        document.getElementById(
+          "singleMode"
         ),
-      totalRequests:
-        numberValue(
+      suite:
+        document.getElementById(
+          "suiteMode"
+        ),
+      stress:
+        document.getElementById(
+          "stressMode"
+        )
+    };
+    function getSelectedMode() {
+      const selected =
+        document.querySelector(
+          'input[name="testMode"]:checked'
+        );
+      return selected
+        ? selected.value
+        : "single";
+    }
+    function updateMode() {
+      const mode =
+        getSelectedMode();
+      modeCards.forEach(
+        (card) => {
+          card.classList.toggle(
+            "active",
+            card.dataset.modeCard ===
+              mode
+          );
+        }
+      );
+      Object.entries(
+        modeContent
+      ).forEach(
+        ([key, element]) => {
+          if (!element) {
+            return;
+          }
+          element.classList.toggle(
+            "active",
+            key === mode
+          );
+        }
+      );
+    }
+    document
+      .querySelectorAll(
+        'input[name="testMode"]'
+      )
+      .forEach(
+        (input) => {
+          input.addEventListener(
+            "change",
+            updateMode
+          );
+        }
+      );
+    modeCards.forEach(
+      (card) => {
+        card.addEventListener(
+          "click",
+          () => {
+            const input =
+              card.querySelector(
+                'input[type="radio"]'
+              );
+            if (input) {
+              input.checked =
+                true;
+              updateMode();
+            }
+          }
+        );
+      }
+    );
+    updateMode();
+    /* =========================================================
+       PROVIDER
+       ========================================================= */
+    const provider =
+      document.getElementById(
+        "provider"
+      );
+    const customApiPanel =
+      document.getElementById(
+        "customApiPanel"
+      );
+    provider.addEventListener(
+      "change",
+      () => {
+        customApiPanel.classList.toggle(
+          "visible",
+          provider.value ===
+            "custom"
+        );
+      }
+    );
+    /* =========================================================
+       CASE COUNT
+       ========================================================= */
+    const caseCount =
+      document.getElementById(
+        "caseCount"
+      );
+    const customCaseField =
+      document.getElementById(
+        "customCaseField"
+      );
+    caseCount.addEventListener(
+      "change",
+      () => {
+        customCaseField.style.display =
+          caseCount.value ===
+          "custom"
+            ? "block"
+            : "none";
+      }
+    );
+    /* =========================================================
+       SAFE NUMBER
+       ========================================================= */
+    function getNumber(
+      id,
+      fallback,
+      minimum,
+      maximum
+    ) {
+      const element =
+        document.getElementById(id);
+      let value =
+        Number(element.value);
+      if (!Number.isFinite(value)) {
+        value = fallback;
+      }
+      return Math.max(
+        minimum,
+        Math.min(
+          maximum,
+          value
+        )
+      );
+    }
+    /* =========================================================
+       TEST SIZE
+       ========================================================= */
+    function getTestSize() {
+      const mode =
+        getSelectedMode();
+      if (mode === "single") {
+        return 1;
+      }
+      if (mode === "stress") {
+        return getNumber(
           "totalRequests",
           25,
           1,
           100
-        ),
-      requestDelay:
-        numberValue(
-          "requestDelay",
-          0,
-          0,
-          60000
-        ),
-      maximumDuration:
-        numberValue(
-          "maxDuration",
-          300,
+        );
+      }
+      if (
+        caseCount.value ===
+        "custom"
+      ) {
+        return getNumber(
+          "customCaseCount",
+          25,
           1,
-          3600
-        ),
-      prompt:
-        document
-          .getElementById(
-            "stressPrompt"
-          )
-          .value.trim()
-    };
-    const payload = {
-      mode:
-        selectedMode,
-      provider:
-        provider.value,
-      model:
-        model.value,
-      benchmark:
-        "General Quality",
-      dataset:
-        "EVP.Aureon — General Purpose Quality",
-      dimensions:
-        dimensions.map(
-          (dimension) =>
-            dimension.name
-        ),
-      dimensionConfig:
-        dimensions,
-      weights:
-        getWeightsPayload(
-          dimensions
-        ),
-      testSize:
-        getTestSize(),
-      apiKey:
-        document
-          .getElementById(
-            "apiKey"
-          )
-          .value.trim(),
-      endpoint:
-        document
-          .getElementById(
-            "endpoint"
-          )
-          .value.trim(),
-      authType:
-        document
-          .getElementById(
-            "authType"
-          )
-          .value,
-      authHeader:
-        document
-          .getElementById(
-            "authHeader"
-          )
-          .value.trim(),
-      temperature:
-        numberValue(
-          "temperature",
-          0.1,
-          0,
-          2
-        ),
-      stress
-    };
-    /* SINGLE CASE */
-    if (
-      selectedMode ===
-      "single"
-    ) {
-      payload.prompt =
-        document
-          .getElementById(
-            "singlePrompt"
-          )
-          .value.trim();
-      payload.response =
-        document
-          .getElementById(
-            "singleResponse"
-          )
-          .value.trim();
-      payload.reference =
-        document
-          .getElementById(
-            "singleReference"
-          )
-          .value.trim();
-    }
-    /* RUN STATE */
-    const originalText =
-      runButton.textContent;
-    runButton.disabled = true;
-    runButton.textContent =
-      "RUNNING…";
-    const startedAt =
-      performance.now();
-    try {
-      const response =
-        await fetch(
-          "/api/benchmark",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-            body:
-              JSON.stringify(
-                payload
-              )
-          }
-        );
-      let data;
-      try {
-        data =
-          await response.json();
-      } catch {
-        data = {};
-      }
-      if (!response.ok) {
-        const message =
-          data.error ||
-          data.message ||
-          "Benchmark request failed.";
-        throw new Error(
-          message
+          100
         );
       }
-      const elapsed =
-        performance.now() -
-        startedAt;
-      renderResults(
-        data,
-        elapsed
+      return Number(
+        caseCount.value
       );
-    } catch (error) {
-      runError.textContent =
-        error?.message ||
-        "Unable to run the benchmark.";
-      runError.classList.add(
+    }
+    /* =========================================================
+       ESCAPE HTML
+       ========================================================= */
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+    }
+    /* =========================================================
+       FORMAT
+       ========================================================= */
+    function formatScore(value) {
+      const number =
+        Number(value);
+      return Number.isFinite(number)
+        ? number.toFixed(1)
+        : "—";
+    }
+    function formatDuration(value) {
+      const number =
+        Number(value);
+      if (
+        !Number.isFinite(number) ||
+        number < 0
+      ) {
+        return "—";
+      }
+      if (number < 1000) {
+        return (
+          Math.round(number) +
+          " ms"
+        );
+      }
+      return (
+        number / 1000
+      ).toFixed(2) +
+        " s";
+    }
+    /* =========================================================
+       DIMENSION RESULT LOOKUP
+       ========================================================= */
+    function getDimensionScore(
+      dimensions,
+      name,
+      label
+    ) {
+      if (
+        !dimensions ||
+        typeof dimensions !==
+          "object"
+      ) {
+        return null;
+      }
+      const candidates = [
+        name,
+        label,
+        name.toLowerCase(),
+        label.toLowerCase()
+      ];
+      for (
+        const key of candidates
+      ) {
+        if (
+          Object.prototype
+            .hasOwnProperty.call(
+              dimensions,
+              key
+            )
+        ) {
+          const value =
+            dimensions[key];
+          if (
+            value &&
+            typeof value ===
+              "object"
+          ) {
+            const score =
+              Number(
+                value.score
+              );
+            if (
+              Number.isFinite(score)
+            ) {
+              return score;
+            }
+          }
+          const score =
+            Number(value);
+          if (
+            Number.isFinite(score)
+          ) {
+            return score;
+          }
+        }
+      }
+      return null;
+    }
+    /* =========================================================
+       CASE SCORE
+       ========================================================= */
+    function getCaseScore(
+      result
+    ) {
+      const direct =
+        Number(
+          result.score ??
+          result.overall
+        );
+      if (
+        Number.isFinite(
+          direct
+        )
+      ) {
+        return direct;
+      }
+      if (
+        result.scores &&
+        typeof result.scores ===
+          "object"
+      ) {
+        const scores =
+          Object.values(
+            result.scores
+          )
+          .map(Number)
+          .filter(
+            Number.isFinite
+          );
+        if (scores.length) {
+          return (
+            scores.reduce(
+              (
+                sum,
+                score
+              ) =>
+                sum + score,
+              0
+            ) /
+            scores.length
+          );
+        }
+      }
+      return null;
+    }
+    /* =========================================================
+       RESULTS
+       ========================================================= */
+    function renderResults(
+      data,
+      elapsed
+    ) {
+      const resultsSection =
+        document.getElementById(
+          "resultsSection"
+        );
+      const resultOverall =
+        document.getElementById(
+          "resultOverall"
+        );
+      const resultCases =
+        document.getElementById(
+          "resultCases"
+        );
+      const resultPassed =
+        document.getElementById(
+          "resultPassed"
+        );
+      const resultFailed =
+        document.getElementById(
+          "resultFailed"
+        );
+      const resultDuration =
+        document.getElementById(
+          "resultDuration"
+        );
+      const resultsDimensions =
+        document.getElementById(
+          "resultsDimensions"
+        );
+      const caseResults =
+        document.getElementById(
+          "caseResults"
+        );
+      const resultsNote =
+        document.getElementById(
+          "resultsNote"
+        );
+      const summary =
+        data.summary || {};
+      const performance =
+        data.performance || {};
+      const run =
+        data.run || {};
+      const overall =
+        Number(
+          summary.overall ??
+          summary.overallScore ??
+          data.overall
+        );
+      const results =
+        Array.isArray(
+          data.results
+        )
+          ? data.results
+          : [];
+      const cases =
+        Number(
+          summary.cases ??
+          results.length
+        );
+      const passed =
+        Number(
+          summary.passed ??
+          results.filter(
+            (result) =>
+              String(
+                result.status
+              ).toLowerCase() ===
+              "passed"
+          ).length
+        );
+      const failed =
+        Number(
+          summary.failed ??
+          Math.max(
+            0,
+            cases - passed
+          )
+        );
+      const duration =
+        performance.durationMs ??
+        run.durationMs ??
+        elapsed;
+      resultOverall.textContent =
+        Number.isFinite(
+          overall
+        )
+          ? formatScore(
+              overall
+            )
+          : "—";
+      resultCases.textContent =
+        Number.isFinite(
+          cases
+        )
+          ? String(cases)
+          : "—";
+      resultPassed.textContent =
+        Number.isFinite(
+          passed
+        )
+          ? String(passed)
+          : "—";
+      resultFailed.textContent =
+        Number.isFinite(
+          failed
+        )
+          ? String(failed)
+          : "—";
+      resultDuration.textContent =
+        formatDuration(
+          duration
+        );
+      /* =======================================================
+         DIMENSION RESULTS
+         ======================================================= */
+      resultsDimensions.innerHTML =
+        "";
+      const returnedDimensions =
+        data.dimensions || {};
+      evaluationDimensions.forEach(
+        (dimension) => {
+          const score =
+            getDimensionScore(
+              returnedDimensions,
+              dimension.name,
+              dimension.label
+            );
+          const card =
+            document.createElement(
+              "div"
+            );
+          card.className =
+            "result-dimension";
+          card.innerHTML = `
+            <div class="result-dimension-name">
+              ${escapeHtml(
+                dimension.label
+              )}
+            </div>
+            <div class="result-dimension-score">
+              ${
+                score === null
+                  ? "—"
+                  : formatScore(score)
+              }
+            </div>
+          `;
+          resultsDimensions.appendChild(
+            card
+          );
+        }
+      );
+      /* =======================================================
+         CASE RESULTS
+         ======================================================= */
+      caseResults.innerHTML =
+        "";
+      results.forEach(
+        (
+          result,
+          index
+        ) => {
+          const row =
+            document.createElement(
+              "tr"
+            );
+          const status =
+            String(
+              result.status ??
+              "unknown"
+            );
+          const normalizedStatus =
+            status.toLowerCase();
+          const statusClass =
+            normalizedStatus ===
+            "passed"
+              ? "status-passed"
+              : normalizedStatus ===
+                "failed"
+                ? "status-failed"
+                : "";
+          const caseName =
+            result.case ??
+            result.caseId ??
+            result.id ??
+            "Case " +
+              (index + 1);
+          const score =
+            getCaseScore(
+              result
+            );
+          const category =
+            result.category ??
+            "EVP.Aureon";
+          const latency =
+            result.latencyMs ??
+            result.latency;
+          row.innerHTML = `
+            <td>
+              ${escapeHtml(
+                caseName
+              )}
+            </td>
+            <td class="${statusClass}">
+              ${escapeHtml(
+                status
+              )}
+            </td>
+            <td>
+              ${
+                score === null
+                  ? "—"
+                  : formatScore(
+                      score
+                    )
+              }
+            </td>
+            <td>
+              ${escapeHtml(
+                category
+              )}
+            </td>
+            <td>
+              ${formatDuration(
+                latency
+              )}
+            </td>
+          `;
+          caseResults.appendChild(
+            row
+          );
+        }
+      );
+      if (
+        !results.length
+      ) {
+        const row =
+          document.createElement(
+            "tr"
+          );
+        row.innerHTML = `
+          <td colspan="5">
+            No individual case results were returned.
+          </td>
+        `;
+        caseResults.appendChild(
+          row
+        );
+      }
+      resultsNote.textContent =
+        data.note ||
+        "Benchmark completed successfully.";
+      resultsSection.classList.add(
         "visible"
       );
-    } finally {
-      runButton.disabled =
-        false;
-      runButton.textContent =
-        originalText;
+      resultsSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
-  }
-);
-/* =========================================================
-   INITIAL STATE
-   ========================================================= */
-updateMode();
+    /* =========================================================
+       RUN BENCHMARK
+       ========================================================= */
+    const runBenchmark =
+      document.getElementById(
+        "runBenchmark"
+      );
+    const runError =
+      document.getElementById(
+        "runError"
+      );
+    runBenchmark.addEventListener(
+      "click",
+      async () => {
+        runError.textContent =
+          "";
+        runError.classList.remove(
+          "visible"
+        );
+        /* Validate weights */
+        if (
+          !updateWeightTotal()
+        ) {
+          runError.textContent =
+            "Evaluation weights must total 100%. Adjust the values or use “Normalize to 100%”.";
+          runError.classList.add(
+            "visible"
+          );
+          return;
+        }
+        const mode =
+          getSelectedMode();
+        const dimensions =
+          evaluationDimensions.map(
+            (dimension) =>
+              dimension.name
+          );
+        const weights = {};
+        evaluationDimensions.forEach(
+          (dimension) => {
+            weights[
+              dimension.name
+            ] =
+              Number(
+                dimension.weight
+              );
+          }
+        );
+        const stress = {
+          concurrency:
+            getNumber(
+              "concurrency",
+              1,
+              1,
+              100
+            ),
+          totalRequests:
+            getNumber(
+              "totalRequests",
+              25,
+              1,
+              100
+            ),
+          requestDelay:
+            getNumber(
+              "requestDelay",
+              0,
+              0,
+              60000
+            ),
+          maximumDuration:
+            getNumber(
+              "maxDuration",
+              300,
+              1,
+              3600
+            ),
+          prompt:
+            document
+              .getElementById(
+                "stressPrompt"
+              )
+              .value
+              .trim()
+        };
+        /* =====================================================
+           EXACT BENCHMARK API PAYLOAD
+           ===================================================== */
+        const payload = {
+          mode,
+          provider:
+            provider.value,
+          model:
+            document
+              .getElementById(
+                "model"
+              )
+              .value,
+          benchmark:
+            "General Quality",
+          dataset:
+            "EVP.Aureon — General Purpose Quality",
+          dimensions,
+          weights,
+          testSize:
+            getTestSize(),
+          stress
+        };
+        /* =====================================================
+           SINGLE CASE DATA
+           ===================================================== */
+        if (
+          mode === "single"
+        ) {
+          payload.prompt =
+            document
+              .getElementById(
+                "singlePrompt"
+              )
+              .value
+              .trim();
+          payload.response =
+            document
+              .getElementById(
+                "singleResponse"
+              )
+              .value
+              .trim();
+          payload.reference =
+            document
+              .getElementById(
+                "singleReference"
+              )
+              .value
+              .trim();
+        }
+        /* =====================================================
+           RUN
+           ===================================================== */
+        const originalText =
+          runBenchmark.textContent;
+        runBenchmark.disabled =
+          true;
+        runBenchmark.textContent =
+          "RUNNING…";
+        const startedAt =
+          performance.now();
+        try {
+          const response =
+            await fetch(
+              "/api/benchmark",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body:
+                  JSON.stringify(
+                    payload
+                  )
+              }
+            );
+          let data = {};
+          try {
+            data =
+              await response.json();
+          } catch {
+            data = {};
+          }
+          if (
+            !response.ok
+          ) {
+            throw new Error(
+              data.error ||
+              data.message ||
+              "Benchmark request failed."
+            );
+          }
+          const elapsed =
+            performance.now() -
+            startedAt;
+          renderResults(
+            data,
+            elapsed
+          );
+        } catch (error) {
+          runError.textContent =
+            error?.message ||
+            "Unable to run the benchmark.";
+          runError.classList.add(
+            "visible"
+          );
+        } finally {
+          runBenchmark.disabled =
+            false;
+          runBenchmark.textContent =
+            originalText;
+        }
+      }
+    );
   </script>
 </body>
 </html>
