@@ -2038,7 +2038,79 @@
 
                     </div>
 
+<div id="uploadPanel" class="upload-panel" hidden>
 
+  <div class="upload-header">
+    <strong>Upload Benchmark Responses</strong>
+    <span>Upload a CSV or JSON file containing your AI responses.</span>
+  </div>
+
+  <label
+    for="responseFile"
+    id="uploadDropZone"
+    class="upload-drop-zone"
+  >
+
+    <input
+      type="file"
+      id="responseFile"
+      accept=".csv,.json"
+      hidden
+    >
+
+    <div class="upload-icon">↑</div>
+
+    <strong>Drop your CSV or JSON file here</strong>
+
+    <span>or click to choose a file</span>
+
+    <button
+      type="button"
+      id="chooseResponseFile"
+    >
+      Choose File
+    </button>
+
+  </label>
+
+  <div
+    id="uploadFileInfo"
+    class="upload-file-info"
+    hidden
+  ></div>
+
+  <div
+    id="uploadValidation"
+    class="upload-validation"
+    hidden
+  ></div>
+
+  <div class="upload-templates">
+
+    <span>Templates:</span>
+
+    <button
+      type="button"
+      id="downloadCsvTemplate"
+    >
+      CSV Template
+    </button>
+
+    <button
+      type="button"
+      id="downloadJsonTemplate"
+    >
+      JSON Template
+    </button>
+
+  </div>
+
+  <p class="upload-note">
+    Required fields: <code>test_id</code> and <code>response</code>.
+    The <code>prompt</code> field is recommended.
+  </p>
+
+</div>
                   </div>
 
                 </div>
