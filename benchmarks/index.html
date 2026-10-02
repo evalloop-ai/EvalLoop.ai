@@ -3937,7 +3937,72 @@ connectionInputs.forEach(
 
 updateConnectionMethod();
 
+/* =======================================================
+   RESPONSE FILE UPLOAD
+   ======================================================= */
 
+const responseFile =
+  document.getElementById("responseFile");
+
+const chooseResponseFile =
+  document.getElementById("chooseResponseFile");
+
+const uploadDropZone =
+  document.getElementById("uploadDropZone");
+
+const uploadFileInfo =
+  document.getElementById("uploadFileInfo");
+
+
+/* Choose File button */
+
+if (chooseResponseFile && responseFile) {
+
+  chooseResponseFile.addEventListener(
+    "click",
+    function (event) {
+
+      /* Prevent the label from handling the click */
+      event.preventDefault();
+      event.stopPropagation();
+
+      responseFile.click();
+
+    }
+  );
+
+}
+
+
+/* File selected */
+
+if (responseFile) {
+
+  responseFile.addEventListener(
+    "change",
+    function () {
+
+      const file =
+        responseFile.files[0];
+
+      if (!file) {
+        return;
+      }
+
+
+      if (uploadFileInfo) {
+
+        uploadFileInfo.hidden = false;
+
+        uploadFileInfo.textContent =
+          "Selected file: " + file.name;
+
+      }
+
+    }
+  );
+
+}
 /* =======================================================
    TARGET NAME → SUMMARY
    ======================================================= */
