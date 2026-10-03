@@ -1,0 +1,5568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>EvalLoop AI — AI Evaluation & LLM Quality Platform</title>
+
+  <meta
+    name="description"
+    content="EvalLoop AI is an AI evaluation and LLM quality platform for testing, evaluating, and improving AI responses."
+  />
+
+  <meta name="theme-color" content="#101211" />
+
+  <!-- Fonts: only Light 300, Regular 400, Medium 500 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Main stylesheet -->
+  <style>
+/* =========================================================
+   EVALLOOP AI
+   Visual system inspired by the supplied reference
+   ========================================================= */
+
+:root {
+  --bg: #101211;
+  --panel: #171b18;
+  --panel2: #1d221f;
+
+  --ink: #f1f1ef;
+  --muted: #a4aaa6;
+  --dim: #727974;
+
+  --line: rgba(241, 241, 239, 0.14);
+  --line-soft: rgba(241, 241, 239, 0.08);
+
+  --green: #3ecf8e;
+  --green2: #85e7ba;
+  --darkgreen: #13261c;
+
+  --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "DM Mono", monospace;
+
+  --max: 1200px;
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(62, 207, 142, 0.075),
+      transparent 35%
+    ),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(62, 207, 142, 0.25);
+  color: var(--ink);
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ONLY 300 / 400 / 500
+   ========================================================= */
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+p {
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.mono-label,
+.section-kicker,
+.card-label,
+.capability-index,
+.capability-symbol,
+.process-number,
+.process-title,
+.dashboard-kicker,
+.dashboard-run,
+.dashboard-user,
+.footer-label,
+.window-title,
+.window-code,
+.hero-meta,
+.pricing-name,
+.pricing-status,
+.sidebar-label,
+.sidebar-item,
+.score-label,
+.analysis-header,
+.dashboard-bottom,
+.quality-meter-label,
+.architecture-header,
+.architecture-node,
+.announcement-text,
+.announcement-link {
+  font-family: var(--mono);
+}
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.container {
+  width: min(calc(100% - 48px), var(--max));
+  margin: 0 auto;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.background-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(241, 241, 239, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(241, 241, 239, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 48px 48px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    transparent 100%
+  );
+}
+
+.background-glow {
+  position: fixed;
+  width: 700px;
+  height: 700px;
+  left: 50%;
+  top: -500px;
+  transform: translateX(-50%);
+  z-index: -2;
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle,
+    rgba(62, 207, 142, 0.085),
+    transparent 68%
+  );
+
+  filter: blur(10px);
+}
+
+/* =========================================================
+   PROGRESS BAR
+   ========================================================= */
+
+.page-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 2px;
+  z-index: 9999;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 12px rgba(62, 207, 142, 0.35);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    transform 0.08s linear;
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.cursor-ring {
+  width: 30px;
+  height: 30px;
+  margin-left: -12.5px;
+  margin-top: -12.5px;
+
+  border: 1px solid rgba(62, 207, 142, 0.45);
+  border-radius: 50%;
+
+  transition:
+    width 0.25s var(--ease),
+    height 0.25s var(--ease),
+    margin 0.25s var(--ease),
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.cursor-ring.active {
+  width: 44px;
+  height: 44px;
+  margin-left: -19.5px;
+  margin-top: -19.5px;
+
+  border-color: var(--green);
+}
+
+/* =========================================================
+   ANNOUNCEMENT
+   ========================================================= */
+
+.announcement-bar {
+  min-height: 34px;
+  border-bottom: 1px solid var(--line-soft);
+
+  background: rgba(16, 18, 17, 0.72);
+  backdrop-filter: blur(12px);
+
+  position: relative;
+  z-index: 100;
+}
+
+.announcement-inner {
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.announcement-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.status-dot,
+.live-dot,
+.tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 10px rgba(62, 207, 142, 0.6);
+
+  flex: 0 0 auto;
+}
+
+.mono-label {
+  color: var(--green2);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.announcement-divider {
+  width: 1px;
+  height: 11px;
+  background: var(--line);
+}
+
+.announcement-text,
+.announcement-link {
+  color: var(--dim);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+
+.announcement-link {
+  color: var(--green2);
+  transition: color 0.25s ease;
+}
+
+.announcement-link:hover {
+  color: var(--ink);
+}
+
+.announcement-link span {
+  margin-left: 4px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  background: rgba(16, 18, 17, 0.78);
+  backdrop-filter: blur(16px);
+}
+
+.nav-inner {
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+
+  white-space: nowrap;
+}
+
+.brand-cursor {
+  color: var(--green);
+  animation: blink 1.2s infinite;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
+}
+
+.nav-dropdown {
+  position: relative;
+  height: 76px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.nav-chevron {
+  color: var(--green2);
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(-1px);
+  transition: transform 0.3s var(--ease);
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger,
+.nav-dropdown:focus-within .nav-dropdown-trigger,
+.nav-dropdown-trigger[aria-expanded="true"] {
+  color: var(--ink);
+}
+
+.nav-dropdown:hover .nav-chevron,
+.nav-dropdown:focus-within .nav-chevron,
+.nav-dropdown-trigger[aria-expanded="true"] .nav-chevron {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  z-index: 200;
+  min-width: 250px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(23, 27, 24, 0.98);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -8px) scale(0.97);
+  transform-origin: top center;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s var(--ease);
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu,
+.nav-dropdown-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.nav-dropdown-menu a {
+  display: grid;
+  gap: 3px;
+  min-width: 232px;
+  padding: 12px 13px;
+  border-radius: 3px;
+  color: var(--ink);
+  font-size: 11px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a:focus-visible {
+  outline: none;
+  background: rgba(62, 207, 142, 0.09);
+  color: var(--green2);
+}
+
+.nav-dropdown-menu small {
+  color: var(--dim);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.desktop-nav a,
+.nav-login {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.desktop-nav a:hover,
+.nav-login:hover {
+  color: var(--ink);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button {
+  min-height: 44px;
+  padding: 0 17px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  border: 1px solid rgba(62, 207, 142, 0.35);
+  border-radius: 3px;
+
+  background: rgba(62, 207, 142, 0.045);
+  color: var(--green2);
+
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s var(--ease),
+    box-shadow 0.25s ease;
+}
+
+.button:hover {
+  background: rgba(62, 207, 142, 0.10);
+  border-color: rgba(62, 207, 142, 0.8);
+  color: var(--ink);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.18),
+    0 0 20px rgba(62, 207, 142, 0.045);
+}
+
+.button:focus-visible {
+  outline: 1px solid var(--green);
+  outline-offset: 4px;
+}
+
+.button-primary {
+  background: var(--darkgreen);
+  border-color: rgba(62, 207, 142, 0.65);
+  color: var(--green2);
+}
+
+.button-primary:hover {
+  background: #193223;
+  border-color: var(--green);
+}
+
+.button-secondary {
+  background: rgba(29, 34, 31, 0.8);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.button-secondary:hover {
+  border-color: rgba(62, 207, 142, 0.45);
+  color: var(--green2);
+}
+
+.button-small {
+  min-height: 34px;
+  padding: 0 13px;
+}
+
+.button-large {
+  min-height: 50px;
+  padding: 0 22px;
+}
+
+.button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.button:disabled:hover {
+  background: rgba(62, 207, 142, 0.045);
+  border-color: rgba(62, 207, 142, 0.35);
+  color: var(--green2);
+}
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu-button {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid var(--line);
+  background: var(--panel);
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+
+  cursor: pointer;
+}
+
+.mobile-menu-button span {
+  width: 16px;
+  height: 1px;
+  background: var(--muted);
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.mobile-menu-button.active span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.mobile-menu-button.active span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.mobile-nav {
+  display: none;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.section-border {
+  border-top: 1px solid var(--line-soft);
+}
+
+.section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--green2);
+
+  font-size: 10px;
+  letter-spacing: 0.10em;
+}
+
+.kicker-line {
+  width: 26px;
+  height: 1px;
+  background: var(--green);
+}
+
+.section-heading {
+  max-width: 720px;
+  margin-bottom: 60px;
+}
+
+.section-heading h2 {
+  margin-top: 20px;
+
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 0.98;
+}
+
+.section-heading h2 span,
+.hero h1 span,
+.download-content h2 span,
+.auth-copy h2 span,
+.cta-panel h2 span {
+  color: var(--green);
+}
+
+.section-heading > p {
+  max-width: 610px;
+  margin-top: 25px;
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.split-heading {
+  display: grid;
+  grid-template-columns: 1fr 0.55fr;
+  gap: 70px;
+  align-items: end;
+}
+
+.split-heading > p {
+  margin: 0;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  padding-top: 105px;
+  padding-bottom: 125px;
+
+  min-height: calc(100vh - 110px);
+
+  display: flex;
+  align-items: center;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  margin-top: 26px;
+
+  font-size: clamp(64px, 8vw, 112px);
+  line-height: 0.88;
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.hero-description {
+  max-width: 600px;
+  margin-top: 32px;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  margin-top: 28px;
+
+  color: var(--dim);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+
+.meta-dot {
+  color: var(--green);
+}
+
+.meta-divider {
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  margin: 0 3px;
+}
+
+/* =========================================================
+   HERO VISUAL
+   ========================================================= */
+
+.hero-visual {
+  position: relative;
+  min-height: 500px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evaluation-window {
+  position: relative;
+
+  width: min(100%, 510px);
+
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(29, 34, 31, 0.94),
+      rgba(23, 27, 24, 0.88)
+    );
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.32);
+
+  overflow: hidden;
+}
+
+.window-header {
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  background: rgba(16, 18, 17, 0.5);
+}
+
+.window-title,
+.window-code {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.window-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--muted);
+}
+
+.window-code {
+  color: var(--dim);
+}
+
+.evaluation-body {
+  padding: 45px 38px 25px;
+}
+
+.evaluation-orb {
+  position: relative;
+
+  width: 170px;
+  height: 170px;
+
+  margin: 0 auto 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-ring {
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(62, 207, 142, 0.18);
+  border-radius: 50%;
+}
+
+.orb-ring-one {
+  animation: orbitSpin 12s linear infinite;
+}
+
+.orb-ring-two {
+  inset: 18px;
+
+  border-color: rgba(62, 207, 142, 0.30);
+
+  animation: orbitSpinReverse 8s linear infinite;
+}
+
+.orb-core {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 40% 35%,
+      rgba(133, 231, 186, 0.8),
+      rgba(62, 207, 142, 0.25) 35%,
+      rgba(19, 38, 28, 0.9) 70%
+    );
+
+  border: 1px solid rgba(62, 207, 142, 0.65);
+
+  box-shadow:
+    0 0 40px rgba(62, 207, 142, 0.16),
+    inset 0 0 30px rgba(62, 207, 142, 0.12);
+
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+.evaluation-status {
+  position: relative;
+
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+
+  overflow: hidden;
+}
+
+.status-label {
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.status-value {
+  margin-top: 5px;
+
+  color: var(--green2);
+
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 1px;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 12px rgba(62, 207, 142, 0.5);
+
+  animation: scan 2.7s linear infinite;
+}
+
+.evaluation-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+
+  margin-top: 20px;
+
+  border: 1px solid var(--line-soft);
+  background: var(--line-soft);
+}
+
+.metric {
+  padding: 16px 10px;
+
+  background: var(--panel);
+  text-align: center;
+}
+
+.metric > span {
+  display: block;
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.05em;
+}
+
+.metric-value {
+  margin-top: 7px;
+
+  font-family: var(--mono);
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.metric-green {
+  color: var(--green2);
+}
+
+.evaluation-footer {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+
+.evaluation-footer span:last-child {
+  color: var(--green);
+}
+
+.floating-tag {
+  position: absolute;
+
+  padding: 9px 12px;
+
+  border: 1px solid var(--line);
+  background: rgba(23, 27, 24, 0.9);
+
+  color: var(--muted);
+
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+
+  backdrop-filter: blur(10px);
+
+  animation: float 5s ease-in-out infinite;
+}
+
+.tag-one {
+  left: -8px;
+  top: 90px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag-two {
+  right: -10px;
+  bottom: 105px;
+  animation-delay: -2s;
+}
+
+.tag-two span {
+  color: var(--green2);
+  margin-left: 5px;
+}
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 1px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.about-card {
+  min-height: 330px;
+
+  padding: 30px;
+
+  background: var(--panel);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s var(--ease);
+}
+
+.about-card:hover {
+  background: var(--panel2);
+  transform: translateY(-3px);
+}
+
+.card-number {
+  color: var(--green);
+
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.card-content {
+  margin-top: 60px;
+}
+
+.card-label {
+  color: var(--dim);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.card-content h3 {
+  margin-top: 14px;
+
+  font-size: 26px;
+  line-height: 1.12;
+}
+
+.card-content p {
+  margin-top: 18px;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   PROCESS
+   ========================================================= */
+
+.process-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0;
+}
+
+.process-step {
+  min-height: 260px;
+
+  padding: 25px;
+
+  border: 1px solid var(--line);
+
+  background: var(--panel);
+
+  position: relative;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.process-step:hover {
+  background: var(--panel2);
+  border-color: rgba(62, 207, 142, 0.25);
+}
+
+.process-highlight {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 38, 28, 0.95),
+      var(--panel)
+    );
+
+  border-color: rgba(62, 207, 142, 0.32);
+}
+
+.process-number {
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.process-icon {
+  margin-top: 40px;
+
+  color: var(--green);
+
+  font-size: 25px;
+}
+
+.process-title {
+  margin-top: 20px;
+
+  color: var(--ink);
+
+  font-size: 10px;
+  letter-spacing: 0.07em;
+}
+
+.process-step p {
+  margin-top: 12px;
+
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.process-connector {
+  width: 28px;
+  align-self: center;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(62, 207, 142, 0.35),
+      transparent
+    );
+}
+
+/* =========================================================
+   ARCHITECTURE
+   ========================================================= */
+
+.architecture {
+  margin-top: 60px;
+
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.architecture-header {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  color: var(--dim);
+
+  font-size: 8px;
+  letter-spacing: 0.07em;
+}
+
+.architecture-flow {
+  min-height: 130px;
+
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  overflow-x: auto;
+}
+
+.architecture-node {
+  min-width: 105px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--line);
+
+  background: var(--panel2);
+
+  color: var(--muted);
+
+  font-size: 8px;
+  letter-spacing: 0.05em;
+
+  white-space: nowrap;
+}
+
+.architecture-node-active {
+  border-color: rgba(62, 207, 142, 0.6);
+
+  background: var(--darkgreen);
+
+  color: var(--green2);
+
+  box-shadow:
+    0 0 30px rgba(62, 207, 142, 0.06);
+}
+
+.architecture-arrow {
+  color: var(--green);
+  font-family: var(--mono);
+}
+
+/* =========================================================
+   CAPABILITIES
+   ========================================================= */
+
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.capability-card {
+  min-height: 290px;
+
+  padding: 28px;
+
+  background: var(--panel);
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s var(--ease);
+}
+
+.capability-card:hover {
+  background: var(--panel2);
+  transform: translateY(-3px);
+}
+
+.capability-large {
+  grid-row: span 2;
+  min-height: 581px;
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(19, 38, 28, 0.75),
+      var(--panel)
+    );
+}
+
+.capability-wide {
+  grid-column: span 2;
+
+  min-height: 290px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.capability-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.capability-index {
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.capability-symbol {
+  color: var(--green);
+  font-size: 18px;
+}
+
+.capability-card h3 {
+  margin-top: 75px;
+
+  font-size: 27px;
+  line-height: 1.05;
+}
+
+.capability-card p {
+  margin-top: 15px;
+
+  max-width: 400px;
+
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.capability-line {
+  height: 1px;
+
+  margin-top: 50px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--green),
+      transparent
+    );
+
+  opacity: 0.4;
+}
+
+.capability-status {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 15px;
+
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--dim);
+}
+
+.capability-status span:last-child {
+  color: var(--green);
+}
+
+.capability-wide-content h3 {
+  margin-top: 75px;
+}
+
+.quality-meter {
+  align-self: end;
+}
+
+.quality-meter-label {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  color: var(--dim);
+
+  font-size: 8px;
+}
+
+.quality-meter-label span:last-child {
+  color: var(--green2);
+}
+
+.quality-meter-track {
+  height: 3px;
+
+  background: rgba(241, 241, 239, 0.08);
+}
+
+.quality-meter-fill {
+  width: 94.3%;
+  height: 100%;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 10px rgba(62, 207, 142, 0.25);
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.dashboard {
+  border: 1px solid var(--line);
+
+  background: #121513;
+
+  box-shadow:
+    0 35px 100px rgba(0, 0, 0, 0.35);
+}
+
+.dashboard-topbar {
+  min-height: 50px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 0 18px;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  font-family: var(--mono);
+  font-size: 8px;
+}
+
+.dashboard-brand {
+  color: var(--ink);
+}
+
+.dashboard-nav {
+  display: flex;
+  gap: 28px;
+  color: var(--dim);
+}
+
+.dashboard-nav-active {
+  color: var(--green2);
+}
+
+.dashboard-user {
+  justify-self: end;
+  color: var(--dim);
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 185px 1fr;
+}
+
+.dashboard-sidebar {
+  min-height: 520px;
+
+  padding: 25px 15px;
+
+  border-right: 1px solid var(--line-soft);
+
+  background: rgba(23, 27, 24, 0.45);
+}
+
+.sidebar-label {
+  margin: 12px 8px;
+
+  color: var(--dim);
+
+  font-size: 7px;
+  letter-spacing: 0.08em;
+}
+
+.sidebar-item {
+  padding: 9px 8px;
+
+  color: var(--muted);
+
+  font-size: 8px;
+
+  border-left: 1px solid transparent;
+}
+
+.sidebar-item-active {
+  color: var(--green2);
+
+  border-left-color: var(--green);
+
+  background: rgba(62, 207, 142, 0.045);
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--line-soft);
+
+  margin: 20px 8px;
+}
+
+.dashboard-main {
+  padding: 30px;
+  min-width: 0;
+}
+
+.dashboard-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dashboard-kicker {
+  color: var(--dim);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.dashboard-heading h3 {
+  margin-top: 6px;
+  font-size: 26px;
+}
+
+.dashboard-run {
+  padding: 6px 9px;
+
+  color: var(--green);
+
+  border: 1px solid rgba(62, 207, 142, 0.25);
+
+  font-size: 7px;
+}
+
+.dashboard-score-row {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: 1px;
+
+  margin-top: 30px;
+
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+}
+
+.score-card {
+  min-height: 135px;
+  padding: 18px;
+
+  background: var(--panel);
+}
+
+.score-main {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 38, 28, 0.7),
+      var(--panel)
+    );
+}
+
+.score-label {
+  color: var(--dim);
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+
+.score-number {
+  margin-top: 14px;
+
+  color: var(--green2);
+
+  font-family: var(--mono);
+  font-size: 38px;
+  line-height: 1;
+}
+
+.score-description {
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+.small-score {
+  margin-top: 17px;
+
+  font-family: var(--mono);
+  font-size: 25px;
+  color: var(--ink);
+}
+
+.score-bar {
+  height: 2px;
+  margin-top: 14px;
+
+  background: rgba(241, 241, 239, 0.08);
+}
+
+.score-bar span {
+  display: block;
+  height: 100%;
+
+  background: var(--green);
+}
+
+.dashboard-analysis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+
+  margin-top: 1px;
+
+  background: var(--line-soft);
+}
+
+.analysis-card {
+  min-height: 170px;
+
+  padding: 20px;
+
+  background: var(--panel);
+}
+
+.analysis-header {
+  display: flex;
+  justify-content: space-between;
+
+  color: var(--dim);
+
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+
+.analysis-header span:last-child {
+  color: var(--green);
+}
+
+.analysis-item {
+  display: flex;
+  gap: 14px;
+
+  margin-top: 25px;
+}
+
+.analysis-icon {
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  border: 1px solid rgba(62, 207, 142, 0.25);
+
+  color: var(--green);
+
+  font-family: var(--mono);
+  font-size: 9px;
+}
+
+.analysis-item strong {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.analysis-item p {
+  margin-top: 6px;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.summary-text {
+  margin-top: 25px;
+
+  max-width: 430px;
+
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.dashboard-bottom {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  color: var(--dim);
+
+  font-size: 7px;
+}
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+.download-panel {
+  min-height: 450px;
+
+  display: grid;
+  grid-template-columns: 1fr 0.65fr;
+
+  border: 1px solid var(--line);
+
+  background:
+    radial-gradient(
+      circle at 80% 50%,
+      rgba(62, 207, 142, 0.055),
+      transparent 40%
+    ),
+    var(--panel);
+
+  overflow: hidden;
+}
+
+.download-content {
+  padding: 65px;
+  align-self: center;
+}
+
+.download-content h2 {
+  margin-top: 22px;
+
+  max-width: 650px;
+
+  font-size: clamp(42px, 5vw, 65px);
+  line-height: 0.98;
+}
+
+.download-content p {
+  max-width: 560px;
+
+  margin-top: 25px;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 30px;
+}
+
+.download-visual {
+  min-height: 450px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-left: 1px solid var(--line-soft);
+}
+
+.download-orbit {
+  width: 260px;
+  height: 260px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbit {
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(62, 207, 142, 0.16);
+  border-radius: 50%;
+}
+
+.orbit-a {
+  animation: orbitSpin 16s linear infinite;
+}
+
+.orbit-b {
+  inset: 28px;
+  border-color: rgba(62, 207, 142, 0.25);
+
+  animation: orbitSpinReverse 10s linear infinite;
+}
+
+.orbit-c {
+  inset: 65px;
+  border-color: rgba(62, 207, 142, 0.4);
+
+  animation: orbitSpin 7s linear infinite;
+}
+
+.download-core {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--green);
+
+  background: var(--darkgreen);
+
+  color: var(--green2);
+
+  font-family: var(--mono);
+  font-size: 16px;
+
+  box-shadow:
+    0 0 40px rgba(62, 207, 142, 0.12);
+}
+
+/* =========================================================
+   PRICING
+   ========================================================= */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.75fr;
+  gap: 1px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.pricing-card {
+  padding: 35px;
+
+  background: var(--panel);
+}
+
+.pricing-main {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 38, 28, 0.65),
+      var(--panel)
+    );
+}
+
+.pricing-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pricing-name {
+  color: var(--green2);
+
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.pricing-status {
+  padding: 5px 8px;
+
+  border: 1px solid rgba(62, 207, 142, 0.25);
+
+  color: var(--green);
+
+  font-size: 7px;
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+
+  margin-top: 40px;
+}
+
+.price-symbol {
+  color: var(--green);
+
+  font-family: var(--mono);
+  font-size: 20px;
+}
+
+.price-number {
+  margin-left: 7px;
+
+  font-family: var(--mono);
+  font-size: 70px;
+  line-height: 1;
+
+  font-weight: 400;
+}
+
+.price-period {
+  margin-left: 10px;
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 8px;
+}
+
+.pricing-description {
+  margin-top: 15px;
+
+  font-size: 13px;
+}
+
+.pricing-divider {
+  height: 1px;
+
+  margin: 30px 0;
+
+  background: var(--line-soft);
+}
+
+.pricing-features {
+  list-style: none;
+
+  display: grid;
+  gap: 14px;
+}
+
+.pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.pricing-features li span {
+  color: var(--green);
+  font-family: var(--mono);
+}
+
+.pricing-button {
+  width: 100%;
+  margin-top: 35px;
+}
+
+.pricing-info {
+  background: var(--panel);
+  padding: 35px;
+}
+
+.pricing-info-row {
+  min-height: 70px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--line-soft);
+
+  font-family: var(--mono);
+  font-size: 8px;
+}
+
+.pricing-info-row span:first-child {
+  color: var(--dim);
+}
+
+.pricing-info-row span:last-child {
+  color: var(--green2);
+}
+
+.pricing-info-note {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 35px;
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1.7;
+}
+
+.note-symbol {
+  color: var(--green);
+}
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+.auth-panel {
+  min-height: 300px;
+
+  padding: 55px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 50px;
+
+  border: 1px solid var(--line);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(23, 27, 24, 0.95),
+      rgba(19, 38, 28, 0.38)
+    );
+}
+
+.auth-copy h2 {
+  margin-top: 20px;
+
+  font-size: clamp(40px, 5vw, 60px);
+  line-height: 1;
+}
+
+.auth-copy p {
+  max-width: 570px;
+
+  margin-top: 20px;
+
+  font-size: 14px;
+}
+
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.auth-login-link {
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 8px;
+
+  transition: color 0.25s ease;
+}
+
+.auth-login-link:hover {
+  color: var(--green2);
+}
+
+/* =========================================================
+   FAQ
+   ========================================================= */
+
+.faq-list {
+  max-width: 900px;
+
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-top: 1px solid var(--line);
+}
+
+.faq-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-question {
+  width: 100%;
+
+  min-height: 82px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--ink);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.faq-icon {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  border: 1px solid var(--line);
+
+  color: var(--green);
+
+  font-family: var(--mono);
+  font-size: 14px;
+
+  transition:
+    transform 0.3s var(--ease),
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+
+  background: var(--darkgreen);
+  border-color: rgba(62, 207, 142, 0.4);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  transition: grid-template-rows 0.35s var(--ease);
+}
+
+.faq-answer p {
+  overflow: hidden;
+
+  max-width: 720px;
+
+  font-size: 13px;
+  line-height: 1.8;
+
+  padding-right: 50px;
+}
+
+.faq-item.active .faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item.active .faq-answer p {
+  padding-bottom: 28px;
+}
+
+/* =========================================================
+   FINAL CTA
+   ========================================================= */
+
+.final-cta {
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+.cta-panel {
+  padding: 70px;
+
+  border: 1px solid rgba(62, 207, 142, 0.18);
+
+  background:
+    radial-gradient(
+      circle at 80% 50%,
+      rgba(62, 207, 142, 0.07),
+      transparent 40%
+    ),
+    var(--panel);
+}
+
+.cta-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 50px;
+}
+
+.cta-panel h2 {
+  margin-top: 22px;
+
+  max-width: 800px;
+
+  font-size: clamp(48px, 6vw, 78px);
+  line-height: 0.95;
+}
+
+.cta-panel p {
+  max-width: 550px;
+
+  margin-top: 22px;
+
+  font-size: 14px;
+}
+
+.cta-action {
+  justify-self: end;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+  border-top: 1px solid var(--line-soft);
+
+  padding: 65px 0 25px;
+
+  background: rgba(16, 18, 17, 0.75);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.footer-brand p {
+  margin-top: 15px;
+
+  font-size: 11px;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.footer-label {
+  margin-bottom: 5px;
+
+  color: var(--dim);
+
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.footer-column a {
+  color: var(--muted);
+
+  font-size: 11px;
+
+  transition: color 0.25s ease;
+}
+
+.footer-column a:hover {
+  color: var(--green2);
+}
+
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 70px;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--line-soft);
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.05em;
+}
+
+/* =========================================================
+   REVEAL ANIMATION
+   ========================================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0) scale(0.985);
+  filter: blur(4px);
+  will-change: opacity, transform, filter;
+
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+/* Scroll-linked depth layers */
+.scroll-depth {
+  --scroll-shift: 0px;
+  translate: 0 var(--scroll-shift);
+  will-change: translate;
+}
+
+.scroll-depth-slow {
+  --scroll-shift: 0px;
+  translate: 0 var(--scroll-shift);
+  will-change: translate;
+}
+
+.hero-visual.scroll-depth {
+  rotate: var(--scroll-rotate, 0deg);
+  scale: var(--scroll-scale, 1);
+  transition: rotate 0.35s var(--ease), scale 0.35s var(--ease);
+}
+
+.capability-card,
+.process-step,
+.about-card,
+.pricing-card,
+.faq-item {
+  translate: 0 var(--scroll-lift, 0px);
+  scale: var(--scroll-scale, 1);
+  transition: translate 0.18s linear, scale 0.18s linear, border-color 0.35s ease, background 0.35s ease;
+  will-change: translate, scale;
+}
+
+body.is-scrolling-down .section-kicker::after {
+  transform: scaleX(1.35);
+  transform-origin: left center;
+}
+
+.section-kicker::after {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--green);
+  opacity: 0.65;
+  transform: scaleX(1);
+  transition: transform 0.5s var(--ease);
+}
+
+.section-border {
+  isolation: isolate;
+}
+
+.section-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 15%,
+    rgba(62, 207, 142, 0.055),
+    transparent 48%
+  );
+  transition: opacity 0.7s ease;
+}
+
+.section-border.in-view::before {
+  opacity: 1;
+}
+
+/* Focus the section currently being read */
+.scroll-focus-enabled main > .section {
+  position: relative;
+  transition: opacity 0.95s var(--ease), filter 0.95s var(--ease), transform 0.95s var(--ease);
+  will-change: opacity, filter, transform;
+}
+
+.scroll-focus-enabled main > .section:not(.is-current) > .container {
+  opacity: 0.28;
+  filter: blur(3px) saturate(0.62);
+  transform: scale(0.94) translate3d(0, 12px, 0);
+  transition: opacity 0.65s var(--ease), filter 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.scroll-focus-enabled main > .section.is-current > .container {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.035) translate3d(0, 0, 0);
+  transition: opacity 0.65s var(--ease), filter 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.scroll-focus-enabled main > .section.is-current {
+  z-index: 2;
+}
+
+@media (max-width: 700px) {
+  .scroll-focus-enabled main > .section:not(.is-current) > .container {
+    opacity: 0.46;
+    filter: blur(1.5px) saturate(0.76);
+    transform: scale(0.975) translate3d(0, 6px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.visible,
+  .scroll-depth,
+  .scroll-depth-slow {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    translate: none;
+    transition: none;
+  }
+}
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitSpinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(55px);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .hero-content {
+    max-width: 800px;
+  }
+
+  .hero-visual {
+    min-height: 460px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-card-large {
+    grid-column: span 2;
+  }
+
+  .process-flow {
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+  }
+
+  .process-connector {
+    display: none;
+  }
+
+  .process-step {
+    min-height: 230px;
+  }
+
+  .capabilities-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .capability-large {
+    grid-row: span 1;
+    min-height: 290px;
+  }
+
+  .capability-wide {
+    grid-column: span 2;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-action {
+    justify-self: start;
+  }
+
+}
+
+@media (max-width: 800px) {
+
+  .container {
+    width: min(calc(100% - 32px), var(--max));
+  }
+
+  .desktop-nav,
+  .nav-actions {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 110px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px 16px 35px;
+
+    border-bottom: 1px solid var(--line);
+
+    background: rgba(16, 18, 17, 0.98);
+
+    transform: translateY(-120%);
+    opacity: 0;
+
+    transition:
+      transform 0.35s var(--ease),
+      opacity 0.35s ease;
+
+    pointer-events: none;
+  }
+
+  .mobile-nav.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-nav > a {
+    padding: 16px 5px;
+
+    border-bottom: 1px solid var(--line-soft);
+
+    color: var(--muted);
+
+    font-size: 14px;
+  }
+
+  .mobile-nav-dropdown {
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .mobile-nav-dropdown-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 5px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .mobile-nav-dropdown-trigger .nav-chevron {
+    transition: transform 0.3s var(--ease);
+  }
+
+  .mobile-nav-dropdown.is-open .mobile-nav-dropdown-trigger {
+    color: var(--green2);
+  }
+
+  .mobile-nav-dropdown.is-open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .mobile-nav-dropdown-menu {
+    display: grid;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s var(--ease), opacity 0.3s ease;
+  }
+
+  .mobile-nav-dropdown.is-open .mobile-nav-dropdown-menu {
+    max-height: 240px;
+    padding: 0 0 8px;
+    opacity: 1;
+  }
+
+  .mobile-nav-dropdown-menu a {
+    padding: 10px 18px;
+    color: var(--dim);
+    font-size: 12px;
+  }
+
+  .mobile-nav-dropdown-menu a:hover,
+  .mobile-nav-dropdown-menu a:focus-visible {
+    color: var(--green2);
+  }
+
+  .mobile-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding-top: 22px;
+  }
+
+  .mobile-nav-actions > a:first-child {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .section {
+    padding: 90px 0;
+  }
+
+  .hero {
+    padding-top: 80px;
+    min-height: auto;
+  }
+
+  .hero h1 {
+    font-size: clamp(58px, 15vw, 90px);
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
+  .hero-visual {
+    min-height: 400px;
+  }
+
+  .evaluation-window {
+    width: 100%;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(40px, 11vw, 65px);
+  }
+
+  .split-heading {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card-large {
+    grid-column: auto;
+  }
+
+  .process-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .capabilities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capability-wide {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    display: none;
+  }
+
+  .dashboard-score-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard-analysis {
+    grid-template-columns: 1fr;
+  }
+
+  .download-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .download-content {
+    padding: 45px 30px;
+  }
+
+  .download-visual {
+    min-height: 320px;
+    border-left: 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+@media (max-width: 520px) {
+
+  .announcement-text,
+  .announcement-divider {
+    display: none;
+  }
+
+  .announcement-link {
+    font-size: 8px;
+  }
+
+  .nav-inner {
+    min-height: 66px;
+  }
+
+  .mobile-nav {
+    top: 100px;
+  }
+
+  .hero {
+    padding-top: 65px;
+  }
+
+  .hero h1 {
+    font-size: clamp(52px, 16vw, 75px);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .hero-meta {
+    line-height: 2;
+  }
+
+  .hero-visual {
+    min-height: 340px;
+  }
+
+  .evaluation-body {
+    padding: 30px 18px 20px;
+  }
+
+  .evaluation-orb {
+    width: 130px;
+    height: 130px;
+  }
+
+  .orb-core {
+    width: 55px;
+    height: 55px;
+  }
+
+  .evaluation-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .floating-tag {
+    display: none;
+  }
+
+  .architecture-flow {
+    justify-content: flex-start;
+  }
+
+  .architecture-node {
+    min-width: 90px;
+  }
+
+  .dashboard-topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .dashboard-nav {
+    display: none;
+  }
+
+  .dashboard-main {
+    padding: 20px 15px;
+  }
+
+  .dashboard-score-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-heading {
+    flex-direction: column;
+  }
+
+  .cta-panel {
+    padding: 45px 25px;
+  }
+
+  .cta-panel h2 {
+    font-size: 48px;
+  }
+
+  .auth-panel {
+    padding: 40px 25px;
+  }
+
+  .pricing-card,
+  .pricing-info {
+    padding: 28px 22px;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+
+}
+
+/* =========================================================
+   FOOTER — TABLET & MOBILE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .site-footer .footer-top {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .site-footer .footer-brand {
+    width: 100%;
+  }
+
+  .site-footer .footer-columns {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .site-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .site-footer .footer-top {
+    gap: 40px;
+  }
+
+  .site-footer .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 24px;
+  }
+
+  .site-footer .footer-column {
+    min-width: 0;
+  }
+
+  .site-footer .footer-column a {
+    display: block;
+    white-space: normal;
+  }
+
+  .site-footer .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+}
+
+
+@media (max-width: 380px) {
+
+  .site-footer .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .site-footer .footer-bottom {
+    gap: 10px;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       PAGE PROGRESS
+  ========================================================== -->
+  <div class="page-progress" id="pageProgress"></div>
+
+  <!-- =========================================================
+       CUSTOM CURSOR
+  ========================================================== -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- =========================================================
+       BACKGROUND GRID
+  ========================================================== -->
+  <div class="background-grid"></div>
+  <div class="background-glow"></div>
+
+  <!-- =========================================================
+       ANNOUNCEMENT BAR
+  ========================================================== -->
+  <div class="announcement-bar">
+    <div class="container announcement-inner">
+
+      <div class="announcement-left">
+        <span class="status-dot"></span>
+
+        <span class="mono-label">
+          EVALLOOP AI
+        </span>
+
+        <span class="announcement-divider"></span>
+
+        <span class="announcement-text">
+          AI EVALUATION &amp; QUALITY PLATFORM
+        </span>
+      </div>
+
+      <a href="#product" class="announcement-link">
+        FREE TO USE <span>↗</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- =========================================================
+       NAVIGATION
+  ========================================================== -->
+  <header class="site-header" id="siteHeader">
+
+    <div class="container nav-inner">
+
+      <a href="https://evalloop-ai.vercel.app/" class="brand">
+        <span>EvalLoop AI</span><span class="brand-cursor">_</span>
+      </a>
+
+      <!-- DESKTOP NAVIGATION -->
+      <nav class="desktop-nav" aria-label="Primary navigation">
+
+        <div class="nav-dropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Products <span class="nav-chevron">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/app/" role="menuitem">
+              <span>Evaluation Engines/Models</span>
+              <small>Test and compare AI quality</small>
+            </a>
+            <a href="/jobs/" role="menuitem">
+              <span>EvalLoop Jobs</span>
+              <small>Independent jobs directory &amp; discovery platform</small>
+            </a>
+            <a href="/hub/" role="menuitem">
+              <span>EvalAI Hub</span>
+              <small>Explore the evaluation ecosystem</small>
+            </a>
+          </div>
+        </div>
+
+        <a href="/workspace/">Workspace</a>
+
+        <div class="nav-dropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Resources <span class="nav-chevron">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/docs/" role="menuitem">
+              <span>Docs</span>
+              <small>Build with EvalLoop AI</small>
+            </a>
+            <a href="/learn/" role="menuitem">
+              <span>Learn</span>
+              <small>Guides and evaluation basics</small>
+            </a>
+            <a href="/blog/" role="menuitem">
+              <span>Blog</span>
+              <small>Ideas, updates, and research</small>
+            </a>
+            <a href="/api/" role="menuitem">
+              <span>API</span>
+              <small>Connect your AI workflows</small>
+            </a>
+          </div>
+        </div>
+
+        <a href="/pricing/">Pricing</a>
+
+      </nav>
+
+      <div class="nav-actions">
+
+        <a href="/login/" class="nav-login">
+          Login
+        </a>
+
+        <a href="/signup/" class="button button-small">
+          Sign up <span>↗</span>
+        </a>
+
+      </div>
+
+      <!-- Mobile menu button -->
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
+    <!-- MOBILE NAVIGATION -->
+    <div class="mobile-nav" id="mobileNav">
+
+      <div class="mobile-nav-dropdown">
+        <button
+          class="mobile-nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Products <span class="nav-chevron">⌄</span>
+        </button>
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/app/">Evaluation Engines/Models</a>
+          <a href="/jobs/">EvalLoop Jobs</a>
+          <a href="/hub/">EvalAI Hub</a>
+        </div>
+      </div>
+
+      <a href="/workspace/">Workspace</a>
+
+      <div class="mobile-nav-dropdown">
+        <button
+          class="mobile-nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Resources <span class="nav-chevron">⌄</span>
+        </button>
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/docs/">Docs</a>
+          <a href="/learn/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/api/">API</a>
+        </div>
+      </div>
+
+      <a href="/pricing/">Pricing</a>
+
+      <div class="mobile-nav-actions">
+
+        <a href="/login/">
+          Login
+        </a>
+
+        <a href="/signup/" class="button">
+          Sign up <span>↗</span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- =======================================================
+         HERO
+    ======================================================== -->
+    <section class="hero section">
+
+      <div class="container hero-grid">
+
+        <!-- Hero copy -->
+        <div class="hero-content reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            LLM QUALITY PLATFORM
+          </div>
+
+          <h1>
+            Evaluate AI.
+            <span>Improve trust.</span>
+          </h1>
+
+          <p class="hero-description">
+            EvalLoop AI helps you test, evaluate, and understand
+            AI-generated responses using structured quality metrics,
+            automated evaluation, and actionable insights.
+          </p>
+
+          <div class="hero-actions">
+
+            <a href="#product" class="button button-primary">
+              Try EvalLoop AI
+              <span>↗</span>
+            </a>
+
+            <a href="#download" class="button button-secondary">
+              Download App
+              <span>↓</span>
+            </a>
+
+          </div>
+
+          <div class="hero-meta">
+
+            <span>TEXT</span>
+            <span class="meta-dot">·</span>
+
+            <span>VISION</span>
+            <span class="meta-dot">·</span>
+
+            <span>SPEECH</span>
+
+            <span class="meta-divider"></span>
+
+            <span>FREE TO USE</span>
+
+          </div>
+
+        </div>
+
+        <!-- Hero visual -->
+        <div class="hero-visual reveal">
+
+          <div class="evaluation-window">
+
+            <div class="window-header">
+
+              <div class="window-title">
+                <span class="live-dot"></span>
+                EVALLOOP / EVALUATION
+              </div>
+
+              <div class="window-code">
+                RUN_001
+              </div>
+
+            </div>
+
+            <div class="evaluation-body">
+
+              <div class="evaluation-orb">
+
+                <div class="orb-ring orb-ring-one"></div>
+                <div class="orb-ring orb-ring-two"></div>
+                <div class="orb-core"></div>
+
+              </div>
+
+              <div class="evaluation-status">
+
+                <div class="status-label">
+                  CURRENT STATUS
+                </div>
+
+                <div class="status-value">
+                  EVALUATING
+                </div>
+
+                <div class="scan-line"></div>
+
+              </div>
+
+              <div class="evaluation-metrics">
+
+                <div class="metric">
+
+                  <span>FACTUALITY</span>
+
+                  <div class="metric-value">
+                    94
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>RELEVANCE</span>
+
+                  <div class="metric-value">
+                    91
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>SAFETY</span>
+
+                  <div class="metric-value">
+                    98
+                  </div>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>QUALITY</span>
+
+                  <div class="metric-value metric-green">
+                    94.3
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="evaluation-footer">
+
+                <span>
+                  EVAL_ENGINE
+                </span>
+
+                <span>
+                  READY
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="floating-tag tag-one">
+            <span class="tag-dot"></span>
+            AI RESPONSE
+          </div>
+
+          <div class="floating-tag tag-two">
+            QUALITY SCORE <span>94.3</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         PRODUCT INTRO
+    ======================================================== -->
+    <section class="section section-border" id="product">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            ABOUT EVALLOOP AI
+          </div>
+
+          <h2>
+            AI should be
+            <span>measurable.</span>
+          </h2>
+
+          <p>
+            Modern AI systems can generate thousands of responses in
+            seconds. EvalLoop AI gives you a structured way to understand
+            whether those responses are actually useful, accurate,
+            relevant, complete, and safe.
+          </p>
+
+        </div>
+
+        <div class="about-grid">
+
+          <div class="about-card about-card-large reveal">
+
+            <div class="card-number">
+              01
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE PROBLEM
+              </div>
+
+              <h3>
+                AI output is easy to generate.
+                Quality is harder to measure.
+              </h3>
+
+              <p>
+                A response can sound convincing while still containing
+                factual errors, missing instructions, irrelevant content,
+                or unsafe information.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="about-card reveal">
+
+            <div class="card-number">
+              02
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE SOLUTION
+              </div>
+
+              <h3>
+                Turn AI responses into measurable quality signals.
+              </h3>
+
+              <p>
+                EvalLoop AI analyzes responses across multiple evaluation
+                dimensions and presents the results in a clear interface.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="about-card reveal">
+
+            <div class="card-number">
+              03
+            </div>
+
+            <div class="card-content">
+
+              <div class="card-label">
+                THE GOAL
+              </div>
+
+              <h3>
+                Build AI systems you can trust.
+              </h3>
+
+              <p>
+                Test prompts, compare outputs, identify weaknesses,
+                and continuously improve your AI applications.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         HOW IT WORKS
+    ======================================================== -->
+    <section class="section section-border" id="how-it-works">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            HOW IT WORKS
+          </div>
+
+          <h2>
+            From prompt to
+            <span>quality signal.</span>
+          </h2>
+
+          <p>
+            EvalLoop AI creates a simple evaluation loop around your
+            AI-generated responses.
+          </p>
+
+        </div>
+
+        <div class="process-flow reveal">
+
+          <div class="process-step">
+
+            <div class="process-number">
+              01
+            </div>
+
+            <div class="process-icon">
+              →
+            </div>
+
+            <div class="process-title">
+              PROMPT
+            </div>
+
+            <p>
+              Provide the instruction or task given to the AI.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step">
+
+            <div class="process-number">
+              02
+            </div>
+
+            <div class="process-icon">
+              ◇
+            </div>
+
+            <div class="process-title">
+              LLM RESPONSE
+            </div>
+
+            <p>
+              Add the response generated by your AI model.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step process-highlight">
+
+            <div class="process-number">
+              03
+            </div>
+
+            <div class="process-icon">
+              ◎
+            </div>
+
+            <div class="process-title">
+              EVALLOOP AI
+            </div>
+
+            <p>
+              Evaluate the response against quality dimensions.
+            </p>
+
+          </div>
+
+          <div class="process-connector"></div>
+
+          <div class="process-step">
+
+            <div class="process-number">
+              04
+            </div>
+
+            <div class="process-icon">
+              ↗
+            </div>
+
+            <div class="process-title">
+              INSIGHTS
+            </div>
+
+            <p>
+              Receive scores, issues, explanations, and recommendations.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- Architecture -->
+        <div class="architecture reveal">
+
+          <div class="architecture-header">
+
+            <span>
+              EVALLOOP AI MODEL
+            </span>
+
+            <span>
+              SYSTEM FLOW / 001
+            </span>
+
+          </div>
+
+          <div class="architecture-flow">
+
+            <div class="architecture-node">
+              <span>PROMPT</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>LLM</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node architecture-node-active">
+              <span>EVALLOOP</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>SCORE</span>
+            </div>
+
+            <div class="architecture-arrow">
+              →
+            </div>
+
+            <div class="architecture-node">
+              <span>INSIGHTS</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         EVALUATION CAPABILITIES
+    ======================================================== -->
+    <section class="section section-border">
+
+      <div class="container">
+
+        <div class="section-heading split-heading reveal">
+
+          <div>
+
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              EVALUATION ENGINE
+            </div>
+
+            <h2>
+              Multiple signals.
+              <span>One quality view.</span>
+            </h2>
+
+          </div>
+
+          <p>
+            Evaluate AI responses across the dimensions that matter
+            for real-world AI systems.
+          </p>
+
+        </div>
+
+        <div class="capabilities-grid">
+
+          <div class="capability-card capability-large reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                01
+              </span>
+
+              <span class="capability-symbol">
+                ◌
+              </span>
+
+            </div>
+
+            <h3>
+              Factuality
+            </h3>
+
+            <p>
+              Identify unsupported claims, inaccuracies, and potential
+              hallucinations in AI-generated responses.
+            </p>
+
+            <div class="capability-line"></div>
+
+            <div class="capability-status">
+              <span>CHECK</span>
+              <span>ACTIVE</span>
+            </div>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                02
+              </span>
+
+              <span class="capability-symbol">
+                →
+              </span>
+
+            </div>
+
+            <h3>
+              Instruction Following
+            </h3>
+
+            <p>
+              Check whether the AI followed the user's requirements
+              and constraints.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                03
+              </span>
+
+              <span class="capability-symbol">
+                +
+              </span>
+
+            </div>
+
+            <h3>
+              Relevance
+            </h3>
+
+            <p>
+              Measure how directly the response addresses the requested
+              task.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                04
+              </span>
+
+              <span class="capability-symbol">
+                □
+              </span>
+
+            </div>
+
+            <h3>
+              Completeness
+            </h3>
+
+            <p>
+              Identify missing information and incomplete responses.
+            </p>
+
+          </div>
+
+          <div class="capability-card reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                05
+              </span>
+
+              <span class="capability-symbol">
+                ⌁
+              </span>
+
+            </div>
+
+            <h3>
+              Safety
+            </h3>
+
+            <p>
+              Detect potentially unsafe, harmful, or policy-sensitive
+              response patterns.
+            </p>
+
+          </div>
+
+          <div class="capability-card capability-wide reveal">
+
+            <div class="capability-top">
+
+              <span class="capability-index">
+                06
+              </span>
+
+              <span class="capability-symbol">
+                ∿
+              </span>
+
+            </div>
+
+            <div class="capability-wide-content">
+
+              <h3>
+                Fluency &amp; Overall Quality
+              </h3>
+
+              <p>
+                Evaluate clarity, coherence, readability, and the
+                overall usefulness of an AI response.
+              </p>
+
+            </div>
+
+            <div class="quality-meter">
+
+              <div class="quality-meter-label">
+                <span>QUALITY SIGNAL</span>
+                <span>94.3</span>
+              </div>
+
+              <div class="quality-meter-track">
+                <div class="quality-meter-fill"></div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         APP PREVIEW
+    ======================================================== -->
+    <section class="section section-border">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            APPLICATION PREVIEW
+          </div>
+
+          <h2>
+            Your AI quality
+            <span>at a glance.</span>
+          </h2>
+
+          <p>
+            A focused workspace for evaluating individual responses,
+            comparing outputs, and understanding quality signals.
+          </p>
+
+        </div>
+
+        <div class="dashboard reveal">
+
+          <div class="dashboard-topbar">
+
+            <div class="dashboard-brand">
+              EvalLoop AI_
+            </div>
+
+            <div class="dashboard-nav">
+
+              <span class="dashboard-nav-active">
+                Evaluate
+              </span>
+
+              <span>
+                Compare
+              </span>
+
+              <span>
+                History
+              </span>
+
+            </div>
+
+            <div class="dashboard-user">
+              USER_001
+            </div>
+
+          </div>
+
+          <div class="dashboard-content">
+
+            <!-- Sidebar -->
+            <aside class="dashboard-sidebar">
+
+              <div class="sidebar-label">
+                EVALUATION
+              </div>
+
+              <div class="sidebar-item sidebar-item-active">
+                New evaluation
+              </div>
+
+              <div class="sidebar-item">
+                Previous runs
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-label">
+                MODE
+              </div>
+
+              <div class="sidebar-item">
+                Standard
+              </div>
+
+              <div class="sidebar-item">
+                Custom rubric
+              </div>
+
+            </aside>
+
+            <!-- Main dashboard -->
+            <div class="dashboard-main">
+
+              <div class="dashboard-heading">
+
+                <div>
+
+                  <div class="dashboard-kicker">
+                    RESPONSE EVALUATION
+                  </div>
+
+                  <h3>
+                    Evaluation #001
+                  </h3>
+
+                </div>
+
+                <div class="dashboard-run">
+                  RUN COMPLETE
+                </div>
+
+              </div>
+
+              <div class="dashboard-score-row">
+
+                <div class="score-card score-main">
+
+                  <div class="score-label">
+                    OVERALL QUALITY
+                  </div>
+
+                  <div class="score-number">
+                    94.3
+                  </div>
+
+                  <div class="score-description">
+                    Strong response
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    FACTUALITY
+                  </div>
+
+                  <div class="small-score">
+                    94
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:94%"></span>
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    RELEVANCE
+                  </div>
+
+                  <div class="small-score">
+                    91
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:91%"></span>
+                  </div>
+
+                </div>
+
+                <div class="score-card">
+
+                  <div class="score-label">
+                    SAFETY
+                  </div>
+
+                  <div class="small-score">
+                    98
+                  </div>
+
+                  <div class="score-bar">
+                    <span style="width:98%"></span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="dashboard-analysis">
+
+                <div class="analysis-card">
+
+                  <div class="analysis-header">
+
+                    <span>
+                      DETECTED ISSUES
+                    </span>
+
+                    <span>
+                      01
+                    </span>
+
+                  </div>
+
+                  <div class="analysis-item">
+
+                    <span class="analysis-icon">
+                      !
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        Minor completeness gap
+                      </strong>
+
+                      <p>
+                        One requested detail was not directly addressed
+                        in the generated response.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="analysis-card">
+
+                  <div class="analysis-header">
+
+                    <span>
+                      EVALUATION SUMMARY
+                    </span>
+
+                    <span>
+                      AI
+                    </span>
+
+                  </div>
+
+                  <p class="summary-text">
+                    The response is relevant and mostly accurate.
+                    It follows the main instruction but could provide
+                    additional detail to fully satisfy the request.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div class="dashboard-bottom">
+
+                <span>
+                  EVAL ENGINE / STANDARD
+                </span>
+
+                <span>
+                  2026.001
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         DOWNLOAD
+    ======================================================== -->
+    <section class="section section-border" id="download">
+
+      <div class="container">
+
+        <div class="download-panel reveal">
+
+          <div class="download-content">
+
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              GET EVALLOOP AI
+            </div>
+
+            <h2>
+              Built for the
+              <span>AI evaluation loop.</span>
+            </h2>
+
+            <p>
+              Start with the web application. A downloadable desktop
+              application is planned for a future release.
+            </p>
+
+            <div class="download-actions">
+
+              <a href="#product" class="button button-primary">
+                Launch Web App
+                <span>↗</span>
+              </a>
+
+              <button
+                class="button button-secondary"
+                type="button"
+                disabled
+              >
+                Desktop App
+                <span>SOON</span>
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="download-visual">
+
+            <div class="download-orbit">
+
+              <div class="orbit orbit-a"></div>
+              <div class="orbit orbit-b"></div>
+              <div class="orbit orbit-c"></div>
+
+              <div class="download-core">
+                EL
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         PRICING
+    ======================================================== -->
+    <section class="section section-border" id="pricing">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            PRICING
+          </div>
+
+          <h2>
+            Start free.
+            <span>Evaluate more.</span>
+          </h2>
+
+          <p>
+            EvalLoop AI is designed to be accessible while giving
+            users a practical way to experiment with AI evaluation.
+          </p>
+
+        </div>
+
+        <div class="pricing-grid">
+
+          <div class="pricing-card pricing-main reveal">
+
+            <div class="pricing-top">
+
+              <div class="pricing-name">
+                FREE
+              </div>
+
+              <div class="pricing-status">
+                AVAILABLE
+              </div>
+
+            </div>
+
+            <div class="pricing-price">
+
+              <span class="price-symbol">
+                ₹
+              </span>
+
+              <span class="price-number">
+                0
+              </span>
+
+              <span class="price-period">
+                / forever
+              </span>
+
+            </div>
+
+            <p class="pricing-description">
+              Explore AI evaluation without an upfront subscription.
+            </p>
+
+            <div class="pricing-divider"></div>
+
+            <ul class="pricing-features">
+
+              <li>
+                <span>+</span>
+                AI response evaluation
+              </li>
+
+              <li>
+                <span>+</span>
+                Core quality metrics
+              </li>
+
+              <li>
+                <span>+</span>
+                Evaluation insights
+              </li>
+
+              <li>
+                <span>+</span>
+                Limited usage
+              </li>
+
+              <li>
+                <span>+</span>
+                Evaluation history
+              </li>
+
+            </ul>
+
+            <a href="#product" class="button button-primary pricing-button">
+              Get started
+              <span>↗</span>
+            </a>
+
+          </div>
+
+          <div class="pricing-info reveal">
+
+            <div class="pricing-info-row">
+
+              <span>
+                CURRENT MODEL
+              </span>
+
+              <span>
+                EVAL ENGINE
+              </span>
+
+            </div>
+
+            <div class="pricing-info-row">
+
+              <span>
+                USAGE
+              </span>
+
+              <span>
+                LIMITED
+              </span>
+
+            </div>
+
+            <div class="pricing-info-row">
+
+              <span>
+                API ACCESS
+              </span>
+
+              <span>
+                FUTURE
+              </span>
+
+            </div>
+
+            <div class="pricing-info-row">
+
+              <span>
+                TEAM FEATURES
+              </span>
+
+              <span>
+                FUTURE
+              </span>
+
+            </div>
+
+            <div class="pricing-info-note">
+
+              <span class="note-symbol">
+                *
+              </span>
+
+              Usage limits may change as the application evolves.
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         LOGIN / SIGNUP
+    ======================================================== -->
+    <section class="section section-border" id="signup">
+
+      <div class="container">
+
+        <div class="auth-panel reveal">
+
+          <div class="auth-copy">
+
+            <div class="section-kicker">
+              <span class="kicker-line"></span>
+              YOUR EVALUATION WORKSPACE
+            </div>
+
+            <h2>
+              Create your
+              <span>EvalLoop account.</span>
+            </h2>
+
+            <p>
+              Save evaluations, compare AI responses, and build a
+              personal history of your AI quality experiments.
+            </p>
+
+          </div>
+
+          <div class="auth-actions">
+
+            <a href="#" class="button button-primary">
+              Create account
+              <span>↗</span>
+            </a>
+
+            <a href="/login/" class="auth-login-link" id="login">
+              Already have an account? Login
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         FAQ
+    ======================================================== -->
+    <section class="section section-border" id="faq">
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            FAQ
+          </div>
+
+          <h2>
+            Questions,
+            <span>answered.</span>
+          </h2>
+
+        </div>
+
+        <div class="faq-list">
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                What is EvalLoop AI?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                EvalLoop AI is an AI evaluation platform designed to
+                help users analyze the quality of AI-generated responses
+                across dimensions such as factuality, relevance,
+                instruction following, completeness, fluency, and safety.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                Is EvalLoop AI free?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                EvalLoop AI is planned with a free-to-use tier that
+                includes usage limits. Additional capabilities may be
+                introduced in future versions.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                What can I evaluate?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                The initial application focuses on evaluating text-based
+                AI responses. Future versions can expand into multimodal
+                evaluation including vision, speech, and other AI outputs.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                Which AI models power EvalLoop AI?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                The evaluation application can connect to supported
+                language models through its evaluation backend. The
+                model layer can evolve independently from the EvalLoop
+                interface.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                Can I compare two AI responses?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                A response comparison workflow is planned for the
+                application, allowing users to evaluate multiple outputs
+                against the same prompt or rubric.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="faq-item reveal">
+
+            <button class="faq-question" type="button">
+
+              <span>
+                Is there a desktop application?
+              </span>
+
+              <span class="faq-icon">
+                +
+              </span>
+
+            </button>
+
+            <div class="faq-answer">
+
+              <p>
+                The first version is designed as a web application.
+                Desktop downloads can be introduced in a future release.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =======================================================
+         FINAL CTA
+    ======================================================== -->
+    <section class="section final-cta">
+
+      <div class="container">
+
+        <div class="cta-panel reveal">
+
+          <div class="cta-grid">
+
+            <div>
+
+              <div class="section-kicker">
+                <span class="kicker-line"></span>
+                EVALLOOP AI
+              </div>
+
+              <h2>
+                Don't just generate AI.
+                <span>Evaluate it.</span>
+              </h2>
+
+              <p>
+                Build a stronger AI quality loop with measurable,
+                explainable evaluation.
+              </p>
+
+            </div>
+
+            <div class="cta-action">
+
+              <a href="#product" class="button button-primary button-large">
+                Start evaluating
+                <span>↗</span>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="/" class="brand" aria-label="EvalLoop AI">
+          <span>EvalLoop AI</span><span class="brand-cursor">_</span>
+        </a>
+        <p>AI evaluation &amp; LLM quality platform.</p>
+      </div>
+
+      <div class="footer-columns">
+
+        <div class="footer-column">
+          <div class="footer-label">PRODUCT</div>
+          <a href="#product">Overview</a>
+          <a href="/app/">Evaluate</a>
+          <a href="/labs/">Labs</a>
+          <a href="/pricing/">Pricing</a>
+        </div>
+
+        <div class="footer-column">
+          <div class="footer-label">RESOURCES</div>
+          <a href="/knowledge/">Knowledge</a>
+          <a href="/docs/">Documentation</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <div class="footer-label">COMPANY</div>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+
+        <div class="footer-column">
+          <div class="footer-label">LEGAL</div>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/terms/">Terms of Service</a>
+          <a href="/ai-usage/">AI Usage Disclaimer</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 EvalLoop AI</span>
+      <span>BUILT FOR BETTER AI</span>
+      <span>HYDERABAD · INDIA</span>
+    </div>
+  </div>
+</footer>
+
+  <!-- =========================================================
+       JAVASCRIPT
+  ========================================================== -->
+  <script>
+/* =========================================================
+   EVALLOOP AI
+   Landing Page Interactions
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE PROGRESS
+   ========================================================= */
+
+const pageProgress = document.getElementById("pageProgress");
+
+function updatePageProgress() {
+  const scrollTop = window.scrollY;
+
+  const documentHeight =
+    document.documentElement.scrollHeight - window.innerHeight;
+
+  if (documentHeight <= 0) {
+    pageProgress.style.width = "0%";
+    return;
+  }
+
+  const progress = (scrollTop / documentHeight) * 100;
+
+  pageProgress.style.width = `${Math.min(progress, 100)}%`;
+}
+
+window.addEventListener("scroll", updatePageProgress, {
+  passive: true
+});
+
+updatePageProgress();
+
+
+/* =========================================================
+   FLUID SCROLL MOTION
+   ========================================================= */
+
+const reduceMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+const depthElements = [
+  [document.querySelector(".hero-visual"), 0.14, "scroll-depth"],
+  [document.querySelector(".background-grid"), 0.05, "scroll-depth-slow"],
+  [document.querySelector(".background-glow"), 0.08, "scroll-depth-slow"]
+];
+
+depthElements.forEach(([element, speed, className]) => {
+  if (element && !reduceMotion) {
+    element.classList.add(className);
+  }
+});
+
+const animatedSections = document.querySelectorAll(
+  ".section-border, .final-cta"
+);
+
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle("in-view", entry.isIntersecting);
+    });
+  },
+  { threshold: 0.08 }
+);
+
+animatedSections.forEach((section) => sectionObserver.observe(section));
+
+const focusSections = Array.from(
+  document.querySelectorAll("main > .section")
+);
+
+document.body.classList.add("scroll-focus-enabled");
+
+function updateFocusedSection() {
+  if (!focusSections.length) return;
+
+  const focusLine = window.innerHeight * 0.48;
+  let closestSection = focusSections[0];
+  let closestDistance = Infinity;
+
+  focusSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const sectionCenter = rect.top + rect.height * 0.5;
+    const distance = Math.abs(sectionCenter - focusLine);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestSection = section;
+    }
+  });
+
+  focusSections.forEach((section) => {
+    section.classList.toggle("is-current", section === closestSection);
+  });
+}
+
+updateFocusedSection();
+
+let motionFrame = null;
+let targetScrollY = window.scrollY;
+let smoothScrollY = window.scrollY;
+let scrollVelocity = 0;
+let previousSmoothY = smoothScrollY;
+let scrollDirectionTimer = null;
+
+function updateScrollTarget() {
+  const nextScrollY = window.scrollY;
+  const delta = nextScrollY - targetScrollY;
+  targetScrollY = nextScrollY;
+
+  if (Math.abs(delta) > 0.5) {
+    document.body.classList.toggle("is-scrolling-down", delta > 0);
+    document.body.classList.add("is-scrolling");
+    clearTimeout(scrollDirectionTimer);
+    scrollDirectionTimer = setTimeout(() => {
+      document.body.classList.remove("is-scrolling");
+    }, 140);
+  }
+
+  requestScrollMotion();
+}
+
+function updateScrollMotion() {
+  motionFrame = null;
+
+  if (reduceMotion) return;
+
+  /* Ease toward the real scroll position instead of jumping on every event. */
+  const distanceToTarget = targetScrollY - smoothScrollY;
+  smoothScrollY += distanceToTarget * 0.075;
+  scrollVelocity = smoothScrollY - previousSmoothY;
+  previousSmoothY = smoothScrollY;
+
+  updateFocusedSection();
+
+  const viewportCenter = window.innerHeight * 0.5;
+  const velocityTilt = Math.max(-2.4, Math.min(2.4, scrollVelocity * 0.26));
+  const velocityScale = 1 + Math.min(0.026, Math.abs(scrollVelocity) * 0.0018);
+
+  depthElements.forEach(([element, speed]) => {
+    if (!element) return;
+    element.style.setProperty(
+      "--scroll-shift",
+      `${(smoothScrollY * speed + scrollVelocity * speed * 2.4).toFixed(2)}px`
+    );
+  });
+
+  const heroVisual = document.querySelector(".hero-visual");
+  if (heroVisual) {
+    heroVisual.style.setProperty("--scroll-rotate", `${velocityTilt.toFixed(2)}deg`);
+    heroVisual.style.setProperty("--scroll-scale", velocityScale.toFixed(4));
+  }
+
+  document.querySelectorAll(
+    ".capability-card, .process-step, .about-card, .pricing-card, .faq-item"
+  ).forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const distance = (rect.top + rect.height * 0.5 - viewportCenter) / window.innerHeight;
+    const shift = Math.max(-18, Math.min(18, distance * -10 + scrollVelocity * -1.2));
+    const scale = 1 + Math.max(-0.018, Math.min(0.018, -Math.abs(distance) * 0.009));
+    element.style.setProperty("--scroll-lift", `${shift.toFixed(2)}px`);
+    element.style.setProperty("--scroll-scale", scale.toFixed(4));
+  });
+
+  /* Keep the inertial layer alive until it catches up. */
+  if (Math.abs(distanceToTarget) > 0.15 || Math.abs(scrollVelocity) > 0.02) {
+    motionFrame = requestAnimationFrame(updateScrollMotion);
+  }
+}
+
+function requestScrollMotion() {
+  if (!motionFrame && !reduceMotion) {
+    motionFrame = requestAnimationFrame(updateScrollMotion);
+  }
+}
+
+window.addEventListener("scroll", updateScrollTarget, { passive: true });
+window.addEventListener("resize", () => {
+  targetScrollY = window.scrollY;
+  smoothScrollY = targetScrollY;
+  requestScrollMotion();
+}, { passive: true });
+requestScrollMotion();
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+const mobileMenuButton =
+  document.getElementById("mobileMenuButton");
+
+const mobileNav =
+  document.getElementById("mobileNav");
+
+if (mobileMenuButton && mobileNav) {
+
+  mobileMenuButton.addEventListener("click", () => {
+
+    const isOpen =
+      mobileMenuButton.classList.toggle("active");
+
+    mobileNav.classList.toggle("active", isOpen);
+
+    mobileMenuButton.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    document.body.classList.toggle(
+      "menu-open",
+      isOpen
+    );
+
+  });
+
+
+  /* Close mobile menu after clicking a link */
+
+  const mobileLinks =
+    mobileNav.querySelectorAll("a");
+
+  mobileLinks.forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+      mobileMenuButton.classList.remove("active");
+
+      mobileNav.classList.remove("active");
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      document.body.classList.remove(
+        "menu-open"
+      );
+
+    });
+
+  });
+
+}
+
+
+/* =========================================================
+   NAVIGATION DROPDOWNS
+   ========================================================= */
+
+const desktopDropdowns =
+  document.querySelectorAll(".nav-dropdown");
+
+function closeDesktopDropdowns(except = null) {
+  desktopDropdowns.forEach((dropdown) => {
+    if (dropdown === except) return;
+
+    const trigger = dropdown.querySelector(
+      ".nav-dropdown-trigger"
+    );
+    const menu = dropdown.querySelector(
+      ".nav-dropdown-menu"
+    );
+
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    if (menu) {
+      menu.classList.remove("is-open");
+    }
+  });
+}
+
+desktopDropdowns.forEach((dropdown) => {
+  const trigger = dropdown.querySelector(
+    ".nav-dropdown-trigger"
+  );
+  const menu = dropdown.querySelector(
+    ".nav-dropdown-menu"
+  );
+
+  if (!trigger || !menu) return;
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const isOpen =
+      trigger.getAttribute("aria-expanded") === "true";
+
+    closeDesktopDropdowns(dropdown);
+    trigger.setAttribute("aria-expanded", String(!isOpen));
+    menu.classList.toggle("is-open", !isOpen);
+  });
+});
+
+document.addEventListener("click", () => {
+  closeDesktopDropdowns();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeDesktopDropdowns();
+  }
+});
+
+const mobileDropdowns = document.querySelectorAll(
+  ".mobile-nav-dropdown"
+);
+
+mobileDropdowns.forEach((dropdown) => {
+  const trigger = dropdown.querySelector(
+    ".mobile-nav-dropdown-trigger"
+  );
+
+  if (!trigger) return;
+
+  trigger.addEventListener("click", () => {
+    const isOpen = dropdown.classList.toggle("is-open");
+
+    trigger.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    mobileDropdowns.forEach((otherDropdown) => {
+      if (otherDropdown === dropdown) return;
+
+      otherDropdown.classList.remove("is-open");
+      const otherTrigger = otherDropdown.querySelector(
+        ".mobile-nav-dropdown-trigger"
+      );
+
+      if (otherTrigger) {
+        otherTrigger.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    });
+  });
+});
+
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+const revealElements =
+  document.querySelectorAll(".reveal");
+
+const revealObserver =
+  new IntersectionObserver(
+    (entries, observer) => {
+
+      entries.forEach((entry) => {
+
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("visible");
+
+        observer.unobserve(entry.target);
+
+      });
+
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px"
+    }
+  );
+
+
+revealElements.forEach((element) => {
+  revealObserver.observe(element);
+});
+
+
+/* =========================================================
+   FAQ ACCORDION
+   ========================================================= */
+
+const faqItems =
+  document.querySelectorAll(".faq-item");
+
+faqItems.forEach((item) => {
+
+  const question =
+    item.querySelector(".faq-question");
+
+  if (!question) {
+    return;
+  }
+
+  question.addEventListener("click", () => {
+
+    const isCurrentlyActive =
+      item.classList.contains("active");
+
+
+    /* Close all FAQ items */
+
+    faqItems.forEach((otherItem) => {
+      otherItem.classList.remove("active");
+
+      const otherQuestion =
+        otherItem.querySelector(".faq-question");
+
+      if (otherQuestion) {
+        otherQuestion.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    });
+
+
+    /* Open clicked item */
+
+    if (!isCurrentlyActive) {
+
+      item.classList.add("active");
+
+      question.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+    }
+
+  });
+
+});
+
+
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
+
+const cursorDot =
+  document.getElementById("cursorDot");
+
+const cursorRing =
+  document.getElementById("cursorRing");
+
+const finePointer =
+  window.matchMedia("(pointer: fine)").matches;
+
+
+if (finePointer && cursorDot && cursorRing) {
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let ringX = 0;
+  let ringY = 0;
+
+
+  document.addEventListener("mousemove", (event) => {
+
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    cursorDot.style.left = `${mouseX}px`;
+    cursorDot.style.top = `${mouseY}px`;
+
+    cursorDot.style.opacity = "1";
+    cursorRing.style.opacity = "1";
+
+  });
+
+
+  function animateCursor() {
+
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+
+    cursorRing.style.left = `${ringX}px`;
+    cursorRing.style.top = `${ringY}px`;
+
+    requestAnimationFrame(animateCursor);
+
+  }
+
+  animateCursor();
+
+
+  /* Interactive cursor state */
+
+  const interactiveElements =
+    document.querySelectorAll(
+      "a, button, .capability-card, .about-card, .process-step"
+    );
+
+
+  interactiveElements.forEach((element) => {
+
+    element.addEventListener("mouseenter", () => {
+      cursorRing.classList.add("active");
+    });
+
+    element.addEventListener("mouseleave", () => {
+      cursorRing.classList.remove("active");
+    });
+
+  });
+
+
+  document.addEventListener("mouseleave", () => {
+
+    cursorDot.style.opacity = "0";
+    cursorRing.style.opacity = "0";
+
+  });
+
+
+  document.addEventListener("mouseenter", () => {
+
+    cursorDot.style.opacity = "1";
+    cursorRing.style.opacity = "1";
+
+  });
+
+}
+
+
+/* =========================================================
+   SMOOTH ANCHOR HANDLING
+   ========================================================= */
+
+const anchorLinks =
+  document.querySelectorAll('a[href^="#"]');
+
+anchorLinks.forEach((link) => {
+
+  link.addEventListener("click", (event) => {
+
+    const targetId =
+      link.getAttribute("href");
+
+    if (
+      !targetId ||
+      targetId === "#" ||
+      targetId.length < 2
+    ) {
+      return;
+    }
+
+    const target =
+      document.querySelector(targetId);
+
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const header =
+      document.querySelector(".site-header");
+
+    const headerHeight =
+      header ? header.offsetHeight : 0;
+
+    const announcement =
+      document.querySelector(".announcement-bar");
+
+    const announcementHeight =
+      announcement
+        ? announcement.offsetHeight
+        : 0;
+
+    const offset =
+      headerHeight + announcementHeight + 15;
+
+    const targetPosition =
+      target.getBoundingClientRect().top +
+      window.scrollY -
+      offset;
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth"
+    });
+
+  });
+
+});
+
+
+/* =========================================================
+   HERO ORB MOUSE PARALLAX
+   ========================================================= */
+
+const heroVisual =
+  document.querySelector(".hero-visual");
+
+const heroOrb =
+  document.querySelector(".evaluation-orb");
+
+if (
+  heroVisual &&
+  heroOrb &&
+  finePointer &&
+  !window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches
+) {
+
+  heroVisual.addEventListener(
+    "mousemove",
+    (event) => {
+
+      const rect =
+        heroVisual.getBoundingClientRect();
+
+      const x =
+        (event.clientX - rect.left) /
+        rect.width;
+
+      const y =
+        (event.clientY - rect.top) /
+        rect.height;
+
+      const moveX =
+        (x - 0.5) * 12;
+
+      const moveY =
+        (y - 0.5) * 12;
+
+      heroOrb.style.transform =
+        `translate(${moveX}px, ${moveY}px)`;
+
+    }
+  );
+
+
+  heroVisual.addEventListener(
+    "mouseleave",
+    () => {
+
+      heroOrb.style.transform =
+        "translate(0, 0)";
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   QUALITY METER
+   ========================================================= */
+
+const qualityMeter =
+  document.querySelector(".quality-meter-fill");
+
+if (qualityMeter) {
+
+  qualityMeter.style.transformOrigin =
+    "left center";
+
+  qualityMeter.style.transform =
+    "scaleX(0)";
+
+  const meterObserver =
+    new IntersectionObserver(
+      (entries, observer) => {
+
+        entries.forEach((entry) => {
+
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          qualityMeter.style.transition =
+            "transform 1.2s cubic-bezier(.22,.61,.36,1)";
+
+          qualityMeter.style.transform =
+            "scaleX(1)";
+
+          observer.unobserve(entry.target);
+
+        });
+
+      },
+      {
+        threshold: 0.4
+      }
+    );
+
+  meterObserver.observe(qualityMeter);
+
+}
+
+
+/* =========================================================
+   SCORE BAR ANIMATION
+   ========================================================= */
+
+const scoreBars =
+  document.querySelectorAll(".score-bar span");
+
+if (scoreBars.length) {
+
+  scoreBars.forEach((bar) => {
+
+    const finalWidth =
+      bar.style.width;
+
+    bar.style.width = "0%";
+
+    const observer =
+      new IntersectionObserver(
+        (entries, observerInstance) => {
+
+          entries.forEach((entry) => {
+
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            bar.style.transition =
+              "width 1.1s cubic-bezier(.22,.61,.36,1)";
+
+            bar.style.width =
+              finalWidth;
+
+            observerInstance.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+          threshold: 0.5
+        }
+      );
+
+    observer.observe(bar);
+
+  });
+
+}
+
+
+/* =========================================================
+   YEAR
+   ========================================================= */
+
+const yearElements =
+  document.querySelectorAll(
+    "[data-current-year]"
+  );
+
+yearElements.forEach((element) => {
+
+  element.textContent =
+    new Date().getFullYear();
+
+});
+
+
+/* =========================================================
+   CONSOLE BRAND MESSAGE
+   ========================================================= */
+
+console.log(
+  "%cEvalLoop AI_",
+  "color:#3ecf8e;font-family:monospace;font-size:18px;"
+);
+
+console.log(
+  "%cAI Evaluation & LLM Quality Platform",
+  "color:#a4aaa6;font-family:monospace;font-size:11px;"
+);
+  </script>
+
+</body>
+</html>
