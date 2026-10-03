@@ -96,10 +96,15 @@
       text-decoration: none;
     }
 
+    button {
+      font-family: inherit;
+    }
+
     ::selection {
       background: rgba(62, 207, 142, 0.25);
       color: var(--ink);
     }
+
 
     /* =========================================
        BACKGROUND
@@ -134,6 +139,7 @@
       );
     }
 
+
     /* =========================================
        CONTAINER
        ========================================= */
@@ -147,6 +153,7 @@
       margin: 0 auto;
     }
 
+
     /* =========================================
        HEADER
        ========================================= */
@@ -155,7 +162,7 @@
       position: sticky;
       top: 0;
 
-      z-index: 100;
+      z-index: 1000;
 
       border-bottom: 1px solid var(--line-soft);
 
@@ -163,6 +170,7 @@
         rgba(16, 18, 17, 0.82);
 
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .nav-inner {
@@ -174,6 +182,11 @@
 
       gap: 30px;
     }
+
+
+    /* =========================================
+       BRAND
+       ========================================= */
 
     .brand {
       display: inline-flex;
@@ -187,6 +200,8 @@
       letter-spacing: -0.04em;
 
       white-space: nowrap;
+
+      flex-shrink: 0;
     }
 
     .brand-cursor {
@@ -195,30 +210,220 @@
       animation: blink 1.2s infinite;
     }
 
+
+    /* =========================================
+       DESKTOP NAVIGATION
+       ========================================= */
+
     .desktop-nav {
       display: flex;
       align-items: center;
 
-      gap: 32px;
+      gap: 30px;
 
       margin-left: auto;
     }
 
-    .desktop-nav a {
+    .desktop-nav > a,
+    .nav-dropdown-trigger {
+      position: relative;
+
+      display: inline-flex;
+      align-items: center;
+
+      gap: 5px;
+
+      padding: 8px 0;
+
       color: var(--muted);
 
+      font-family: var(--sans);
       font-size: 12px;
+      font-weight: 400;
 
-      transition: color 0.25s ease;
+      background: transparent;
+
+      border: none;
+
+      cursor: pointer;
+
+      transition:
+        color 0.25s ease;
     }
 
-    .desktop-nav a:hover {
+    .desktop-nav > a:hover,
+    .nav-dropdown-trigger:hover {
       color: var(--ink);
     }
 
-    .desktop-nav a.active {
+    .desktop-nav > a[href="/pricing/"] {
       color: var(--green2);
     }
+
+    .nav-chevron {
+      display: inline-block;
+
+      color: var(--dim);
+
+      font-size: 12px;
+
+      line-height: 1;
+
+      transform: translateY(-1px);
+
+      transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+    }
+
+    .nav-dropdown:hover .nav-chevron,
+    .nav-dropdown.open .nav-chevron {
+      color: var(--green);
+
+      transform:
+        translateY(-1px)
+        rotate(180deg);
+    }
+
+
+    /* =========================================
+       DESKTOP DROPDOWN
+       ========================================= */
+
+    .nav-dropdown {
+      position: relative;
+
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+
+      top: calc(100% + 10px);
+      left: 50%;
+
+      width: 270px;
+
+      padding: 7px;
+
+      transform:
+        translateX(-50%)
+        translateY(-6px);
+
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
+
+      border: 1px solid var(--line);
+
+      background:
+        rgba(23, 27, 24, 0.98);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.30);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+    }
+
+    .nav-dropdown-menu::before {
+      content: "";
+
+      position: absolute;
+
+      top: -6px;
+      left: 50%;
+
+      width: 10px;
+      height: 10px;
+
+      transform:
+        translateX(-50%)
+        rotate(45deg);
+
+      border-left: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+
+      background: var(--panel);
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+
+      visibility: visible;
+
+      pointer-events: auto;
+
+      transform:
+        translateX(-50%)
+        translateY(0);
+    }
+
+    .nav-dropdown-menu a {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 3px;
+
+      padding: 12px 13px;
+
+      color: var(--muted);
+
+      border: 1px solid transparent;
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .nav-dropdown-menu a span {
+      color: var(--ink);
+
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .nav-dropdown-menu a small {
+      color: var(--dim);
+
+      font-family: var(--sans);
+
+      font-size: 9px;
+
+      line-height: 1.45;
+    }
+
+    .nav-dropdown-menu a:hover {
+      color: var(--ink);
+
+      background:
+        rgba(62, 207, 142, 0.045);
+
+      border-color:
+        rgba(62, 207, 142, 0.12);
+    }
+
+    .nav-dropdown-menu a:hover span {
+      color: var(--green2);
+    }
+
+
+    /* =========================================
+       NAV ACTIONS
+       ========================================= */
 
     .nav-actions {
       display: flex;
@@ -232,12 +437,14 @@
 
       font-size: 12px;
 
-      transition: color 0.25s ease;
+      transition:
+        color 0.25s ease;
     }
 
     .nav-login:hover {
       color: var(--ink);
     }
+
 
     /* =========================================
        BUTTON
@@ -297,11 +504,19 @@
 
     .button-primary:hover {
       background: #193223;
+
       border-color: var(--green);
     }
 
+    .button-small {
+      min-height: 38px;
+
+      padding: 0 14px;
+    }
+
+
     /* =========================================
-       MOBILE MENU
+       MOBILE MENU BUTTON
        ========================================= */
 
     .mobile-menu-button {
@@ -322,6 +537,8 @@
       gap: 6px;
 
       cursor: pointer;
+
+      flex-shrink: 0;
     }
 
     .mobile-menu-button span {
@@ -335,55 +552,182 @@
         opacity 0.25s ease;
     }
 
+    .mobile-menu-button.active span:first-child {
+      transform:
+        translateY(3.5px)
+        rotate(45deg);
+    }
+
+    .mobile-menu-button.active span:last-child {
+      transform:
+        translateY(-3.5px)
+        rotate(-45deg);
+    }
+
+
+    /* =========================================
+       MOBILE NAVIGATION
+       ========================================= */
+
     .mobile-nav {
       display: none;
     }
-   .mobile-nav.active {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  box-sizing: border-box;
 
-  margin-top: 12px;
-  padding: 14px;
+    .mobile-nav.active {
+      display: flex;
 
-  border: 1px solid var(--line);
-  background: var(--panel);
+      flex-direction: column;
 
-  gap: 4px;
-}
-    .mobile-nav.active a {
-  display: flex;
-  align-items: center;
+      width: 100%;
 
-  width: 100%;
-  box-sizing: border-box;
+      padding: 14px 24px 18px;
 
-  padding: 12px 10px;
+      border-top: 1px solid var(--line-soft);
 
-  color: var(--muted);
-  text-decoration: none;
+      background:
+        rgba(16, 18, 17, 0.98);
 
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 500;
+      box-shadow:
+        0 20px 40px
+        rgba(0, 0, 0, 0.20);
 
-  border-bottom: 1px solid var(--line-soft);
+      gap: 3px;
+    }
 
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
-}
+    .mobile-nav > a,
+    .mobile-nav-dropdown-trigger {
+      display: flex;
 
-.mobile-nav.active a:last-child {
-  border-bottom: none;
-}
+      align-items: center;
+      justify-content: space-between;
 
-.mobile-nav.active a:hover,
-.mobile-nav.active a:active {
-  color: var(--ink);
-  background: var(--panel2);
-}
+      width: 100%;
+
+      padding: 12px 10px;
+
+      color: var(--muted);
+
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+
+      border: none;
+      border-bottom: 1px solid var(--line-soft);
+
+      background: transparent;
+
+      text-align: left;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .mobile-nav > a:hover,
+    .mobile-nav-dropdown-trigger:hover {
+      color: var(--ink);
+
+      background: var(--panel2);
+    }
+
+    .mobile-nav > a[href="/pricing/"] {
+      color: var(--green2);
+    }
+
+    .mobile-nav-dropdown {
+      width: 100%;
+    }
+
+    .mobile-nav-dropdown-trigger {
+      margin: 0;
+    }
+
+    .mobile-nav-dropdown-trigger .nav-chevron {
+      transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+    }
+
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-trigger
+      .nav-chevron {
+      color: var(--green);
+
+      transform: rotate(180deg);
+    }
+
+    .mobile-nav-dropdown-menu {
+      display: none;
+
+      flex-direction: column;
+
+      padding: 5px 0 6px;
+
+      background:
+        rgba(23, 27, 24, 0.75);
+
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-menu {
+      display: flex;
+    }
+
+    .mobile-nav-dropdown-menu a {
+      display: block;
+
+      width: 100%;
+
+      padding: 10px 20px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      border-left: 1px solid
+        rgba(62, 207, 142, 0.16);
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .mobile-nav-dropdown-menu a:hover {
+      color: var(--green2);
+
+      background:
+        rgba(62, 207, 142, 0.045);
+    }
+
+    .mobile-nav-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 18px 10px 4px;
+    }
+
+    .mobile-nav-actions > a:first-child {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav-actions > a:first-child:hover {
+      color: var(--ink);
+    }
+
+    .mobile-nav-actions .button {
+      flex: 1;
+    }
+
 
     /* =========================================
        HERO
@@ -478,6 +822,7 @@
         0 0 10px
         rgba(62, 207, 142, 0.6);
     }
+
 
     /* =========================================
        PRICING GRID
@@ -665,6 +1010,7 @@
       margin-top: auto;
     }
 
+
     /* =========================================
        NOTE
        ========================================= */
@@ -695,6 +1041,7 @@
     .pricing-note span {
       color: var(--green);
     }
+
 
     /* =========================================
        FOOTER
@@ -761,7 +1108,8 @@
 
       font-size: 11px;
 
-      transition: color 0.25s ease;
+      transition:
+        color 0.25s ease;
     }
 
     .footer-column a:hover {
@@ -788,6 +1136,7 @@
       letter-spacing: 0.05em;
     }
 
+
     /* =========================================
        ANIMATION
        ========================================= */
@@ -804,6 +1153,7 @@
       }
     }
 
+
     /* =========================================
        TABLET
        ========================================= */
@@ -815,6 +1165,11 @@
       }
 
     }
+
+
+    /* =========================================
+       NAV TABLET / MOBILE
+       ========================================= */
 
     @media (max-width: 900px) {
 
@@ -829,6 +1184,7 @@
 
       .footer-top {
         grid-template-columns: 1fr;
+
         gap: 48px;
       }
 
@@ -847,6 +1203,7 @@
 
     }
 
+
     /* =========================================
        MOBILE
        ========================================= */
@@ -862,6 +1219,11 @@
 
       .nav-inner {
         min-height: 68px;
+      }
+
+      .mobile-nav.active {
+        padding-left: 16px;
+        padding-right: 16px;
       }
 
       .pricing-hero {
@@ -925,6 +1287,11 @@
 
     }
 
+
+    /* =========================================
+       SMALL MOBILE
+       ========================================= */
+
     @media (max-width: 380px) {
 
       .pricing-hero h1 {
@@ -946,9 +1313,11 @@
   </style>
 </head>
 
+
 <body>
 
   <div class="background-grid"></div>
+
 
   <!-- =========================================
        HEADER
@@ -960,6 +1329,8 @@
 
       <div class="nav-inner">
 
+        <!-- BRAND -->
+
         <a
           href="/"
           class="brand"
@@ -968,36 +1339,171 @@
           EvalLoop AI<span class="brand-cursor">_</span>
         </a>
 
-        <nav class="desktop-nav">
+
+        <!-- DESKTOP NAVIGATION -->
+
+        <nav
+          class="desktop-nav"
+          aria-label="Primary navigation"
+        >
+
+          <!-- PRODUCTS -->
+
+          <div class="nav-dropdown">
+
+            <button
+              class="nav-dropdown-trigger"
+              type="button"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              Products
+              <span class="nav-chevron">⌄</span>
+            </button>
+
+            <div
+              class="nav-dropdown-menu"
+              role="menu"
+            >
+
+              <a
+                href="/labs/"
+                role="menuitem"
+              >
+                <span>
+                  Evaluation Engines/Models
+                </span>
+
+                <small>
+                  Test and compare AI quality
+                </small>
+              </a>
+
+              <a
+                href="/jobs/"
+                role="menuitem"
+              >
+                <span>
+                  EvalLoop Jobs
+                </span>
+
+                <small>
+                  Independent jobs directory &amp;
+                  discovery platform
+                </small>
+              </a>
+
+              <a
+                href="/hub/"
+                role="menuitem"
+              >
+                <span>
+                  EvalAI Hub
+                </span>
+
+                <small>
+                  Explore the evaluation ecosystem
+                </small>
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- WORKSPACE -->
 
           <a href="/app/">
-            Evaluate
+            Workspace
           </a>
 
-          <a href="/knowledge/">
-            Knowledge
-          </a>
 
-          <a href="/labs/">
-            Labs
-          </a>
+          <!-- RESOURCES -->
 
-          <a href="/benchmarks/">
-            Benchmarks
-          </a>
+          <div class="nav-dropdown">
 
-          <a href="/docs/">
-            Docs
-          </a>
+            <button
+              class="nav-dropdown-trigger"
+              type="button"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              Resources
+              <span class="nav-chevron">⌄</span>
+            </button>
 
-          <a
-            href="/pricing/"
-            class="active"
-          >
+            <div
+              class="nav-dropdown-menu"
+              role="menu"
+            >
+
+              <a
+                href="/docs/"
+                role="menuitem"
+              >
+                <span>
+                  Docs
+                </span>
+
+                <small>
+                  Build with EvalLoop AI
+                </small>
+              </a>
+
+              <a
+                href="/knowledge/"
+                role="menuitem"
+              >
+                <span>
+                  Learn
+                </span>
+
+                <small>
+                  Guides and evaluation basics
+                </small>
+              </a>
+
+              <a
+                href="/blog/"
+                role="menuitem"
+              >
+                <span>
+                  Blog
+                </span>
+
+                <small>
+                  Ideas, updates, and research
+                </small>
+              </a>
+
+              <a
+                href="/api-space/"
+                role="menuitem"
+              >
+                <span>
+                  API
+                </span>
+
+                <small>
+                  Connect your AI workflows
+                </small>
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- PRICING -->
+
+          <a href="/pricing/">
             Pricing
           </a>
 
         </nav>
+
+
+        <!-- NAV ACTIONS -->
 
         <div class="nav-actions">
 
@@ -1005,6 +1511,137 @@
             href="/login/"
             class="nav-login"
           >
+            Login
+          </a>
+
+          <a
+            href="/signup/"
+            class="button button-small"
+          >
+            Sign up
+            <span>↗</span>
+          </a>
+
+        </div>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+
+
+      <!-- =========================================
+           MOBILE NAVIGATION
+           ========================================= -->
+
+      <div
+        class="mobile-nav"
+        id="mobileNav"
+      >
+
+        <!-- MOBILE PRODUCTS -->
+
+        <div class="mobile-nav-dropdown">
+
+          <button
+            class="mobile-nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Products
+
+            <span class="nav-chevron">
+              ⌄
+            </span>
+          </button>
+
+          <div class="mobile-nav-dropdown-menu">
+
+            <a href="/labs/">
+              Evaluation Engines/Models
+            </a>
+
+            <a href="/jobs/">
+              EvalLoop Jobs
+            </a>
+
+            <a href="/hub/">
+              EvalAI Hub
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOBILE WORKSPACE -->
+
+        <a href="/app/">
+          Workspace
+        </a>
+
+
+        <!-- MOBILE RESOURCES -->
+
+        <div class="mobile-nav-dropdown">
+
+          <button
+            class="mobile-nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Resources
+
+            <span class="nav-chevron">
+              ⌄
+            </span>
+          </button>
+
+          <div class="mobile-nav-dropdown-menu">
+
+            <a href="/docs/">
+              Docs
+            </a>
+
+            <a href="/knowledge/">
+              Learn
+            </a>
+
+            <a href="/blog/">
+              Blog
+            </a>
+
+            <a href="/api-space/">
+              API
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOBILE PRICING -->
+
+        <a href="/pricing/">
+          Pricing
+        </a>
+
+
+        <!-- MOBILE ACTIONS -->
+
+        <div class="mobile-nav-actions">
+
+          <a href="/login/">
             Login
           </a>
 
@@ -1018,78 +1655,23 @@
 
         </div>
 
-        <button
-          class="mobile-menu-button"
-          id="mobileMenuButton"
-          aria-label="Open menu"
-          aria-expanded="false"
-        >
-          <span></span>
-          <span></span>
-        </button>
-
       </div>
 
     </div>
 
   </header>
 
-  <!-- =========================================
-       MOBILE NAV
-       ========================================= -->
-
-  <div
-    class="mobile-nav"
-    id="mobileNav"
-  >
-
-    <a href="/app/">
-      Evaluate
-    </a>
-
-    <a href="/knowledge/">
-      Knowledge
-    </a>
-
-    <a href="/labs/">
-      Labs
-    </a>
-
-    <a href="/benchmarks/">
-      Benchmarks
-    </a>
-
-    <a href="/docs/">
-      Docs
-    </a>
-
-    <a href="/pricing/">
-      Pricing
-    </a>
-
-    <div class="mobile-nav-actions">
-
-      <a href="/login/">
-        Login
-      </a>
-
-      <a
-        href="/signup/"
-        class="button"
-      >
-        Sign up
-        <span>↗</span>
-      </a>
-
-    </div>
-
-  </div>
 
   <!-- =========================================
-       HERO
+       MAIN
        ========================================= -->
 
   <main>
+
+
+    <!-- =========================================
+         HERO
+         ========================================= -->
 
     <section class="pricing-hero">
 
@@ -1105,10 +1687,12 @@
 
         </div>
 
+
         <h1>
           Simple.
           <span>Transparent.</span>
         </h1>
+
 
         <p>
           EvalLoop AI is being built around accessible
@@ -1116,6 +1700,7 @@
           today and watch for upcoming capabilities as
           the platform grows.
         </p>
+
 
         <div class="status-line">
 
@@ -1129,6 +1714,7 @@
 
     </section>
 
+
     <!-- =========================================
          PRICING
          ========================================= -->
@@ -1138,6 +1724,7 @@
       <div class="container">
 
         <div class="pricing-grid">
+
 
           <!-- FREE -->
 
@@ -1200,7 +1787,9 @@
               </li>
 
             </ul>
-<br>
+
+            <br />
+
             <a
               href="/app/"
               class="button button-primary plan-button"
@@ -1210,6 +1799,7 @@
             </a>
 
           </article>
+
 
           <!-- PRO -->
 
@@ -1269,12 +1859,15 @@
               </li>
 
             </ul>
-<br>
+
+            <br />
+
             <div class="button plan-button">
               Coming Soon
             </div>
 
           </article>
+
 
           <!-- TEAM -->
 
@@ -1333,12 +1926,15 @@
               </li>
 
             </ul>
-<br>
+
+            <br />
+
             <div class="button plan-button">
               Coming Soon
             </div>
 
           </article>
+
 
           <!-- ENTERPRISE -->
 
@@ -1397,7 +1993,9 @@
               </li>
 
             </ul>
-<br>
+
+            <br />
+
             <div class="button plan-button">
               Coming Soon
             </div>
@@ -1406,9 +2004,13 @@
 
         </div>
 
+
+        <!-- PRICING NOTE -->
+
         <div class="pricing-note">
 
           <span>NOTE:</span>
+
           Future plans, features, and pricing are not
           finalized. This page will be updated as EvalLoop AI
           develops new evaluation capabilities.
@@ -1421,6 +2023,7 @@
 
   </main>
 
+
   <!-- =========================================
        FOOTER
        ========================================= -->
@@ -1431,6 +2034,9 @@
 
       <div class="footer-top">
 
+
+        <!-- FOOTER BRAND -->
+
         <div class="footer-brand">
 
           <a
@@ -1438,8 +2044,13 @@
             class="brand"
             aria-label="EvalLoop AI"
           >
-            <span>EvalLoop AI</span>
-            <span class="brand-cursor">_</span>
+            <span>
+              EvalLoop AI
+            </span>
+
+            <span class="brand-cursor">
+              _
+            </span>
           </a>
 
           <p>
@@ -1448,7 +2059,13 @@
 
         </div>
 
+
+        <!-- FOOTER COLUMNS -->
+
         <div class="footer-columns">
+
+
+          <!-- PRODUCT -->
 
           <div class="footer-column">
 
@@ -1456,16 +2073,16 @@
               PRODUCT
             </div>
 
-            <a href="/#product">
+            <a href="#product">
               Overview
             </a>
 
             <a href="/app/">
-              Evaluate
+              Workspace
             </a>
 
-            <a href="/labs/">
-              Labs
+            <a href="/hub/">
+              EvalAI Hub
             </a>
 
             <a href="/pricing/">
@@ -1474,6 +2091,9 @@
 
           </div>
 
+
+          <!-- RESOURCES -->
+
           <div class="footer-column">
 
             <div class="footer-label">
@@ -1481,18 +2101,25 @@
             </div>
 
             <a href="/knowledge/">
-              Knowledge
+              Learn
+            </a>
+
+            <a href="/blog">
+              Blog
             </a>
 
             <a href="/docs/">
               Documentation
             </a>
 
-            <a href="/#faq">
-              FAQ
+            <a href="/api-space">
+              API
             </a>
 
           </div>
+
+
+          <!-- COMPANY -->
 
           <div class="footer-column">
 
@@ -1509,6 +2136,9 @@
             </a>
 
           </div>
+
+
+          <!-- LEGAL -->
 
           <div class="footer-column">
 
@@ -1534,6 +2164,9 @@
 
       </div>
 
+
+      <!-- FOOTER BOTTOM -->
+
       <div class="footer-bottom">
 
         <span>
@@ -1554,11 +2187,129 @@
 
   </footer>
 
+
   <!-- =========================================
-       MOBILE MENU SCRIPT
+       NAVIGATION SCRIPT
        ========================================= -->
 
   <script>
+
+    /*
+     * =========================================
+     * DESKTOP DROPDOWNS
+     * =========================================
+     */
+
+    const desktopDropdowns =
+      document.querySelectorAll(
+        ".nav-dropdown"
+      );
+
+    desktopDropdowns.forEach(
+      dropdown => {
+
+        const trigger =
+          dropdown.querySelector(
+            ".nav-dropdown-trigger"
+          );
+
+        trigger.addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+            const isOpen =
+              dropdown.classList.contains(
+                "open"
+              );
+
+            desktopDropdowns.forEach(
+              item => {
+
+                item.classList.remove(
+                  "open"
+                );
+
+                const itemTrigger =
+                  item.querySelector(
+                    ".nav-dropdown-trigger"
+                  );
+
+                if (itemTrigger) {
+
+                  itemTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+
+              }
+            );
+
+            if (!isOpen) {
+
+              dropdown.classList.add(
+                "open"
+              );
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * Close desktop dropdowns when
+     * clicking outside navigation.
+     */
+
+    document.addEventListener(
+      "click",
+      () => {
+
+        desktopDropdowns.forEach(
+          dropdown => {
+
+            dropdown.classList.remove(
+              "open"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (trigger) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * =========================================
+     * MOBILE MENU
+     * =========================================
+     */
 
     const mobileMenuButton =
       document.getElementById(
@@ -1569,6 +2320,7 @@
       document.getElementById(
         "mobileNav"
       );
+
 
     mobileMenuButton.addEventListener(
       "click",
@@ -1592,31 +2344,245 @@
       }
     );
 
-    mobileNav
-      .querySelectorAll("a")
-      .forEach(link => {
 
-        link.addEventListener(
+    /*
+     * =========================================
+     * MOBILE DROPDOWNS
+     * =========================================
+     */
+
+    const mobileDropdowns =
+      document.querySelectorAll(
+        ".mobile-nav-dropdown"
+      );
+
+
+    mobileDropdowns.forEach(
+      dropdown => {
+
+        const trigger =
+          dropdown.querySelector(
+            ".mobile-nav-dropdown-trigger"
+          );
+
+        trigger.addEventListener(
           "click",
-          () => {
+          event => {
 
-            mobileNav.classList.remove(
-              "active"
+            event.stopPropagation();
+
+            const isOpen =
+              dropdown.classList.contains(
+                "open"
+              );
+
+
+            /*
+             * Close other mobile
+             * dropdowns.
+             */
+
+            mobileDropdowns.forEach(
+              item => {
+
+                item.classList.remove(
+                  "open"
+                );
+
+                const itemTrigger =
+                  item.querySelector(
+                    ".mobile-nav-dropdown-trigger"
+                  );
+
+                if (itemTrigger) {
+
+                  itemTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+
+              }
             );
 
-            mobileMenuButton.classList.remove(
-              "active"
-            );
 
-            mobileMenuButton.setAttribute(
-              "aria-expanded",
-              "false"
-            );
+            /*
+             * Open selected dropdown.
+             */
+
+            if (!isOpen) {
+
+              dropdown.classList.add(
+                "open"
+              );
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+
+            }
 
           }
         );
 
-      });
+      }
+    );
+
+
+    /*
+     * =========================================
+     * CLOSE MOBILE MENU WHEN LINK IS CLICKED
+     * =========================================
+     */
+
+    mobileNav
+      .querySelectorAll("a")
+      .forEach(
+        link => {
+
+          link.addEventListener(
+            "click",
+            () => {
+
+              mobileNav.classList.remove(
+                "active"
+              );
+
+              mobileMenuButton.classList.remove(
+                "active"
+              );
+
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+
+              mobileDropdowns.forEach(
+                dropdown => {
+
+                  dropdown.classList.remove(
+                    "open"
+                  );
+
+                  const trigger =
+                    dropdown.querySelector(
+                      ".mobile-nav-dropdown-trigger"
+                    );
+
+                  if (trigger) {
+
+                    trigger.setAttribute(
+                      "aria-expanded",
+                      "false"
+                    );
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    /*
+     * =========================================
+     * ESCAPE KEY
+     * =========================================
+     */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key !== "Escape") {
+          return;
+        }
+
+
+        /*
+         * Close desktop dropdowns.
+         */
+
+        desktopDropdowns.forEach(
+          dropdown => {
+
+            dropdown.classList.remove(
+              "open"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (trigger) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+
+        /*
+         * Close mobile menu.
+         */
+
+        mobileNav.classList.remove(
+          "active"
+        );
+
+        mobileMenuButton.classList.remove(
+          "active"
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+
+        /*
+         * Close mobile dropdowns.
+         */
+
+        mobileDropdowns.forEach(
+          dropdown => {
+
+            dropdown.classList.remove(
+              "open"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".mobile-nav-dropdown-trigger"
+              );
+
+            if (trigger) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
 
   </script>
 
