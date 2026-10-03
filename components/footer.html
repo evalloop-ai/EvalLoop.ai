@@ -1,1 +1,361 @@
+<!-- =========================================================
+     EVALLOOP AI — SHARED FOOTER
+     ========================================================= -->
 
+<footer class="global-footer">
+
+  <div class="global-footer-container">
+
+    <div class="global-footer-top">
+
+      <!-- BRAND -->
+      <div class="global-footer-brand">
+
+        <a href="/" class="global-footer-logo" aria-label="EvalLoop AI">
+          <span>EvalLoop AI</span>
+          <span class="global-footer-cursor">_</span>
+        </a>
+
+        <p>
+          AI evaluation &amp; LLM quality platform.
+        </p>
+
+      </div>
+
+
+      <!-- FOOTER COLUMNS -->
+      <div class="global-footer-columns">
+
+
+        <!-- PRODUCT -->
+        <div class="global-footer-column">
+
+          <div class="global-footer-label">
+            PRODUCT
+          </div>
+
+          <a href="/">
+            Overview
+          </a>
+
+          <a href="/app/">
+            Workspace
+          </a>
+
+          <a href="/hub/">
+            EvalAI Hub
+          </a>
+
+          <a href="/pricing/">
+            Pricing
+          </a>
+
+        </div>
+
+
+        <!-- RESOURCES -->
+        <div class="global-footer-column">
+
+          <div class="global-footer-label">
+            RESOURCES
+          </div>
+
+          <a href="/knowledge/">
+            Learn
+          </a>
+
+          <a href="/blog/">
+            Blog
+          </a>
+
+          <a href="/docs/">
+            Documentation
+          </a>
+
+          <a href="/api-space/">
+            API
+          </a>
+
+        </div>
+
+
+        <!-- COMPANY -->
+        <div class="global-footer-column">
+
+          <div class="global-footer-label">
+            COMPANY
+          </div>
+
+          <a href="/about/">
+            About
+          </a>
+
+          <a href="/contact/">
+            Contact
+          </a>
+
+        </div>
+
+
+        <!-- LEGAL -->
+        <div class="global-footer-column">
+
+          <div class="global-footer-label">
+            LEGAL
+          </div>
+
+          <a href="/privacy/">
+            Privacy Policy
+          </a>
+
+          <a href="/terms/">
+            Terms of Service
+          </a>
+
+          <a href="/ai-usage/">
+            AI Usage Disclaimer
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER BOTTOM -->
+    <div class="global-footer-bottom">
+
+      <span>
+        © 2026 EvalLoop AI
+      </span>
+
+      <span>
+        BUILT FOR BETTER AI
+      </span>
+
+      <span>
+        HYDERABAD · INDIA
+      </span>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- =========================================================
+     SHARED FOOTER STYLES
+     ========================================================= -->
+
+<style>
+
+.global-footer {
+  width: 100%;
+
+  margin-top: 100px;
+
+  border-top: 1px solid rgba(241, 241, 239, 0.08);
+
+  background: #101211;
+}
+
+.global-footer-container {
+  width: min(1200px, calc(100% - 40px));
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   FOOTER TOP
+   ========================================================= */
+
+.global-footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+
+  padding: 64px 0 56px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.global-footer-brand {
+  min-width: 220px;
+}
+
+.global-footer-logo {
+  display: inline-flex;
+  align-items: center;
+
+  color: #f1f1ef;
+  text-decoration: none;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: -0.03em;
+}
+
+.global-footer-cursor {
+  color: #3ecf8e;
+  margin-left: 2px;
+}
+
+.global-footer-brand p {
+  margin: 12px 0 0;
+
+  color: #727974;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.global-footer-columns {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(110px, 1fr));
+
+  gap: 56px;
+
+  flex: 1;
+
+  max-width: 650px;
+}
+
+.global-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.global-footer-label {
+  margin-bottom: 17px;
+
+  color: #727974;
+
+  font-family:
+    "DM Mono",
+    monospace;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+}
+
+.global-footer-column a {
+  margin-bottom: 11px;
+
+  color: #a4aaa6;
+  text-decoration: none;
+
+  font-size: 12px;
+
+  transition: color 0.2s ease;
+}
+
+.global-footer-column a:hover {
+  color: #f1f1ef;
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.global-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 0 22px;
+
+  border-top: 1px solid rgba(241, 241, 239, 0.08);
+
+  color: #727974;
+
+  font-family:
+    "DM Mono",
+    monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .global-footer-top {
+    flex-direction: column;
+
+    gap: 45px;
+
+    padding: 50px 0 42px;
+  }
+
+  .global-footer-columns {
+    width: 100%;
+
+    max-width: none;
+
+    grid-template-columns:
+      repeat(2, minmax(120px, 1fr));
+
+    gap: 36px 45px;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .global-footer-container {
+    width: min(100% - 28px, 1200px);
+  }
+
+  .global-footer-columns {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 30px 25px;
+  }
+
+  .global-footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding: 18px 0;
+  }
+
+}
+
+</style>
