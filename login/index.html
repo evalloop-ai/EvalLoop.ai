@@ -19,9 +19,597 @@
     rel="stylesheet"
     href="/site.css"
   >
+
+  <!-- =====================================================
+       HEADER OVERRIDE
+       Keeps the global navigation clean on this page.
+       ===================================================== -->
+
+  <style>
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .site-header {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .site-header .nav-inner {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+
+    /* =====================================================
+       BRAND
+       ===================================================== */
+
+    .site-header .brand {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       DESKTOP NAV
+       ===================================================== */
+
+    .site-header .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-left: auto;
+    }
+
+
+    .site-header .desktop-nav > a,
+    .site-header .nav-dropdown-trigger {
+
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      height: 40px;
+
+      padding: 0;
+
+      border: 0;
+      background: transparent;
+
+      color: inherit;
+
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      transition:
+        opacity 0.2s ease,
+        color 0.2s ease;
+    }
+
+
+    .site-header .desktop-nav > a:hover,
+    .site-header .nav-dropdown-trigger:hover {
+      opacity: 0.7;
+    }
+
+
+    /* =====================================================
+       DROPDOWN
+       ===================================================== */
+
+    .site-header .nav-dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+
+    .site-header .nav-chevron {
+      display: inline-block;
+
+      font-size: 12px;
+      line-height: 1;
+
+      opacity: 0.6;
+
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+
+    .site-header
+    .nav-dropdown.active
+    .nav-chevron {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+
+
+    .site-header .nav-dropdown-menu {
+
+      position: absolute;
+
+      top: calc(100% + 8px);
+      left: 50%;
+
+      width: 280px;
+
+      padding: 7px;
+
+      background: #171b18;
+
+      border: 1px solid rgba(241, 241, 239, 0.12);
+
+      border-radius: 10px;
+
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.35);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transform:
+        translateX(-50%)
+        translateY(-5px);
+
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+
+      z-index: 2000;
+    }
+
+
+    .site-header
+    .nav-dropdown.active
+    .nav-dropdown-menu {
+
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      transform:
+        translateX(-50%)
+        translateY(0);
+    }
+
+
+    /* =====================================================
+       DROPDOWN ITEMS
+       ===================================================== */
+
+    .site-header .nav-dropdown-menu a {
+
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      padding: 11px 12px;
+
+      border-radius: 7px;
+
+      color: inherit;
+
+      text-decoration: none;
+
+      transition:
+        background 0.18s ease;
+    }
+
+
+    .site-header
+    .nav-dropdown-menu a:hover {
+      background:
+        rgba(241, 241, 239, 0.06);
+    }
+
+
+    .site-header
+    .nav-dropdown-menu a span {
+
+      font-size: 13px;
+      font-weight: 600;
+
+      line-height: 1.35;
+    }
+
+
+    .site-header
+    .nav-dropdown-menu a small {
+
+      font-size: 11px;
+
+      line-height: 1.4;
+
+      color:
+        rgba(241, 241, 239, 0.5);
+    }
+
+
+    /* =====================================================
+       RIGHT NAV ACTIONS
+       ===================================================== */
+
+    .site-header .nav-actions {
+
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+
+      margin-left: 28px;
+
+      flex-shrink: 0;
+    }
+
+
+    .site-header .nav-login {
+
+      display: inline-flex;
+      align-items: center;
+
+      height: 40px;
+
+      color: inherit;
+
+      font-size: 13px;
+      font-weight: 500;
+
+      text-decoration: none;
+
+      white-space: nowrap;
+
+      transition:
+        opacity 0.2s ease;
+    }
+
+
+    .site-header .nav-login:hover {
+      opacity: 0.7;
+    }
+
+
+    /* =====================================================
+       MOBILE BUTTON
+       ===================================================== */
+
+    .site-header .mobile-menu-button {
+      display: none;
+    }
+
+
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+
+    .site-header .mobile-nav {
+      display: none;
+    }
+
+
+    /* =====================================================
+       TABLET
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .site-header .desktop-nav {
+        gap: 18px;
+      }
+
+      .site-header .nav-actions {
+        margin-left: 18px;
+        gap: 10px;
+      }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 760px) {
+
+      .site-header .desktop-nav,
+      .site-header .nav-actions {
+        display: none;
+      }
+
+
+      .site-header .mobile-menu-button {
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+        width: 40px;
+        height: 40px;
+
+        margin-left: auto;
+
+        padding: 0;
+
+        border: 1px solid
+          rgba(241, 241, 239, 0.14);
+
+        border-radius: 8px;
+
+        background: transparent;
+
+        color: inherit;
+
+        cursor: pointer;
+      }
+
+
+      .site-header
+      .mobile-menu-button span {
+
+        display: block;
+
+        width: 17px;
+        height: 1px;
+
+        background: currentColor;
+
+        transition:
+          transform 0.2s ease;
+      }
+
+
+      .site-header
+      .mobile-menu-button.active
+      span:first-child {
+
+        transform:
+          translateY(3px)
+          rotate(45deg);
+      }
+
+
+      .site-header
+      .mobile-menu-button.active
+      span:last-child {
+
+        transform:
+          translateY(-3px)
+          rotate(-45deg);
+      }
+
+
+      /* Mobile panel */
+
+      .site-header .mobile-nav {
+
+        position: absolute;
+
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        padding: 12px 20px 20px;
+
+        background: #101211;
+
+        border-top:
+          1px solid
+          rgba(241, 241, 239, 0.08);
+
+        border-bottom:
+          1px solid
+          rgba(241, 241, 239, 0.12);
+
+        box-shadow:
+          0 18px 40px
+          rgba(0, 0, 0, 0.3);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transform: translateY(-5px);
+
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          visibility 0.2s ease;
+      }
+
+
+      .site-header
+      .mobile-nav.active {
+
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+
+        transform: translateY(0);
+      }
+
+
+      /* Mobile normal links */
+
+      .site-header
+      .mobile-nav > a {
+
+        display: flex;
+        align-items: center;
+
+        min-height: 46px;
+
+        padding: 0 4px;
+
+        color: inherit;
+
+        font-size: 14px;
+        font-weight: 500;
+
+        text-decoration: none;
+
+        border-bottom:
+          1px solid
+          rgba(241, 241, 239, 0.07);
+      }
+
+
+      /* Mobile dropdown */
+
+      .site-header
+      .mobile-nav-dropdown {
+
+        width: 100%;
+      }
+
+
+      .site-header
+      .mobile-nav-dropdown-trigger {
+
+        width: 100%;
+
+        min-height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 4px;
+
+        border: 0;
+
+        border-bottom:
+          1px solid
+          rgba(241, 241, 239, 0.07);
+
+        background: transparent;
+
+        color: inherit;
+
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+
+        text-align: left;
+
+        cursor: pointer;
+      }
+
+
+      .site-header
+      .mobile-nav-dropdown-menu {
+
+        display: none;
+
+        padding:
+          4px 0 8px 12px;
+      }
+
+
+      .site-header
+      .mobile-nav-dropdown.active
+      .mobile-nav-dropdown-menu {
+
+        display: block;
+      }
+
+
+      .site-header
+      .mobile-nav-dropdown-menu a {
+
+        display: flex;
+        align-items: center;
+
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        color:
+          rgba(241, 241, 239, 0.62);
+
+        font-size: 13px;
+
+        text-decoration: none;
+
+        border-left:
+          1px solid
+          rgba(62, 207, 142, 0.25);
+      }
+
+
+      /* Mobile actions */
+
+      .site-header
+      .mobile-nav-actions {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding-top: 14px;
+      }
+
+
+      .site-header
+      .mobile-nav-actions a:first-child {
+
+        display: flex;
+        align-items: center;
+
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        color: inherit;
+
+        font-size: 13px;
+
+        text-decoration: none;
+      }
+
+
+      .site-header
+      .mobile-nav-actions .button {
+
+        flex: 1;
+
+        justify-content: center;
+
+        min-height: 40px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
+
 <body>
+
 
   <!-- =====================================================
        BACKGROUND
@@ -72,6 +660,7 @@
 
       </div>
 
+
       <a
         href="/"
         class="announcement-link"
@@ -87,12 +676,12 @@
 
   <!-- =====================================================
        HEADER
-       STANDARD EVALLOOP AI NAVIGATION
        ===================================================== -->
 
   <header class="site-header">
 
     <div class="nav-inner">
+
 
       <!-- BRAND -->
 
@@ -105,12 +694,15 @@
       </a>
 
 
-      <!-- DESKTOP NAVIGATION -->
+      <!-- =================================================
+           DESKTOP NAVIGATION
+           ================================================= -->
 
       <nav
         class="desktop-nav"
         aria-label="Primary navigation"
       >
+
 
         <!-- PRODUCTS -->
 
@@ -125,6 +717,7 @@
             Products
             <span class="nav-chevron">⌄</span>
           </button>
+
 
           <div
             class="nav-dropdown-menu"
@@ -144,6 +737,7 @@
               </small>
             </a>
 
+
             <a
               href="/jobs/"
               role="menuitem"
@@ -157,6 +751,7 @@
                 discovery platform
               </small>
             </a>
+
 
             <a
               href="/hub/"
@@ -197,6 +792,7 @@
             <span class="nav-chevron">⌄</span>
           </button>
 
+
           <div
             class="nav-dropdown-menu"
             role="menu"
@@ -215,6 +811,7 @@
               </small>
             </a>
 
+
             <a
               href="/knowledge/"
               role="menuitem"
@@ -228,6 +825,7 @@
               </small>
             </a>
 
+
             <a
               href="/blog/"
               role="menuitem"
@@ -240,6 +838,7 @@
                 Ideas, updates, and research
               </small>
             </a>
+
 
             <a
               href="/api-space/"
@@ -268,7 +867,9 @@
       </nav>
 
 
-      <!-- NAV ACTIONS -->
+      <!-- =================================================
+           RIGHT ACTIONS
+           ================================================= -->
 
       <div class="nav-actions">
 
@@ -278,6 +879,7 @@
         >
           Login
         </a>
+
 
         <a
           href="/signup/"
@@ -289,7 +891,9 @@
       </div>
 
 
-      <!-- MOBILE MENU BUTTON -->
+      <!-- =================================================
+           MOBILE BUTTON
+           ================================================= -->
 
       <button
         class="mobile-menu-button"
@@ -314,7 +918,8 @@
       id="mobileNav"
     >
 
-      <!-- MOBILE PRODUCTS -->
+
+      <!-- PRODUCTS -->
 
       <div class="mobile-nav-dropdown">
 
@@ -326,6 +931,7 @@
           Products
           <span class="nav-chevron">⌄</span>
         </button>
+
 
         <div class="mobile-nav-dropdown-menu">
 
@@ -346,14 +952,14 @@
       </div>
 
 
-      <!-- MOBILE WORKSPACE -->
+      <!-- WORKSPACE -->
 
       <a href="/app/">
         Workspace
       </a>
 
 
-      <!-- MOBILE RESOURCES -->
+      <!-- RESOURCES -->
 
       <div class="mobile-nav-dropdown">
 
@@ -365,6 +971,7 @@
           Resources
           <span class="nav-chevron">⌄</span>
         </button>
+
 
         <div class="mobile-nav-dropdown-menu">
 
@@ -389,14 +996,14 @@
       </div>
 
 
-      <!-- MOBILE PRICING -->
+      <!-- PRICING -->
 
       <a href="/pricing/">
         Pricing
       </a>
 
 
-      <!-- MOBILE ACTIONS -->
+      <!-- ACTIONS -->
 
       <div class="mobile-nav-actions">
 
@@ -431,9 +1038,7 @@
         <div class="auth-wrapper">
 
 
-          <!-- ===============================================
-               AUTH HEADER
-               =============================================== -->
+          <!-- AUTH HEADER -->
 
           <div class="auth-header">
 
@@ -453,21 +1058,18 @@
           </div>
 
 
-          <!-- ===============================================
-               AUTH PANEL
-               =============================================== -->
+          <!-- AUTH PANEL -->
 
           <div class="auth-panel">
 
 
-            <!-- =============================================
-                 LOGIN FORM
-                 ============================================= -->
+            <!-- LOGIN FORM -->
 
             <form
               class="auth-form"
               id="loginForm"
             >
+
 
               <!-- EMAIL -->
 
@@ -543,18 +1145,14 @@
             </form>
 
 
-            <!-- =============================================
-                 SOCIAL DIVIDER
-                 ============================================= -->
+            <!-- DIVIDER -->
 
             <div class="auth-divider">
               OR CONTINUE WITH
             </div>
 
 
-            <!-- =============================================
-                 SOCIAL LOGIN
-                 ============================================= -->
+            <!-- SOCIAL LOGIN -->
 
             <div class="auth-socials">
 
@@ -626,9 +1224,7 @@
             </div>
 
 
-            <!-- =============================================
-                 AUTH FOOTER
-                 ============================================= -->
+            <!-- AUTH FOOTER -->
 
             <div class="auth-footer">
 
@@ -670,8 +1266,6 @@
       <div class="footer-top">
 
 
-        <!-- BRAND -->
-
         <div class="footer-brand">
 
           <a
@@ -679,13 +1273,8 @@
             class="brand"
             aria-label="EvalLoop AI"
           >
-            <span>
-              EvalLoop AI
-            </span>
-
-            <span class="brand-cursor">
-              _
-            </span>
+            <span>EvalLoop AI</span>
+            <span class="brand-cursor">_</span>
           </a>
 
           <p>
@@ -694,8 +1283,6 @@
 
         </div>
 
-
-        <!-- FOOTER COLUMNS -->
 
         <div class="footer-columns">
 
@@ -800,8 +1387,6 @@
       </div>
 
 
-      <!-- FOOTER BOTTOM -->
-
       <div class="footer-bottom">
 
         <span>
@@ -830,13 +1415,14 @@
   <script>
 
     /* =====================================================
-       DESKTOP NAV DROPDOWNS
+       DESKTOP DROPDOWNS
        ===================================================== */
 
     const desktopDropdowns =
       document.querySelectorAll(
         ".nav-dropdown"
       );
+
 
     desktopDropdowns.forEach(
       (dropdown) => {
@@ -846,16 +1432,20 @@
             ".nav-dropdown-trigger"
           );
 
+        if (!trigger) return;
+
+
         trigger.addEventListener(
           "click",
           (event) => {
 
             event.stopPropagation();
 
-            const isOpen =
+            const open =
               dropdown.classList.contains(
                 "active"
               );
+
 
             desktopDropdowns.forEach(
               (item) => {
@@ -870,16 +1460,19 @@
                   );
 
                 if (itemTrigger) {
+
                   itemTrigger.setAttribute(
                     "aria-expanded",
                     "false"
                   );
+
                 }
 
               }
             );
 
-            if (!isOpen) {
+
+            if (!open) {
 
               dropdown.classList.add(
                 "active"
@@ -900,7 +1493,7 @@
 
 
     /* =====================================================
-       CLOSE DESKTOP DROPDOWNS
+       CLOSE DROPDOWNS
        ===================================================== */
 
     document.addEventListener(
@@ -964,15 +1557,18 @@
               "active"
             );
 
+
           mobileMenuButton.classList.toggle(
             "active",
             active
           );
 
+
           mobileMenuButton.setAttribute(
             "aria-expanded",
-            active
+            String(active)
           );
+
 
           document.body.classList.toggle(
             "menu-open",
@@ -1005,11 +1601,15 @@
 
         if (!trigger) return;
 
+
         trigger.addEventListener(
           "click",
-          () => {
+          (event) => {
 
-            const isOpen =
+            event.stopPropagation();
+
+
+            const open =
               dropdown.classList.contains(
                 "active"
               );
@@ -1040,7 +1640,7 @@
             );
 
 
-            if (!isOpen) {
+            if (!open) {
 
               dropdown.classList.add(
                 "active"
@@ -1067,9 +1667,7 @@
     if (mobileNav) {
 
       mobileNav
-        .querySelectorAll(
-          "a"
-        )
+        .querySelectorAll("a")
         .forEach(
           (link) => {
 
@@ -1121,11 +1719,6 @@
 
           event.preventDefault();
 
-          /*
-           * Authentication backend is not connected yet.
-           * This prevents a fake login request.
-           */
-
           alert(
             "Authentication is not connected yet. The login interface is ready for the backend integration."
           );
@@ -1137,7 +1730,7 @@
 
 
     /* =====================================================
-       GOOGLE AUTH PLACEHOLDER
+       GOOGLE LOGIN
        ===================================================== */
 
     const googleLogin =
@@ -1163,7 +1756,7 @@
 
 
     /* =====================================================
-       GITHUB AUTH PLACEHOLDER
+       GITHUB LOGIN
        ===================================================== */
 
     const githubLogin =
