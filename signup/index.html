@@ -15,6 +15,328 @@
     rel="stylesheet"
     href="/site.css"
   >
+  <!-- =====================================================
+       PAGE-SPECIFIC NAVIGATION OVERRIDES
+       Keeps the existing signup UI untouched.
+       ===================================================== -->
+  <style>
+    /* =====================================================
+       HEADER / NAVIGATION
+       ===================================================== */
+    .site-header {
+      position: relative;
+      z-index: 1000;
+    }
+    .nav-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    /* =====================================================
+       DESKTOP NAV
+       ===================================================== */
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      margin-left: auto;
+      margin-right: 8px;
+    }
+    .desktop-nav > a,
+    .nav-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .desktop-nav > a:hover,
+    .nav-dropdown-trigger:hover {
+      opacity: 0.75;
+    }
+    /* =====================================================
+       DROPDOWN
+       ===================================================== */
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-chevron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+      transition:
+        transform 0.2s ease;
+    }
+    .nav-dropdown.active
+    .nav-chevron {
+      transform: rotate(180deg);
+    }
+    /* =====================================================
+       DESKTOP DROPDOWN MENU
+       ===================================================== */
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      width: 310px;
+      transform:
+        translateX(-50%)
+        translateY(-6px);
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      background: rgba(11, 18, 36, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 12px;
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+      z-index: 1000;
+    }
+    .nav-dropdown.active
+    .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform:
+        translateX(-50%)
+        translateY(0);
+    }
+    /* =====================================================
+       DROPDOWN LINKS
+       ===================================================== */
+    .nav-dropdown-menu a {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 13px;
+      border-radius: 8px;
+      color: inherit;
+      text-decoration: none;
+      transition:
+        background 0.18s ease;
+    }
+    .nav-dropdown-menu a:hover {
+      background:
+        rgba(255, 255, 255, 0.06);
+    }
+    .nav-dropdown-menu a span {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .nav-dropdown-menu a small {
+      display: block;
+      font-size: 11px;
+      line-height: 1.45;
+      opacity: 0.55;
+    }
+    /* =====================================================
+       NAV ACTIONS
+       ===================================================== */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .nav-login {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-actions .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+    .mobile-nav {
+      display: none;
+    }
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+    @media (max-width: 900px) {
+      .desktop-nav,
+      .nav-actions {
+        display: none;
+      }
+      .nav-inner {
+        gap: 20px;
+      }
+      .mobile-menu-button {
+        display: flex;
+        margin-left: auto;
+      }
+      .mobile-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding:
+          14px 20px 22px;
+        background:
+          rgba(11, 18, 36, 0.98);
+        border-top:
+          1px solid rgba(255, 255, 255, 0.06);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform:
+          translateY(-8px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          visibility 0.2s ease;
+        z-index: 999;
+      }
+      .mobile-nav.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform:
+          translateY(0);
+      }
+      /* MOBILE NORMAL LINKS */
+      .mobile-nav > a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        padding:
+          10px 4px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 15px;
+        border-bottom:
+          1px solid rgba(255, 255, 255, 0.06);
+      }
+      /* MOBILE DROPDOWN */
+      .mobile-nav-dropdown {
+        border-bottom:
+          1px solid rgba(255, 255, 255, 0.06);
+      }
+      .mobile-nav-dropdown-trigger {
+        width: 100%;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:
+          10px 4px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 15px;
+        text-align: left;
+        cursor: pointer;
+      }
+      .mobile-nav-dropdown-trigger
+      .nav-chevron {
+        transition:
+          transform 0.2s ease;
+      }
+      .mobile-nav-dropdown.active
+      .nav-chevron {
+        transform:
+          rotate(180deg);
+      }
+      /* MOBILE DROPDOWN CONTENT */
+      .mobile-nav-dropdown-menu {
+        display: none;
+        flex-direction: column;
+        padding:
+          0 0 8px 12px;
+      }
+      .mobile-nav-dropdown.active
+      .mobile-nav-dropdown-menu {
+        display: flex;
+      }
+      .mobile-nav-dropdown-menu a {
+        display: block;
+        padding:
+          10px 8px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 14px;
+        opacity: 0.75;
+      }
+      .mobile-nav-dropdown-menu a:hover {
+        opacity: 1;
+      }
+      /* MOBILE ACTIONS */
+      .mobile-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 18px;
+      }
+      .mobile-nav-actions > a:first-child {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        padding:
+          0 4px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .mobile-nav-actions .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-height: 42px;
+        padding:
+          0 16px;
+      }
+    }
+    /* =====================================================
+       SMALL MOBILE
+       ===================================================== */
+    @media (max-width: 480px) {
+      .mobile-nav {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .brand {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- =====================================================
@@ -113,7 +435,8 @@
                 EvalLoop Jobs
               </span>
               <small>
-                Independent jobs directory &amp; discovery platform
+                Independent jobs directory &amp;
+                discovery platform
               </small>
             </a>
             <a
@@ -640,7 +963,7 @@
       }
     );
     /* =====================================================
-       CLOSE MOBILE MENU
+       CLOSE MOBILE MENU WHEN LINK IS CLICKED
        ===================================================== */
     mobileNav
       .querySelectorAll("a")
@@ -667,7 +990,7 @@
         }
       );
     /* =====================================================
-       DESKTOP DROPDOWN NAVIGATION
+       DESKTOP DROPDOWNS
        ===================================================== */
     const desktopDropdowns =
       document.querySelectorAll(
@@ -687,6 +1010,7 @@
               dropdown.classList.contains(
                 "active"
               );
+            /* Close every other dropdown */
             desktopDropdowns.forEach(
               (item) => {
                 item.classList.remove(
@@ -704,6 +1028,7 @@
                 }
               }
             );
+            /* Open selected dropdown */
             if (!isOpen) {
               dropdown.classList.add(
                 "active"
@@ -718,7 +1043,7 @@
       }
     );
     /* =====================================================
-       CLOSE DESKTOP DROPDOWNS
+       CLOSE DESKTOP DROPDOWNS ON OUTSIDE CLICK
        ===================================================== */
     document.addEventListener(
       "click",
@@ -762,6 +1087,7 @@
               dropdown.classList.contains(
                 "active"
               );
+            /* Close other mobile dropdowns */
             mobileDropdowns.forEach(
               (item) => {
                 item.classList.remove(
@@ -779,6 +1105,7 @@
                 }
               }
             );
+            /* Open selected dropdown */
             if (!isOpen) {
               dropdown.classList.add(
                 "active"
@@ -830,15 +1157,11 @@
       }
     );
     /* =====================================================
-       SOCIAL AUTH PLACEHOLDERS
+       GOOGLE SIGNUP
        ===================================================== */
     const googleSignup =
       document.getElementById(
         "googleSignup"
-      );
-    const githubSignup =
-      document.getElementById(
-        "githubSignup"
       );
     googleSignup.addEventListener(
       "click",
@@ -848,6 +1171,13 @@
         );
       }
     );
+    /* =====================================================
+       GITHUB SIGNUP
+       ===================================================== */
+    const githubSignup =
+      document.getElementById(
+        "githubSignup"
+      );
     githubSignup.addEventListener(
       "click",
       () => {
