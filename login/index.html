@@ -20,163 +20,131 @@
     href="/site.css"
   >
 
-  <!-- =====================================================
-       HEADER OVERRIDE
-       Keeps the global navigation clean on this page.
-       ===================================================== -->
-
   <style>
-
     /* =====================================================
-       HEADER
+       NEW EVALLOOP AI NAVIGATION
+       UI ADJUSTMENTS
        ===================================================== */
 
     .site-header {
       position: relative;
-      z-index: 1000;
+      z-index: 100;
     }
 
-    .site-header .nav-inner {
+    .nav-inner {
+      min-height: 76px;
       display: flex;
       align-items: center;
-      width: 100%;
+      gap: 30px;
     }
 
-
-    /* =====================================================
-       BRAND
-       ===================================================== */
-
-    .site-header .brand {
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-
-
-    /* =====================================================
-       DESKTOP NAV
-       ===================================================== */
-
-    .site-header .desktop-nav {
+    .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 30px;
       margin-left: auto;
     }
 
+    .desktop-nav > a {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      transition: color 0.25s ease;
+    }
 
-    .site-header .desktop-nav > a,
-    .site-header .nav-dropdown-trigger {
+    .desktop-nav > a:hover {
+      color: var(--ink);
+    }
+
+    /* =====================================================
+       DESKTOP DROPDOWNS
+       ===================================================== */
+
+    .nav-dropdown {
+      position: relative;
+      height: 76px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-dropdown-trigger {
+      border: 0;
+      background: none;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 400;
 
       display: inline-flex;
       align-items: center;
       gap: 5px;
 
-      height: 40px;
-
       padding: 0;
-
-      border: 0;
-      background: transparent;
-
-      color: inherit;
-
-      font: inherit;
-      font-size: 13px;
-      font-weight: 500;
-
-      text-decoration: none;
-
-      white-space: nowrap;
 
       cursor: pointer;
 
-      transition:
-        opacity 0.2s ease,
-        color 0.2s ease;
+      transition: color 0.25s ease;
     }
 
-
-    .site-header .desktop-nav > a:hover,
-    .site-header .nav-dropdown-trigger:hover {
-      opacity: 0.7;
+    .nav-dropdown-trigger:hover,
+    .nav-dropdown-trigger[aria-expanded="true"] {
+      color: var(--ink);
     }
 
-
-    /* =====================================================
-       DROPDOWN
-       ===================================================== */
-
-    .site-header .nav-dropdown {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-
-    .site-header .nav-chevron {
+    .nav-chevron {
       display: inline-block;
 
       font-size: 12px;
       line-height: 1;
 
-      opacity: 0.6;
-
       transition:
-        transform 0.2s ease,
-        opacity 0.2s ease;
+        transform 0.25s ease,
+        color 0.25s ease;
     }
 
-
-    .site-header
-    .nav-dropdown.active
-    .nav-chevron {
+    .nav-dropdown-trigger[aria-expanded="true"]
+      .nav-chevron {
+      color: var(--green2);
       transform: rotate(180deg);
-      opacity: 1;
     }
 
-
-    .site-header .nav-dropdown-menu {
-
+    .nav-dropdown-menu {
       position: absolute;
 
-      top: calc(100% + 8px);
+      top: calc(100% + 10px);
       left: 50%;
 
-      width: 280px;
+      width: 275px;
 
-      padding: 7px;
+      padding: 8px;
 
-      background: #171b18;
+      background: rgba(23, 27, 24, 0.98);
 
-      border: 1px solid rgba(241, 241, 239, 0.12);
-
-      border-radius: 10px;
+      border: 1px solid var(--line);
 
       box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.35);
+        0 18px 45px rgba(0, 0, 0, 0.30);
+
+      transform:
+        translateX(-50%)
+        translateY(-8px);
 
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
 
-      transform:
-        translateX(-50%)
-        translateY(-5px);
-
       transition:
-        opacity 0.18s ease,
-        transform 0.18s ease,
-        visibility 0.18s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 
-      z-index: 2000;
+      z-index: 200;
     }
 
-
-    .site-header
-    .nav-dropdown.active
-    .nav-dropdown-menu {
-
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -186,430 +154,227 @@
         translateY(0);
     }
 
-
-    /* =====================================================
-       DROPDOWN ITEMS
-       ===================================================== */
-
-    .site-header .nav-dropdown-menu a {
-
+    .nav-dropdown-menu a {
       display: flex;
       flex-direction: column;
-      gap: 3px;
 
-      padding: 11px 12px;
+      gap: 4px;
 
-      border-radius: 7px;
+      padding: 12px;
 
-      color: inherit;
+      border-bottom: 1px solid var(--line-soft);
 
-      text-decoration: none;
+      color: var(--ink);
 
       transition:
-        background 0.18s ease;
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
+    .nav-dropdown-menu a:last-child {
+      border-bottom: 0;
+    }
 
-    .site-header
     .nav-dropdown-menu a:hover {
-      background:
-        rgba(241, 241, 239, 0.06);
+      background: rgba(62, 207, 142, 0.05);
     }
 
-
-    .site-header
-    .nav-dropdown-menu a span {
-
-      font-size: 13px;
-      font-weight: 600;
-
-      line-height: 1.35;
-    }
-
-
-    .site-header
-    .nav-dropdown-menu a small {
+    .nav-dropdown-menu span {
+      color: var(--ink);
 
       font-size: 11px;
-
-      line-height: 1.4;
-
-      color:
-        rgba(241, 241, 239, 0.5);
+      font-weight: 400;
     }
 
+    .nav-dropdown-menu small {
+      color: var(--dim);
+
+      font-size: 9px;
+      line-height: 1.5;
+    }
 
     /* =====================================================
-       RIGHT NAV ACTIONS
+       NEW NAV ACTIONS
        ===================================================== */
 
-    .site-header .nav-actions {
-
+    .nav-actions {
       display: flex;
       align-items: center;
-
-      gap: 14px;
-
-      margin-left: 28px;
-
-      flex-shrink: 0;
+      gap: 18px;
     }
 
+    .nav-login {
+      color: var(--muted);
 
-    .site-header .nav-login {
+      font-size: 12px;
 
-      display: inline-flex;
-      align-items: center;
-
-      height: 40px;
-
-      color: inherit;
-
-      font-size: 13px;
-      font-weight: 500;
-
-      text-decoration: none;
-
-      white-space: nowrap;
-
-      transition:
-        opacity 0.2s ease;
+      transition: color 0.25s ease;
     }
 
-
-    .site-header .nav-login:hover {
-      opacity: 0.7;
+    .nav-login:hover {
+      color: var(--ink);
     }
 
-
-    /* =====================================================
-       MOBILE BUTTON
-       ===================================================== */
-
-    .site-header .mobile-menu-button {
-      display: none;
+    .button-small {
+      min-height: 40px;
+      padding: 0 15px;
     }
-
 
     /* =====================================================
        MOBILE NAV
        ===================================================== */
 
-    .site-header .mobile-nav {
+    .mobile-nav {
       display: none;
     }
 
-
-    /* =====================================================
-       TABLET
-       ===================================================== */
-
-    @media (max-width: 900px) {
-
-      .site-header .desktop-nav {
-        gap: 18px;
-      }
-
-      .site-header .nav-actions {
-        margin-left: 18px;
-        gap: 10px;
-      }
-
+    .mobile-nav-dropdown {
+      border-bottom: 1px solid var(--line-soft);
     }
 
+    .mobile-nav-dropdown-trigger {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 16px 5px;
+
+      border: 0;
+      background: none;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .mobile-nav-dropdown-trigger:hover,
+    .mobile-nav-dropdown-trigger[aria-expanded="true"] {
+      color: var(--ink);
+    }
+
+    .mobile-nav-dropdown-menu {
+      display: none;
+
+      padding: 0 5px 10px;
+    }
+
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-menu {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-nav-dropdown-menu a {
+      padding: 10px 8px;
+
+      border: 0;
+
+      color: var(--dim);
+
+      font-size: 12px;
+
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav-dropdown-menu a:hover {
+      color: var(--green2);
+    }
+
+    .mobile-nav-dropdown-trigger[aria-expanded="true"]
+      .nav-chevron {
+      color: var(--green2);
+      transform: rotate(180deg);
+    }
 
     /* =====================================================
-       MOBILE
+       RESPONSIVE NAV
        ===================================================== */
 
-    @media (max-width: 760px) {
+    @media (max-width: 800px) {
 
-      .site-header .desktop-nav,
-      .site-header .nav-actions {
+      .desktop-nav,
+      .nav-actions {
         display: none;
       }
 
-
-      .site-header .mobile-menu-button {
-
+      .mobile-menu-button {
         display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        flex-direction: column;
-
-        gap: 5px;
-
-        width: 40px;
-        height: 40px;
-
-        margin-left: auto;
-
-        padding: 0;
-
-        border: 1px solid
-          rgba(241, 241, 239, 0.14);
-
-        border-radius: 8px;
-
-        background: transparent;
-
-        color: inherit;
-
-        cursor: pointer;
       }
 
-
-      .site-header
-      .mobile-menu-button span {
-
-        display: block;
-
-        width: 17px;
-        height: 1px;
-
-        background: currentColor;
-
-        transition:
-          transform 0.2s ease;
-      }
-
-
-      .site-header
-      .mobile-menu-button.active
-      span:first-child {
-
-        transform:
-          translateY(3px)
-          rotate(45deg);
-      }
-
-
-      .site-header
-      .mobile-menu-button.active
-      span:last-child {
-
-        transform:
-          translateY(-3px)
-          rotate(-45deg);
-      }
-
-
-      /* Mobile panel */
-
-      .site-header .mobile-nav {
-
+      .mobile-nav {
         position: absolute;
 
-        top: 100%;
         left: 0;
         right: 0;
+        top: 100%;
 
         display: flex;
-
         flex-direction: column;
 
-        padding: 12px 20px 20px;
+        padding: 10px 16px 30px;
 
-        background: #101211;
+        border-bottom: 1px solid var(--line);
 
-        border-top:
-          1px solid
-          rgba(241, 241, 239, 0.08);
+        background: rgba(16, 18, 17, 0.98);
 
-        border-bottom:
-          1px solid
-          rgba(241, 241, 239, 0.12);
-
-        box-shadow:
-          0 18px 40px
-          rgba(0, 0, 0, 0.3);
-
+        transform: translateY(-120%);
         opacity: 0;
-        visibility: hidden;
+
         pointer-events: none;
 
-        transform: translateY(-5px);
-
         transition:
-          opacity 0.2s ease,
-          transform 0.2s ease,
-          visibility 0.2s ease;
+          transform 0.35s var(--ease),
+          opacity 0.35s ease;
+
+        z-index: 90;
       }
 
-
-      .site-header
       .mobile-nav.active {
-
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-
         transform: translateY(0);
+        opacity: 1;
+
+        pointer-events: auto;
       }
 
-
-      /* Mobile normal links */
-
-      .site-header
       .mobile-nav > a {
+        padding: 16px 5px;
 
-        display: flex;
-        align-items: center;
+        border-bottom: 1px solid var(--line-soft);
 
-        min-height: 46px;
-
-        padding: 0 4px;
-
-        color: inherit;
+        color: var(--muted);
 
         font-size: 14px;
-        font-weight: 500;
-
-        text-decoration: none;
-
-        border-bottom:
-          1px solid
-          rgba(241, 241, 239, 0.07);
       }
 
-
-      /* Mobile dropdown */
-
-      .site-header
-      .mobile-nav-dropdown {
-
-        width: 100%;
+      .mobile-nav > a:hover {
+        color: var(--ink);
       }
 
-
-      .site-header
-      .mobile-nav-dropdown-trigger {
-
-        width: 100%;
-
-        min-height: 46px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 4px;
-
-        border: 0;
-
-        border-bottom:
-          1px solid
-          rgba(241, 241, 239, 0.07);
-
-        background: transparent;
-
-        color: inherit;
-
-        font: inherit;
-        font-size: 14px;
-        font-weight: 500;
-
-        text-align: left;
-
-        cursor: pointer;
-      }
-
-
-      .site-header
-      .mobile-nav-dropdown-menu {
-
-        display: none;
-
-        padding:
-          4px 0 8px 12px;
-      }
-
-
-      .site-header
-      .mobile-nav-dropdown.active
-      .mobile-nav-dropdown-menu {
-
-        display: block;
-      }
-
-
-      .site-header
-      .mobile-nav-dropdown-menu a {
-
-        display: flex;
-        align-items: center;
-
-        min-height: 40px;
-
-        padding: 0 10px;
-
-        color:
-          rgba(241, 241, 239, 0.62);
-
-        font-size: 13px;
-
-        text-decoration: none;
-
-        border-left:
-          1px solid
-          rgba(62, 207, 142, 0.25);
-      }
-
-
-      /* Mobile actions */
-
-      .site-header
       .mobile-nav-actions {
-
         display: flex;
 
         align-items: center;
 
-        gap: 10px;
+        gap: 15px;
 
-        padding-top: 14px;
+        padding-top: 22px;
       }
 
-
-      .site-header
-      .mobile-nav-actions a:first-child {
-
-        display: flex;
-        align-items: center;
-
-        min-height: 40px;
-
-        padding: 0 10px;
-
-        color: inherit;
-
+      .mobile-nav-actions > a:first-child {
+        color: var(--muted);
         font-size: 13px;
-
-        text-decoration: none;
       }
-
-
-      .site-header
-      .mobile-nav-actions .button {
-
-        flex: 1;
-
-        justify-content: center;
-
-        min-height: 40px;
-      }
-
     }
-
   </style>
-
 </head>
 
-
 <body>
-
 
   <!-- =====================================================
        BACKGROUND
@@ -660,7 +425,6 @@
 
       </div>
 
-
       <a
         href="/"
         class="announcement-link"
@@ -682,7 +446,6 @@
 
     <div class="nav-inner">
 
-
       <!-- BRAND -->
 
       <a
@@ -703,7 +466,6 @@
         aria-label="Primary navigation"
       >
 
-
         <!-- PRODUCTS -->
 
         <div class="nav-dropdown">
@@ -717,7 +479,6 @@
             Products
             <span class="nav-chevron">⌄</span>
           </button>
-
 
           <div
             class="nav-dropdown-menu"
@@ -737,7 +498,6 @@
               </small>
             </a>
 
-
             <a
               href="/jobs/"
               role="menuitem"
@@ -751,7 +511,6 @@
                 discovery platform
               </small>
             </a>
-
 
             <a
               href="/hub/"
@@ -792,7 +551,6 @@
             <span class="nav-chevron">⌄</span>
           </button>
 
-
           <div
             class="nav-dropdown-menu"
             role="menu"
@@ -811,7 +569,6 @@
               </small>
             </a>
 
-
             <a
               href="/knowledge/"
               role="menuitem"
@@ -825,7 +582,6 @@
               </small>
             </a>
 
-
             <a
               href="/blog/"
               role="menuitem"
@@ -838,7 +594,6 @@
                 Ideas, updates, and research
               </small>
             </a>
-
 
             <a
               href="/api-space/"
@@ -868,7 +623,7 @@
 
 
       <!-- =================================================
-           RIGHT ACTIONS
+           NAV ACTIONS
            ================================================= -->
 
       <div class="nav-actions">
@@ -880,19 +635,19 @@
           Login
         </a>
 
-
         <a
           href="/signup/"
           class="button button-small"
         >
-          Sign up <span>↗</span>
+          Sign up
+          <span>↗</span>
         </a>
 
       </div>
 
 
       <!-- =================================================
-           MOBILE BUTTON
+           MOBILE MENU BUTTON
            ================================================= -->
 
       <button
@@ -918,7 +673,6 @@
       id="mobileNav"
     >
 
-
       <!-- PRODUCTS -->
 
       <div class="mobile-nav-dropdown">
@@ -931,7 +685,6 @@
           Products
           <span class="nav-chevron">⌄</span>
         </button>
-
 
         <div class="mobile-nav-dropdown-menu">
 
@@ -972,7 +725,6 @@
           <span class="nav-chevron">⌄</span>
         </button>
 
-
         <div class="mobile-nav-dropdown-menu">
 
           <a href="/docs/">
@@ -1003,7 +755,7 @@
       </a>
 
 
-      <!-- ACTIONS -->
+      <!-- MOBILE ACTIONS -->
 
       <div class="mobile-nav-actions">
 
@@ -1015,7 +767,8 @@
           href="/signup/"
           class="button"
         >
-          Sign up <span>↗</span>
+          Sign up
+          <span>↗</span>
         </a>
 
       </div>
@@ -1037,8 +790,9 @@
 
         <div class="auth-wrapper">
 
-
-          <!-- AUTH HEADER -->
+          <!-- ===============================================
+               AUTH HEADER
+               =============================================== -->
 
           <div class="auth-header">
 
@@ -1058,20 +812,22 @@
           </div>
 
 
-          <!-- AUTH PANEL -->
+          <!-- ===============================================
+               AUTH PANEL
+               =============================================== -->
 
           <div class="auth-panel">
 
-
-            <!-- LOGIN FORM -->
+            <!-- =============================================
+                 LOGIN FORM
+                 ============================================= -->
 
             <form
               class="auth-form"
               id="loginForm"
             >
 
-
-              <!-- EMAIL -->
+              <!-- Email -->
 
               <div class="form-group">
 
@@ -1095,7 +851,7 @@
               </div>
 
 
-              <!-- PASSWORD -->
+              <!-- Password -->
 
               <div class="form-group">
 
@@ -1119,7 +875,7 @@
               </div>
 
 
-              <!-- FORGOT PASSWORD -->
+              <!-- Forgot password -->
 
               <div class="auth-forgot">
 
@@ -1133,7 +889,7 @@
               </div>
 
 
-              <!-- SIGN IN -->
+              <!-- Sign in -->
 
               <button
                 type="submit"
@@ -1145,19 +901,22 @@
             </form>
 
 
-            <!-- DIVIDER -->
+            <!-- =============================================
+                 SOCIAL DIVIDER
+                 ============================================= -->
 
             <div class="auth-divider">
               OR CONTINUE WITH
             </div>
 
 
-            <!-- SOCIAL LOGIN -->
+            <!-- =============================================
+                 SOCIAL LOGIN
+                 ============================================= -->
 
             <div class="auth-socials">
 
-
-              <!-- GOOGLE -->
+              <!-- Google -->
 
               <button
                 type="button"
@@ -1197,7 +956,7 @@
               </button>
 
 
-              <!-- GITHUB -->
+              <!-- GitHub -->
 
               <button
                 type="button"
@@ -1224,7 +983,9 @@
             </div>
 
 
-            <!-- AUTH FOOTER -->
+            <!-- =============================================
+                 AUTH FOOTER
+                 ============================================= -->
 
             <div class="auth-footer">
 
@@ -1256,7 +1017,7 @@
 
 
   <!-- =====================================================
-       STANDARD EVALLOOP AI FOOTER
+       FOOTER
        ===================================================== -->
 
   <footer class="site-footer">
@@ -1264,7 +1025,6 @@
     <div class="container">
 
       <div class="footer-top">
-
 
         <div class="footer-brand">
 
@@ -1285,7 +1045,6 @@
 
 
         <div class="footer-columns">
-
 
           <!-- PRODUCT -->
 
@@ -1415,12 +1174,62 @@
   <script>
 
     /* =====================================================
+       MOBILE MAIN MENU
+       ===================================================== */
+
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+
+    const mobileNav =
+      document.getElementById(
+        "mobileNav"
+      );
+
+
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+
+        const isOpen =
+          mobileNav.classList.toggle(
+            "active"
+          );
+
+        mobileMenuButton.classList.toggle(
+          "active",
+          isOpen
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-label",
+          isOpen
+            ? "Close navigation menu"
+            : "Open navigation menu"
+        );
+
+        document.body.classList.toggle(
+          "menu-open",
+          isOpen
+        );
+
+      }
+    );
+
+
+    /* =====================================================
        DESKTOP DROPDOWNS
        ===================================================== */
 
     const desktopDropdowns =
       document.querySelectorAll(
-        ".nav-dropdown"
+        ".desktop-nav .nav-dropdown"
       );
 
 
@@ -1432,8 +1241,6 @@
             ".nav-dropdown-trigger"
           );
 
-        if (!trigger) return;
-
 
         trigger.addEventListener(
           "click",
@@ -1441,27 +1248,27 @@
 
             event.stopPropagation();
 
-            const open =
+            const isOpen =
               dropdown.classList.contains(
-                "active"
+                "open"
               );
 
 
             desktopDropdowns.forEach(
-              (item) => {
+              (otherDropdown) => {
 
-                item.classList.remove(
-                  "active"
+                otherDropdown.classList.remove(
+                  "open"
                 );
 
-                const itemTrigger =
-                  item.querySelector(
+                const otherTrigger =
+                  otherDropdown.querySelector(
                     ".nav-dropdown-trigger"
                   );
 
-                if (itemTrigger) {
+                if (otherTrigger) {
 
-                  itemTrigger.setAttribute(
+                  otherTrigger.setAttribute(
                     "aria-expanded",
                     "false"
                   );
@@ -1472,10 +1279,10 @@
             );
 
 
-            if (!open) {
+            if (!isOpen) {
 
               dropdown.classList.add(
-                "active"
+                "open"
               );
 
               trigger.setAttribute(
@@ -1493,7 +1300,7 @@
 
 
     /* =====================================================
-       CLOSE DROPDOWNS
+       CLOSE DESKTOP DROPDOWNS
        ===================================================== */
 
     document.addEventListener(
@@ -1504,7 +1311,7 @@
           (dropdown) => {
 
             dropdown.classList.remove(
-              "active"
+              "open"
             );
 
             const trigger =
@@ -1529,59 +1336,6 @@
 
 
     /* =====================================================
-       MOBILE MENU
-       ===================================================== */
-
-    const mobileMenuButton =
-      document.getElementById(
-        "mobileMenuButton"
-      );
-
-    const mobileNav =
-      document.getElementById(
-        "mobileNav"
-      );
-
-
-    if (
-      mobileMenuButton &&
-      mobileNav
-    ) {
-
-      mobileMenuButton.addEventListener(
-        "click",
-        () => {
-
-          const active =
-            mobileNav.classList.toggle(
-              "active"
-            );
-
-
-          mobileMenuButton.classList.toggle(
-            "active",
-            active
-          );
-
-
-          mobileMenuButton.setAttribute(
-            "aria-expanded",
-            String(active)
-          );
-
-
-          document.body.classList.toggle(
-            "menu-open",
-            active
-          );
-
-        }
-      );
-
-    }
-
-
-    /* =====================================================
        MOBILE DROPDOWNS
        ===================================================== */
 
@@ -1599,40 +1353,41 @@
             ".mobile-nav-dropdown-trigger"
           );
 
-        if (!trigger) return;
-
 
         trigger.addEventListener(
           "click",
-          (event) => {
+          () => {
 
-            event.stopPropagation();
-
-
-            const open =
+            const isOpen =
               dropdown.classList.contains(
-                "active"
+                "open"
               );
 
 
             mobileDropdowns.forEach(
-              (item) => {
+              (otherDropdown) => {
 
-                item.classList.remove(
-                  "active"
-                );
+                if (
+                  otherDropdown !== dropdown
+                ) {
 
-                const itemTrigger =
-                  item.querySelector(
-                    ".mobile-nav-dropdown-trigger"
+                  otherDropdown.classList.remove(
+                    "open"
                   );
 
-                if (itemTrigger) {
+                  const otherTrigger =
+                    otherDropdown.querySelector(
+                      ".mobile-nav-dropdown-trigger"
+                    );
 
-                  itemTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
+                  if (otherTrigger) {
+
+                    otherTrigger.setAttribute(
+                      "aria-expanded",
+                      "false"
+                    );
+
+                  }
 
                 }
 
@@ -1640,18 +1395,15 @@
             );
 
 
-            if (!open) {
+            dropdown.classList.toggle(
+              "open",
+              !isOpen
+            );
 
-              dropdown.classList.add(
-                "active"
-              );
-
-              trigger.setAttribute(
-                "aria-expanded",
-                "true"
-              );
-
-            }
+            trigger.setAttribute(
+              "aria-expanded",
+              String(!isOpen)
+            );
 
           }
         );
@@ -1664,41 +1416,42 @@
        CLOSE MOBILE MENU AFTER LINK CLICK
        ===================================================== */
 
-    if (mobileNav) {
+    mobileNav
+      .querySelectorAll("a")
+      .forEach(
+        (link) => {
 
-      mobileNav
-        .querySelectorAll("a")
-        .forEach(
-          (link) => {
+          link.addEventListener(
+            "click",
+            () => {
 
-            link.addEventListener(
-              "click",
-              () => {
+              mobileNav.classList.remove(
+                "active"
+              );
 
-                mobileNav.classList.remove(
-                  "active"
-                );
+              mobileMenuButton.classList.remove(
+                "active"
+              );
 
-                mobileMenuButton.classList.remove(
-                  "active"
-                );
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
 
-                mobileMenuButton.setAttribute(
-                  "aria-expanded",
-                  "false"
-                );
+              mobileMenuButton.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+              );
 
-                document.body.classList.remove(
-                  "menu-open"
-                );
+              document.body.classList.remove(
+                "menu-open"
+              );
 
-              }
-            );
+            }
+          );
 
-          }
-        );
-
-    }
+        }
+      );
 
 
     /* =====================================================
@@ -1711,22 +1464,18 @@
       );
 
 
-    if (loginForm) {
+    loginForm.addEventListener(
+      "submit",
+      (event) => {
 
-      loginForm.addEventListener(
-        "submit",
-        (event) => {
+        event.preventDefault();
 
-          event.preventDefault();
+        alert(
+          "Authentication is not connected yet. The login interface is ready for the backend integration."
+        );
 
-          alert(
-            "Authentication is not connected yet. The login interface is ready for the backend integration."
-          );
-
-        }
-      );
-
-    }
+      }
+    );
 
 
     /* =====================================================
@@ -1739,20 +1488,16 @@
       );
 
 
-    if (googleLogin) {
+    googleLogin.addEventListener(
+      "click",
+      () => {
 
-      googleLogin.addEventListener(
-        "click",
-        () => {
+        alert(
+          "Google authentication will be connected here."
+        );
 
-          alert(
-            "Google authentication will be connected here."
-          );
-
-        }
-      );
-
-    }
+      }
+    );
 
 
     /* =====================================================
@@ -1765,20 +1510,16 @@
       );
 
 
-    if (githubLogin) {
+    githubLogin.addEventListener(
+      "click",
+      () => {
 
-      githubLogin.addEventListener(
-        "click",
-        () => {
+        alert(
+          "GitHub authentication will be connected here."
+        );
 
-          alert(
-            "GitHub authentication will be connected here."
-          );
-
-        }
-      );
-
-    }
+      }
+    );
 
 
     /* =====================================================
@@ -1791,22 +1532,18 @@
       );
 
 
-    if (forgotPassword) {
+    forgotPassword.addEventListener(
+      "click",
+      (event) => {
 
-      forgotPassword.addEventListener(
-        "click",
-        (event) => {
+        event.preventDefault();
 
-          event.preventDefault();
+        alert(
+          "Password recovery will be connected here."
+        );
 
-          alert(
-            "Password recovery will be connected here."
-          );
-
-        }
-      );
-
-    }
+      }
+    );
 
 
     /* =====================================================
@@ -1829,7 +1566,8 @@
             window.scrollY;
 
           const scrollHeight =
-            document.documentElement.scrollHeight -
+            document.documentElement
+              .scrollHeight -
             window.innerHeight;
 
           const percentage =
@@ -1847,51 +1585,98 @@
 
 
     /* =====================================================
-       CUSTOM CURSOR
+       ESCAPE KEY
        ===================================================== */
 
-    const cursorDot =
-      document.querySelector(
-        ".cursor-dot"
-      );
+    document.addEventListener(
+      "keydown",
+      (event) => {
 
-    const cursorRing =
-      document.querySelector(
-        ".cursor-ring"
-      );
-
-
-    if (
-      cursorDot &&
-      cursorRing
-    ) {
-
-      window.addEventListener(
-        "mousemove",
-        (event) => {
-
-          cursorDot.style.left =
-            event.clientX + "px";
-
-          cursorDot.style.top =
-            event.clientY + "px";
-
-          cursorRing.style.left =
-            event.clientX + "px";
-
-          cursorRing.style.top =
-            event.clientY + "px";
-
-          cursorDot.style.opacity =
-            "1";
-
-          cursorRing.style.opacity =
-            "1";
-
+        if (event.key !== "Escape") {
+          return;
         }
-      );
 
-    }
+
+        /* Close desktop dropdowns */
+
+        desktopDropdowns.forEach(
+          (dropdown) => {
+
+            dropdown.classList.remove(
+              "open"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (trigger) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+
+        /* Close mobile dropdowns */
+
+        mobileDropdowns.forEach(
+          (dropdown) => {
+
+            dropdown.classList.remove(
+              "open"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".mobile-nav-dropdown-trigger"
+              );
+
+            if (trigger) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+
+        /* Close mobile menu */
+
+        mobileNav.classList.remove(
+          "active"
+        );
+
+        mobileMenuButton.classList.remove(
+          "active"
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-label",
+          "Open navigation menu"
+        );
+
+        document.body.classList.remove(
+          "menu-open"
+        );
+
+      }
+    );
 
   </script>
 
