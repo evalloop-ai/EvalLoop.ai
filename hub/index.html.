@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  />
+
+  <title>EvalAI Hub — Coming Soon | EvalLoop AI</title>
+
+  <meta
+    name="description"
+    content="EvalAI Hub is coming soon — explore the AI evaluation ecosystem, benchmarks, datasets, methods, research, and tools."
+  />
+
+  <meta name="theme-color" content="#101211" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --line: rgba(241, 241, 239, 0.14);
+      --line-soft: rgba(241, 241, 239, 0.08);
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+
+      --sans:
+        "Inter",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      --mono: "DM Mono", monospace;
+      --max: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      color: var(--ink);
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(62, 207, 142, 0.1),
+          transparent 34%
+        ),
+        linear-gradient(
+          rgba(241, 241, 239, 0.022) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241, 241, 239, 0.022) 1px,
+          transparent 1px
+        ),
+        var(--bg);
+
+      background-size:
+        auto,
+        48px 48px,
+        48px 48px,
+        auto;
+
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+
+      background:
+        radial-gradient(
+          circle at 15% 35%,
+          rgba(62, 207, 142, 0.025),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 85% 65%,
+          rgba(62, 207, 142, 0.025),
+          transparent 25%
+        );
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background: rgba(16, 18, 17, 0.84);
+
+      border-bottom: 1px solid var(--line-soft);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      width: min(var(--max), calc(100% - 48px));
+      min-height: 72px;
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+
+      color: var(--ink);
+
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+
+    .brand::after {
+      content: "";
+
+      width: 7px;
+      height: 16px;
+
+      margin-left: 2px;
+
+      background: var(--green);
+
+      animation: blink 1.05s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      0%,
+      48% {
+        opacity: 1;
+      }
+
+      49%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .desktop-nav > a,
+    .nav-dropdown > button {
+      border: 0;
+      background: transparent;
+
+      color: var(--muted);
+
+      padding: 9px 11px;
+      border-radius: 4px;
+
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+
+      cursor: pointer;
+
+      transition:
+        color 160ms ease,
+        background 160ms ease;
+    }
+
+    .desktop-nav > a:hover,
+    .nav-dropdown > button:hover,
+    .desktop-nav > a.active,
+    .nav-dropdown > button.active {
+      color: var(--ink);
+      background: rgba(241, 241, 239, 0.045);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown > button {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .nav-chevron {
+      width: 6px;
+      height: 6px;
+
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+
+      transform: rotate(45deg) translateY(-2px);
+
+      transition: transform 160ms ease;
+    }
+
+    .nav-dropdown.open .nav-chevron {
+      transform: rotate(225deg) translateY(-1px);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+
+      top: calc(100% + 9px);
+      left: 50%;
+
+      width: 285px;
+
+      padding: 7px;
+
+      background: rgba(23, 27, 24, 0.98);
+
+      border: 1px solid var(--line);
+      border-radius: 5px;
+
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transform: translateX(-50%) translateY(-5px);
+
+      transition:
+        opacity 150ms ease,
+        transform 150ms ease,
+        visibility 150ms ease;
+    }
+
+    .nav-dropdown.open .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-item {
+      display: block;
+
+      padding: 11px 12px;
+
+      border-radius: 4px;
+
+      transition: background 150ms ease;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item.active {
+      background: rgba(62, 207, 142, 0.07);
+    }
+
+    .dropdown-title {
+      display: block;
+
+      color: var(--ink);
+
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .dropdown-description {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+
+      gap: 3px;
+      margin-left: 4px;
+    }
+
+    .nav-login {
+      color: var(--muted) !important;
+    }
+
+    .nav-signup {
+      color: var(--bg) !important;
+      background: var(--green) !important;
+
+      padding-inline: 14px !important;
+    }
+
+    .nav-signup:hover {
+      background: var(--green2) !important;
+    }
+
+    /* =========================================================
+       MOBILE NAV
+    ========================================================= */
+
+    .mobile-toggle {
+      display: none;
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid var(--line);
+      border-radius: 4px;
+
+      background: transparent;
+      color: var(--ink);
+
+      cursor: pointer;
+    }
+
+    .mobile-toggle span,
+    .mobile-toggle span::before,
+    .mobile-toggle span::after {
+      display: block;
+
+      width: 17px;
+      height: 1px;
+
+      background: currentColor;
+
+      margin: 0 auto;
+
+      transition:
+        transform 160ms ease,
+        opacity 160ms ease;
+    }
+
+    .mobile-toggle span {
+      position: relative;
+    }
+
+    .mobile-toggle span::before,
+    .mobile-toggle span::after {
+      content: "";
+
+      position: absolute;
+      left: 0;
+    }
+
+    .mobile-toggle span::before {
+      top: -6px;
+    }
+
+    .mobile-toggle span::after {
+      top: 6px;
+    }
+
+    .mobile-menu {
+      display: none;
+
+      padding: 10px 24px 20px;
+
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-link {
+      display: block;
+
+      padding: 11px 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .mobile-link:hover,
+    .mobile-link.active {
+      color: var(--ink);
+    }
+
+    .mobile-group {
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .mobile-group-button {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 12px 0;
+
+      border: 0;
+      background: transparent;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .mobile-group.open .mobile-group-button {
+      color: var(--ink);
+    }
+
+    .mobile-submenu {
+      display: none;
+
+      padding: 0 0 8px 13px;
+    }
+
+    .mobile-group.open .mobile-submenu {
+      display: block;
+    }
+
+    .mobile-sub-link {
+      display: block;
+
+      padding: 9px 0;
+
+      color: var(--dim);
+
+      font-size: 13px;
+    }
+
+    .mobile-sub-link:hover,
+    .mobile-sub-link.active {
+      color: var(--green2);
+    }
+
+    .mobile-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 8px;
+
+      margin-top: 14px;
+    }
+
+    .mobile-action {
+      padding: 11px;
+
+      border: 1px solid var(--line);
+      border-radius: 4px;
+
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .mobile-action.primary {
+      color: var(--bg);
+
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    /* =========================================================
+       COMING SOON HERO
+    ========================================================= */
+
+    .coming-soon {
+      position: relative;
+
+      min-height: calc(100vh - 72px);
+
+      display: flex;
+      align-items: center;
+
+      padding: 90px 0 110px;
+
+      overflow: hidden;
+    }
+
+    .coming-soon::before {
+      content: "";
+
+      position: absolute;
+
+      width: 620px;
+      height: 620px;
+
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(62, 207, 142, 0.065),
+          transparent 64%
+        );
+
+      pointer-events: none;
+    }
+
+    .coming-grid {
+      position: relative;
+      z-index: 2;
+
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.8fr);
+
+      align-items: center;
+
+      gap: 90px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 10px;
+
+      margin-bottom: 24px;
+
+      color: var(--green);
+
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+
+      width: 24px;
+      height: 1px;
+
+      background: var(--green);
+    }
+
+    .hero-eyebrow::after {
+      content: "COMING SOON";
+
+      padding: 4px 7px;
+
+      border: 1px solid rgba(62, 207, 142, 0.28);
+      border-radius: 3px;
+
+      color: var(--green2);
+
+      background: rgba(62, 207, 142, 0.045);
+
+      font-size: 9px;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      max-width: 720px;
+
+      margin: 0;
+
+      font-size: clamp(47px, 7vw, 82px);
+
+      line-height: 0.96;
+
+      letter-spacing: -0.06em;
+
+      font-weight: 300;
+    }
+
+    h1 .green {
+      color: var(--green);
+    }
+
+    .hero-description {
+      max-width: 625px;
+
+      margin: 28px 0 0;
+
+      color: var(--muted);
+
+      font-size: 17px;
+
+      line-height: 1.75;
+    }
+
+    .hero-description strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 44px;
+
+      padding: 0 17px;
+
+      border: 1px solid var(--line);
+      border-radius: 4px;
+
+      font-size: 13px;
+      font-weight: 400;
+
+      transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        color 160ms ease;
+    }
+
+    .button.primary {
+      color: var(--bg);
+
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .button.primary:hover {
+      background: var(--green2);
+      border-color: var(--green2);
+    }
+
+    .button.secondary:hover {
+      border-color: rgba(62, 207, 142, 0.42);
+      background: rgba(62, 207, 142, 0.05);
+    }
+
+    /* =========================================================
+       HUB STATUS VISUAL
+    ========================================================= */
+
+    .status-visual {
+      position: relative;
+
+      min-height: 420px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-orbit {
+      position: absolute;
+
+      border-radius: 50%;
+
+      border: 1px solid var(--line-soft);
+    }
+
+    .status-orbit.one {
+      width: 290px;
+      height: 290px;
+    }
+
+    .status-orbit.two {
+      width: 400px;
+      height: 400px;
+
+      border-color: rgba(62, 207, 142, 0.11);
+    }
+
+    .status-core {
+      position: relative;
+
+      width: 168px;
+      height: 168px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(62, 207, 142, 0.35);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(62, 207, 142, 0.12),
+          rgba(62, 207, 142, 0.025) 58%,
+          transparent 74%
+        );
+
+      box-shadow:
+        0 0 75px rgba(62, 207, 142, 0.075),
+        inset 0 0 35px rgba(62, 207, 142, 0.035);
+    }
+
+    .status-core::before {
+      content: "";
+
+      position: absolute;
+
+      width: 110px;
+      height: 110px;
+
+      border: 1px dashed rgba(62, 207, 142, 0.32);
+
+      border-radius: 50%;
+
+      animation: slowRotate 18s linear infinite;
+    }
+
+    @keyframes slowRotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .status-core-label {
+      position: relative;
+      z-index: 2;
+
+      color: var(--ink);
+
+      font-family: var(--mono);
+
+      font-size: 13px;
+
+      letter-spacing: 0.05em;
+    }
+
+    .status-core-state {
+      position: relative;
+      z-index: 2;
+
+      margin-top: 7px;
+
+      color: var(--green);
+
+      font-family: var(--mono);
+
+      font-size: 9px;
+
+      letter-spacing: 0.09em;
+
+      text-transform: uppercase;
+    }
+
+    .status-node {
+      position: absolute;
+
+      min-width: 126px;
+
+      padding: 10px 12px;
+
+      border: 1px solid var(--line);
+
+      border-radius: 4px;
+
+      background: rgba(23, 27, 24, 0.94);
+
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+
+      text-align: center;
+    }
+
+    .status-node-title {
+      display: block;
+
+      color: var(--ink);
+
+      font-size: 12px;
+
+      font-weight: 400;
+    }
+
+    .status-node-meta {
+      display: block;
+
+      margin-top: 2px;
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+
+      font-size: 9px;
+    }
+
+    .node-top {
+      top: 22px;
+      left: 50%;
+
+      transform: translateX(-50%);
+    }
+
+    .node-right {
+      right: 0;
+      top: 50%;
+
+      transform: translateY(-50%);
+    }
+
+    .node-bottom {
+      bottom: 20px;
+      left: 50%;
+
+      transform: translateX(-50%);
+    }
+
+    .node-left {
+      left: 0;
+      top: 50%;
+
+      transform: translateY(-50%);
+    }
+
+    /* =========================================================
+       COMING SOON PANEL
+    ========================================================= */
+
+    .details {
+      padding: 88px 0;
+
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .details-head {
+      max-width: 670px;
+
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      margin-bottom: 12px;
+
+      color: var(--green);
+
+      font-family: var(--mono);
+
+      font-size: 10px;
+
+      letter-spacing: 0.1em;
+
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+
+      font-size: clamp(31px, 4vw, 49px);
+
+      line-height: 1.05;
+
+      letter-spacing: -0.045em;
+
+      font-weight: 300;
+    }
+
+    h2 .green {
+      color: var(--green);
+    }
+
+    .details-intro {
+      margin: 18px 0 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.75;
+    }
+
+    .capabilities {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+    .capability {
+      min-height: 190px;
+
+      padding: 23px;
+
+      border: 1px solid var(--line);
+
+      border-radius: 5px;
+
+      background: rgba(23, 27, 24, 0.72);
+    }
+
+    .capability-number {
+      color: var(--green);
+
+      font-family: var(--mono);
+
+      font-size: 10px;
+    }
+
+    .capability h3 {
+      margin: 28px 0 9px;
+
+      color: var(--ink);
+
+      font-size: 17px;
+
+      font-weight: 400;
+
+      letter-spacing: -0.02em;
+    }
+
+    .capability p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.7;
+    }
+
+    /* =========================================================
+       ECOSYSTEM STRIP
+    ========================================================= */
+
+    .ecosystem-section {
+      padding: 88px 0;
+
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .ecosystem-panel {
+      display: grid;
+
+      grid-template-columns: 0.85fr 1.15fr;
+
+      border: 1px solid var(--line);
+
+      border-radius: 5px;
+
+      overflow: hidden;
+
+      background: rgba(23, 27, 24, 0.7);
+    }
+
+    .ecosystem-copy {
+      padding: 42px;
+
+      border-right: 1px solid var(--line);
+
+      background:
+        radial-gradient(
+          circle at 0% 0%,
+          rgba(62, 207, 142, 0.07),
+          transparent 48%
+        );
+    }
+
+    .ecosystem-copy h2 {
+      font-size: 31px;
+    }
+
+    .ecosystem-copy p {
+      max-width: 400px;
+
+      margin: 18px 0 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.75;
+    }
+
+    .ecosystem-list {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 0;
+    }
+
+    .ecosystem-item {
+      padding: 25px;
+
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .ecosystem-item:nth-child(odd) {
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .ecosystem-item:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+
+    .ecosystem-item span {
+      display: block;
+
+      color: var(--green);
+
+      font-family: var(--mono);
+
+      font-size: 9px;
+
+      letter-spacing: 0.07em;
+
+      text-transform: uppercase;
+    }
+
+    .ecosystem-item h3 {
+      margin: 9px 0 6px;
+
+      color: var(--ink);
+
+      font-size: 14px;
+
+      font-weight: 400;
+    }
+
+    .ecosystem-item p {
+      margin: 0;
+
+      color: var(--dim);
+
+      font-size: 11px;
+
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       FINAL CTA
+    ========================================================= */
+
+    .final-cta {
+      padding: 100px 0 110px;
+
+      text-align: center;
+
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .final-cta-inner {
+      max-width: 720px;
+
+      margin: 0 auto;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(36px, 5vw, 58px);
+    }
+
+    .final-cta p {
+      max-width: 580px;
+
+      margin: 20px auto 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.75;
+    }
+
+    .final-cta .hero-actions {
+      justify-content: center;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer {
+      padding: 55px 0 26px;
+
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-top {
+      display: grid;
+
+      grid-template-columns:
+        1.5fr
+        repeat(4, 1fr);
+
+      gap: 40px;
+    }
+
+    .footer-brand {
+      color: var(--ink);
+
+      font-family: var(--mono);
+
+      font-size: 15px;
+    }
+
+    .footer-brand-description {
+      max-width: 220px;
+
+      margin-top: 11px;
+
+      color: var(--dim);
+
+      font-size: 12px;
+
+      line-height: 1.6;
+    }
+
+    .footer-heading {
+      margin-bottom: 14px;
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+
+      font-size: 9px;
+
+      letter-spacing: 0.1em;
+    }
+
+    .footer-links {
+      display: grid;
+
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      transition: color 150ms ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--green);
+    }
+
+    .footer-bottom {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      margin-top: 55px;
+      padding-top: 19px;
+
+      border-top: 1px solid var(--line-soft);
+
+      color: var(--dim);
+
+      font-family: var(--mono);
+
+      font-size: 9px;
+
+      letter-spacing: 0.05em;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1050px) {
+      .desktop-nav {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .coming-grid {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+      }
+
+      .status-visual {
+        min-height: 340px;
+      }
+
+      .footer-top {
+        grid-template-columns:
+          1.4fr
+          1fr
+          1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .container,
+      .header-inner {
+        width: min(var(--max), calc(100% - 32px));
+      }
+
+      .coming-soon {
+        min-height: auto;
+
+        padding: 78px 0 75px;
+      }
+
+      .details,
+      .ecosystem-section {
+        padding: 68px 0;
+      }
+
+      .capabilities {
+        grid-template-columns: 1fr;
+      }
+
+      .ecosystem-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .ecosystem-copy {
+        border-right: 0;
+
+        border-bottom: 1px solid var(--line);
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 35px 24px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container,
+      .header-inner {
+        width: min(var(--max), calc(100% - 28px));
+      }
+
+      .mobile-menu {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      h1 {
+        font-size: clamp(42px, 13vw, 59px);
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .status-visual {
+        min-height: 280px;
+
+        transform: scale(0.79);
+
+        margin: -35px 0;
+      }
+
+      .status-orbit.two {
+        width: 340px;
+        height: 340px;
+      }
+
+      .node-left {
+        left: -10px;
+      }
+
+      .node-right {
+        right: -10px;
+      }
+
+      .ecosystem-list {
+        grid-template-columns: 1fr;
+      }
+
+      .ecosystem-item:nth-child(odd) {
+        border-right: 0;
+      }
+
+      .ecosystem-item:nth-last-child(-n + 2) {
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .ecosystem-item:last-child {
+        border-bottom: 0;
+      }
+
+      .ecosystem-copy {
+        padding: 28px 22px;
+      }
+
+      .ecosystem-item {
+        padding: 22px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 9px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a
+        class="brand"
+        href="/"
+        aria-label="EvalLoop AI home"
+      >
+        EvalLoop AI
+      </a>
+
+      <nav
+        class="desktop-nav"
+        aria-label="Primary navigation"
+      >
+
+        <div class="nav-dropdown">
+
+          <button
+            type="button"
+            aria-expanded="false"
+          >
+            Products
+            <span class="nav-chevron"></span>
+          </button>
+
+          <div class="dropdown-menu">
+
+            <a
+              class="dropdown-item"
+              href="/labs/"
+            >
+              <span class="dropdown-title">
+                Evaluation Engines/Models
+              </span>
+
+              <span class="dropdown-description">
+                Test and compare AI quality
+              </span>
+            </a>
+
+            <a
+              class="dropdown-item"
+              href="/jobs/"
+            >
+              <span class="dropdown-title">
+                EvalLoop Jobs
+              </span>
+
+              <span class="dropdown-description">
+                Independent jobs directory &amp; discovery platform
+              </span>
+            </a>
+
+            <a
+              class="dropdown-item active"
+              href="/hub/"
+              aria-current="page"
+            >
+              <span class="dropdown-title">
+                EvalAI Hub
+              </span>
+
+              <span class="dropdown-description">
+                Explore the evaluation ecosystem
+              </span>
+            </a>
+
+          </div>
+        </div>
+
+        <a href="/app/">
+          Workspace
+        </a>
+
+        <div class="nav-dropdown">
+
+          <button
+            type="button"
+            aria-expanded="false"
+          >
+            Resources
+            <span class="nav-chevron"></span>
+          </button>
+
+          <div class="dropdown-menu">
+
+            <a
+              class="dropdown-item"
+              href="/docs/"
+            >
+              <span class="dropdown-title">
+                Docs
+              </span>
+
+              <span class="dropdown-description">
+                Build with EvalLoop AI
+              </span>
+            </a>
+
+            <a
+              class="dropdown-item"
+              href="/knowledge/"
+            >
+              <span class="dropdown-title">
+                Learn
+              </span>
+
+              <span class="dropdown-description">
+                Guides and evaluation basics
+              </span>
+            </a>
+
+            <a
+              class="dropdown-item"
+              href="/blog/"
+            >
+              <span class="dropdown-title">
+                Blog
+              </span>
+
+              <span class="dropdown-description">
+                Ideas, updates, and research
+              </span>
+            </a>
+
+            <a
+              class="dropdown-item"
+              href="/api-space/"
+            >
+              <span class="dropdown-title">
+                API
+              </span>
+
+              <span class="dropdown-description">
+                Connect your AI workflows
+              </span>
+            </a>
+
+          </div>
+        </div>
+
+        <a href="/pricing/">
+          Pricing
+        </a>
+
+        <div class="nav-actions">
+
+          <a
+            class="nav-login"
+            href="/login/"
+          >
+            Login
+          </a>
+
+          <a
+            class="nav-signup"
+            href="/signup/"
+          >
+            Sign up
+          </a>
+
+        </div>
+
+      </nav>
+
+      <button
+        class="mobile-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <span></span>
+      </button>
+
+    </div>
+
+    <div
+      class="mobile-menu"
+      aria-label="Mobile navigation"
+    >
+
+      <a
+        class="mobile-link"
+        href="/app/"
+      >
+        Workspace
+      </a>
+
+      <div class="mobile-group">
+
+        <button
+          class="mobile-group-button"
+          type="button"
+          aria-expanded="false"
+        >
+          Products
+
+          <span class="nav-chevron"></span>
+        </button>
+
+        <div class="mobile-submenu">
+
+          <a
+            class="mobile-sub-link"
+            href="/labs/"
+          >
+            Evaluation Engines/Models
+          </a>
+
+          <a
+            class="mobile-sub-link"
+            href="/jobs/"
+          >
+            EvalLoop Jobs
+          </a>
+
+          <a
+            class="mobile-sub-link active"
+            href="/hub/"
+            aria-current="page"
+          >
+            EvalAI Hub
+          </a>
+
+        </div>
+      </div>
+
+      <div class="mobile-group">
+
+        <button
+          class="mobile-group-button"
+          type="button"
+          aria-expanded="false"
+        >
+          Resources
+
+          <span class="nav-chevron"></span>
+        </button>
+
+        <div class="mobile-submenu">
+
+          <a
+            class="mobile-sub-link"
+            href="/docs/"
+          >
+            Docs
+          </a>
+
+          <a
+            class="mobile-sub-link"
+            href="/knowledge/"
+          >
+            Learn
+          </a>
+
+          <a
+            class="mobile-sub-link"
+            href="/blog/"
+          >
+            Blog
+          </a>
+
+          <a
+            class="mobile-sub-link"
+            href="/api-space/"
+          >
+            API
+          </a>
+
+        </div>
+      </div>
+
+      <a
+        class="mobile-link"
+        href="/pricing/"
+      >
+        Pricing
+      </a>
+
+      <div class="mobile-actions">
+
+        <a
+          class="mobile-action"
+          href="/login/"
+        >
+          Login
+        </a>
+
+        <a
+          class="mobile-action primary"
+          href="/signup/"
+        >
+          Sign up
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <!-- =======================================================
+         COMING SOON HERO
+    ======================================================== -->
+
+    <section class="coming-soon">
+
+      <div class="container">
+
+        <div class="coming-grid">
+
+          <div>
+
+            <div class="hero-eyebrow">
+              EVALAI HUB
+            </div>
+
+            <h1>
+              The AI evaluation
+              <span class="green">ecosystem.</span>
+            </h1>
+
+            <p class="hero-description">
+              A discovery layer for the people, methods, benchmarks,
+              datasets, frameworks, research, and tools shaping how
+              AI systems are evaluated.
+              <strong>EvalAI Hub is coming soon.</strong>
+            </p>
+
+            <div class="hero-actions">
+
+              <a
+                class="button primary"
+                href="/knowledge/"
+              >
+                Explore Learn
+              </a>
+
+              <a
+                class="button secondary"
+                href="/blog/"
+              >
+                Read the Blog
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="status-visual"
+            aria-label="EvalAI Hub coming soon status"
+          >
+
+            <div class="status-orbit one"></div>
+
+            <div class="status-orbit two"></div>
+
+            <div class="status-core">
+
+              <span class="status-core-label">
+                EVALAI HUB
+              </span>
+
+              <span class="status-core-state">
+                COMING SOON
+              </span>
+
+            </div>
+
+            <div class="status-node node-top">
+
+              <span class="status-node-title">
+                Benchmarks
+              </span>
+
+              <span class="status-node-meta">
+                MEASURE
+              </span>
+
+            </div>
+
+            <div class="status-node node-right">
+
+              <span class="status-node-title">
+                Research
+              </span>
+
+              <span class="status-node-meta">
+                DISCOVER
+              </span>
+
+            </div>
+
+            <div class="status-node node-bottom">
+
+              <span class="status-node-title">
+                Datasets
+              </span>
+
+              <span class="status-node-meta">
+                TEST
+              </span>
+
+            </div>
+
+            <div class="status-node node-left">
+
+              <span class="status-node-title">
+                Methods
+              </span>
+
+              <span class="status-node-meta">
+                EVALUATE
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         WHAT IS COMING
+    ======================================================== -->
+
+    <section class="details">
+
+      <div class="container">
+
+        <div class="details-head">
+
+          <div class="section-label">
+            WHAT'S COMING
+          </div>
+
+          <h2>
+            One place to understand
+            <span class="green">AI evaluation.</span>
+          </h2>
+
+          <p class="details-intro">
+            EvalAI Hub will bring the wider evaluation ecosystem
+            into one structured discovery experience — helping
+            teams and practitioners understand what exists,
+            what matters, and how different evaluation approaches
+            fit together.
+          </p>
+
+        </div>
+
+
+        <div class="capabilities">
+
+          <article class="capability">
+
+            <div class="capability-number">
+              01
+            </div>
+
+            <h3>
+              Evaluation Methods
+            </h3>
+
+            <p>
+              Explore approaches such as model-based evaluation,
+              human evaluation, reference-based evaluation,
+              pairwise comparison, and rubric-driven testing.
+            </p>
+
+          </article>
+
+
+          <article class="capability">
+
+            <div class="capability-number">
+              02
+            </div>
+
+            <h3>
+              Benchmarks
+            </h3>
+
+            <p>
+              Discover benchmark suites and understand what
+              different benchmarks are designed to measure and
+              where they fit in an evaluation workflow.
+            </p>
+
+          </article>
+
+
+          <article class="capability">
+
+            <div class="capability-number">
+              03
+            </div>
+
+            <h3>
+              Datasets
+            </h3>
+
+            <p>
+              Find datasets and evaluation resources used to test
+              language, reasoning, safety, multimodal, RAG,
+              agent, and other AI capabilities.
+            </p>
+
+          </article>
+
+
+          <article class="capability">
+
+            <div class="capability-number">
+              04
+            </div>
+
+            <h3>
+              Frameworks &amp; Tools
+            </h3>
+
+            <p>
+              Map the growing ecosystem of evaluation frameworks,
+              testing tools, observability platforms, and quality
+              infrastructure.
+            </p>
+
+          </article>
+
+
+          <article class="capability">
+
+            <div class="capability-number">
+              05
+            </div>
+
+            <h3>
+              Research
+            </h3>
+
+            <p>
+              Surface important research and ideas that influence
+              how AI quality, reliability, safety, grounding,
+              and agent behavior are measured.
+            </p>
+
+          </article>
+
+
+          <article class="capability">
+
+            <div class="capability-number">
+              06
+            </div>
+
+            <h3>
+              Evaluation Landscape
+            </h3>
+
+            <p>
+              Understand how models, methods, benchmarks, datasets,
+              tools, and evaluation practices connect across the
+              wider AI ecosystem.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         ECOSYSTEM
+    ======================================================== -->
+
+    <section class="ecosystem-section">
+
+      <div class="container">
+
+        <div class="ecosystem-panel">
+
+          <div class="ecosystem-copy">
+
+            <div class="section-label">
+              THE IDEA
+            </div>
+
+            <h2>
+              From scattered
+              <span class="green">to connected.</span>
+            </h2>
+
+            <p>
+              AI evaluation knowledge is spread across research
+              papers, benchmark repositories, datasets, open-source
+              projects, product documentation, and practitioner
+              communities.
+            </p>
+
+            <p>
+              EvalAI Hub is designed to make that landscape easier
+              to navigate.
+            </p>
+
+          </div>
+
+
+          <div class="ecosystem-list">
+
+            <div class="ecosystem-item">
+
+              <span>
+                DISCOVER
+              </span>
+
+              <h3>
+                Find evaluation resources
+              </h3>
+
+              <p>
+                Search and explore useful evaluation resources
+                across the ecosystem.
+              </p>
+
+            </div>
+
+
+            <div class="ecosystem-item">
+
+              <span>
+                UNDERSTAND
+              </span>
+
+              <h3>
+                Learn what they measure
+              </h3>
+
+              <p>
+                Understand the purpose and scope of each
+                evaluation approach.
+              </p>
+
+            </div>
+
+
+            <div class="ecosystem-item">
+
+              <span>
+                CONNECT
+              </span>
+
+              <h3>
+                See relationships
+              </h3>
+
+              <p>
+                Connect benchmarks, methods, datasets, tools,
+                and research.
+              </p>
+
+            </div>
+
+
+            <div class="ecosystem-item">
+
+              <span>
+                APPLY
+              </span>
+
+              <h3>
+                Move into evaluation
+              </h3>
+
+              <p>
+                Turn what you discover into practical evaluation
+                workflows with EvalLoop AI.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         FINAL CTA
+    ======================================================== -->
+
+    <section class="final-cta">
+
+      <div class="container">
+
+        <div class="final-cta-inner">
+
+          <div class="section-label">
+            WHILE YOU WAIT
+          </div>
+
+          <h2>
+            Start evaluating
+            <span class="green">today.</span>
+          </h2>
+
+          <p>
+            EvalAI Hub is being prepared as a broader ecosystem
+            experience. In the meantime, explore EvalLoop AI's
+            evaluation workspace, documentation, learning resources,
+            and research.
+          </p>
+
+          <div class="hero-actions">
+
+            <a
+              class="button primary"
+              href="/app/"
+            >
+              Open Workspace
+            </a>
+
+            <a
+              class="button secondary"
+              href="/docs/"
+            >
+              Read Documentation
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-top">
+
+        <div>
+
+          <div class="footer-brand">
+            EvalLoop AI_
+          </div>
+
+          <div class="footer-brand-description">
+            AI evaluation &amp; LLM quality platform.
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            PRODUCT
+          </div>
+
+          <div class="footer-links">
+
+            <a href="/">
+              Overview
+            </a>
+
+            <a href="/app/">
+              Workspace
+            </a>
+
+            <a href="/hub/">
+              EvalAI Hub
+            </a>
+
+            <a href="/pricing/">
+              Pricing
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            RESOURCES
+          </div>
+
+          <div class="footer-links">
+
+            <a href="/knowledge/">
+              Learn
+            </a>
+
+            <a href="/blog/">
+              Blog
+            </a>
+
+            <a href="/docs/">
+              Documentation
+            </a>
+
+            <a href="/api-space/">
+              API
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            COMPANY
+          </div>
+
+          <div class="footer-links">
+
+            <a href="/about/">
+              About
+            </a>
+
+            <a href="/contact/">
+              Contact
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            LEGAL
+          </div>
+
+          <div class="footer-links">
+
+            <a href="/privacy/">
+              Privacy Policy
+            </a>
+
+            <a href="/terms/">
+              Terms of Service
+            </a>
+
+            <a href="/ai-usage/">
+              AI Usage Disclaimer
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <span>
+          © 2026 EvalLoop AI
+        </span>
+
+        <span>
+          BUILT FOR BETTER AI
+        </span>
+
+        <span>
+          HYDERABAD · INDIA
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+    /* =========================================================
+       DESKTOP DROPDOWNS
+    ========================================================= */
+
+    const dropdowns =
+      document.querySelectorAll(".nav-dropdown");
+
+    dropdowns.forEach((dropdown) => {
+
+      const button =
+        dropdown.querySelector("button");
+
+      button.addEventListener("click", (event) => {
+
+        event.stopPropagation();
+
+        dropdowns.forEach((other) => {
+
+          if (other !== dropdown) {
+            other.classList.remove("open");
+
+            const otherButton =
+              other.querySelector("button");
+
+            if (otherButton) {
+              otherButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+            }
+          }
+
+        });
+
+        const isOpen =
+          dropdown.classList.toggle("open");
+
+        button.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+      });
+
+    });
+
+
+    document.addEventListener("click", () => {
+
+      dropdowns.forEach((dropdown) => {
+
+        dropdown.classList.remove("open");
+
+        const button =
+          dropdown.querySelector("button");
+
+        if (button) {
+          button.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+        }
+
+      });
+
+    });
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    const mobileToggle =
+      document.querySelector(".mobile-toggle");
+
+    const mobileMenu =
+      document.querySelector(".mobile-menu");
+
+    if (mobileToggle && mobileMenu) {
+
+      mobileToggle.addEventListener("click", () => {
+
+        const isOpen =
+          mobileMenu.classList.toggle("open");
+
+        mobileToggle.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+        mobileToggle.setAttribute(
+          "aria-label",
+          isOpen
+            ? "Close menu"
+            : "Open menu"
+        );
+
+      });
+
+    }
+
+
+    /* =========================================================
+       MOBILE DROPDOWNS
+    ========================================================= */
+
+    const mobileGroups =
+      document.querySelectorAll(".mobile-group");
+
+    mobileGroups.forEach((group) => {
+
+      const button =
+        group.querySelector(".mobile-group-button");
+
+      if (!button) {
+        return;
+      }
+
+      button.addEventListener("click", () => {
+
+        const isOpen =
+          group.classList.toggle("open");
+
+        button.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+      });
+
+    });
+
+
+    /* =========================================================
+       CLOSE MOBILE MENU AFTER NAVIGATION
+    ========================================================= */
+
+    const mobileLinks =
+      document.querySelectorAll(
+        ".mobile-menu a"
+      );
+
+    mobileLinks.forEach((link) => {
+
+      link.addEventListener("click", () => {
+
+        if (mobileMenu) {
+          mobileMenu.classList.remove("open");
+        }
+
+        if (mobileToggle) {
+          mobileToggle.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          mobileToggle.setAttribute(
+            "aria-label",
+            "Open menu"
+          );
+        }
+
+      });
+
+    });
+  </script>
+
+</body>
+</html>
