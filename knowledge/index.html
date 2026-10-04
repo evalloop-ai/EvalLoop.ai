@@ -1,14 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
 
-  <title>Knowledge — EvalLoop AI</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Learn — EvalLoop AI</title>
 
   <meta
     name="description"
-    content="Learn AI evaluation, LLM evaluation, RAG, AI safety, benchmarks, and practical evaluation methodologies with EvalLoop AI."
+    content="Learn practical AI evaluation skills through short, focused lessons on LLM evaluation, RAG, AI safety, agents, multimodal evaluation, and more."
+  >
+
+  <meta
+    name="theme-color"
+    content="#101211"
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,55 +29,71 @@
   >
 
   <style>
-
     :root {
       --bg: #101211;
       --panel: #171b18;
       --panel2: #1d221f;
-
       --ink: #f1f1ef;
       --muted: #a4aaa6;
       --dim: #727974;
-
       --line: rgba(241, 241, 239, 0.14);
       --line-soft: rgba(241, 241, 239, 0.08);
-
       --green: #3ecf8e;
       --green2: #85e7ba;
       --darkgreen: #13261c;
 
-      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --sans: "Inter", system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+
       --mono: "DM Mono", monospace;
+      --max: 1200px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
-      min-height: 100%;
-      background: var(--bg);
+      scroll-behavior: smooth;
     }
 
     body {
-      min-height: 100vh;
-
+      margin: 0;
       background:
         radial-gradient(
-          circle at 50% -15%,
-          rgba(62, 207, 142, 0.075),
-          transparent 35%
+          circle at 75% 12%,
+          rgba(62, 207, 142, 0.08),
+          transparent 28%
         ),
         var(--bg);
-
       color: var(--ink);
       font-family: var(--sans);
-      font-weight: 400;
-      line-height: 1.6;
+      font-weight: 300;
+      line-height: 1.65;
+    }
 
-      overflow-x: hidden;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(
+          rgba(241, 241, 239, 0.035) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241, 241, 239, 0.035) 1px,
+          transparent 1px
+        );
+      background-size: 48px 48px;
+      mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 80%
+      );
     }
 
     a {
@@ -76,478 +101,1406 @@
       text-decoration: none;
     }
 
-    /* BACKGROUND GRID */
-
-    .background-grid {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-
-      background-image:
-        linear-gradient(
-          rgba(241, 241, 239, 0.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(241, 241, 239, 0.025) 1px,
-          transparent 1px
-        );
-
-      background-size: 48px 48px;
-
-      mask-image: linear-gradient(
-        to bottom,
-        black 0%,
-        rgba(0, 0, 0, 0.55) 55%,
-        transparent 100%
-      );
+    button,
+    input {
+      font: inherit;
     }
 
-    .background-glow {
-      position: fixed;
-
-      width: 700px;
-      height: 700px;
-
-      left: 50%;
-      top: -500px;
-
-      transform: translateX(-50%);
-
-      z-index: -1;
-      pointer-events: none;
-
-      background: radial-gradient(
-        circle,
-        rgba(62, 207, 142, 0.085),
-        transparent 68%
+    .container {
+      width: min(
+        calc(100% - 48px),
+        var(--max)
       );
-
-      filter: blur(10px);
+      margin: 0 auto;
     }
 
     /* HEADER */
 
-    .site-header {
+    header {
       position: sticky;
       top: 0;
-      z-index: 90;
-
+      z-index: 100;
       border-bottom: 1px solid var(--line-soft);
-
-      background: rgba(16, 18, 17, 0.78);
-      backdrop-filter: blur(16px);
+      background: rgba(16, 18, 17, 0.88);
+      backdrop-filter: blur(18px);
     }
 
-    .nav-inner {
-      width: min(calc(100% - 48px), 1200px);
-      min-height: 76px;
-
-      margin: 0 auto;
-
+    .nav {
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      gap: 30px;
+      gap: 28px;
     }
 
     .brand {
-      display: inline-flex;
-      align-items: baseline;
-
       font-family: var(--mono);
       font-size: 16px;
       letter-spacing: -0.04em;
-
       white-space: nowrap;
     }
 
-    .brand-cursor {
+    .brand span {
       color: var(--green);
-    }
-    .brand-cursor {
-  color: var(--green);
-  animation: cursorBlink 1s steps(1, end) infinite;
-}
-
-@keyframes cursorBlink {
-  0%,
-  45% {
-    opacity: 1;
-  }
-
-  46%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brand-cursor {
-    animation: none;
-    opacity: 1;
-  }
-}
-    
-    .back {
-      color: var(--muted);
-
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.05em;
-
-      transition: color 0.25s ease;
+      animation: blink 1.1s steps(2, start) infinite;
     }
 
-    .back:hover {
-      color: var(--green2);
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
     }
 
-    /* MAIN */
-
-    main {
-      width: min(calc(100% - 48px), 1200px);
-
-      min-height: calc(100vh - 153px);
-
-      margin: 0 auto;
-
+    .nav-links {
       display: flex;
       align-items: center;
-
-      padding: 100px 0;
+      gap: 25px;
     }
 
-    .content {
-      width: 100%;
-      max-width: 850px;
-    }
-
-    .kicker {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-
-      color: var(--green2);
-
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.10em;
-    }
-
-    .kicker-line {
-      width: 26px;
-      height: 1px;
-
-      background: var(--green);
-    }
-
-    h1 {
-      margin-top: 24px;
-
-      font-size: clamp(58px, 9vw, 105px);
-      line-height: 0.9;
-
-      font-weight: 300;
-      letter-spacing: -0.05em;
-    }
-
-    h1 span {
-      color: var(--green);
-    }
-
-    .description {
-      max-width: 650px;
-
-      margin-top: 30px;
-
+    .nav-link,
+    .dropdown-trigger {
       color: var(--muted);
-
-      font-size: 16px;
-      font-weight: 300;
-      line-height: 1.8;
-    }
-
-    /* STATUS PANEL */
-
-    .status-panel {
-      margin-top: 50px;
-
-      max-width: 850px;
-
-      border: 1px solid var(--line);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(19, 38, 28, 0.55),
-          var(--panel)
-        );
-    }
-
-    .status-header {
-      min-height: 45px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 18px;
-
-      border-bottom: 1px solid var(--line-soft);
-
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: 0.07em;
-    }
-
-    .status-title {
-      color: var(--muted);
-    }
-
-    .status-live {
-      color: var(--green);
-    }
-
-    .status-body {
-      padding: 28px;
-    }
-
-    .status-body p {
-      color: var(--muted);
-
       font-size: 13px;
-      line-height: 1.75;
+      cursor: pointer;
+      transition: color 0.2s ease;
     }
 
-    .topics {
+    .nav-link:hover,
+    .dropdown-trigger:hover {
+      color: var(--ink);
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 0;
+      background: transparent;
+      padding: 10px 0;
+    }
+
+    .chevron {
+      font-size: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown:hover .chevron,
+    .dropdown.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      width: 265px;
+      transform: translateX(-50%);
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: rgba(23, 27, 24, 0.98);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: 0.2s ease;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown.open .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 12px;
+      border-radius: 4px;
+    }
+
+    .dropdown-item:hover {
+      background: var(--panel2);
+    }
+
+    .dropdown-item strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .dropdown-item small {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .login {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .signup {
+      padding: 9px 14px;
+      border: 1px solid var(--green);
+      border-radius: 4px;
+      color: var(--green);
+      font-size: 13px;
+      transition: 0.2s ease;
+    }
+
+    .signup:hover {
+      background: var(--green);
+      color: #0d1711;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 105px 0 80px;
+    }
+
+    .eyebrow {
+      margin-bottom: 20px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      max-width: 800px;
+      margin: 0;
+      font-size: clamp(46px, 7vw, 82px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      font-weight: 300;
+    }
+
+    .hero h1 em {
+      color: var(--green2);
+      font-style: normal;
+    }
+
+    .hero-copy {
+      max-width: 640px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
       display: flex;
       flex-wrap: wrap;
-
-      gap: 8px;
-
-      margin-top: 22px;
+      gap: 10px;
+      margin-top: 32px;
     }
 
-    .topic {
-      padding: 8px 11px;
-
+    .meta {
+      padding: 7px 10px;
       border: 1px solid var(--line);
-
-      background: var(--panel2);
-
+      border-radius: 3px;
       color: var(--dim);
-
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
       letter-spacing: 0.04em;
     }
 
-    .topic:first-child {
+    .meta.active {
       border-color: rgba(62, 207, 142, 0.35);
-      color: var(--green2);
-      background: rgba(62, 207, 142, 0.045);
+      color: var(--green);
+      background: rgba(62, 207, 142, 0.05);
+    }
+
+    /* FEATURED */
+
+    .featured {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(62, 207, 142, 0.07),
+          transparent 60%
+        ),
+        var(--panel);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 35px;
+      align-items: end;
+    }
+
+    .featured-label {
+      margin-bottom: 18px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .featured h2 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 300;
+    }
+
+    .featured p {
+      max-width: 650px;
+      margin: 18px 0 0;
+      color: var(--muted);
+    }
+
+    .featured-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .read-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 25px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    /* CONTENT */
+
+    .section {
+      padding: 95px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 300;
+      letter-spacing: -0.035em;
+    }
+
+    .section-description {
+      max-width: 500px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* SEARCH */
+
+    .library-tools {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .search {
+      flex: 1;
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      outline: none;
+      background: var(--panel);
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .search:focus {
+      border-color: rgba(62, 207, 142, 0.5);
+    }
+
+    .search::placeholder {
+      color: var(--dim);
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .category-btn {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      transition: 0.2s ease;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+      border-color: rgba(62, 207, 142, 0.4);
+      background: rgba(62, 207, 142, 0.06);
+      color: var(--green);
+    }
+
+    /* GRID */
+
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .lesson-card {
+      min-height: 285px;
+      padding: 24px;
+      border: 1px solid var(--line-soft);
+      border-radius: 4px;
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line);
+      background: var(--panel2);
+    }
+
+    .lesson-category {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+    }
+
+    .lesson-card h3 {
+      margin: 18px 0 10px;
+      font-size: 21px;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      font-weight: 400;
+    }
+
+    .lesson-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .lesson-bottom {
+      margin-top: auto;
+      padding-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .lesson-time {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .lesson-arrow {
+      color: var(--green);
+      font-size: 14px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 45px;
+      border: 1px solid var(--line-soft);
+      text-align: center;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    /* TOPICS */
+
+    .topics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .topic {
+      min-height: 155px;
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(23, 27, 24, 0.45);
+    }
+
+    .topic-number {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .topic h3 {
+      margin: 25px 0 6px;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .topic p {
+      margin: 0;
+      color: var(--dim);
+      font-size: 11px;
+    }
+
+    /* CTA */
+
+    .cta {
+      padding: 70px 0 100px;
+    }
+
+    .cta-inner {
+      padding: 45px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(
+          circle at 90% 20%,
+          rgba(62, 207, 142, 0.1),
+          transparent 35%
+        ),
+        var(--panel);
+    }
+
+    .cta-inner h2 {
+      max-width: 650px;
+      margin: 0;
+      font-size: 38px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 300;
+    }
+
+    .cta-inner p {
+      max-width: 560px;
+      margin: 18px 0 28px;
+      color: var(--muted);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      padding: 11px 16px;
+      border: 1px solid var(--green);
+      border-radius: 3px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .cta-button:hover {
+      background: var(--green);
+      color: #0d1711;
     }
 
     /* FOOTER */
 
     footer {
-      border-top: 1px solid var(--line-soft);
-
-      padding: 22px 0;
-
-      color: var(--dim);
-
-      font-family: var(--mono);
-      font-size: 7px;
-      letter-spacing: 0.05em;
+      border-top: 1px solid var(--line);
+      padding: 55px 0 28px;
     }
 
-    .footer-inner {
-      width: min(calc(100% - 48px), 1200px);
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr);
+      gap: 30px;
+    }
 
-      margin: 0 auto;
+    .footer-brand {
+      font-family: var(--mono);
+      font-size: 15px;
+    }
 
+    .footer-brand span {
+      color: var(--green);
+    }
+
+    .footer-description {
+      max-width: 220px;
+      margin-top: 12px;
+      color: var(--dim);
+      font-size: 11px;
+    }
+
+    .footer-title {
+      margin-bottom: 14px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer-links a:hover {
+      color: var(--green);
+    }
+
+    .footer-bottom {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line-soft);
       display: flex;
       justify-content: space-between;
-
-      gap: 20px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
     }
 
-    /* RESPONSIVE */
+    /* MOBILE */
 
-    @media (max-width: 600px) {
-
-      .nav-inner,
-      main,
-      .footer-inner {
-        width: min(calc(100% - 32px), 1200px);
+    @media (max-width: 900px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
       }
 
-      .nav-inner {
-        min-height: 66px;
+      .mobile-menu {
+        display: block;
       }
 
-      main {
-        min-height: calc(100vh - 135px);
+      .mobile-panel {
+        display: none;
+        padding: 15px 0 22px;
+        border-top: 1px solid var(--line-soft);
+      }
 
+      .mobile-panel.open {
+        display: block;
+      }
+
+      .mobile-panel a,
+      .mobile-panel button {
+        display: block;
+        width: 100%;
+        padding: 11px 0;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        text-align: left;
+        font-size: 13px;
+      }
+
+      .mobile-panel .mobile-group {
+        padding: 8px 0;
+      }
+
+      .mobile-panel .mobile-sub {
+        padding-left: 18px;
+        color: var(--dim);
+        font-size: 11px;
+      }
+
+      .lessons-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .topics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(
+          calc(100% - 32px),
+          var(--max)
+        );
+      }
+
+      .hero {
+        padding: 75px 0 55px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .featured {
+        grid-template-columns: 1fr;
+        padding: 23px;
+      }
+
+      .featured-info {
+        white-space: normal;
+      }
+
+      .section {
         padding: 70px 0;
       }
 
-      h1 {
-        font-size: clamp(52px, 16vw, 78px);
+      .section-header {
+        display: block;
       }
 
-      .description {
-        font-size: 14px;
+      .section-description {
+        margin-top: 12px;
       }
 
-      .status-body {
-        padding: 22px 18px;
+      .library-tools {
+        display: block;
       }
 
-      .footer-inner {
-        flex-direction: column;
-        gap: 10px;
+      .search {
+        width: 100%;
+        margin-bottom: 10px;
       }
 
+      .lessons-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topics {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-inner {
+        padding: 28px;
+      }
+
+      .cta-inner h2 {
+        font-size: 30px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-bottom {
+        display: block;
+      }
+
+      .footer-bottom div + div {
+        margin-top: 8px;
+      }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before {
-        transition-duration: 0.001ms !important;
-      }
-
-    }
-
   </style>
 </head>
 
 <body>
 
-  <div class="background-grid"></div>
-  <div class="background-glow"></div>
+<header>
+  <div class="container">
+    <nav class="nav">
 
-  <header class="site-header">
-
-    <div class="nav-inner">
-
-      <a href="/" class="brand" aria-label="EvalLoop AI">EvalLoop AI<span class="brand-cursor">_</span>
+      <a href="/" class="brand">
+        EvalLoop AI<span>_</span>
       </a>
 
-      <a href="/" class="back">
-        ← BACK TO EVALLOOP AI
-      </a>
+      <div class="nav-links">
+
+        <div class="dropdown">
+          <button class="dropdown-trigger">
+            Products
+            <span class="chevron">⌄</span>
+          </button>
+
+          <div class="dropdown-menu">
+            <a href="/labs/" class="dropdown-item">
+              <strong>Evaluation Engines/Models</strong>
+              <small>Test and compare AI quality</small>
+            </a>
+
+            <a href="/jobs/" class="dropdown-item">
+              <strong>EvalLoop Jobs</strong>
+              <small>Independent jobs directory & discovery platform</small>
+            </a>
+
+            <a href="/hub/" class="dropdown-item">
+              <strong>EvalAI Hub</strong>
+              <small>Explore the evaluation ecosystem</small>
+            </a>
+          </div>
+        </div>
+
+        <a href="/app/" class="nav-link">Workspace</a>
+
+        <div class="dropdown">
+          <button class="dropdown-trigger">
+            Resources
+            <span class="chevron">⌄</span>
+          </button>
+
+          <div class="dropdown-menu">
+            <a href="/docs/" class="dropdown-item">
+              <strong>Docs</strong>
+              <small>Build with EvalLoop AI</small>
+            </a>
+
+            <a href="/knowledge/" class="dropdown-item">
+              <strong>Learn</strong>
+              <small>Guides and evaluation basics</small>
+            </a>
+
+            <a href="/blog/" class="dropdown-item">
+              <strong>Blog</strong>
+              <small>Ideas, updates, and research</small>
+            </a>
+
+            <a href="/api-space/" class="dropdown-item">
+              <strong>API</strong>
+              <small>Connect your AI workflows</small>
+            </a>
+          </div>
+        </div>
+
+        <a href="/pricing/" class="nav-link">Pricing</a>
+
+      </div>
+
+      <div class="nav-actions">
+        <a href="/login/" class="login">Login</a>
+        <a href="/signup/" class="signup">Sign up</a>
+      </div>
+
+      <button
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+    </nav>
+
+    <div class="mobile-panel" id="mobilePanel">
+
+      <div class="mobile-group">
+        <strong>Products</strong>
+
+        <a class="mobile-sub" href="/labs/">
+          Evaluation Engines/Models
+        </a>
+
+        <a class="mobile-sub" href="/jobs/">
+          EvalLoop Jobs
+        </a>
+
+        <a class="mobile-sub" href="/hub/">
+          EvalAI Hub
+        </a>
+      </div>
+
+      <a href="/app/">Workspace</a>
+
+      <div class="mobile-group">
+        <strong>Resources</strong>
+
+        <a class="mobile-sub" href="/docs/">Docs</a>
+        <a class="mobile-sub" href="/knowledge/">Learn</a>
+        <a class="mobile-sub" href="/blog/">Blog</a>
+        <a class="mobile-sub" href="/api-space/">API</a>
+      </div>
+
+      <a href="/pricing/">Pricing</a>
+      <a href="/login/">Login</a>
+      <a href="/signup/">Sign up</a>
 
     </div>
+  </div>
+</header>
 
-  </header>
+<main>
 
-  <main>
+  <section class="hero">
+    <div class="container">
 
-    <section class="content">
-
-      <div class="kicker">
-        <span class="kicker-line"></span>
-        KNOWLEDGE
+      <div class="eyebrow">
+        EVALLOOP LEARN · NEW LESSONS REGULARLY
       </div>
 
       <h1>
-        Learn.<br>
-        <span>Evaluate.</span>
+        Learn how to<br>
+        <em>evaluate AI.</em>
       </h1>
 
-      <p class="description">
-        A practical knowledge hub for understanding AI evaluation,
-        LLM quality, RAG evaluation, safety, benchmarks, agents,
-        multimodal systems, and the methods used to measure AI quality.
+      <p class="hero-copy">
+        Practical lessons for understanding, testing, and improving
+        AI systems — from LLM evaluation and RAG to safety,
+        agents, multimodal systems, and real evaluation workflows.
       </p>
 
-      <div class="status-panel">
+      <div class="hero-meta">
+        <span class="meta active">PRACTICAL</span>
+        <span class="meta">SHORT LESSONS</span>
+        <span class="meta">AI EVALUATION</span>
+        <span class="meta">UPDATED REGULARLY</span>
+      </div>
 
-        <div class="status-header">
+    </div>
+  </section>
 
-          <span class="status-title">
-            KNOWLEDGE SYSTEM
-          </span>
+  <section class="container">
 
-          <span class="status-live">
-            ● BUILDING
-          </span>
+    <div class="featured" id="featuredLesson">
 
+      <div>
+        <div class="featured-label">
+          TODAY'S EVALUATION SKILL
         </div>
 
-        <div class="status-body">
+        <h2 id="featuredTitle">
+          Loading today's skill...
+        </h2>
 
-          <p>
-            Structured learning content will be added here progressively,
-            from evaluation fundamentals to advanced AI quality methodologies.
-          </p>
+        <p id="featuredExcerpt"></p>
 
-          <div class="topics">
+        <a
+          href="#"
+          class="read-link"
+          id="featuredLink"
+        >
+          READ LESSON →
+        </a>
+      </div>
 
-            <span class="topic">
-              AI EVALUATION
+      <div class="featured-info">
+        <span id="featuredCategory"></span>
+        <span id="featuredTime"></span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <div>
+          <div class="eyebrow">LEARNING LIBRARY</div>
+
+          <h2 class="section-title">
+            Latest evaluation skills
+          </h2>
+        </div>
+
+        <p class="section-description">
+          Short, focused lessons designed to help you understand
+          the concepts behind reliable AI evaluation.
+        </p>
+
+      </div>
+
+      <div class="library-tools">
+
+        <input
+          id="searchInput"
+          class="search"
+          type="search"
+          placeholder="Search lessons..."
+          aria-label="Search lessons"
+        >
+
+      </div>
+
+      <div
+        class="categories"
+        id="categories"
+      ></div>
+
+      <div
+        class="lessons-grid"
+        id="lessonsGrid"
+        style="margin-top: 24px;"
+      ></div>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <div>
+          <div class="eyebrow">EXPLORE</div>
+
+          <h2 class="section-title">
+            What can you learn?
+          </h2>
+        </div>
+
+        <p class="section-description">
+          Build your evaluation knowledge one concept at a time.
+        </p>
+
+      </div>
+
+      <div class="topics">
+
+        <div class="topic">
+          <span class="topic-number">01</span>
+          <h3>LLM Evaluation</h3>
+          <p>Understand response quality and model behavior.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">02</span>
+          <h3>Prompt Evaluation</h3>
+          <p>Test whether prompts produce reliable results.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">03</span>
+          <h3>RAG Evaluation</h3>
+          <p>Measure retrieval, grounding, relevance and completeness.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">04</span>
+          <h3>AI Safety</h3>
+          <p>Understand unsafe behavior and adversarial testing.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">05</span>
+          <h3>Agent Evaluation</h3>
+          <p>Evaluate tools, actions, instructions and agent behavior.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">06</span>
+          <h3>Multimodal Evaluation</h3>
+          <p>Evaluate systems working with text, images, audio and video.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">07</span>
+          <h3>Evaluation Methods</h3>
+          <p>Learn rubrics, pairwise comparison, scoring and evidence.</p>
+        </div>
+
+        <div class="topic">
+          <span class="topic-number">08</span>
+          <h3>Practical Workflows</h3>
+          <p>Turn evaluation concepts into repeatable workflows.</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="cta">
+
+    <div class="container">
+
+      <div class="cta-inner">
+
+        <div class="eyebrow">
+          LEARN → EVALUATE
+        </div>
+
+        <h2>
+          Understanding AI quality starts with knowing what to measure.
+        </h2>
+
+        <p>
+          Explore the lessons, then put the concepts into practice
+          inside EvalLoop AI Workspace.
+        </p>
+
+        <a href="/app/" class="cta-button">
+          OPEN WORKSPACE →
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+        <div class="footer-brand">
+          EvalLoop AI<span>_</span>
+        </div>
+
+        <div class="footer-description">
+          AI evaluation & LLM quality platform.
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">PRODUCT</div>
+
+        <div class="footer-links">
+          <a href="/#product">Overview</a>
+          <a href="/app/">Workspace</a>
+          <a href="/hub/">EvalAI Hub</a>
+          <a href="/pricing/">Pricing</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">RESOURCES</div>
+
+        <div class="footer-links">
+          <a href="/knowledge/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/docs/">Documentation</a>
+          <a href="/api-space/">API</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">COMPANY</div>
+
+        <div class="footer-links">
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">LEGAL</div>
+
+        <div class="footer-links">
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/terms/">Terms of Service</a>
+          <a href="/ai-usage/">AI Usage Disclaimer</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 EvalLoop AI</div>
+      <div>BUILT FOR BETTER AI</div>
+      <div>HYDERABAD · INDIA</div>
+    </div>
+
+  </div>
+
+</footer>
+
+<script>
+
+  const lessonsGrid =
+    document.getElementById("lessonsGrid");
+
+  const categories =
+    document.getElementById("categories");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  const featuredTitle =
+    document.getElementById("featuredTitle");
+
+  const featuredExcerpt =
+    document.getElementById("featuredExcerpt");
+
+  const featuredLink =
+    document.getElementById("featuredLink");
+
+  const featuredCategory =
+    document.getElementById("featuredCategory");
+
+  const featuredTime =
+    document.getElementById("featuredTime");
+
+  let lessons = [];
+  let activeCategory = "ALL";
+
+  async function loadLessons() {
+
+    try {
+
+      const response =
+        await fetch("/knowledge/lessons.json");
+
+      if (!response.ok) {
+        throw new Error("Unable to load lessons");
+      }
+
+      lessons = await response.json();
+
+      lessons = lessons.filter(
+        lesson => lesson.published !== false
+      );
+
+      renderFeatured();
+      renderCategories();
+      renderLessons();
+
+    } catch (error) {
+
+      lessonsGrid.innerHTML = `
+        <div class="empty">
+          LESSON LIBRARY TEMPORARILY UNAVAILABLE
+        </div>
+      `;
+
+    }
+
+  }
+
+  function renderFeatured() {
+
+    const featured =
+      lessons.find(
+        lesson => lesson.featured === true
+      ) || lessons[0];
+
+    if (!featured) return;
+
+    featuredTitle.textContent =
+      featured.title;
+
+    featuredExcerpt.textContent =
+      featured.excerpt || "";
+
+    featuredCategory.textContent =
+      featured.category || "";
+
+    featuredTime.textContent =
+      featured.readTime || "";
+
+    featuredLink.href =
+      "/knowledge/lesson.html?slug=" +
+      encodeURIComponent(featured.slug);
+
+  }
+
+  function renderCategories() {
+
+    const unique =
+      [
+        "ALL",
+        ...new Set(
+          lessons.map(
+            lesson => lesson.category
+          ).filter(Boolean)
+        )
+      ];
+
+    categories.innerHTML =
+      unique.map(category => `
+        <button
+          class="category-btn ${
+            category === activeCategory
+              ? "active"
+              : ""
+          }"
+          data-category="${escapeHtml(category)}"
+        >
+          ${escapeHtml(category)}
+        </button>
+      `).join("");
+
+    categories
+      .querySelectorAll(".category-btn")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            activeCategory =
+              button.dataset.category;
+
+            renderCategories();
+            renderLessons();
+
+          }
+        );
+
+      });
+
+  }
+
+  function renderLessons() {
+
+    const query =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+    const filtered =
+      lessons.filter(lesson => {
+
+        const categoryMatch =
+          activeCategory === "ALL" ||
+          lesson.category === activeCategory;
+
+        const text =
+          [
+            lesson.title,
+            lesson.excerpt,
+            lesson.category,
+            ...(lesson.tags || [])
+          ]
+            .join(" ")
+            .toLowerCase();
+
+        const searchMatch =
+          !query ||
+          text.includes(query);
+
+        return categoryMatch && searchMatch;
+
+      });
+
+    if (!filtered.length) {
+
+      lessonsGrid.innerHTML = `
+        <div class="empty">
+          NO LESSONS MATCH YOUR SEARCH
+        </div>
+      `;
+
+      return;
+    }
+
+    lessonsGrid.innerHTML =
+      filtered.map(lesson => `
+
+        <a
+          class="lesson-card"
+          href="/knowledge/lesson.html?slug=${encodeURIComponent(lesson.slug)}"
+        >
+
+          <div>
+            <div class="lesson-category">
+              ${escapeHtml(lesson.category || "EVALUATION")}
+            </div>
+
+            <h3>
+              ${escapeHtml(lesson.title)}
+            </h3>
+
+            <p>
+              ${escapeHtml(lesson.excerpt || "")}
+            </p>
+          </div>
+
+          <div class="lesson-bottom">
+
+            <span class="lesson-time">
+              ${escapeHtml(lesson.readTime || "")}
             </span>
 
-            <span class="topic">
-              LLM QUALITY
-            </span>
-
-            <span class="topic">
-              RAG EVALUATION
-            </span>
-
-            <span class="topic">
-              AI SAFETY
-            </span>
-
-            <span class="topic">
-              BENCHMARKS
-            </span>
-
-            <span class="topic">
-              AGENT EVALUATION
-            </span>
-
-            <span class="topic">
-              MULTIMODAL
+            <span class="lesson-arrow">
+              →
             </span>
 
           </div>
 
-        </div>
+        </a>
 
-      </div>
+      `).join("");
 
-    </section>
+  }
 
-  </main>
+  function escapeHtml(value) {
 
-  <footer>
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
 
-    <div class="footer-inner">
+  }
 
-      <span>
-        © 2026 EvalLoop AI
-      </span>
+  searchInput.addEventListener(
+    "input",
+    renderLessons
+  );
 
-      <span>
-        BUILT FOR BETTER AI
-      </span>
+  const mobileMenu =
+    document.getElementById("mobileMenu");
 
-      <span>
-        HYDERABAD · INDIA
-      </span>
+  const mobilePanel =
+    document.getElementById("mobilePanel");
 
-    </div>
+  mobileMenu.addEventListener(
+    "click",
+    () => {
+      mobilePanel.classList.toggle("open");
+    }
+  );
 
-  </footer>
+  loadLessons();
+
+</script>
 
 </body>
 </html>
