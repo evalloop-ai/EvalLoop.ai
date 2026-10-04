@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="description"
+    id="metaDescription"
+    content="Practical AI evaluation lesson from EvalLoop AI."
+  />
+
+  <meta name="theme-color" content="#101211" />
+
+  <title id="pageTitle">Learn — EvalLoop AI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --line: rgba(241, 241, 239, 0.14);
+      --line-soft: rgba(241, 241, 239, 0.08);
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "DM Mono", monospace;
+      --max: 1200px;
+      --ease: cubic-bezier(.22, .61, .36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(62, 207, 142, 0.075),
+          transparent 35%
+        ),
+        var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background-image:
+        linear-gradient(
+          rgba(241,241,239,.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241,241,239,.025) 1px,
+          transparent 1px
+        );
+      background-size: 48px 48px;
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          rgba(0,0,0,.55) 55%,
+          transparent
+        );
+    }
+
+    .background-glow {
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      left: 50%;
+      top: -500px;
+      transform: translateX(-50%);
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          circle,
+          rgba(62,207,142,.085),
+          transparent 68%
+        );
+      filter: blur(10px);
+    }
+
+    .container {
+      width: min(calc(100% - 48px), var(--max));
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(16,18,17,.78);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: -.04em;
+      color: var(--ink);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-cursor {
+      color: var(--green);
+      animation: blink 1.2s infinite;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 27px;
+      margin-left: auto;
+    }
+
+    .desktop-nav > a,
+    .nav-dropdown-trigger,
+    .nav-login {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .desktop-nav > a:hover,
+    .nav-dropdown-trigger:hover,
+    .nav-login:hover {
+      color: var(--ink);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-chevron {
+      color: var(--dim);
+      font-size: 12px;
+      transition: transform .25s ease;
+    }
+
+    .nav-dropdown.open .nav-chevron {
+      transform: rotate(180deg);
+      color: var(--green2);
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      width: 270px;
+      transform: translateX(-50%) translateY(-5px);
+      padding: 7px;
+      border: 1px solid var(--line);
+      background: rgba(23,27,24,.98);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: .2s ease;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%);
+    }
+
+    .nav-dropdown-menu a {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 12px 13px;
+      color: var(--muted);
+    }
+
+    .nav-dropdown-menu a:hover {
+      background: rgba(62,207,142,.045);
+      color: var(--ink);
+    }
+
+    .nav-dropdown-menu span {
+      font-size: 12px;
+    }
+
+    .nav-dropdown-menu small {
+      color: var(--dim);
+      font-size: 9px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .button {
+      min-height: 44px;
+      padding: 0 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(62,207,142,.35);
+      border-radius: 3px;
+      background: rgba(62,207,142,.045);
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .button-primary {
+      background: var(--darkgreen);
+      border-color: rgba(62,207,142,.65);
+    }
+
+    .button-small {
+      min-height: 40px;
+      padding: 0 15px;
+      font-size: 9px;
+    }
+
+    .mobile-menu-button {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mobile-menu-button span {
+      width: 16px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+
+    /* LESSON */
+
+    .lesson-hero {
+      padding: 105px 0 75px;
+    }
+
+    .section-kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+    }
+
+    .kicker-line {
+      width: 26px;
+      height: 1px;
+      background: var(--green);
+    }
+
+    .lesson-hero h1 {
+      max-width: 900px;
+      margin-top: 25px;
+      font-size: clamp(48px, 6.5vw, 82px);
+      line-height: .95;
+      font-weight: 300;
+      letter-spacing: -.05em;
+    }
+
+    .lesson-excerpt {
+      max-width: 700px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .lesson-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 25px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .lesson-meta .accent {
+      color: var(--green2);
+    }
+
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
+      padding-bottom: 120px;
+    }
+
+    .lesson-sidebar {
+      position: sticky;
+      top: 105px;
+    }
+
+    .back-link {
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .lesson-sidebar-box {
+      margin-top: 25px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .sidebar-label {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .08em;
+    }
+
+    .sidebar-text {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .lesson-document {
+      max-width: 820px;
+      padding: 50px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .lesson-content h2 {
+      margin-top: 38px;
+      color: var(--ink);
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 300;
+      letter-spacing: -.04em;
+    }
+
+    .lesson-content h2:first-child {
+      margin-top: 0;
+    }
+
+    .lesson-content h3 {
+      margin-top: 28px;
+      color: var(--green2);
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .lesson-content p {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .lesson-content ul,
+    .lesson-content ol {
+      margin-top: 17px;
+      padding-left: 22px;
+    }
+
+    .lesson-content li {
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .lesson-content li::marker {
+      color: var(--green);
+    }
+
+    .lesson-content blockquote {
+      margin-top: 25px;
+      padding: 20px;
+      border-left: 2px solid var(--green);
+      background: var(--darkgreen);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .lesson-content code {
+      padding: 2px 5px;
+      background: var(--panel2);
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: .9em;
+    }
+
+    .lesson-content pre {
+      margin-top: 22px;
+      padding: 20px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      background: #0c0f0d;
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+
+    .site-footer {
+      border-top: 1px solid var(--line-soft);
+      padding: 65px 0 25px;
+      background: rgba(16,18,17,.75);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .footer-brand p {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 30px;
+    }
+
+    .footer-column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .footer-label {
+      margin-bottom: 5px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .08em;
+    }
+
+    .footer-column a {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer-column a:hover {
+      color: var(--green2);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 70px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line-soft);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .05em;
+    }
+
+    @media (max-width: 900px) {
+      .lesson-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .lesson-sidebar {
+        position: static;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .container {
+        width: min(calc(100% - 32px), var(--max));
+      }
+
+      .desktop-nav,
+      .nav-actions {
+        display: none;
+      }
+
+      .mobile-menu-button {
+        display: flex;
+      }
+
+      .mobile-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 76px;
+        z-index: 80;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 76px);
+        overflow-y: auto;
+        padding: 18px 16px 35px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(16,18,17,.98);
+        transform: translateY(-120%);
+        opacity: 0;
+        pointer-events: none;
+        transition: .35s var(--ease);
+      }
+
+      .mobile-nav.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .mobile-nav > a {
+        padding: 16px 5px;
+        border-bottom: 1px solid var(--line-soft);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .mobile-nav-dropdown {
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .mobile-nav-dropdown-trigger {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 5px;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        text-align: left;
+      }
+
+      .mobile-nav-dropdown-menu {
+        display: none;
+        padding: 0 0 8px 12px;
+      }
+
+      .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-menu {
+        display: block;
+      }
+
+      .mobile-nav-dropdown-menu a {
+        display: block;
+        padding: 11px 5px;
+        color: var(--dim);
+        font-size: 12px;
+      }
+
+      .mobile-nav-actions {
+        display: flex;
+        gap: 15px;
+        padding-top: 22px;
+      }
+
+      .lesson-hero {
+        padding-top: 70px;
+      }
+
+      .lesson-document {
+        padding: 30px 20px;
+      }
+
+      .footer-columns {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @keyframes blink {
+      0%,45% { opacity:1; }
+      46%,100% { opacity:.2; }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="background-grid"></div>
+<div class="background-glow"></div>
+
+<header class="site-header">
+
+  <div class="container nav-inner">
+
+    <a href="/" class="brand">
+      EvalLoop AI<span class="brand-cursor">_</span>
+    </a>
+
+    <nav class="desktop-nav">
+
+      <div class="nav-dropdown">
+
+        <button
+          class="nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Products
+          <span class="nav-chevron">⌄</span>
+        </button>
+
+        <div class="nav-dropdown-menu">
+
+          <a href="/labs/">
+            <span>Evaluation Engines/Models</span>
+            <small>Test and compare AI quality</small>
+          </a>
+
+          <a href="/jobs/">
+            <span>EvalLoop Jobs</span>
+            <small>Independent jobs directory &amp; discovery platform</small>
+          </a>
+
+          <a href="/hub/">
+            <span>EvalAI Hub</span>
+            <small>Explore the evaluation ecosystem</small>
+          </a>
+
+        </div>
+
+      </div>
+
+      <a href="/app/">Workspace</a>
+
+      <div class="nav-dropdown">
+
+        <button
+          class="nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Resources
+          <span class="nav-chevron">⌄</span>
+        </button>
+
+        <div class="nav-dropdown-menu">
+
+          <a href="/docs/">
+            <span>Docs</span>
+            <small>Build with EvalLoop AI</small>
+          </a>
+
+          <a href="/knowledge/">
+            <span>Learn</span>
+            <small>Guides and evaluation basics</small>
+          </a>
+
+          <a href="/blog/">
+            <span>Blog</span>
+            <small>Ideas, updates, and research</small>
+          </a>
+
+          <a href="/api-space/">
+            <span>API</span>
+            <small>Connect your AI workflows</small>
+          </a>
+
+        </div>
+
+      </div>
+
+      <a href="/pricing/">Pricing</a>
+
+    </nav>
+
+    <div class="nav-actions">
+
+      <a href="/login/" class="nav-login">
+        Login
+      </a>
+
+      <a
+        href="/signup/"
+        class="button button-primary button-small"
+      >
+        Sign up <span>↗</span>
+      </a>
+
+    </div>
+
+    <button
+      class="mobile-menu-button"
+      id="mobileMenuButton"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+    >
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  <div class="mobile-nav" id="mobileNav">
+
+    <div class="mobile-nav-dropdown">
+
+      <button
+        class="mobile-nav-dropdown-trigger"
+        type="button"
+      >
+        Products
+        <span class="nav-chevron">⌄</span>
+      </button>
+
+      <div class="mobile-nav-dropdown-menu">
+        <a href="/labs/">Evaluation Engines/Models</a>
+        <a href="/jobs/">EvalLoop Jobs</a>
+        <a href="/hub/">EvalAI Hub</a>
+      </div>
+
+    </div>
+
+    <a href="/app/">Workspace</a>
+
+    <div class="mobile-nav-dropdown">
+
+      <button
+        class="mobile-nav-dropdown-trigger"
+        type="button"
+      >
+        Resources
+        <span class="nav-chevron">⌄</span>
+      </button>
+
+      <div class="mobile-nav-dropdown-menu">
+        <a href="/docs/">Docs</a>
+        <a href="/knowledge/">Learn</a>
+        <a href="/blog/">Blog</a>
+        <a href="/api-space/">API</a>
+      </div>
+
+    </div>
+
+    <a href="/pricing/">Pricing</a>
+
+    <div class="mobile-nav-actions">
+      <a href="/login/">Login</a>
+      <a href="/signup/" class="button">
+        Sign up <span>↗</span>
+      </a>
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <section class="lesson-hero">
+
+    <div class="container">
+
+      <div class="section-kicker">
+        <span class="kicker-line"></span>
+        EVALLOOP LEARN
+      </div>
+
+      <h1 id="lessonTitle">
+        Loading lesson...
+      </h1>
+
+      <p
+        class="lesson-excerpt"
+        id="lessonExcerpt"
+      ></p>
+
+      <div class="lesson-meta">
+
+        <span
+          class="accent"
+          id="lessonCategory"
+        >
+          AI EVALUATION
+        </span>
+
+        <span>·</span>
+
+        <span id="lessonReadTime">
+          5 MIN READ
+        </span>
+
+        <span>·</span>
+
+        <span id="lessonDate"></span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section>
+
+    <div class="container">
+
+      <div class="lesson-layout">
+
+        <aside class="lesson-sidebar">
+
+          <a
+            href="/knowledge/"
+            class="back-link"
+          >
+            ← ALL LESSONS
+          </a>
+
+          <div class="lesson-sidebar-box">
+
+            <div class="sidebar-label">
+              EVALLOOP LEARN
+            </div>
+
+            <p class="sidebar-text">
+              Practical lessons for understanding,
+              testing, and improving AI systems.
+            </p>
+
+          </div>
+
+        </aside>
+
+
+        <article
+          class="lesson-document"
+        >
+
+          <div
+            class="lesson-content"
+            id="lessonContent"
+          >
+            <p>
+              Loading lesson...
+            </p>
+          </div>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+
+        <a href="/" class="brand">
+          <span>EvalLoop AI</span>
+          <span class="brand-cursor">_</span>
+        </a>
+
+        <p>
+          AI evaluation &amp; LLM quality platform.
+        </p>
+
+      </div>
+
+      <div class="footer-columns">
+
+        <div class="footer-column">
+
+          <div class="footer-label">
+            PRODUCT
+          </div>
+
+          <a href="/#product">Overview</a>
+          <a href="/app/">Workspace</a>
+          <a href="/hub/">EvalAI Hub</a>
+          <a href="/pricing/">Pricing</a>
+
+        </div>
+
+        <div class="footer-column">
+
+          <div class="footer-label">
+            RESOURCES
+          </div>
+
+          <a href="/knowledge/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/docs/">Documentation</a>
+          <a href="/api-space/">API</a>
+
+        </div>
+
+        <div class="footer-column">
+
+          <div class="footer-label">
+            COMPANY
+          </div>
+
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+
+        </div>
+
+        <div class="footer-column">
+
+          <div class="footer-label">
+            LEGAL
+          </div>
+
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/terms/">Terms of Service</a>
+          <a href="/ai-usage/">AI Usage Disclaimer</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 EvalLoop AI</span>
+      <span>BUILT FOR BETTER AI</span>
+      <span>HYDERABAD · INDIA</span>
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+  const desktopDropdowns =
+    document.querySelectorAll(
+      ".desktop-nav .nav-dropdown"
+    );
+
+  desktopDropdowns.forEach(dropdown => {
+
+    const trigger =
+      dropdown.querySelector(
+        ".nav-dropdown-trigger"
+      );
+
+    trigger.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        const open =
+          dropdown.classList.contains("open");
+
+        desktopDropdowns.forEach(item => {
+
+          item.classList.remove("open");
+
+          item.querySelector(
+            ".nav-dropdown-trigger"
+          ).setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        });
+
+        if (!open) {
+
+          dropdown.classList.add("open");
+
+          trigger.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+
+  document.addEventListener(
+    "click",
+    () => {
+
+      desktopDropdowns.forEach(dropdown => {
+
+        dropdown.classList.remove("open");
+
+      });
+
+    }
+  );
+
+
+  const mobileMenuButton =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+  const mobileNav =
+    document.getElementById(
+      "mobileNav"
+    );
+
+
+  mobileMenuButton.addEventListener(
+    "click",
+    () => {
+
+      const open =
+        mobileNav.classList.toggle("active");
+
+      mobileMenuButton.classList.toggle(
+        "active",
+        open
+      );
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        open
+      );
+
+      document.body.classList.toggle(
+        "menu-open",
+        open
+      );
+
+    }
+  );
+
+
+  document
+    .querySelectorAll(
+      ".mobile-nav-dropdown-trigger"
+    )
+    .forEach(trigger => {
+
+      trigger.addEventListener(
+        "click",
+        () => {
+
+          trigger
+            .parentElement
+            .classList
+            .toggle("open");
+
+        }
+      );
+
+    });
+
+
+  document
+    .querySelectorAll(".mobile-nav a")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          mobileNav.classList.remove("active");
+
+          mobileMenuButton.classList.remove(
+            "active"
+          );
+
+          document.body.classList.remove(
+            "menu-open"
+          );
+
+        }
+      );
+
+    });
+
+
+  function getSlug() {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    return params.get("slug");
+
+  }
+
+
+  async function loadLesson() {
+
+    const slug = getSlug();
+
+    if (!slug) {
+
+      showError(
+        "NO LESSON WAS SPECIFIED."
+      );
+
+      return;
+
+    }
+
+    try {
+
+      const response =
+        await fetch(
+          "/knowledge/lessons.json"
+        );
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      const lessons =
+        await response.json();
+
+      const lesson =
+        lessons.find(
+          item =>
+            item.slug === slug &&
+            item.published
+        );
+
+      if (!lesson) {
+
+        showError(
+          "LESSON NOT FOUND."
+        );
+
+        return;
+
+      }
+
+      document.title =
+        `${lesson.title} — EvalLoop AI`;
+
+      document
+        .getElementById("metaDescription")
+        .setAttribute(
+          "content",
+          lesson.excerpt || ""
+        );
+
+      document
+        .getElementById("lessonTitle")
+        .textContent =
+        lesson.title;
+
+      document
+        .getElementById("lessonExcerpt")
+        .textContent =
+        lesson.excerpt || "";
+
+      document
+        .getElementById("lessonCategory")
+        .textContent =
+        lesson.category || "AI EVALUATION";
+
+      document
+        .getElementById("lessonReadTime")
+        .textContent =
+        lesson.readTime || "";
+
+      document
+        .getElementById("lessonDate")
+        .textContent =
+        formatDate(lesson.date);
+
+      document
+        .getElementById("lessonContent")
+        .innerHTML =
+        lesson.content || "<p>Lesson content unavailable.</p>";
+
+    } catch (error) {
+
+      showError(
+        "LESSON LIBRARY TEMPORARILY UNAVAILABLE."
+      );
+
+    }
+
+  }
+
+
+  function showError(message) {
+
+    document
+      .getElementById("lessonTitle")
+      .textContent =
+      "Lesson unavailable.";
+
+    document
+      .getElementById("lessonContent")
+      .innerHTML =
+      `<p>${message}</p>`;
+
+  }
+
+
+  function formatDate(date) {
+
+    const parsed =
+      new Date(`${date}T00:00:00`);
+
+    if (
+      Number.isNaN(
+        parsed.getTime()
+      )
+    ) {
+      return date || "";
+    }
+
+    return parsed
+      .toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }
+      )
+      .toUpperCase();
+
+  }
+
+
+  loadLesson();
+
+</script>
+
+</body>
+</html>
