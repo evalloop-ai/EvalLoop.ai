@@ -1,0 +1,49 @@
+[
+  {
+    "slug": "what-is-ai-evaluation",
+    "title": "What Is AI Evaluation and Why Does It Matter?",
+    "excerpt": "AI systems can produce fluent answers that still fail on accuracy, relevance, instructions, safety, or completeness. AI evaluation turns those failures into measurable evidence.",
+    "date": "2026-10-04",
+    "category": "AI EVALUATION",
+    "readTime": "6 min read",
+    "tags": [
+      "AI Evaluation",
+      "LLM",
+      "AI Quality"
+    ],
+    "published": true,
+    "content": "<p>AI systems are becoming part of products, workflows, customer experiences, and internal tools. But producing an answer is not the same as producing a good answer.</p><p>An AI response can look convincing while containing a factual error. It can follow the topic but ignore an important instruction. It can answer the question while leaving out information the user actually needed.</p><p>This is where AI evaluation becomes important.</p><h2>Evaluation is more than a score</h2><p>A useful evaluation process does not simply assign a number to an AI response. It connects the score to a criterion, a test, evidence, and a clear verdict.</p><blockquote>Score → Criterion → Evidence → Verdict → Diagnosis</blockquote><p>The purpose is to understand not only whether an AI system failed, but also why it failed and which test exposed the problem.</p><h2>What should an AI system be evaluated on?</h2><p>The answer depends on the product and its intended behavior. A general response-quality evaluation may examine factuality, instruction following, relevance, completeness, safety, and fluency.</p><ul><li><strong>Factuality:</strong> Does the response make claims that are supported by available evidence?</li><li><strong>Instruction following:</strong> Did the system follow the user's requirements?</li><li><strong>Relevance:</strong> Does the answer address the actual question?</li><li><strong>Completeness:</strong> Does it cover the important parts of the request?</li><li><strong>Safety:</strong> Does the response avoid unsafe or prohibited behavior?</li><li><strong>Fluency:</strong> Is the response understandable and coherent?</li></ul><h2>Why evidence matters</h2><p>A score without evidence is difficult to investigate. If an evaluation says that a response scored poorly, the next question should be what caused that result.</p><p>Evidence may come from an expected answer, a company policy, retrieved context, reference documents, required facts, prohibited claims, or a custom evaluation rubric.</p><p>This makes evaluation useful as an engineering and quality process rather than simply a leaderboard.</p><h2>The goal of evaluation</h2><p>The goal is not to make every AI response look perfect. The goal is to understand system behavior clearly enough to make informed improvements.</p><p>Better evaluation creates a feedback loop between testing, evidence, diagnosis, and improvement.</p>"
+  },
+  {
+    "slug": "evaluating-rag-systems",
+    "title": "How to Evaluate a RAG System",
+    "excerpt": "Retrieval-augmented generation introduces another layer of failure. A useful RAG evaluation must examine both the retrieved context and the final answer.",
+    "date": "2026-10-02",
+    "category": "RAG",
+    "readTime": "7 min read",
+    "tags": [
+      "RAG",
+      "Retrieval",
+      "Grounding",
+      "LLM Evaluation"
+    ],
+    "published": true,
+    "content": "<p>Retrieval-augmented generation systems combine retrieval with generation. A user asks a question, the system retrieves relevant information, and an AI model uses that information to produce an answer.</p><p>This architecture can improve factual grounding, but it also introduces new ways for a system to fail.</p><h2>There are multiple failure points</h2><p>A RAG system may retrieve the wrong document. It may retrieve the right document but fail to use the relevant information. It may generate an answer that contains unsupported claims even when the retrieved context was correct.</p><p>For this reason, evaluating only the final answer is often insufficient.</p><h2>Evaluate the retrieval layer</h2><p>The first question is whether the retrieved context contains useful information for the user's question.</p><ul><li>Was the relevant document retrieved?</li><li>Was the relevant section retrieved?</li><li>Was important information omitted?</li><li>Was irrelevant information given excessive importance?</li></ul><p>These questions help identify retrieval-quality problems.</p><h2>Evaluate grounding</h2><p>Once the context is available, the generated answer should be compared against that context. Claims in the answer should be supported by the retrieved information when the evaluation requires grounding.</p><blockquote>Correct context does not automatically produce a correct answer.</blockquote><h2>Evaluate the final answer</h2><p>The final response can also be evaluated for answer relevance, completeness, clarity, citation quality, and adherence to expected behavior.</p><p>For example, a customer-support RAG system may need to include specific policy information while avoiding claims that are not present in the approved knowledge source.</p><h2>A practical RAG evaluation setup</h2><p>A useful evaluation can begin with four inputs: the user question, retrieved context, AI response, and expected behavior.</p><p>The expected behavior can describe required facts, prohibited claims, and important response rules.</p><p>This creates a traceable evaluation rather than relying on a generic quality score alone.</p>"
+  },
+  {
+    "slug": "why-ai-evaluation-needs-evidence",
+    "title": "Why AI Evaluation Needs Evidence",
+    "excerpt": "A score can tell you that something went wrong. Evidence helps explain what went wrong and gives teams something they can investigate.",
+    "date": "2026-09-28",
+    "category": "RESEARCH",
+    "readTime": "5 min read",
+    "tags": [
+      "Evidence",
+      "AI Quality",
+      "Evaluation",
+      "LLM"
+    ],
+    "published": true,
+    "content": "<p>AI evaluation becomes much more useful when every important verdict can be connected to evidence.</p><p>Consider an evaluation that says an answer failed factuality. The score itself does not tell an engineering team what needs to change. The team needs to know which claim was problematic and what reference was used to determine that.</p><h2>From score to explanation</h2><p>An evidence-first evaluation chain can connect the result to the underlying test.</p><blockquote>Score → Criterion → Claim → Evidence → Verdict → Affected Test</blockquote><p>This structure makes the evaluation easier to inspect and reproduce.</p><h2>What can count as evidence?</h2><p>Evidence depends on the evaluation. It may include an expected answer, approved reference material, retrieved context, company policy, required facts, prohibited claims, or another explicitly defined source of truth.</p><p>For general-quality testing, evidence can also include the exact prompt and response being evaluated.</p><h2>Why source of truth matters</h2><p>An evaluator cannot reliably determine company-specific truth without some form of reference. If a company requires a particular policy statement, the evaluation system needs access to that policy or another approved source of truth.</p><p>Without such a reference, some factuality judgments should be treated as estimates rather than absolute verification.</p><h2>Evaluation should help teams act</h2><p>The best evaluation result is not simply a number. It is a result that helps someone understand what happened and decide what to do next.</p><p>Evidence makes that possible by connecting evaluation outcomes to observable behavior.</p>"
+  }
+]
