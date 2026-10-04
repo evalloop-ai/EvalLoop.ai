@@ -2,49 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Blog — EvalLoop AI</title>
 
   <meta
     name="description"
-    content="Insights, research, guides, and ideas about AI evaluation, LLM quality, RAG, safety, multimodal AI, and AI testing from EvalLoop AI."
+    content="Insights, research, guides, and ideas about AI evaluation, LLM quality, RAG, AI safety, multimodal evaluation, and reliable AI."
   >
-
-  <link rel="stylesheet" href="/site.css">
 
   <style>
     :root {
       --bg: #101211;
       --panel: #171b18;
       --panel-2: #1d221f;
-      --border: rgba(241, 241, 239, 0.14);
+      --border: rgba(241, 241, 239, .14);
+      --border-strong: rgba(62, 207, 142, .42);
       --ink: #f1f1ef;
       --muted: #a4aaa6;
       --dim: #727974;
       --green: #3ecf8e;
       --green-soft: #85e7ba;
+      --max: 1200px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
       background:
         radial-gradient(
-          circle at 80% 10%,
-          rgba(62, 207, 142, 0.08),
+          circle at 78% 0%,
+          rgba(62, 207, 142, .07),
           transparent 30%
         ),
+        linear-gradient(
+          rgba(241,241,239,.018) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(241,241,239,.018) 1px,
+          transparent 1px
+        ),
         var(--bg);
+      background-size:
+        auto,
+        48px 48px,
+        48px 48px,
+        auto;
       color: var(--ink);
-      font-family: Inter, Arial, sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 300;
     }
 
     a {
@@ -52,166 +68,405 @@
       text-decoration: none;
     }
 
-    .blog-page {
-      width: min(1200px, calc(100% - 40px));
+    button {
+      font: inherit;
+    }
+
+    .site-shell {
+      width: min(var(--max), calc(100% - 48px));
       margin: 0 auto;
     }
 
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
     .site-header {
-      min-height: 82px;
+      height: 82px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      gap: 30px;
+      position: relative;
+      z-index: 100;
     }
 
-    .logo {
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      color: var(--ink);
       font-family: "DM Mono", monospace;
-      font-size: 18px;
-      letter-spacing: -0.03em;
+      font-size: 17px;
+      letter-spacing: -.04em;
       white-space: nowrap;
     }
 
-    .cursor {
+    .brand-cursor {
       color: var(--green);
+      animation: evalLoopBlink 1s steps(1, end) infinite;
     }
 
-    .main-nav {
+    @keyframes evalLoopBlink {
+      0%, 48% {
+        opacity: 1;
+      }
+
+      49%, 100% {
+        opacity: 0;
+      }
+    }
+
+    .desktop-nav {
       display: flex;
       align-items: center;
       gap: 25px;
-      font-size: 14px;
       color: var(--muted);
+      font-size: 13px;
     }
 
-    .main-nav a {
-      transition: color 0.2s ease;
+    .nav-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 42px;
+      transition: color .18s ease;
     }
 
-    .main-nav a:hover,
-    .main-nav a.active {
+    .nav-link:hover,
+    .nav-link.active {
       color: var(--ink);
     }
 
-    .nav-button {
+    .nav-arrow {
+      font-size: 11px;
+      color: var(--dim);
+      transition: transform .18s ease;
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown.open .nav-arrow {
+      transform: rotate(180deg);
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-5px);
+
+      width: 285px;
+
+      padding: 8px;
+
+      background: rgba(23, 27, 24, .98);
       border: 1px solid var(--border);
-      padding: 10px 15px;
+      border-radius: 5px;
+
+      box-shadow: 0 20px 50px rgba(0,0,0,.28);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        opacity .16s ease,
+        transform .16s ease,
+        visibility .16s ease;
+    }
+
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 13px 14px;
       border-radius: 4px;
+      transition: background .16s ease;
+    }
+
+    .dropdown-item:hover {
+      background: var(--panel-2);
+    }
+
+    .dropdown-title {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .dropdown-description {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .nav-signup {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 9px 14px;
+
+      border: 1px solid var(--border);
+      border-radius: 4px;
+
+      color: var(--ink);
+
+      transition:
+        border-color .18s ease,
+        color .18s ease;
+    }
+
+    .nav-signup:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    .mobile-menu-button {
+      display: none;
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid var(--border);
+      border-radius: 4px;
+
+      background: transparent;
+      color: var(--ink);
+
+      cursor: pointer;
+    }
+
+    .mobile-menu-button span,
+    .mobile-menu-button span::before,
+    .mobile-menu-button span::after {
+      display: block;
+      width: 16px;
+      height: 1px;
+      background: currentColor;
+      margin: auto;
+      transition: transform .18s ease;
+    }
+
+    .mobile-menu-button span {
+      position: relative;
+    }
+
+    .mobile-menu-button span::before,
+    .mobile-menu-button span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+
+    .mobile-menu-button span::before {
+      top: -5px;
+    }
+
+    .mobile-menu-button span::after {
+      top: 5px;
+    }
+
+    .mobile-nav {
+      display: none;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0 20px;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    .mobile-nav > a,
+    .mobile-nav .mobile-dropdown-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 14px 2px;
+
+      background: none;
+      border: 0;
+
+      color: var(--muted);
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .mobile-nav > a:hover,
+    .mobile-nav .mobile-dropdown-button:hover {
       color: var(--ink);
     }
+
+    .mobile-submenu {
+      display: none;
+      padding: 2px 0 8px 14px;
+    }
+
+    .mobile-submenu.open {
+      display: block;
+    }
+
+    .mobile-submenu a {
+      display: block;
+      padding: 10px 0;
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    .mobile-submenu a:hover {
+      color: var(--green);
+    }
+
+    /* =====================================================
+       BLOG HERO
+    ===================================================== */
 
     .hero {
-      padding: 100px 0 65px;
-      max-width: 850px;
+      padding: 105px 0 72px;
+      max-width: 880px;
     }
 
     .eyebrow {
+      color: var(--green);
       font-family: "DM Mono", monospace;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--green);
-      margin-bottom: 20px;
+      letter-spacing: .13em;
+      margin-bottom: 21px;
     }
 
-    h1 {
+    .hero h1 {
       margin: 0;
-      font-size: clamp(42px, 7vw, 78px);
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-      font-weight: 400;
-    }
-
-    h1 span {
-      color: var(--green);
-    }
-
-    .hero-description {
-      margin-top: 28px;
-      max-width: 690px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.7;
+      font-size: clamp(48px, 7vw, 82px);
+      line-height: .98;
+      letter-spacing: -.065em;
       font-weight: 300;
     }
 
-    .blog-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 17px 0;
-      margin-bottom: 35px;
+    .hero h1 span {
+      color: var(--green);
     }
 
-    .post-count {
-      font-family: "DM Mono", monospace;
+    .hero p {
+      max-width: 710px;
+      margin: 30px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    /* =====================================================
+       FILTER BAR
+    ===================================================== */
+
+    .toolbar {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+
+      margin-bottom: 25px;
+    }
+
+    .count {
       color: var(--dim);
-      font-size: 11px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
     .categories {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
     }
 
     .category-button {
-      background: transparent;
-      color: var(--muted);
+      padding: 7px 10px;
+
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 8px 12px;
+      border-radius: 3px;
+
+      background: transparent;
+
+      color: var(--dim);
+
+      font-size: 10px;
       cursor: pointer;
-      font: inherit;
-      font-size: 12px;
     }
 
     .category-button:hover,
     .category-button.active {
       color: var(--green);
-      border-color: rgba(62, 207, 142, 0.45);
+      border-color: var(--border-strong);
     }
 
-    .posts-grid {
+    /* =====================================================
+       POSTS
+    ===================================================== */
+
+    .posts {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      gap: 16px;
       padding-bottom: 100px;
     }
 
     .post-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 28px;
-      min-height: 310px;
+      min-height: 340px;
+
       display: flex;
       flex-direction: column;
+
+      padding: 28px;
+
+      background: rgba(23, 27, 24, .88);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+
       transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
+        transform .18s ease,
+        border-color .18s ease;
     }
 
     .post-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(62, 207, 142, 0.4);
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
     }
 
     .post-meta {
       display: flex;
       justify-content: space-between;
       gap: 15px;
+
       color: var(--dim);
+
       font-family: "DM Mono", monospace;
-      font-size: 10px;
+      font-size: 9px;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
     .post-category {
@@ -219,87 +474,193 @@
     }
 
     .post-title {
-      margin: 45px 0 15px;
-      font-size: 28px;
-      line-height: 1.15;
-      font-weight: 400;
-      letter-spacing: -0.035em;
+      margin: 50px 0 17px;
+
+      font-size: 27px;
+      line-height: 1.16;
+
+      letter-spacing: -.035em;
+      font-weight: 300;
     }
 
     .post-excerpt {
       margin: 0;
+
       color: var(--muted);
-      line-height: 1.7;
       font-size: 14px;
-      font-weight: 300;
+      line-height: 1.75;
     }
 
-    .post-footer {
+    .post-bottom {
       margin-top: auto;
       padding-top: 30px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
+    }
+
+    .read-time {
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      text-transform: uppercase;
     }
 
     .read-link {
       color: var(--green);
       font-family: "DM Mono", monospace;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
     }
 
-    .empty-state,
-    .error-state {
+    .empty {
       grid-column: 1 / -1;
-      padding: 60px;
+
+      padding: 70px 20px;
+
       border: 1px solid var(--border);
-      background: var(--panel);
+
       color: var(--muted);
       text-align: center;
     }
 
-    footer {
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .site-footer {
       border-top: 1px solid var(--border);
-      padding: 35px 0;
+      padding: 50px 0 36px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(3, 1fr);
+      gap: 45px;
+      padding-bottom: 45px;
+    }
+
+    .footer-brand {
+      color: var(--ink);
+      font-family: "DM Mono", monospace;
+      font-size: 15px;
+    }
+
+    .footer-brand span {
+      color: var(--green);
+      animation: evalLoopBlink 1s steps(1, end) infinite;
+    }
+
+    .footer-description {
+      max-width: 310px;
+      margin-top: 16px;
       color: var(--dim);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .footer-column-title {
+      margin-bottom: 15px;
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .footer-column a {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
       font-size: 12px;
     }
 
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      flex-wrap: wrap;
+    .footer-column a:hover {
+      color: var(--green);
     }
 
-    @media (max-width: 800px) {
-      .main-nav {
+    .footer-bottom {
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+      .desktop-nav {
         display: none;
       }
 
-      .posts-grid {
+      .mobile-menu-button {
+        display: flex;
+      }
+
+      .posts {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        padding-top: 70px;
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .site-shell {
+        width: min(var(--max), calc(100% - 28px));
       }
 
-      .blog-toolbar {
+      .hero {
+        padding: 75px 0 55px;
+      }
+
+      .hero h1 {
+        font-size: 49px;
+      }
+
+      .toolbar {
         align-items: flex-start;
+        flex-direction: column;
+        padding: 15px 0;
+      }
+
+      .post-card {
+        min-height: 315px;
+        padding: 23px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-bottom {
         flex-direction: column;
       }
     }
 
-    @media (max-width: 500px) {
-      .blog-page {
-        width: min(100% - 28px, 1200px);
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
       }
 
-      .post-card {
-        padding: 22px;
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
       }
     }
   </style>
@@ -307,38 +668,207 @@
 
 <body>
 
-  <div class="blog-page">
+  <div class="site-shell">
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
     <header class="site-header">
 
-      <a href="/" class="logo">
-        EvalLoop AI<span class="cursor">_</span>
+      <a href="/" class="brand" aria-label="EvalLoop AI home">
+        EvalLoop AI<span class="brand-cursor">_</span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="desktop-nav" aria-label="Main navigation">
 
-        <a href="/products.html">Products</a>
+        <div class="nav-dropdown">
 
-        <a href="/workspace.html">Workspace</a>
+          <button
+            type="button"
+            class="nav-link dropdown-trigger"
+            aria-expanded="false"
+          >
+            Products
+            <span class="nav-arrow">⌄</span>
+          </button>
 
-        <a href="/docs.html">Docs</a>
+          <div class="nav-dropdown-menu">
 
-        <a href="/benchmarks.html">Benchmarks</a>
+            <a href="/products/" class="dropdown-item">
+              <span class="dropdown-title">
+                Products Overview
+              </span>
+              <span class="dropdown-description">
+                Explore the EvalLoop AI platform.
+              </span>
+            </a>
 
-        <a href="/blog.html" class="active">Blog</a>
+            <a href="/engines/" class="dropdown-item">
+              <span class="dropdown-title">
+                Evaluation Engines
+              </span>
+              <span class="dropdown-description">
+                Evaluate quality, safety, RAG, and more.
+              </span>
+            </a>
 
-        <a href="/pricing.html">Pricing</a>
+            <a href="/api/" class="dropdown-item">
+              <span class="dropdown-title">
+                API Platform
+              </span>
+              <span class="dropdown-description">
+                Run AI evaluations programmatically.
+              </span>
+            </a>
 
-        <a href="/login.html">Login</a>
+          </div>
 
-        <a href="/signup.html" class="nav-button">
-          Sign Up
+        </div>
+
+        <a href="/workspace/" class="nav-link">
+          Workspace
+        </a>
+
+        <div class="nav-dropdown">
+
+          <button
+            type="button"
+            class="nav-link dropdown-trigger"
+            aria-expanded="false"
+          >
+            Resources
+            <span class="nav-arrow">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="/docs/" class="dropdown-item">
+              <span class="dropdown-title">
+                Docs
+              </span>
+              <span class="dropdown-description">
+                Build with EvalLoop AI.
+              </span>
+            </a>
+
+            <a href="/learn/" class="dropdown-item">
+              <span class="dropdown-title">
+                Learn
+              </span>
+              <span class="dropdown-description">
+                Guides and AI evaluation basics.
+              </span>
+            </a>
+
+            <a href="/blog/" class="dropdown-item">
+              <span class="dropdown-title">
+                Blog
+              </span>
+              <span class="dropdown-description">
+                Research, ideas, and product insights.
+              </span>
+            </a>
+
+            <a href="/api/" class="dropdown-item">
+              <span class="dropdown-title">
+                API
+              </span>
+              <span class="dropdown-description">
+                Programmatic AI evaluation.
+              </span>
+            </a>
+
+          </div>
+
+        </div>
+
+        <a href="/pricing/" class="nav-link">
+          Pricing
+        </a>
+
+        <a href="/login/" class="nav-link">
+          Login
+        </a>
+
+        <a href="/signup/" class="nav-signup">
+          Sign up
         </a>
 
       </nav>
 
+      <button
+        type="button"
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        <span></span>
+      </button>
+
     </header>
 
+
+    <!-- MOBILE NAV -->
+
+    <nav
+      class="mobile-nav"
+      id="mobileNav"
+      aria-label="Mobile navigation"
+    >
+
+      <button
+        type="button"
+        class="mobile-dropdown-button"
+        data-mobile-dropdown="products"
+      >
+        Products
+        <span>⌄</span>
+      </button>
+
+      <div
+        class="mobile-submenu"
+        id="mobile-products"
+      >
+        <a href="/products/">Products Overview</a>
+        <a href="/engines/">Evaluation Engines</a>
+        <a href="/api/">API Platform</a>
+      </div>
+
+      <a href="/workspace/">
+        Workspace
+      </a>
+
+      <button
+        type="button"
+        class="mobile-dropdown-button"
+        data-mobile-dropdown="resources"
+      >
+        Resources
+        <span>⌄</span>
+      </button>
+
+      <div
+        class="mobile-submenu"
+        id="mobile-resources"
+      >
+        <a href="/docs/">Docs</a>
+        <a href="/learn/">Learn</a>
+        <a href="/blog/">Blog</a>
+        <a href="/api/">API</a>
+      </div>
+
+      <a href="/pricing/">Pricing</a>
+      <a href="/login/">Login</a>
+      <a href="/signup/">Sign up</a>
+
+    </nav>
+
+
+    <!-- =================================================
+         BLOG
+    ================================================== -->
 
     <main>
 
@@ -349,42 +879,37 @@
         </div>
 
         <h1>
-          Thinking about <span>AI quality.</span>
+          Thinking about
+          <span>AI quality.</span>
         </h1>
 
-        <p class="hero-description">
-          Research, guides, practical ideas, and product thinking
-          around AI evaluation, LLM quality, RAG, safety,
-          multimodal systems, and reliable AI.
+        <p>
+          Research, practical guides, product thinking,
+          and ideas about AI evaluation, LLM quality,
+          RAG, safety, multimodal systems, and reliable AI.
         </p>
 
       </section>
 
 
-      <div class="blog-toolbar">
+      <section class="toolbar">
 
-        <div
-          class="post-count"
-          id="postCount"
-        >
-          Loading posts...
+        <div id="postCount" class="count">
+          Loading articles...
         </div>
 
-        <div
-          class="categories"
-          id="categories"
-        ></div>
+        <div id="categories" class="categories"></div>
 
-      </div>
+      </section>
 
 
       <section
-        class="posts-grid"
-        id="postsGrid"
+        id="posts"
+        class="posts"
         aria-live="polite"
       >
 
-        <div class="empty-state">
+        <div class="empty">
           Loading articles...
         </div>
 
@@ -393,17 +918,79 @@
     </main>
 
 
-    <footer>
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
-      <div class="footer-inner">
+    <footer class="site-footer">
+
+      <div class="footer-grid">
 
         <div>
+
+          <div class="footer-brand">
+            EvalLoop AI<span>_</span>
+          </div>
+
+          <div class="footer-description">
+            AI evaluation, quality, and testing for
+            teams building reliable AI systems.
+          </div>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <div class="footer-column-title">
+            Products
+          </div>
+
+          <a href="/products/">Products Overview</a>
+          <a href="/engines/">Evaluation Engines</a>
+          <a href="/api/">API Platform</a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <div class="footer-column-title">
+            Resources
+          </div>
+
+          <a href="/docs/">Documentation</a>
+          <a href="/learn/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/api/">API</a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <div class="footer-column-title">
+            Company
+          </div>
+
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+          <a href="/careers/">Careers</a>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <span>
           © 2026 EvalLoop AI
-        </div>
+        </span>
 
-        <div>
-          AI evaluation, quality, and testing.
-        </div>
+        <span>
+          Built for better AI evaluation.
+        </span>
 
       </div>
 
@@ -413,10 +1000,141 @@
 
 
   <script>
+    /* =====================================================
+       NAVIGATION
+    ===================================================== */
 
-    const postsGrid = document.getElementById("postsGrid");
-    const postCount = document.getElementById("postCount");
-    const categoriesContainer =
+    const dropdowns =
+      document.querySelectorAll(".nav-dropdown");
+
+    dropdowns.forEach(dropdown => {
+
+      const trigger =
+        dropdown.querySelector(".dropdown-trigger");
+
+      trigger.addEventListener("click", event => {
+
+        event.stopPropagation();
+
+        const wasOpen =
+          dropdown.classList.contains("open");
+
+        dropdowns.forEach(item => {
+
+          item.classList.remove("open");
+
+          const button =
+            item.querySelector(".dropdown-trigger");
+
+          if (button) {
+            button.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+          }
+
+        });
+
+        if (!wasOpen) {
+
+          dropdown.classList.add("open");
+
+          trigger.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+        }
+
+      });
+
+    });
+
+
+    document.addEventListener("click", () => {
+
+      dropdowns.forEach(dropdown => {
+
+        dropdown.classList.remove("open");
+
+        const trigger =
+          dropdown.querySelector(".dropdown-trigger");
+
+        if (trigger) {
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+        }
+
+      });
+
+    });
+
+
+    /* =====================================================
+       MOBILE NAVIGATION
+    ===================================================== */
+
+    const mobileButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+
+    const mobileNav =
+      document.getElementById("mobileNav");
+
+
+    mobileButton.addEventListener("click", () => {
+
+      const open =
+        mobileNav.classList.toggle("open");
+
+      mobileButton.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+    });
+
+
+    document
+      .querySelectorAll(
+        ".mobile-dropdown-button"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const name =
+              button.dataset.mobileDropdown;
+
+            const submenu =
+              document.getElementById(
+                `mobile-${name}`
+              );
+
+            submenu.classList.toggle("open");
+
+          }
+        );
+
+      });
+
+
+    /* =====================================================
+       BLOG
+    ===================================================== */
+
+    const postsElement =
+      document.getElementById("posts");
+
+    const countElement =
+      document.getElementById("postCount");
+
+    const categoriesElement =
       document.getElementById("categories");
 
     let posts = [];
@@ -428,41 +1146,44 @@
       try {
 
         const response =
-          await fetch("/blog-posts.json");
+          await fetch("./posts.json");
 
         if (!response.ok) {
-          throw new Error("Unable to load blog posts.");
+          throw new Error(
+            "Unable to load blog posts."
+          );
         }
 
         posts = await response.json();
 
         posts.sort(
           (a, b) =>
-            new Date(b.date) - new Date(a.date)
+            new Date(b.date) -
+            new Date(a.date)
         );
 
-        createCategories();
+        renderCategories();
         renderPosts();
 
       } catch (error) {
 
-        postsGrid.innerHTML = `
-          <div class="error-state">
-            Unable to load blog posts.
-          </div>
-        `;
+        console.error(error);
 
-        postCount.textContent =
+        countElement.textContent =
           "Blog unavailable";
 
-        console.error(error);
+        postsElement.innerHTML = `
+          <div class="empty">
+            Unable to load blog articles.
+          </div>
+        `;
 
       }
 
     }
 
 
-    function createCategories() {
+    function renderCategories() {
 
       const categories = [
         "All",
@@ -473,7 +1194,7 @@
         )
       ];
 
-      categoriesContainer.innerHTML = "";
+      categoriesElement.innerHTML = "";
 
       categories.forEach(category => {
 
@@ -484,9 +1205,11 @@
 
         button.className =
           "category-button" +
-          (category === activeCategory
-            ? " active"
-            : "");
+          (
+            category === activeCategory
+              ? " active"
+              : ""
+          );
 
         button.textContent = category;
 
@@ -496,13 +1219,13 @@
 
             activeCategory = category;
 
-            createCategories();
+            renderCategories();
             renderPosts();
 
           }
         );
 
-        categoriesContainer.appendChild(button);
+        categoriesElement.appendChild(button);
 
       });
 
@@ -511,26 +1234,28 @@
 
     function renderPosts() {
 
-      const filteredPosts =
+      const filtered =
         activeCategory === "All"
           ? posts
           : posts.filter(
               post =>
-                post.category === activeCategory
+                post.category ===
+                activeCategory
             );
 
-      postCount.textContent =
-        `${filteredPosts.length} article${
-          filteredPosts.length === 1
-            ? ""
-            : "s"
+
+      countElement.textContent =
+        `${filtered.length} ${
+          filtered.length === 1
+            ? "article"
+            : "articles"
         }`;
 
 
-      if (!filteredPosts.length) {
+      if (!filtered.length) {
 
-        postsGrid.innerHTML = `
-          <div class="empty-state">
+        postsElement.innerHTML = `
+          <div class="empty">
             No articles in this category yet.
           </div>
         `;
@@ -540,71 +1265,77 @@
       }
 
 
-      postsGrid.innerHTML =
-        filteredPosts
-          .map(post => {
+      postsElement.innerHTML =
+        filtered.map(post => {
 
-            const date =
-              new Date(post.date)
-                .toLocaleDateString(
-                  "en-US",
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                  }
-                );
+          const date =
+            new Date(post.date)
+              .toLocaleDateString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric"
+                }
+              );
 
-            return `
 
-              <article class="post-card">
+          return `
+            <article class="post-card">
 
-                <div class="post-meta">
+              <div class="post-meta">
 
-                  <span class="post-category">
-                    ${escapeHtml(post.category || "Insights")}
-                  </span>
+                <span class="post-category">
+                  ${escapeHTML(
+                    post.category || "Insights"
+                  )}
+                </span>
 
-                  <span>
-                    ${date}
-                  </span>
+                <span>
+                  ${date}
+                </span>
 
-                </div>
+              </div>
 
-                <h2 class="post-title">
-                  ${escapeHtml(post.title)}
-                </h2>
 
-                <p class="post-excerpt">
-                  ${escapeHtml(post.excerpt)}
-                </p>
+              <h2 class="post-title">
+                ${escapeHTML(post.title)}
+              </h2>
 
-                <div class="post-footer">
 
-                  <span>
-                    ${escapeHtml(post.readTime || "")}
-                  </span>
+              <p class="post-excerpt">
+                ${escapeHTML(post.excerpt)}
+              </p>
 
-                  <a
-                    class="read-link"
-                    href="/blog-post.html?slug=${encodeURIComponent(post.slug)}"
-                  >
-                    Read article →
-                  </a>
 
-                </div>
+              <div class="post-bottom">
 
-              </article>
+                <span class="read-time">
+                  ${escapeHTML(
+                    post.readTime || ""
+                  )}
+                </span>
 
-            `;
+                <a
+                  href="./post.html?slug=${encodeURIComponent(
+                    post.slug
+                  )}"
+                  class="read-link"
+                >
+                  Read article →
+                </a>
 
-          })
-          .join("");
+              </div>
+
+            </article>
+          `;
+
+        }).join("");
 
     }
 
 
-    function escapeHtml(value) {
+    function escapeHTML(value) {
 
       return String(value)
         .replaceAll("&", "&amp;")
@@ -617,7 +1348,6 @@
 
 
     loadPosts();
-
   </script>
 
 </body>
