@@ -12,8 +12,10 @@
 
   <meta
     name="description"
-    content="Insights, research, guides, and ideas about AI evaluation, LLM quality, RAG, safety, multimodal AI, and reliable AI."
+    content="Insights, research, guides, and ideas about AI evaluation, LLM quality, RAG, safety, multimodal AI, and AI testing from EvalLoop AI."
   >
+
+  <link rel="stylesheet" href="/site.css">
 
   <style>
     :root {
@@ -21,63 +23,28 @@
       --panel: #171b18;
       --panel-2: #1d221f;
       --border: rgba(241, 241, 239, 0.14);
-      --border-hover: rgba(62, 207, 142, 0.42);
-
       --ink: #f1f1ef;
       --muted: #a4aaa6;
       --dim: #727974;
-
       --green: #3ecf8e;
       --green-soft: #85e7ba;
-
-      --max-width: 1200px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
-      min-height: 100vh;
-
       background:
         radial-gradient(
-          circle at 75% 0%,
-          rgba(62, 207, 142, 0.075),
-          transparent 28%
-        ),
-        linear-gradient(
-          rgba(255,255,255,0.018) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,0.018) 1px,
-          transparent 1px
+          circle at 80% 10%,
+          rgba(62, 207, 142, 0.08),
+          transparent 30%
         ),
         var(--bg);
-
-      background-size:
-        auto,
-        48px 48px,
-        48px 48px,
-        auto;
-
       color: var(--ink);
-
-      font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      font-weight: 300;
+      font-family: Inter, Arial, sans-serif;
     }
 
     a {
@@ -85,444 +52,286 @@
       text-decoration: none;
     }
 
-    button {
-      font: inherit;
-    }
-
-    .page {
-      width: min(
-        var(--max-width),
-        calc(100% - 48px)
-      );
-
+    .blog-page {
+      width: min(1200px, calc(100% - 40px));
       margin: 0 auto;
     }
 
-    /* ---------------- HEADER ---------------- */
-
-    .header {
-      height: 82px;
-
+    .site-header {
+      min-height: 82px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       border-bottom: 1px solid var(--border);
+      gap: 30px;
     }
 
-    .brand {
+    .logo {
       font-family: "DM Mono", monospace;
-      font-size: 17px;
-      letter-spacing: -0.04em;
+      font-size: 18px;
+      letter-spacing: -0.03em;
       white-space: nowrap;
     }
 
-    .brand-cursor {
+    .cursor {
       color: var(--green);
-      animation: blink 1.1s steps(1) infinite;
     }
 
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    .nav {
+    .main-nav {
       display: flex;
       align-items: center;
-      gap: 27px;
-
+      gap: 25px;
+      font-size: 14px;
       color: var(--muted);
-      font-size: 13px;
     }
 
-    .nav a {
-      transition: color 160ms ease;
+    .main-nav a {
+      transition: color 0.2s ease;
     }
 
-    .nav a:hover,
-    .nav a.active {
+    .main-nav a:hover,
+    .main-nav a.active {
       color: var(--ink);
     }
 
-    .nav-signup {
+    .nav-button {
       border: 1px solid var(--border);
-      border-radius: 4px;
-
       padding: 10px 15px;
-
+      border-radius: 4px;
       color: var(--ink);
     }
-
-    .nav-signup:hover {
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    /* ---------------- HERO ---------------- */
 
     .hero {
-      padding: 105px 0 76px;
-
-      max-width: 900px;
+      padding: 100px 0 65px;
+      max-width: 850px;
     }
 
     .eyebrow {
-      margin-bottom: 22px;
-
-      color: var(--green);
-
       font-family: "DM Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.13em;
+      font-size: 11px;
       text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      margin-bottom: 20px;
     }
 
-    .hero h1 {
+    h1 {
       margin: 0;
-
-      font-size: clamp(
-        48px,
-        7vw,
-        82px
-      );
-
+      font-size: clamp(42px, 7vw, 78px);
       line-height: 0.98;
-
-      letter-spacing: -0.065em;
-
-      font-weight: 300;
+      letter-spacing: -0.055em;
+      font-weight: 400;
     }
 
-    .hero h1 span {
+    h1 span {
       color: var(--green);
     }
 
     .hero-description {
-      max-width: 700px;
-
-      margin: 30px 0 0;
-
+      margin-top: 28px;
+      max-width: 690px;
       color: var(--muted);
-
-      font-size: 17px;
-      line-height: 1.75;
-
+      font-size: 18px;
+      line-height: 1.7;
       font-weight: 300;
     }
 
-    /* ---------------- TOOLBAR ---------------- */
-
-    .toolbar {
-      min-height: 58px;
-
+    .blog-toolbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-
+      align-items: center;
       gap: 20px;
-
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-
-      margin-bottom: 28px;
+      padding: 17px 0;
+      margin-bottom: 35px;
     }
 
-    .count {
-      color: var(--dim);
-
+    .post-count {
       font-family: "DM Mono", monospace;
-      font-size: 10px;
-
-      letter-spacing: 0.09em;
+      color: var(--dim);
+      font-size: 11px;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .categories {
       display: flex;
-      align-items: center;
-      gap: 7px;
       flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .category {
-      border: 1px solid var(--border);
-      border-radius: 3px;
-
+    .category-button {
       background: transparent;
-
-      color: var(--dim);
-
-      padding: 7px 10px;
-
-      font-size: 10px;
-
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 12px;
       cursor: pointer;
-
-      transition:
-        color 160ms ease,
-        border-color 160ms ease;
+      font: inherit;
+      font-size: 12px;
     }
 
-    .category:hover,
-    .category.active {
+    .category-button:hover,
+    .category-button.active {
       color: var(--green);
-      border-color: var(--border-hover);
+      border-color: rgba(62, 207, 142, 0.45);
     }
 
-    /* ---------------- POSTS ---------------- */
-
-    .posts {
+    .posts-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 16px;
-
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
       padding-bottom: 100px;
     }
 
-    .post {
-      min-height: 340px;
-
+    .post-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 28px;
+      min-height: 310px;
       display: flex;
       flex-direction: column;
-
-      padding: 27px;
-
-      background: rgba(23, 27, 24, 0.86);
-
-      border: 1px solid var(--border);
-      border-radius: 4px;
-
       transition:
-        border-color 180ms ease,
-        transform 180ms ease;
+        transform 0.2s ease,
+        border-color 0.2s ease;
     }
 
-    .post:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
+    .post-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(62, 207, 142, 0.4);
     }
 
     .post-meta {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-
       gap: 15px;
-
       color: var(--dim);
-
       font-family: "DM Mono", monospace;
-      font-size: 9px;
-
-      letter-spacing: 0.08em;
+      font-size: 10px;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .post-category {
       color: var(--green);
     }
 
-    .post h2 {
-      margin: 52px 0 17px;
-
-      font-size: 27px;
-      line-height: 1.16;
-
+    .post-title {
+      margin: 45px 0 15px;
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 400;
       letter-spacing: -0.035em;
-
-      font-weight: 300;
     }
 
     .post-excerpt {
       margin: 0;
-
-      max-width: 620px;
-
       color: var(--muted);
-
+      line-height: 1.7;
       font-size: 14px;
-      line-height: 1.75;
+      font-weight: 300;
     }
 
-    .post-bottom {
+    .post-footer {
       margin-top: auto;
-      padding-top: 32px;
-
+      padding-top: 30px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-
+      align-items: center;
       gap: 20px;
-    }
-
-    .read-time {
-      color: var(--dim);
-
-      font-family: "DM Mono", monospace;
-      font-size: 9px;
-
-      text-transform: uppercase;
     }
 
     .read-link {
       color: var(--green);
-
       font-family: "DM Mono", monospace;
-      font-size: 10px;
-
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
 
-    .empty {
+    .empty-state,
+    .error-state {
       grid-column: 1 / -1;
-
-      padding: 70px 20px;
-
+      padding: 60px;
       border: 1px solid var(--border);
-
+      background: var(--panel);
       color: var(--muted);
-
       text-align: center;
     }
 
-    /* ---------------- FOOTER ---------------- */
-
-    .footer {
+    footer {
       border-top: 1px solid var(--border);
-
-      padding: 34px 0 38px;
-
+      padding: 35px 0;
       color: var(--dim);
-
-      font-family: "DM Mono", monospace;
-      font-size: 9px;
-
-      letter-spacing: 0.04em;
+      font-size: 12px;
     }
 
     .footer-inner {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-
-      gap: 25px;
+      gap: 30px;
+      flex-wrap: wrap;
     }
 
-    /* ---------------- MOBILE ---------------- */
-
-    @media (max-width: 850px) {
-
-      .nav {
+    @media (max-width: 800px) {
+      .main-nav {
         display: none;
       }
 
-      .posts {
+      .posts-grid {
         grid-template-columns: 1fr;
       }
 
       .hero {
-        padding-top: 75px;
+        padding-top: 70px;
       }
 
-    }
-
-    @media (max-width: 600px) {
-
-      .page {
-        width: min(
-          100% - 28px,
-          var(--max-width)
-        );
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-
-      .toolbar {
+      .blog-toolbar {
         align-items: flex-start;
         flex-direction: column;
+      }
+    }
 
-        padding: 15px 0;
+    @media (max-width: 500px) {
+      .blog-page {
+        width: min(100% - 28px, 1200px);
       }
 
-      .post {
-        min-height: 310px;
+      .post-card {
         padding: 22px;
       }
-
-      .post h2 {
-        margin-top: 40px;
-      }
-
-      .footer-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-
     }
   </style>
 </head>
 
 <body>
 
-  <div class="page">
+  <div class="blog-page">
 
-    <header class="header">
+    <header class="site-header">
 
-      <a
-        href="/"
-        class="brand"
-      >
-        EvalLoop AI<span class="brand-cursor">_</span>
+      <a href="/" class="logo">
+        EvalLoop AI<span class="cursor">_</span>
       </a>
 
-      <nav class="nav">
+      <nav class="main-nav">
 
-        <a href="/products/">Products</a>
+        <a href="/products.html">Products</a>
 
-        <a href="/workspace/">Workspace</a>
+        <a href="/workspace.html">Workspace</a>
 
-        <a href="/docs/">Docs</a>
+        <a href="/docs.html">Docs</a>
 
-        <a href="/benchmarks/">Benchmarks</a>
+        <a href="/benchmarks.html">Benchmarks</a>
 
-        <a
-          href="/blog/"
-          class="active"
-        >
-          Blog
-        </a>
+        <a href="/blog.html" class="active">Blog</a>
 
-        <a href="/pricing/">Pricing</a>
+        <a href="/pricing.html">Pricing</a>
 
-        <a href="/login/">Login</a>
+        <a href="/login.html">Login</a>
 
-        <a
-          href="/signup/"
-          class="nav-signup"
-        >
+        <a href="/signup.html" class="nav-button">
           Sign Up
         </a>
 
@@ -540,42 +349,42 @@
         </div>
 
         <h1>
-          Thinking about
-          <span>AI quality.</span>
+          Thinking about <span>AI quality.</span>
         </h1>
 
         <p class="hero-description">
-          Research, practical guides, product thinking,
-          and ideas about AI evaluation, LLM quality,
-          RAG, safety, multimodal systems, and reliable AI.
+          Research, guides, practical ideas, and product thinking
+          around AI evaluation, LLM quality, RAG, safety,
+          multimodal systems, and reliable AI.
         </p>
 
       </section>
 
 
-      <section class="toolbar">
+      <div class="blog-toolbar">
 
         <div
-          id="count"
-          class="count"
+          class="post-count"
+          id="postCount"
         >
-          Loading articles...
+          Loading posts...
         </div>
 
         <div
-          id="categories"
           class="categories"
+          id="categories"
         ></div>
 
-      </section>
+      </div>
 
 
       <section
-        id="posts"
-        class="posts"
+        class="posts-grid"
+        id="postsGrid"
+        aria-live="polite"
       >
 
-        <div class="empty">
+        <div class="empty-state">
           Loading articles...
         </div>
 
@@ -584,17 +393,17 @@
     </main>
 
 
-    <footer class="footer">
+    <footer>
 
       <div class="footer-inner">
 
-        <span>
+        <div>
           © 2026 EvalLoop AI
-        </span>
+        </div>
 
-        <span>
-          AI evaluation / quality / testing
-        </span>
+        <div>
+          AI evaluation, quality, and testing.
+        </div>
 
       </div>
 
@@ -605,17 +414,13 @@
 
   <script>
 
-    const postsContainer =
-      document.getElementById("posts");
-
-    const countElement =
-      document.getElementById("count");
-
-    const categoriesElement =
+    const postsGrid = document.getElementById("postsGrid");
+    const postCount = document.getElementById("postCount");
+    const categoriesContainer =
       document.getElementById("categories");
 
     let posts = [];
-    let selectedCategory = "All";
+    let activeCategory = "All";
 
 
     async function loadPosts() {
@@ -623,46 +428,43 @@
       try {
 
         const response =
-          await fetch("./posts.json");
+          await fetch("/blog-posts.json");
 
         if (!response.ok) {
-          throw new Error(
-            "Could not load posts."
-          );
+          throw new Error("Unable to load blog posts.");
         }
 
         posts = await response.json();
 
         posts.sort(
           (a, b) =>
-            new Date(b.date) -
-            new Date(a.date)
+            new Date(b.date) - new Date(a.date)
         );
 
-        renderCategories();
+        createCategories();
         renderPosts();
 
       } catch (error) {
 
-        console.error(error);
-
-        countElement.textContent =
-          "Unable to load articles";
-
-        postsContainer.innerHTML = `
-          <div class="empty">
-            Blog content could not be loaded.
+        postsGrid.innerHTML = `
+          <div class="error-state">
+            Unable to load blog posts.
           </div>
         `;
+
+        postCount.textContent =
+          "Blog unavailable";
+
+        console.error(error);
 
       }
 
     }
 
 
-    function renderCategories() {
+    function createCategories() {
 
-      const categoryNames = [
+      const categories = [
         "All",
         ...new Set(
           posts
@@ -671,9 +473,9 @@
         )
       ];
 
-      categoriesElement.innerHTML = "";
+      categoriesContainer.innerHTML = "";
 
-      categoryNames.forEach(category => {
+      categories.forEach(category => {
 
         const button =
           document.createElement("button");
@@ -681,12 +483,10 @@
         button.type = "button";
 
         button.className =
-          "category" +
-          (
-            category === selectedCategory
-              ? " active"
-              : ""
-          );
+          "category-button" +
+          (category === activeCategory
+            ? " active"
+            : "");
 
         button.textContent = category;
 
@@ -694,15 +494,15 @@
           "click",
           () => {
 
-            selectedCategory = category;
+            activeCategory = category;
 
-            renderCategories();
+            createCategories();
             renderPosts();
 
           }
         );
 
-        categoriesElement.appendChild(button);
+        categoriesContainer.appendChild(button);
 
       });
 
@@ -711,28 +511,26 @@
 
     function renderPosts() {
 
-      const visiblePosts =
-        selectedCategory === "All"
+      const filteredPosts =
+        activeCategory === "All"
           ? posts
           : posts.filter(
               post =>
-                post.category ===
-                selectedCategory
+                post.category === activeCategory
             );
 
-
-      countElement.textContent =
-        `${visiblePosts.length} ${
-          visiblePosts.length === 1
-            ? "article"
-            : "articles"
+      postCount.textContent =
+        `${filteredPosts.length} article${
+          filteredPosts.length === 1
+            ? ""
+            : "s"
         }`;
 
 
-      if (!visiblePosts.length) {
+      if (!filteredPosts.length) {
 
-        postsContainer.innerHTML = `
-          <div class="empty">
+        postsGrid.innerHTML = `
+          <div class="empty-state">
             No articles in this category yet.
           </div>
         `;
@@ -742,8 +540,8 @@
       }
 
 
-      postsContainer.innerHTML =
-        visiblePosts
+      postsGrid.innerHTML =
+        filteredPosts
           .map(post => {
 
             const date =
@@ -757,16 +555,14 @@
                   }
                 );
 
-
             return `
-              <article class="post">
+
+              <article class="post-card">
 
                 <div class="post-meta">
 
                   <span class="post-category">
-                    ${escapeHTML(
-                      post.category || "Insights"
-                    )}
+                    ${escapeHtml(post.category || "Insights")}
                   </span>
 
                   <span>
@@ -775,30 +571,23 @@
 
                 </div>
 
-
-                <h2>
-                  ${escapeHTML(post.title)}
+                <h2 class="post-title">
+                  ${escapeHtml(post.title)}
                 </h2>
 
-
                 <p class="post-excerpt">
-                  ${escapeHTML(post.excerpt)}
+                  ${escapeHtml(post.excerpt)}
                 </p>
 
+                <div class="post-footer">
 
-                <div class="post-bottom">
-
-                  <span class="read-time">
-                    ${escapeHTML(
-                      post.readTime || ""
-                    )}
+                  <span>
+                    ${escapeHtml(post.readTime || "")}
                   </span>
 
                   <a
                     class="read-link"
-                    href="/blog/post.html?slug=${encodeURIComponent(
-                      post.slug
-                    )}"
+                    href="/blog-post.html?slug=${encodeURIComponent(post.slug)}"
                   >
                     Read article →
                   </a>
@@ -806,6 +595,7 @@
                 </div>
 
               </article>
+
             `;
 
           })
@@ -814,7 +604,7 @@
     }
 
 
-    function escapeHTML(value) {
+    function escapeHtml(value) {
 
       return String(value)
         .replaceAll("&", "&amp;")
