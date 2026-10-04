@@ -7,12 +7,12 @@
   <meta
     name="description"
     id="metaDescription"
-    content="Practical AI evaluation lesson from EvalLoop AI."
+    content="Structured AI and LLM evaluation lesson from EvalLoop AI."
   />
 
   <meta name="theme-color" content="#101211" />
 
-  <title id="pageTitle">Learn — EvalLoop AI</title>
+  <title id="pageTitle">Lesson — EvalLoop AI</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,6 @@
   />
 
   <style>
-
     :root {
       --bg: #101211;
       --panel: #171b18;
@@ -129,7 +128,9 @@
       margin: 0 auto;
     }
 
-    /* HEADER */
+    /* =========================
+       HEADER
+    ========================= */
 
     .site-header {
       position: sticky;
@@ -298,6 +299,7 @@
       justify-content: center;
       flex-direction: column;
       gap: 6px;
+      cursor: pointer;
     }
 
     .mobile-menu-button span {
@@ -310,16 +312,34 @@
       display: none;
     }
 
-    /* LESSON */
+    /* =========================
+       LESSON HERO
+    ========================= */
 
     .lesson-hero {
-      padding: 105px 0 75px;
+      padding: 95px 0 65px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+    }
+
+    .breadcrumb .current {
+      color: var(--green2);
     }
 
     .section-kicker {
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-top: 30px;
       color: var(--green2);
       font-family: var(--mono);
       font-size: 10px;
@@ -334,16 +354,16 @@
 
     .lesson-hero h1 {
       max-width: 900px;
-      margin-top: 25px;
-      font-size: clamp(48px, 6.5vw, 82px);
-      line-height: .95;
+      margin-top: 23px;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .98;
       font-weight: 300;
       letter-spacing: -.05em;
     }
 
-    .lesson-excerpt {
-      max-width: 700px;
-      margin-top: 28px;
+    .lesson-description {
+      max-width: 760px;
+      margin-top: 26px;
       color: var(--muted);
       font-size: 15px;
       line-height: 1.85;
@@ -352,23 +372,35 @@
     .lesson-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 25px;
+      gap: 11px;
+      margin-top: 24px;
       color: var(--dim);
       font-family: var(--mono);
       font-size: 9px;
+      text-transform: uppercase;
     }
 
     .lesson-meta .accent {
       color: var(--green2);
     }
 
+    .difficulty {
+      padding: 4px 7px;
+      border: 1px solid rgba(62,207,142,.22);
+      background: rgba(62,207,142,.045);
+      color: var(--green2);
+    }
+
+    /* =========================
+       LESSON LAYOUT
+    ========================= */
+
     .lesson-layout {
       display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 60px;
+      grid-template-columns: 230px minmax(0, 820px);
+      gap: 55px;
       align-items: start;
-      padding-bottom: 120px;
+      padding-bottom: 110px;
     }
 
     .lesson-sidebar {
@@ -382,8 +414,8 @@
       font-size: 9px;
     }
 
-    .lesson-sidebar-box {
-      margin-top: 25px;
+    .sidebar-box {
+      margin-top: 22px;
       padding: 20px;
       border: 1px solid var(--line);
       background: var(--panel);
@@ -396,75 +428,170 @@
       letter-spacing: .08em;
     }
 
-    .sidebar-text {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.7;
+    .sidebar-value {
+      margin-top: 9px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.55;
     }
 
+    .sidebar-description {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      margin: 18px 0;
+      background: var(--line-soft);
+    }
+
+    .sidebar-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .sidebar-list li {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .sidebar-list li::before {
+      content: "→";
+      margin-right: 7px;
+      color: var(--green);
+      font-family: var(--mono);
+    }
+
+    /* =========================
+       DOCUMENT
+    ========================= */
+
     .lesson-document {
-      max-width: 820px;
-      padding: 50px;
+      min-width: 0;
+      padding: 48px;
       border: 1px solid var(--line);
       background: var(--panel);
     }
 
-    .lesson-content h2 {
-      margin-top: 38px;
+    .objectives {
+      padding: 23px;
+      border: 1px solid rgba(62,207,142,.2);
+      background: rgba(19,38,28,.62);
+    }
+
+    .document-label {
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .09em;
+    }
+
+    .objectives ul {
+      margin-top: 14px;
+      padding-left: 19px;
+    }
+
+    .objectives li {
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .objectives li:last-child {
+      margin-bottom: 0;
+    }
+
+    .objectives li::marker {
+      color: var(--green);
+    }
+
+    .prerequisites {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border: 1px solid var(--line-soft);
+      background: rgba(255,255,255,.012);
+    }
+
+    .prerequisites-list {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .prerequisite {
+      padding: 5px 8px;
+      border: 1px solid var(--line-soft);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+
+    .section {
+      margin-top: 42px;
+    }
+
+    .section:first-of-type {
+      margin-top: 48px;
+    }
+
+    .section-number {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .06em;
+    }
+
+    .section h2 {
+      margin-top: 8px;
       color: var(--ink);
       font-size: 28px;
-      line-height: 1.1;
+      line-height: 1.15;
       font-weight: 300;
-      letter-spacing: -.04em;
+      letter-spacing: -.035em;
     }
 
-    .lesson-content h2:first-child {
-      margin-top: 0;
-    }
-
-    .lesson-content h3 {
-      margin-top: 28px;
-      color: var(--green2);
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    .lesson-content p {
-      margin-top: 16px;
+    .section-content {
+      margin-top: 17px;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.9;
     }
 
-    .lesson-content ul,
-    .lesson-content ol {
-      margin-top: 17px;
+    .section-content p {
+      margin-top: 13px;
+    }
+
+    .section-content p:first-child {
+      margin-top: 0;
+    }
+
+    .section-content ul,
+    .section-content ol {
+      margin-top: 14px;
       padding-left: 22px;
     }
 
-    .lesson-content li {
-      margin-bottom: 10px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
+    .section-content li {
+      margin-bottom: 8px;
     }
 
-    .lesson-content li::marker {
+    .section-content li::marker {
       color: var(--green);
     }
 
-    .lesson-content blockquote {
-      margin-top: 25px;
-      padding: 20px;
-      border-left: 2px solid var(--green);
-      background: var(--darkgreen);
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
+    .section-content strong {
+      color: var(--ink);
+      font-weight: 500;
     }
 
-    .lesson-content code {
+    .section-content code {
       padding: 2px 5px;
       background: var(--panel2);
       color: var(--green2);
@@ -472,9 +599,9 @@
       font-size: .9em;
     }
 
-    .lesson-content pre {
-      margin-top: 22px;
-      padding: 20px;
+    .section-content pre {
+      margin-top: 18px;
+      padding: 18px;
       overflow-x: auto;
       border: 1px solid var(--line);
       background: #0c0f0d;
@@ -484,7 +611,159 @@
       line-height: 1.7;
     }
 
-    /* FOOTER */
+    .section-example {
+      padding: 20px;
+      border-left: 2px solid var(--green);
+      background: var(--darkgreen);
+    }
+
+    .section-example .document-label {
+      margin-bottom: 9px;
+      display: block;
+    }
+
+    .evaluator-note {
+      padding: 22px;
+      border: 1px solid rgba(62,207,142,.2);
+      background: rgba(62,207,142,.035);
+    }
+
+    .evaluator-note .document-label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .check-section {
+      padding: 23px;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+    }
+
+    .check-question {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .check-question:first-of-type {
+      margin-top: 15px;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .question-text {
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .question-options {
+      margin-top: 12px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .question-option {
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .key-takeaway {
+      margin-top: 48px;
+      padding: 25px;
+      border: 1px solid rgba(62,207,142,.35);
+      background: var(--darkgreen);
+    }
+
+    .key-takeaway p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .lesson-navigation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 50px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .lesson-nav-card {
+      display: block;
+      min-width: 0;
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.01);
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .lesson-nav-card:hover {
+      border-color: rgba(62,207,142,.35);
+      background: rgba(62,207,142,.025);
+    }
+
+    .lesson-nav-card.next {
+      text-align: right;
+    }
+
+    .nav-card-label {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .08em;
+    }
+
+    .nav-card-title {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .nav-card-arrow {
+      margin-top: 9px;
+      color: var(--green2);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .empty-nav {
+      min-height: 90px;
+    }
+
+    /* =========================
+       ERROR
+    ========================= */
+
+    .error-box {
+      padding: 28px;
+      border: 1px solid rgba(255,120,120,.2);
+      background: rgba(120,30,30,.12);
+    }
+
+    .error-box .document-label {
+      color: #e8a4a4;
+    }
+
+    .error-box p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
 
     .site-footer {
       border-top: 1px solid var(--line-soft);
@@ -546,14 +825,22 @@
       letter-spacing: .05em;
     }
 
-    @media (max-width: 900px) {
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 950px) {
       .lesson-layout {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 28px;
       }
 
       .lesson-sidebar {
         position: static;
+      }
+
+      .lesson-document {
+        max-width: none;
       }
 
       .footer-top {
@@ -562,7 +849,6 @@
     }
 
     @media (max-width: 800px) {
-
       .container {
         width: min(calc(100% - 32px), var(--max));
       }
@@ -592,7 +878,9 @@
         transform: translateY(-120%);
         opacity: 0;
         pointer-events: none;
-        transition: .35s var(--ease);
+        transition:
+          transform .35s var(--ease),
+          opacity .35s ease;
       }
 
       .mobile-nav.active {
@@ -621,6 +909,7 @@
         background: transparent;
         color: var(--muted);
         text-align: left;
+        cursor: pointer;
       }
 
       .mobile-nav-dropdown-menu {
@@ -628,8 +917,7 @@
         padding: 0 0 8px 12px;
       }
 
-      .mobile-nav-dropdown.open
-      .mobile-nav-dropdown-menu {
+      .mobile-nav-dropdown.open .mobile-nav-dropdown-menu {
         display: block;
       }
 
@@ -647,11 +935,31 @@
       }
 
       .lesson-hero {
-        padding-top: 70px;
+        padding: 68px 0 45px;
+      }
+
+      .lesson-hero h1 {
+        font-size: clamp(40px, 12vw, 62px);
+      }
+
+      .lesson-description {
+        font-size: 14px;
       }
 
       .lesson-document {
-        padding: 30px 20px;
+        padding: 28px 20px;
+      }
+
+      .section h2 {
+        font-size: 24px;
+      }
+
+      .lesson-navigation {
+        grid-template-columns: 1fr;
+      }
+
+      .lesson-nav-card.next {
+        text-align: left;
       }
 
       .footer-columns {
@@ -665,32 +973,145 @@
     }
 
     @keyframes blink {
-      0%,45% { opacity:1; }
-      46%,100% { opacity:.2; }
-    }
+      0%,45% {
+        opacity: 1;
+      }
 
+      46%,100% {
+        opacity: .2;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<div class="background-grid"></div>
-<div class="background-glow"></div>
+  <div class="background-grid"></div>
+  <div class="background-glow"></div>
 
-<header class="site-header">
+  <!-- =========================
+       HEADER
+  ========================== -->
 
-  <div class="container nav-inner">
+  <header class="site-header">
 
-    <a href="/" class="brand">
-      EvalLoop AI<span class="brand-cursor">_</span>
-    </a>
+    <div class="container nav-inner">
 
-    <nav class="desktop-nav">
+      <a href="/" class="brand" aria-label="EvalLoop AI">
+        EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
 
-      <div class="nav-dropdown">
+      <nav class="desktop-nav" aria-label="Primary navigation">
+
+        <div class="nav-dropdown">
+
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Products
+            <span class="nav-chevron">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="/labs/">
+              <span>Evaluation Engines/Models</span>
+              <small>Test and compare AI quality</small>
+            </a>
+
+            <a href="/jobs/">
+              <span>EvalLoop Jobs</span>
+              <small>Independent jobs directory &amp; discovery platform</small>
+            </a>
+
+            <a href="/hub/">
+              <span>EvalAI Hub</span>
+              <small>Explore the evaluation ecosystem</small>
+            </a>
+
+          </div>
+
+        </div>
+
+        <a href="/app/">Workspace</a>
+
+        <div class="nav-dropdown">
+
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Resources
+            <span class="nav-chevron">⌄</span>
+          </button>
+
+          <div class="nav-dropdown-menu">
+
+            <a href="/docs/">
+              <span>Docs</span>
+              <small>Build with EvalLoop AI</small>
+            </a>
+
+            <a href="/knowledge/">
+              <span>Learn</span>
+              <small>Guides and evaluation basics</small>
+            </a>
+
+            <a href="/blog/">
+              <span>Blog</span>
+              <small>Ideas, updates, and research</small>
+            </a>
+
+            <a href="/api-space/">
+              <span>API</span>
+              <small>Connect your AI workflows</small>
+            </a>
+
+          </div>
+
+        </div>
+
+        <a href="/pricing/">Pricing</a>
+
+      </nav>
+
+      <div class="nav-actions">
+
+        <a href="/login/" class="nav-login">
+          Login
+        </a>
+
+        <a
+          href="/signup/"
+          class="button button-primary button-small"
+        >
+          Sign up <span>↗</span>
+        </a>
+
+      </div>
+
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+
+      <div class="mobile-nav-dropdown">
 
         <button
-          class="nav-dropdown-trigger"
+          class="mobile-nav-dropdown-trigger"
           type="button"
           aria-expanded="false"
         >
@@ -698,33 +1119,20 @@
           <span class="nav-chevron">⌄</span>
         </button>
 
-        <div class="nav-dropdown-menu">
-
-          <a href="/labs/">
-            <span>Evaluation Engines/Models</span>
-            <small>Test and compare AI quality</small>
-          </a>
-
-          <a href="/jobs/">
-            <span>EvalLoop Jobs</span>
-            <small>Independent jobs directory &amp; discovery platform</small>
-          </a>
-
-          <a href="/hub/">
-            <span>EvalAI Hub</span>
-            <small>Explore the evaluation ecosystem</small>
-          </a>
-
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/labs/">Evaluation Engines/Models</a>
+          <a href="/jobs/">EvalLoop Jobs</a>
+          <a href="/hub/">EvalAI Hub</a>
         </div>
 
       </div>
 
       <a href="/app/">Workspace</a>
 
-      <div class="nav-dropdown">
+      <div class="mobile-nav-dropdown">
 
         <button
-          class="nav-dropdown-trigger"
+          class="mobile-nav-dropdown-trigger"
           type="button"
           aria-expanded="false"
         >
@@ -732,422 +1140,406 @@
           <span class="nav-chevron">⌄</span>
         </button>
 
-        <div class="nav-dropdown-menu">
-
-          <a href="/docs/">
-            <span>Docs</span>
-            <small>Build with EvalLoop AI</small>
-          </a>
-
-          <a href="/knowledge/">
-            <span>Learn</span>
-            <small>Guides and evaluation basics</small>
-          </a>
-
-          <a href="/blog/">
-            <span>Blog</span>
-            <small>Ideas, updates, and research</small>
-          </a>
-
-          <a href="/api-space/">
-            <span>API</span>
-            <small>Connect your AI workflows</small>
-          </a>
-
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/docs/">Docs</a>
+          <a href="/knowledge/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/api-space/">API</a>
         </div>
 
       </div>
 
       <a href="/pricing/">Pricing</a>
 
-    </nav>
+      <div class="mobile-nav-actions">
+        <a href="/login/">Login</a>
 
-    <div class="nav-actions">
-
-      <a href="/login/" class="nav-login">
-        Login
-      </a>
-
-      <a
-        href="/signup/"
-        class="button button-primary button-small"
-      >
-        Sign up <span>↗</span>
-      </a>
-
-    </div>
-
-    <button
-      class="mobile-menu-button"
-      id="mobileMenuButton"
-      aria-label="Open navigation menu"
-      aria-expanded="false"
-    >
-      <span></span>
-      <span></span>
-    </button>
-
-  </div>
-
-  <div class="mobile-nav" id="mobileNav">
-
-    <div class="mobile-nav-dropdown">
-
-      <button
-        class="mobile-nav-dropdown-trigger"
-        type="button"
-      >
-        Products
-        <span class="nav-chevron">⌄</span>
-      </button>
-
-      <div class="mobile-nav-dropdown-menu">
-        <a href="/labs/">Evaluation Engines/Models</a>
-        <a href="/jobs/">EvalLoop Jobs</a>
-        <a href="/hub/">EvalAI Hub</a>
+        <a href="/signup/" class="button">
+          Sign up <span>↗</span>
+        </a>
       </div>
 
     </div>
 
-    <a href="/app/">Workspace</a>
-
-    <div class="mobile-nav-dropdown">
-
-      <button
-        class="mobile-nav-dropdown-trigger"
-        type="button"
-      >
-        Resources
-        <span class="nav-chevron">⌄</span>
-      </button>
-
-      <div class="mobile-nav-dropdown-menu">
-        <a href="/docs/">Docs</a>
-        <a href="/knowledge/">Learn</a>
-        <a href="/blog/">Blog</a>
-        <a href="/api-space/">API</a>
-      </div>
-
-    </div>
-
-    <a href="/pricing/">Pricing</a>
-
-    <div class="mobile-nav-actions">
-      <a href="/login/">Login</a>
-      <a href="/signup/" class="button">
-        Sign up <span>↗</span>
-      </a>
-    </div>
-
-  </div>
-
-</header>
+  </header>
 
 
-<main>
+  <!-- =========================
+       MAIN
+  ========================== -->
 
-  <section class="lesson-hero">
+  <main>
 
-    <div class="container">
+    <section class="lesson-hero">
 
-      <div class="section-kicker">
-        <span class="kicker-line"></span>
-        EVALLOOP LEARN
-      </div>
+      <div class="container">
 
-      <h1 id="lessonTitle">
-        Loading lesson...
-      </h1>
+        <div class="breadcrumb" id="breadcrumb">
+          <a href="/knowledge/">Learn</a>
+          <span>›</span>
+          <span id="breadcrumbTrack">Evaluation</span>
+          <span>›</span>
+          <span class="current" id="breadcrumbTitle">
+            Loading...
+          </span>
+        </div>
 
-      <p
-        class="lesson-excerpt"
-        id="lessonExcerpt"
-      ></p>
+        <div class="section-kicker">
+          <span class="kicker-line"></span>
+          EVALLOOP LEARN
+        </div>
 
-      <div class="lesson-meta">
+        <h1 id="lessonTitle">
+          Loading lesson...
+        </h1>
 
-        <span
-          class="accent"
-          id="lessonCategory"
-        >
-          AI EVALUATION
-        </span>
+        <p
+          class="lesson-description"
+          id="lessonDescription"
+        ></p>
 
-        <span>·</span>
+        <div class="lesson-meta">
 
-        <span id="lessonReadTime">
-          5 MIN READ
-        </span>
-
-        <span>·</span>
-
-        <span id="lessonDate"></span>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section>
-
-    <div class="container">
-
-      <div class="lesson-layout">
-
-        <aside class="lesson-sidebar">
-
-          <a
-            href="/knowledge/"
-            class="back-link"
+          <span
+            class="accent"
+            id="lessonTrack"
           >
-            ← ALL LESSONS
-          </a>
+            AI EVALUATION
+          </span>
 
-          <div class="lesson-sidebar-box">
+          <span>·</span>
 
-            <div class="sidebar-label">
-              EVALLOOP LEARN
+          <span id="lessonLevel">
+            BEGINNER
+          </span>
+
+          <span>·</span>
+
+          <span id="lessonTime">
+            10 MIN
+          </span>
+
+          <span>·</span>
+
+          <span
+            class="difficulty"
+            id="lessonDifficulty"
+          >
+            BEGINNER
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section>
+
+      <div class="container">
+
+        <div class="lesson-layout">
+
+          <!-- SIDEBAR -->
+
+          <aside class="lesson-sidebar">
+
+            <a
+              href="/knowledge/"
+              class="back-link"
+            >
+              ← ALL LESSONS
+            </a>
+
+            <div class="sidebar-box">
+
+              <div class="sidebar-label">
+                CURRENT MODULE
+              </div>
+
+              <div
+                class="sidebar-value"
+                id="sidebarModule"
+              >
+                Loading...
+              </div>
+
+              <div
+                class="sidebar-description"
+                id="sidebarTrack"
+              ></div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-label">
+                LESSON
+              </div>
+
+              <div
+                class="sidebar-value"
+                id="sidebarLessonNumber"
+              >
+                —
+              </div>
+
             </div>
 
-            <p class="sidebar-text">
-              Practical lessons for understanding,
-              testing, and improving AI systems.
-            </p>
+            <div
+              class="sidebar-box"
+              id="sidebarPrerequisitesBox"
+              style="display:none;"
+            >
 
-          </div>
+              <div class="sidebar-label">
+                PREREQUISITES
+              </div>
 
-        </aside>
+              <ul
+                class="sidebar-list"
+                id="sidebarPrerequisites"
+              ></ul>
 
+            </div>
 
-        <article
-          class="lesson-document"
-        >
-
-          <div
-            class="lesson-content"
-            id="lessonContent"
-          >
-            <p>
-              Loading lesson...
-            </p>
-          </div>
-
-        </article>
-
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
+          </aside>
 
 
-<footer class="site-footer">
+          <!-- DOCUMENT -->
 
-  <div class="container">
+          <article class="lesson-document">
 
-    <div class="footer-top">
+            <div
+              id="lessonContent"
+            >
 
-      <div class="footer-brand">
+              <div class="objectives">
 
-        <a href="/" class="brand">
-          <span>EvalLoop AI</span>
-          <span class="brand-cursor">_</span>
-        </a>
+                <div class="document-label">
+                  LEARNING OBJECTIVES
+                </div>
 
-        <p>
-          AI evaluation &amp; LLM quality platform.
-        </p>
+                <ul id="objectivesList"></ul>
 
-      </div>
+              </div>
 
-      <div class="footer-columns">
 
-        <div class="footer-column">
+              <div
+                class="prerequisites"
+                id="documentPrerequisites"
+                style="display:none;"
+              >
 
-          <div class="footer-label">
-            PRODUCT
-          </div>
+                <div class="document-label">
+                  BEFORE THIS LESSON
+                </div>
 
-          <a href="/#product">Overview</a>
-          <a href="/app/">Workspace</a>
-          <a href="/hub/">EvalAI Hub</a>
-          <a href="/pricing/">Pricing</a>
+                <div
+                  class="prerequisites-list"
+                  id="documentPrerequisitesList"
+                ></div>
 
-        </div>
+              </div>
 
-        <div class="footer-column">
 
-          <div class="footer-label">
-            RESOURCES
-          </div>
+              <div id="sectionsContainer"></div>
 
-          <a href="/knowledge/">Learn</a>
-          <a href="/blog/">Blog</a>
-          <a href="/docs/">Documentation</a>
-          <a href="/api-space/">API</a>
 
-        </div>
+              <div
+                class="key-takeaway"
+                id="keyTakeaway"
+                style="display:none;"
+              >
 
-        <div class="footer-column">
+                <div class="document-label">
+                  KEY TAKEAWAY
+                </div>
 
-          <div class="footer-label">
-            COMPANY
-          </div>
+                <p id="keyTakeawayText"></p>
 
-          <a href="/about/">About</a>
-          <a href="/contact/">Contact</a>
+              </div>
 
-        </div>
 
-        <div class="footer-column">
+              <div
+                class="lesson-navigation"
+                id="lessonNavigation"
+                style="display:none;"
+              >
 
-          <div class="footer-label">
-            LEGAL
-          </div>
+                <div id="previousLessonContainer"></div>
 
-          <a href="/privacy/">Privacy Policy</a>
-          <a href="/terms/">Terms of Service</a>
-          <a href="/ai-usage/">AI Usage Disclaimer</a>
+                <div id="nextLessonContainer"></div>
+
+              </div>
+
+            </div>
+
+          </article>
 
         </div>
 
       </div>
 
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-top">
+
+        <div class="footer-brand">
+
+          <a href="/" class="brand">
+
+            <span>EvalLoop AI</span>
+
+            <span class="brand-cursor">_</span>
+
+          </a>
+
+          <p>
+            AI evaluation &amp; LLM quality platform.
+          </p>
+
+        </div>
+
+
+        <div class="footer-columns">
+
+          <div class="footer-column">
+
+            <div class="footer-label">
+              PRODUCT
+            </div>
+
+            <a href="/#product">Overview</a>
+            <a href="/app/">Workspace</a>
+            <a href="/hub/">EvalAI Hub</a>
+            <a href="/pricing/">Pricing</a>
+
+          </div>
+
+
+          <div class="footer-column">
+
+            <div class="footer-label">
+              RESOURCES
+            </div>
+
+            <a href="/knowledge/">Learn</a>
+            <a href="/blog/">Blog</a>
+            <a href="/docs/">Documentation</a>
+            <a href="/api-space/">API</a>
+
+          </div>
+
+
+          <div class="footer-column">
+
+            <div class="footer-label">
+              COMPANY
+            </div>
+
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+
+          </div>
+
+
+          <div class="footer-column">
+
+            <div class="footer-label">
+              LEGAL
+            </div>
+
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+            <a href="/ai-usage/">AI Usage Disclaimer</a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <span>© 2026 EvalLoop AI</span>
+
+        <span>BUILT FOR BETTER AI</span>
+
+        <span>HYDERABAD · INDIA</span>
+
+      </div>
+
     </div>
 
-    <div class="footer-bottom">
-      <span>© 2026 EvalLoop AI</span>
-      <span>BUILT FOR BETTER AI</span>
-      <span>HYDERABAD · INDIA</span>
-    </div>
-
-  </div>
-
-</footer>
+  </footer>
 
 
-<script>
+  <script>
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
 
-  const desktopDropdowns =
-    document.querySelectorAll(
-      ".desktop-nav .nav-dropdown"
-    );
-
-  desktopDropdowns.forEach(dropdown => {
-
-    const trigger =
-      dropdown.querySelector(
-        ".nav-dropdown-trigger"
+    const desktopDropdowns =
+      document.querySelectorAll(
+        ".desktop-nav .nav-dropdown"
       );
 
-    trigger.addEventListener(
-      "click",
-      event => {
+    desktopDropdowns.forEach(dropdown => {
 
-        event.stopPropagation();
-
-        const open =
-          dropdown.classList.contains("open");
-
-        desktopDropdowns.forEach(item => {
-
-          item.classList.remove("open");
-
-          item.querySelector(
-            ".nav-dropdown-trigger"
-          ).setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-        });
-
-        if (!open) {
-
-          dropdown.classList.add("open");
-
-          trigger.setAttribute(
-            "aria-expanded",
-            "true"
-          );
-
-        }
-
-      }
-    );
-
-  });
-
-
-  document.addEventListener(
-    "click",
-    () => {
-
-      desktopDropdowns.forEach(dropdown => {
-
-        dropdown.classList.remove("open");
-
-      });
-
-    }
-  );
-
-
-  const mobileMenuButton =
-    document.getElementById(
-      "mobileMenuButton"
-    );
-
-  const mobileNav =
-    document.getElementById(
-      "mobileNav"
-    );
-
-
-  mobileMenuButton.addEventListener(
-    "click",
-    () => {
-
-      const open =
-        mobileNav.classList.toggle("active");
-
-      mobileMenuButton.classList.toggle(
-        "active",
-        open
-      );
-
-      mobileMenuButton.setAttribute(
-        "aria-expanded",
-        open
-      );
-
-      document.body.classList.toggle(
-        "menu-open",
-        open
-      );
-
-    }
-  );
-
-
-  document
-    .querySelectorAll(
-      ".mobile-nav-dropdown-trigger"
-    )
-    .forEach(trigger => {
+      const trigger =
+        dropdown.querySelector(
+          ".nav-dropdown-trigger"
+        );
 
       trigger.addEventListener(
         "click",
-        () => {
+        event => {
 
-          trigger
-            .parentElement
-            .classList
-            .toggle("open");
+          event.stopPropagation();
+
+          const isOpen =
+            dropdown.classList.contains("open");
+
+          desktopDropdowns.forEach(item => {
+
+            item.classList.remove("open");
+
+            const itemTrigger =
+              item.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (itemTrigger) {
+              itemTrigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+            }
+
+          });
+
+          if (!isOpen) {
+
+            dropdown.classList.add("open");
+
+            trigger.setAttribute(
+              "aria-expanded",
+              "true"
+            );
+
+          }
 
         }
       );
@@ -1155,183 +1547,1187 @@
     });
 
 
-  document
-    .querySelectorAll(".mobile-nav a")
-    .forEach(link => {
+    document.addEventListener(
+      "click",
+      () => {
 
-      link.addEventListener(
-        "click",
-        () => {
+        desktopDropdowns.forEach(dropdown => {
 
-          mobileNav.classList.remove("active");
+          dropdown.classList.remove("open");
 
-          mobileMenuButton.classList.remove(
-            "active"
-          );
+          const trigger =
+            dropdown.querySelector(
+              ".nav-dropdown-trigger"
+            );
 
-          document.body.classList.remove(
-            "menu-open"
-          );
+          if (trigger) {
+            trigger.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+          }
 
-        }
+        });
+
+      }
+    );
+
+
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
       );
 
-    });
-
-
-  function getSlug() {
-
-    const params =
-      new URLSearchParams(
-        window.location.search
+    const mobileNav =
+      document.getElementById(
+        "mobileNav"
       );
 
-    return params.get("slug");
 
-  }
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+
+        const open =
+          mobileNav.classList.toggle("active");
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          String(open)
+        );
+
+        document.body.classList.toggle(
+          "menu-open",
+          open
+        );
+
+      }
+    );
 
 
-  async function loadLesson() {
+    document
+      .querySelectorAll(
+        ".mobile-nav-dropdown-trigger"
+      )
+      .forEach(trigger => {
 
-    const slug = getSlug();
+        trigger.addEventListener(
+          "click",
+          () => {
 
-    if (!slug) {
+            const parent =
+              trigger.parentElement;
 
-      showError(
-        "NO LESSON WAS SPECIFIED."
-      );
+            const open =
+              parent.classList.toggle("open");
 
-      return;
+            trigger.setAttribute(
+              "aria-expanded",
+              String(open)
+            );
+
+          }
+        );
+
+      });
+
+
+    document
+      .querySelectorAll(".mobile-nav a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mobileNav.classList.remove("active");
+
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+            document.body.classList.remove(
+              "menu-open"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       HELPERS
+    ========================================================= */
+
+    function getSlug() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      return params.get("slug");
 
     }
 
-    try {
 
-      const response =
-        await fetch(
-          "/knowledge/lessons.json"
-        );
+    function escapeHTML(value) {
 
-      if (!response.ok) {
-        throw new Error();
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function formatInlineText(value) {
+
+      if (!value) {
+        return "";
       }
 
-      const lessons =
-        await response.json();
+      let text =
+        escapeHTML(value);
 
-      const lesson =
-        lessons.find(
-          item =>
-            item.slug === slug &&
-            item.published
+      text =
+        text.replace(
+          /\*\*(.*?)\*\*/g,
+          "<strong>$1</strong>"
         );
 
+      text =
+        text.replace(
+          /`([^`]+)`/g,
+          "<code>$1</code>"
+        );
+
+      return text;
+
+    }
+
+
+    function renderContent(value) {
+
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      if (Array.isArray(value)) {
+
+        return `
+          <ul>
+            ${value.map(item => `
+              <li>${formatInlineText(item)}</li>
+            `).join("")}
+          </ul>
+        `;
+
+      }
+
+      const text =
+        String(value);
+
+      /*
+        Supports simple paragraphs separated
+        by blank lines.
+      */
+
+      const paragraphs =
+        text
+          .split(/\n\s*\n/)
+          .map(item => item.trim())
+          .filter(Boolean);
+
+      if (paragraphs.length <= 1) {
+
+        return `
+          <p>${formatInlineText(text).replace(/\n/g, "<br>")}</p>
+        `;
+
+      }
+
+      return paragraphs
+        .map(paragraph => `
+          <p>${formatInlineText(paragraph).replace(/\n/g, "<br>")}</p>
+        `)
+        .join("");
+
+    }
+
+
+    function getSectionClass(type) {
+
+      if (type === "example") {
+        return "section-example";
+      }
+
+      if (
+        type === "evaluatorNote" ||
+        type === "evaluator-note"
+      ) {
+        return "evaluator-note";
+      }
+
+      if (
+        type === "check" ||
+        type === "quickCheck" ||
+        type === "quick-check"
+      ) {
+        return "check-section";
+      }
+
+      return "";
+
+    }
+
+
+    function getSectionLabel(type) {
+
+      const labels = {
+
+        concept: "CONCEPT",
+
+        definition: "CONCEPT",
+
+        why: "WHY IT MATTERS",
+
+        example: "EXAMPLE",
+
+        evaluatorNote: "EVALUATOR NOTE",
+
+        "evaluator-note": "EVALUATOR NOTE",
+
+        check: "QUICK CHECK",
+
+        quickCheck: "QUICK CHECK",
+
+        "quick-check": "QUICK CHECK",
+
+        workflow: "WORKFLOW",
+
+        mistake: "COMMON MISTAKE",
+
+        practice: "PRACTICE",
+
+        summary: "SUMMARY"
+
+      };
+
+      return labels[type] || "LESSON NOTE";
+
+    }
+
+
+    /* =========================================================
+       SECTION RENDERING
+    ========================================================= */
+
+    function renderCheckQuestions(
+      questions
+    ) {
+
+      if (!Array.isArray(questions)) {
+        return "";
+      }
+
+      return questions
+        .map((question, index) => {
+
+          if (typeof question === "string") {
+
+            return `
+              <div class="check-question">
+
+                <div class="question-text">
+                  ${formatInlineText(question)}
+                </div>
+
+              </div>
+            `;
+
+          }
+
+          const questionText =
+            question.question ||
+            question.text ||
+            question.prompt ||
+            "";
+
+          const options =
+            question.options ||
+            question.choices ||
+            [];
+
+          return `
+            <div class="check-question">
+
+              <div class="question-text">
+                ${formatInlineText(
+                  questionText
+                )}
+              </div>
+
+              ${
+                Array.isArray(options) &&
+                options.length
+                  ? `
+                    <div class="question-options">
+                      ${options.map(option => `
+                        <div class="question-option">
+                          ${formatInlineText(option)}
+                        </div>
+                      `).join("")}
+                    </div>
+                  `
+                  : ""
+              }
+
+            </div>
+          `;
+
+        })
+        .join("");
+
+    }
+
+
+    function renderSection(
+      section,
+      index
+    ) {
+
+      if (!section) {
+        return "";
+      }
+
+      const type =
+        section.type ||
+        "concept";
+
+      const title =
+        section.title ||
+        getSectionLabel(type);
+
+      const sectionClass =
+        getSectionClass(type);
+
+      const label =
+        getSectionLabel(type);
+
+      const isCheck =
+        type === "check" ||
+        type === "quickCheck" ||
+        type === "quick-check";
+
+      const content =
+        section.content;
+
+      let body = "";
+
+      if (isCheck) {
+
+        body =
+          renderCheckQuestions(
+            section.questions
+          );
+
+        if (
+          !body &&
+          content
+        ) {
+          body =
+            renderContent(content);
+        }
+
+      } else if (
+        section.items &&
+        Array.isArray(section.items)
+      ) {
+
+        body = `
+          <ul>
+            ${section.items.map(item => `
+              <li>
+                ${formatInlineText(item)}
+              </li>
+            `).join("")}
+          </ul>
+        `;
+
+      } else {
+
+        body =
+          renderContent(content);
+
+      }
+
+      return `
+        <section class="section">
+
+          <div class="section-number">
+            ${String(index + 1).padStart(2, "0")}
+            / ${label}
+          </div>
+
+          <h2>
+            ${escapeHTML(title)}
+          </h2>
+
+          <div class="section-content ${sectionClass}">
+            ${
+              sectionClass === "section-example" ||
+              sectionClass === "evaluator-note"
+                ? `
+                  <span class="document-label">
+                    ${label}
+                  </span>
+                `
+                : ""
+            }
+
+            ${body}
+          </div>
+
+        </section>
+      `;
+
+    }
+
+
+    /* =========================================================
+       LESSON NAVIGATION
+    ========================================================= */
+
+    function createLessonNavCard(
+      lesson,
+      direction
+    ) {
+
       if (!lesson) {
+        return `
+          <div class="lesson-nav-card empty-nav"></div>
+        `;
+      }
+
+      const label =
+        direction === "previous"
+          ? "PREVIOUS LESSON"
+          : "NEXT LESSON";
+
+      const arrow =
+        direction === "previous"
+          ? "←"
+          : "→";
+
+      return `
+        <a
+          class="lesson-nav-card ${
+            direction === "next"
+              ? "next"
+              : ""
+          }"
+          href="/knowledge/lesson.html?slug=${encodeURIComponent(
+            lesson.slug
+          )}"
+        >
+
+          <div class="nav-card-label">
+            ${label}
+          </div>
+
+          <div class="nav-card-title">
+            ${escapeHTML(
+              lesson.title || "Untitled lesson"
+            )}
+          </div>
+
+          <div class="nav-card-arrow">
+            ${arrow}
+          </div>
+
+        </a>
+      `;
+
+    }
+
+
+    function renderNavigation(
+      currentLesson,
+      allLessons
+    ) {
+
+      const currentIndex =
+        allLessons.findIndex(
+          lesson =>
+            lesson.id === currentLesson.id ||
+            lesson.slug === currentLesson.slug
+        );
+
+      let previousLesson = null;
+      let nextLesson = null;
+
+      if (currentIndex > 0) {
+        previousLesson =
+          allLessons[currentIndex - 1];
+      }
+
+      if (
+        currentIndex !== -1 &&
+        currentIndex <
+          allLessons.length - 1
+      ) {
+        nextLesson =
+          allLessons[currentIndex + 1];
+      }
+
+      /*
+        If the JSON explicitly provides nextLesson,
+        prefer it.
+      */
+
+      if (currentLesson.nextLesson) {
+
+        const explicitNext =
+          allLessons.find(
+            lesson =>
+              lesson.id ===
+                currentLesson.nextLesson ||
+              lesson.slug ===
+                currentLesson.nextLesson
+          );
+
+        if (explicitNext) {
+          nextLesson = explicitNext;
+        }
+
+      }
+
+      const container =
+        document.getElementById(
+          "lessonNavigation"
+        );
+
+      const previousContainer =
+        document.getElementById(
+          "previousLessonContainer"
+        );
+
+      const nextContainer =
+        document.getElementById(
+          "nextLessonContainer"
+        );
+
+      previousContainer.innerHTML =
+        createLessonNavCard(
+          previousLesson,
+          "previous"
+        );
+
+      nextContainer.innerHTML =
+        createLessonNavCard(
+          nextLesson,
+          "next"
+        );
+
+      container.style.display =
+        "grid";
+
+    }
+
+
+    /* =========================================================
+       MAIN LESSON LOADER
+    ========================================================= */
+
+    async function loadLesson() {
+
+      const slug =
+        getSlug();
+
+      if (!slug) {
 
         showError(
-          "LESSON NOT FOUND."
+          "No lesson was specified in the URL."
         );
 
         return;
 
       }
 
-      document.title =
-        `${lesson.title} — EvalLoop AI`;
+      try {
 
-      document
-        .getElementById("metaDescription")
-        .setAttribute(
-          "content",
-          lesson.excerpt || ""
+        const response =
+          await fetch(
+            "/knowledge/lessons.json",
+            {
+              cache: "no-store"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+        }
+
+        const data =
+          await response.json();
+
+        /*
+          NEW JSON STRUCTURE:
+
+          {
+            course: {...},
+            levels: [...],
+            lessons: [...]
+          }
+
+          We also support a plain array as a fallback.
+        */
+
+        let lessons = [];
+
+        if (Array.isArray(data)) {
+
+          lessons = data;
+
+        } else if (
+          data &&
+          Array.isArray(data.lessons)
+        ) {
+
+          lessons =
+            data.lessons;
+
+        }
+
+        if (!lessons.length) {
+
+          showError(
+            "The lesson library contains no lessons."
+          );
+
+          return;
+
+        }
+
+        /*
+          Only use published lessons when the
+          property exists. This prevents the new
+          structured lessons from disappearing if
+          published is not included.
+        */
+
+        const lesson =
+          lessons.find(item => {
+
+            if (!item) {
+              return false;
+            }
+
+            const matchesSlug =
+              item.slug === slug;
+
+            if (!matchesSlug) {
+              return false;
+            }
+
+            if (
+              Object.prototype.hasOwnProperty.call(
+                item,
+                "published"
+              )
+            ) {
+              return item.published === true;
+            }
+
+            return true;
+
+          });
+
+
+        if (!lesson) {
+
+          showError(
+            "The requested lesson could not be found."
+          );
+
+          return;
+
+        }
+
+
+        /*
+          COURSE / LEVEL INFORMATION
+        */
+
+        const levels =
+          Array.isArray(data.levels)
+            ? data.levels
+            : [];
+
+        const level =
+          levels.find(
+            item =>
+              item.number === lesson.level ||
+              item.id === lesson.level
+          );
+
+
+        /*
+          PAGE TITLE
+        */
+
+        document.title =
+          `${lesson.title || "Lesson"} — EvalLoop AI`;
+
+
+        /*
+          META DESCRIPTION
+        */
+
+        document
+          .getElementById(
+            "metaDescription"
+          )
+          .setAttribute(
+            "content",
+            getLessonDescription(lesson)
+          );
+
+
+        /*
+          HERO
+        */
+
+        document
+          .getElementById(
+            "lessonTitle"
+          )
+          .textContent =
+          lesson.title ||
+          "Untitled lesson";
+
+
+        document
+          .getElementById(
+            "lessonDescription"
+          )
+          .textContent =
+          getLessonDescription(lesson);
+
+
+        document
+          .getElementById(
+            "lessonTrack"
+          )
+          .textContent =
+          lesson.track ||
+          "AI EVALUATION";
+
+
+        document
+          .getElementById(
+            "lessonLevel"
+          )
+          .textContent =
+          level
+            ? `LEVEL ${level.number}`
+            : lesson.level
+              ? `LEVEL ${lesson.level}`
+              : "LESSON";
+
+
+        document
+          .getElementById(
+            "lessonTime"
+          )
+          .textContent =
+          (
+            lesson.estimatedTime ||
+            lesson.readTime ||
+            "10 min"
+          ).toUpperCase();
+
+
+        document
+          .getElementById(
+            "lessonDifficulty"
+          )
+          .textContent =
+          (
+            lesson.difficulty ||
+            "Beginner"
+          ).toUpperCase();
+
+
+        /*
+          BREADCRUMB
+        */
+
+        document
+          .getElementById(
+            "breadcrumbTrack"
+          )
+          .textContent =
+          lesson.track ||
+          level?.title ||
+          "Evaluation";
+
+
+        document
+          .getElementById(
+            "breadcrumbTitle"
+          )
+          .textContent =
+          lesson.title ||
+          "Lesson";
+
+
+        /*
+          SIDEBAR
+        */
+
+        document
+          .getElementById(
+            "sidebarModule"
+          )
+          .textContent =
+          level?.title ||
+          lesson.track ||
+          `Module ${lesson.module || ""}`;
+
+
+        document
+          .getElementById(
+            "sidebarTrack"
+          )
+          .textContent =
+          lesson.track ||
+          "";
+
+
+        document
+          .getElementById(
+            "sidebarLessonNumber"
+          )
+          .textContent =
+          lesson.lesson
+            ? `Lesson ${lesson.lesson}`
+            : lesson.id ||
+              "Current lesson";
+
+
+        /*
+          OBJECTIVES
+        */
+
+        const objectives =
+          Array.isArray(
+            lesson.objectives
+          )
+            ? lesson.objectives
+            : [];
+
+
+        const objectivesList =
+          document.getElementById(
+            "objectivesList"
+          );
+
+
+        if (objectives.length) {
+
+          objectivesList.innerHTML =
+            objectives
+              .map(objective => `
+                <li>
+                  ${formatInlineText(
+                    objective
+                  )}
+                </li>
+              `)
+              .join("");
+
+        } else {
+
+          objectivesList.innerHTML = `
+            <li>
+              Understand the main concept covered
+              in this lesson.
+            </li>
+          `;
+
+        }
+
+
+        /*
+          PREREQUISITES
+        */
+
+        const prerequisites =
+          Array.isArray(
+            lesson.prerequisites
+          )
+            ? lesson.prerequisites
+            : [];
+
+
+        const sidebarPrerequisitesBox =
+          document.getElementById(
+            "sidebarPrerequisitesBox"
+          );
+
+        const sidebarPrerequisites =
+          document.getElementById(
+            "sidebarPrerequisites"
+          );
+
+        const documentPrerequisites =
+          document.getElementById(
+            "documentPrerequisites"
+          );
+
+        const documentPrerequisitesList =
+          document.getElementById(
+            "documentPrerequisitesList"
+          );
+
+
+        if (prerequisites.length) {
+
+          sidebarPrerequisitesBox.style.display =
+            "block";
+
+          sidebarPrerequisites.innerHTML =
+            prerequisites
+              .map(item => `
+                <li>
+                  ${formatInlineText(item)}
+                </li>
+              `)
+              .join("");
+
+
+          documentPrerequisites.style.display =
+            "block";
+
+          documentPrerequisitesList.innerHTML =
+            prerequisites
+              .map(item => `
+                <span class="prerequisite">
+                  ${formatInlineText(item)}
+                </span>
+              `)
+              .join("");
+
+        }
+
+
+        /*
+          SECTIONS
+        */
+
+        const sectionsContainer =
+          document.getElementById(
+            "sectionsContainer"
+          );
+
+
+        const sections =
+          Array.isArray(
+            lesson.sections
+          )
+            ? lesson.sections
+            : [];
+
+
+        if (!sections.length) {
+
+          sectionsContainer.innerHTML = `
+            <div class="error-box">
+              <div class="document-label">
+                CONTENT UNAVAILABLE
+              </div>
+
+              <p>
+                This lesson exists, but no structured
+                sections were found in lessons.json.
+              </p>
+            </div>
+          `;
+
+        } else {
+
+          sectionsContainer.innerHTML =
+            sections
+              .map(
+                (section, index) =>
+                  renderSection(
+                    section,
+                    index
+                  )
+              )
+              .join("");
+
+        }
+
+
+        /*
+          KEY TAKEAWAY
+        */
+
+        const keyTakeaway =
+          document.getElementById(
+            "keyTakeaway"
+          );
+
+        const keyTakeawayText =
+          document.getElementById(
+            "keyTakeawayText"
+          );
+
+
+        if (
+          lesson.keyTakeaway
+        ) {
+
+          keyTakeaway.style.display =
+            "block";
+
+          keyTakeawayText.textContent =
+            lesson.keyTakeaway;
+
+        }
+
+
+        /*
+          PREVIOUS / NEXT
+        */
+
+        renderNavigation(
+          lesson,
+          lessons
         );
 
-      document
-        .getElementById("lessonTitle")
-        .textContent =
-        lesson.title;
+      } catch (error) {
 
-      document
-        .getElementById("lessonExcerpt")
-        .textContent =
-        lesson.excerpt || "";
+        console.error(
+          "EvalLoop lesson loader error:",
+          error
+        );
 
-      document
-        .getElementById("lessonCategory")
-        .textContent =
-        lesson.category || "AI EVALUATION";
+        showError(
+          "The lesson library could not be loaded. Check that lessons.json exists at /knowledge/lessons.json and contains valid JSON."
+        );
 
-      document
-        .getElementById("lessonReadTime")
-        .textContent =
-        lesson.readTime || "";
+      }
 
-      document
-        .getElementById("lessonDate")
-        .textContent =
-        formatDate(lesson.date);
+    }
 
-      document
-        .getElementById("lessonContent")
-        .innerHTML =
-        lesson.content || "<p>Lesson content unavailable.</p>";
 
-    } catch (error) {
+    function getLessonDescription(
+      lesson
+    ) {
 
-      showError(
-        "LESSON LIBRARY TEMPORARILY UNAVAILABLE."
+      if (
+        lesson.description
+      ) {
+        return lesson.description;
+      }
+
+      if (
+        lesson.excerpt
+      ) {
+        return lesson.excerpt;
+      }
+
+      if (
+        Array.isArray(
+          lesson.objectives
+        ) &&
+        lesson.objectives.length
+      ) {
+
+        return lesson.objectives.join(
+          ". "
+        ) + ".";
+
+      }
+
+      return (
+        "A structured AI and LLM evaluation lesson from EvalLoop AI."
       );
 
     }
 
-  }
 
+    /* =========================================================
+       ERROR
+    ========================================================= */
 
-  function showError(message) {
-
-    document
-      .getElementById("lessonTitle")
-      .textContent =
-      "Lesson unavailable.";
-
-    document
-      .getElementById("lessonContent")
-      .innerHTML =
-      `<p>${message}</p>`;
-
-  }
-
-
-  function formatDate(date) {
-
-    const parsed =
-      new Date(`${date}T00:00:00`);
-
-    if (
-      Number.isNaN(
-        parsed.getTime()
-      )
+    function showError(
+      message
     ) {
-      return date || "";
+
+      document
+        .getElementById(
+          "lessonTitle"
+        )
+        .textContent =
+        "Lesson unavailable.";
+
+
+      document
+        .getElementById(
+          "lessonDescription"
+        )
+        .textContent =
+        "We could not load this lesson.";
+
+
+      document
+        .getElementById(
+          "sectionsContainer"
+        )
+        .innerHTML = `
+
+          <div class="error-box">
+
+            <div class="document-label">
+              LESSON ERROR
+            </div>
+
+            <p>
+              ${escapeHTML(message)}
+            </p>
+
+          </div>
+
+        `;
+
+
+      document
+        .getElementById(
+          "objectivesList"
+        )
+        .innerHTML = "";
+
     }
 
-    return parsed
-      .toLocaleDateString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
-        }
-      )
-      .toUpperCase();
 
-  }
+    /* =========================================================
+       START
+    ========================================================= */
 
+    loadLesson();
 
-  loadLesson();
-
-</script>
+  </script>
 
 </body>
 </html>
