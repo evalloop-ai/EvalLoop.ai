@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Blog — EvalLoop AI</title>
+
+  <meta
+    name="description"
+    content="Insights, research, guides, and ideas about AI evaluation, LLM quality, RAG, safety, multimodal AI, and AI testing from EvalLoop AI."
+  >
+
+  <link rel="stylesheet" href="/site.css">
+
+  <style>
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel-2: #1d221f;
+      --border: rgba(241, 241, 239, 0.14);
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --green: #3ecf8e;
+      --green-soft: #85e7ba;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at 80% 10%,
+          rgba(62, 207, 142, 0.08),
+          transparent 30%
+        ),
+        var(--bg);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .blog-page {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      gap: 30px;
+    }
+
+    .logo {
+      font-family: "DM Mono", monospace;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+
+    .cursor {
+      color: var(--green);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .main-nav a {
+      transition: color 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--ink);
+    }
+
+    .nav-button {
+      border: 1px solid var(--border);
+      padding: 10px 15px;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .hero {
+      padding: 100px 0 65px;
+      max-width: 850px;
+    }
+
+    .eyebrow {
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      font-weight: 400;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .hero-description {
+      margin-top: 28px;
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .blog-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 17px 0;
+      margin-bottom: 35px;
+    }
+
+    .post-count {
+      font-family: "DM Mono", monospace;
+      color: var(--dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .category-button {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .category-button:hover,
+    .category-button.active {
+      color: var(--green);
+      border-color: rgba(62, 207, 142, 0.45);
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      padding-bottom: 100px;
+    }
+
+    .post-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 28px;
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(62, 207, 142, 0.4);
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .post-category {
+      color: var(--green);
+    }
+
+    .post-title {
+      margin: 45px 0 15px;
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+    }
+
+    .post-excerpt {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    .post-footer {
+      margin-top: auto;
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .read-link {
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .empty-state,
+    .error-state {
+      grid-column: 1 / -1;
+      padding: 60px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      color: var(--dim);
+      font-size: 12px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 800px) {
+      .main-nav {
+        display: none;
+      }
+
+      .posts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+
+      .blog-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .blog-page {
+        width: min(100% - 28px, 1200px);
+      }
+
+      .post-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="blog-page">
+
+    <header class="site-header">
+
+      <a href="/" class="logo">
+        EvalLoop AI<span class="cursor">_</span>
+      </a>
+
+      <nav class="main-nav">
+
+        <a href="/products.html">Products</a>
+
+        <a href="/workspace.html">Workspace</a>
+
+        <a href="/docs.html">Docs</a>
+
+        <a href="/benchmarks.html">Benchmarks</a>
+
+        <a href="/blog.html" class="active">Blog</a>
+
+        <a href="/pricing.html">Pricing</a>
+
+        <a href="/login.html">Login</a>
+
+        <a href="/signup.html" class="nav-button">
+          Sign Up
+        </a>
+
+      </nav>
+
+    </header>
+
+
+    <main>
+
+      <section class="hero">
+
+        <div class="eyebrow">
+          EvalLoop / Blog
+        </div>
+
+        <h1>
+          Thinking about <span>AI quality.</span>
+        </h1>
+
+        <p class="hero-description">
+          Research, guides, practical ideas, and product thinking
+          around AI evaluation, LLM quality, RAG, safety,
+          multimodal systems, and reliable AI.
+        </p>
+
+      </section>
+
+
+      <div class="blog-toolbar">
+
+        <div
+          class="post-count"
+          id="postCount"
+        >
+          Loading posts...
+        </div>
+
+        <div
+          class="categories"
+          id="categories"
+        ></div>
+
+      </div>
+
+
+      <section
+        class="posts-grid"
+        id="postsGrid"
+        aria-live="polite"
+      >
+
+        <div class="empty-state">
+          Loading articles...
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <footer>
+
+      <div class="footer-inner">
+
+        <div>
+          © 2026 EvalLoop AI
+        </div>
+
+        <div>
+          AI evaluation, quality, and testing.
+        </div>
+
+      </div>
+
+    </footer>
+
+  </div>
+
+
+  <script>
+
+    const postsGrid = document.getElementById("postsGrid");
+    const postCount = document.getElementById("postCount");
+    const categoriesContainer =
+      document.getElementById("categories");
+
+    let posts = [];
+    let activeCategory = "All";
+
+
+    async function loadPosts() {
+
+      try {
+
+        const response =
+          await fetch("/blog-posts.json");
+
+        if (!response.ok) {
+          throw new Error("Unable to load blog posts.");
+        }
+
+        posts = await response.json();
+
+        posts.sort(
+          (a, b) =>
+            new Date(b.date) - new Date(a.date)
+        );
+
+        createCategories();
+        renderPosts();
+
+      } catch (error) {
+
+        postsGrid.innerHTML = `
+          <div class="error-state">
+            Unable to load blog posts.
+          </div>
+        `;
+
+        postCount.textContent =
+          "Blog unavailable";
+
+        console.error(error);
+
+      }
+
+    }
+
+
+    function createCategories() {
+
+      const categories = [
+        "All",
+        ...new Set(
+          posts
+            .map(post => post.category)
+            .filter(Boolean)
+        )
+      ];
+
+      categoriesContainer.innerHTML = "";
+
+      categories.forEach(category => {
+
+        const button =
+          document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+          "category-button" +
+          (category === activeCategory
+            ? " active"
+            : "");
+
+        button.textContent = category;
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            activeCategory = category;
+
+            createCategories();
+            renderPosts();
+
+          }
+        );
+
+        categoriesContainer.appendChild(button);
+
+      });
+
+    }
+
+
+    function renderPosts() {
+
+      const filteredPosts =
+        activeCategory === "All"
+          ? posts
+          : posts.filter(
+              post =>
+                post.category === activeCategory
+            );
+
+      postCount.textContent =
+        `${filteredPosts.length} article${
+          filteredPosts.length === 1
+            ? ""
+            : "s"
+        }`;
+
+
+      if (!filteredPosts.length) {
+
+        postsGrid.innerHTML = `
+          <div class="empty-state">
+            No articles in this category yet.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      postsGrid.innerHTML =
+        filteredPosts
+          .map(post => {
+
+            const date =
+              new Date(post.date)
+                .toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                  }
+                );
+
+            return `
+
+              <article class="post-card">
+
+                <div class="post-meta">
+
+                  <span class="post-category">
+                    ${escapeHtml(post.category || "Insights")}
+                  </span>
+
+                  <span>
+                    ${date}
+                  </span>
+
+                </div>
+
+                <h2 class="post-title">
+                  ${escapeHtml(post.title)}
+                </h2>
+
+                <p class="post-excerpt">
+                  ${escapeHtml(post.excerpt)}
+                </p>
+
+                <div class="post-footer">
+
+                  <span>
+                    ${escapeHtml(post.readTime || "")}
+                  </span>
+
+                  <a
+                    class="read-link"
+                    href="/blog-post.html?slug=${encodeURIComponent(post.slug)}"
+                  >
+                    Read article →
+                  </a>
+
+                </div>
+
+              </article>
+
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    loadPosts();
+
+  </script>
+
+</body>
+</html>
