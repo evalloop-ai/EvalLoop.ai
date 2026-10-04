@@ -3252,6 +3252,293 @@ body.is-scrolling-down .section-kicker::after {
     font-size: clamp(40px, 11vw, 64px);
   }
 }
+
+/* =========================================================
+   MOBILE REFINEMENT
+   ========================================================= */
+@media (max-width: 700px) {
+  .container {
+    width: min(calc(100% - 32px), var(--max));
+  }
+
+  .announcement-inner {
+    min-height: 32px;
+  }
+
+  .announcement-left {
+    gap: 7px;
+  }
+
+  .mono-label {
+    font-size: 9px;
+  }
+
+  .announcement-link {
+    white-space: nowrap;
+  }
+
+  .site-header {
+    z-index: 90;
+  }
+
+  .nav-inner {
+    min-height: 66px;
+  }
+
+  .mobile-nav {
+    top: 98px;
+    max-height: calc(100vh - 98px);
+    overflow-y: auto;
+  }
+
+  .mobile-nav > a,
+  .mobile-nav-dropdown-trigger {
+    min-height: 52px;
+    padding: 14px 5px;
+  }
+
+  .mobile-nav-actions {
+    flex-wrap: wrap;
+    padding-bottom: 4px;
+  }
+
+  .mobile-nav-actions .button {
+    min-height: 42px;
+  }
+
+  .product-hero {
+    min-height: auto;
+    padding: 86px 0 76px;
+  }
+
+  .product-hero-copy {
+    width: 100%;
+  }
+
+  .product-hero-copy h1 {
+    max-width: 100%;
+    margin-top: 22px;
+    font-size: clamp(38px, 11vw, 58px);
+    letter-spacing: -0.045em;
+    line-height: .98;
+  }
+
+  .product-hero-copy .hero-description {
+    max-width: 440px;
+    margin-top: 22px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .product-hero-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .product-hero-actions .button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .product-proofline {
+    display: grid;
+    gap: 8px;
+    margin-top: 28px;
+    font-size: 8px;
+    line-height: 1.4;
+  }
+
+  .product-section {
+    padding: 78px 0;
+  }
+
+  .product-split,
+  .attribution-layout {
+    display: block;
+  }
+
+  .product-rail {
+    margin-bottom: 28px;
+  }
+
+  .product-rail strong {
+    font-size: 30px;
+    line-height: 1.05;
+  }
+
+  .product-story h2 {
+    max-width: 100%;
+    font-size: clamp(32px, 9.5vw, 48px);
+    line-height: 1.04;
+  }
+
+  .product-story p,
+  .attribution-copy > p {
+    max-width: 100%;
+    margin-top: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .story-emphasis {
+    padding-left: 14px;
+  }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 38px;
+  }
+
+  .model-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .model-card h3 {
+    margin-top: 26px;
+    font-size: 24px;
+  }
+
+  .model-card p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .product-section-heading {
+    margin-bottom: 34px;
+  }
+
+  .product-section-heading h2 {
+    margin-top: 16px;
+    font-size: clamp(40px, 11vw, 58px);
+    line-height: .98;
+  }
+
+  .product-section-heading p {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .opportunity-row {
+    grid-template-columns: 1fr 18px;
+    gap: 7px;
+    padding: 20px 0;
+  }
+
+  .opportunity-row:hover {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .opportunity-code {
+    grid-column: 1 / -1;
+    font-size: 8px;
+  }
+
+  .opportunity-row h3 {
+    font-size: 20px;
+    line-height: 1.12;
+  }
+
+  .opportunity-row p {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .opportunity-arrow {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    font-size: 18px;
+  }
+
+  .loop-content {
+    margin-top: 8px;
+  }
+
+  .loop-step {
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+    padding: 22px 0;
+  }
+
+  .loop-step h3 {
+    font-size: 25px;
+  }
+
+  .loop-step p {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .source-rule {
+    margin-top: 28px;
+    padding: 16px;
+  }
+
+  .source-rule strong {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .product-final-cta {
+    padding-top: 78px;
+  }
+
+  .product-cta-panel {
+    display: block;
+    padding: 28px 22px;
+  }
+
+  .product-cta-panel h2 {
+    max-width: 100%;
+    margin-top: 16px;
+    font-size: clamp(34px, 9vw, 50px);
+    line-height: 1.02;
+  }
+
+  .product-cta-panel p {
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .product-cta-links {
+    min-width: 0;
+    margin-top: 26px;
+    gap: 13px;
+  }
+
+  .product-cta-links .button {
+    width: 100%;
+  }
+
+  .site-footer {
+    padding-top: 48px;
+  }
+
+  .footer-top {
+    gap: 36px;
+  }
+
+  .footer-columns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 18px;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    margin-top: 44px;
+    padding-top: 16px;
+    font-size: 7px;
+  }
+}
 </style>
 </head>
 
@@ -3308,8 +3595,8 @@ body.is-scrolling-down .section-kicker::after {
 
     <div class="container nav-inner">
 
-      <a href="https://evalloop-ai.vercel.app/" class="brand">
-        <span>EvalLoop AI</span><span class="brand-cursor">_</span>
+      <a href="https://evalloopjobs.vercel.app/" class="brand">
+        <span>EvalLoop Jobs</span><span class="brand-cursor">_</span>
       </a>
 
       <!-- DESKTOP NAVIGATION -->
@@ -3326,7 +3613,7 @@ body.is-scrolling-down .section-kicker::after {
           </button>
 
           <div class="nav-dropdown-menu" role="menu">
-            <a href="/labs/" role="menuitem">
+            <a href="/app/" role="menuitem">
               <span>Evaluation Engines/Models</span>
               <small>Test and compare AI quality</small>
             </a>
@@ -3341,7 +3628,7 @@ body.is-scrolling-down .section-kicker::after {
           </div>
         </div>
 
-        <a href="/app/">Workspace</a>
+        <a href="/workspace/">Workspace</a>
 
         <div class="nav-dropdown">
           <button
@@ -3358,7 +3645,7 @@ body.is-scrolling-down .section-kicker::after {
               <span>Docs</span>
               <small>Build with EvalLoop AI</small>
             </a>
-            <a href="/knowledge/" role="menuitem">
+            <a href="/learn/" role="menuitem">
               <span>Learn</span>
               <small>Guides and evaluation basics</small>
             </a>
@@ -3366,7 +3653,7 @@ body.is-scrolling-down .section-kicker::after {
               <span>Blog</span>
               <small>Ideas, updates, and research</small>
             </a>
-            <a href="/api-space/" role="menuitem">
+            <a href="/api/" role="menuitem">
               <span>API</span>
               <small>Connect your AI workflows</small>
             </a>
@@ -3414,13 +3701,13 @@ body.is-scrolling-down .section-kicker::after {
           Products <span class="nav-chevron">⌄</span>
         </button>
         <div class="mobile-nav-dropdown-menu">
-          <a href="/labs/">Evaluation Engines/Models</a>
+          <a href="/app/">Evaluation Engines/Models</a>
           <a href="/jobs/">EvalLoop Jobs</a>
           <a href="/hub/">EvalAI Hub</a>
         </div>
       </div>
 
-      <a href="/app/">Workspace</a>
+      <a href="/workspace/">Workspace</a>
 
       <div class="mobile-nav-dropdown">
         <button
@@ -3432,9 +3719,9 @@ body.is-scrolling-down .section-kicker::after {
         </button>
         <div class="mobile-nav-dropdown-menu">
           <a href="/docs/">Docs</a>
-          <a href="/knowledge/">Learn</a>
+          <a href="/learn/">Learn</a>
           <a href="/blog/">Blog</a>
-          <a href="/api-space/">API</a>
+          <a href="/api/">API</a>
         </div>
       </div>
 
@@ -3521,9 +3808,9 @@ body.is-scrolling-down .section-kicker::after {
 
       <div class="footer-brand">
         <a href="/" class="brand" aria-label="EvalLoop AI">
-          <span>EvalLoop AI</span><span class="brand-cursor">_</span>
+          <span>EvalLoop Jobs</span><span class="brand-cursor">_</span>
         </a>
-        <p>AI evaluation &amp; LLM quality platform.</p>
+        <p>Independent AI work opportunity directory.</p>
       </div>
 
       <div class="footer-columns">
@@ -3531,17 +3818,16 @@ body.is-scrolling-down .section-kicker::after {
         <div class="footer-column">
           <div class="footer-label">PRODUCT</div>
           <a href="#product">Overview</a>
-          <a href="/app/">Workspace</a>
-          <a href="/hub/">EvalAI Hub</a>
+          <a href="/app/">Evaluate</a>
+          <a href="/labs/">Labs</a>
           <a href="/pricing/">Pricing</a>
         </div>
 
         <div class="footer-column">
           <div class="footer-label">RESOURCES</div>
-          <a href="/knowledge/">Learn</a>
-          <a href="/blog">Blog</a>
+          <a href="/knowledge/">Knowledge</a>
           <a href="/docs/">Documentation</a>
-          <a href="/api-space">API</a>
+          <a href="#faq">FAQ</a>
         </div>
 
         <div class="footer-column">
