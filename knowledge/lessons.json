@@ -1,0 +1,93 @@
+[
+  {
+    "slug": "factuality-vs-fluency",
+    "title": "Factuality vs. Fluency",
+    "excerpt": "Learn why an AI response can sound excellent while still being factually wrong.",
+    "date": "2026-10-04",
+    "category": "LLM EVALUATION",
+    "readTime": "4 min",
+    "tags": [
+      "Factuality",
+      "LLM Evaluation"
+    ],
+    "featured": true,
+    "published": true,
+    "content": "<p>An AI response can be fluent, confident, and easy to read while still containing incorrect information. This is one of the most important distinctions in AI evaluation.</p><h2>Fluency is not factuality</h2><p>Fluency measures how naturally the response communicates. Factuality asks whether the claims in the response are actually correct.</p><p>A useful evaluator should therefore avoid treating polished language as evidence that an answer is true.</p><h2>What should you check?</h2><ul><li>Are the factual claims correct?</li><li>Does the response contradict the available reference?</li><li>Does it invent information that was not supported?</li><li>Does it confidently state something uncertain as fact?</li></ul><blockquote>A fluent answer can still be a failed answer. Evaluate what the model claims, not just how well it says it.</blockquote><h2>Practical evaluation</h2><p>When evaluating factuality, separate the quality of the writing from the truth of the claims. Score them independently whenever your evaluation requires both dimensions.</p>"
+  },
+  {
+    "slug": "building-an-evaluation-rubric",
+    "title": "How to Build an Evaluation Rubric",
+    "excerpt": "Turn vague judgments about AI quality into clear criteria that can be evaluated consistently.",
+    "date": "2026-10-03",
+    "category": "EVALUATION METHODS",
+    "readTime": "6 min",
+    "tags": [
+      "Rubrics",
+      "Evaluation Methods"
+    ],
+    "featured": false,
+    "published": true,
+    "content": "<p>A good evaluation rubric converts a subjective question such as “Is this answer good?” into specific criteria that different evaluators can apply consistently.</p><h2>Start with the evaluation goal</h2><p>First define what you actually want to measure. A customer-support assistant may need to be evaluated for factuality, relevance, completeness, tone, and policy compliance.</p><h2>Define each dimension</h2><p>Each dimension should describe one measurable quality. Avoid combining several unrelated properties into a single score.</p><h2>Define failure conditions</h2><p>A strong rubric should make it clear what counts as a failure and, where possible, what evidence should support the decision.</p><ul><li>Criterion</li><li>Expected behavior</li><li>Failure condition</li><li>Evidence requirement</li><li>Score or verdict</li></ul><blockquote>The best rubric is not the longest one. It is the one that produces consistent decisions.</blockquote>"
+  },
+  {
+    "slug": "pairwise-evaluation",
+    "title": "What Is Pairwise Evaluation?",
+    "excerpt": "Learn how comparing two AI responses can reveal quality differences that absolute scoring may miss.",
+    "date": "2026-10-02",
+    "category": "LLM EVALUATION",
+    "readTime": "5 min",
+    "tags": [
+      "Pairwise Evaluation",
+      "Model Comparison"
+    ],
+    "featured": false,
+    "published": true,
+    "content": "<p>Pairwise evaluation compares two candidate responses to the same task and asks which response performs better according to a defined criterion.</p><h2>Why compare instead of score?</h2><p>Absolute scores can be difficult to calibrate. Asking an evaluator to choose between two responses can sometimes make quality differences easier to identify.</p><h2>What can you compare?</h2><ul><li>Factuality</li><li>Instruction following</li><li>Relevance</li><li>Completeness</li><li>Safety</li><li>Overall preference</li></ul><p>The key is to keep the comparison criterion clear. “Which answer is better?” is less useful than “Which answer follows the user's instructions more completely?”</p>"
+  },
+  {
+    "slug": "evaluating-rag-grounding",
+    "title": "Evaluating RAG Grounding",
+    "excerpt": "Understand how to determine whether an AI answer is actually supported by the retrieved context.",
+    "date": "2026-10-01",
+    "category": "RAG EVALUATION",
+    "readTime": "7 min",
+    "tags": [
+      "RAG",
+      "Grounding",
+      "Faithfulness"
+    ],
+    "featured": false,
+    "published": true,
+    "content": "<p>Retrieval-augmented generation introduces another evaluation question: did the model actually base its answer on the information retrieved for it?</p><h2>Three things can go wrong</h2><ul><li>The wrong context can be retrieved.</li><li>The correct context can be retrieved but the model can misunderstand it.</li><li>The answer can introduce claims that the context does not support.</li></ul><h2>Grounding evaluation</h2><p>Grounding focuses on whether the claims made by the generated answer are supported by the available context.</p><blockquote>Correct retrieval does not automatically produce a correct answer.</blockquote><p>A useful RAG evaluation should therefore distinguish retrieval quality from answer quality and grounding.</p>"
+  },
+  {
+    "slug": "detecting-prompt-injection",
+    "title": "Detecting Prompt Injection",
+    "excerpt": "Learn the basic evaluation approach for testing whether an AI system follows untrusted instructions.",
+    "date": "2026-09-30",
+    "category": "AI SAFETY",
+    "readTime": "5 min",
+    "tags": [
+      "Prompt Injection",
+      "AI Safety"
+    ],
+    "featured": false,
+    "published": true,
+    "content": "<p>Prompt injection occurs when untrusted content attempts to influence an AI system's behavior in ways that conflict with its intended instructions.</p><h2>What should an evaluator test?</h2><p>Evaluation should examine whether the system distinguishes trusted instructions from untrusted content and whether it maintains the intended policy when conflicting instructions appear.</p><h2>Look for behavior, not just refusal</h2><p>A safe system does not necessarily need to refuse every unusual request. The important question is whether it follows the correct instruction hierarchy and avoids unsafe behavior.</p>"
+  },
+  {
+    "slug": "evaluating-ai-agents",
+    "title": "How to Evaluate AI Agents",
+    "excerpt": "Move beyond response quality and learn how to evaluate planning, tool use, decisions, and task completion.",
+    "date": "2026-09-29",
+    "category": "AGENT EVALUATION",
+    "readTime": "6 min",
+    "tags": [
+      "AI Agents",
+      "Agent Evaluation"
+    ],
+    "featured": false,
+    "published": true,
+    "content": "<p>AI agents are different from simple question-answering systems because they can plan, use tools, take actions, and operate across multiple steps.</p><h2>Evaluate the complete task</h2><p>An agent can produce a reasonable final message while still making serious errors during execution.</p><ul><li>Did it understand the goal?</li><li>Did it choose the correct tool?</li><li>Did it use the tool correctly?</li><li>Did it maintain the required constraints?</li><li>Did it complete the task?</li></ul><p>Agent evaluation therefore needs to examine both the final result and the path taken to reach it.</p>"
+  }
+]
