@@ -3057,6 +3057,256 @@ body.is-scrolling-down .section-kicker::after {
   }
 
 }
+    /* =========================================================
+   AUTHENTICATED PROFILE
+   ========================================================= */
+
+.auth-logged-out,
+.auth-logged-in {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.auth-logged-in {
+  position: relative;
+}
+
+.profile-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 7px 4px 4px;
+  border: 1px solid rgba(241, 241, 239, 0.12);
+  border-radius: 999px;
+  background: rgba(23, 27, 24, 0.72);
+  color: #f1f1ef;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.profile-trigger:hover {
+  border-color: rgba(62, 207, 142, 0.35);
+  background: rgba(29, 34, 31, 0.9);
+}
+
+.profile-avatar,
+.profile-menu-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #13261c;
+  border: 1px solid rgba(62, 207, 142, 0.35);
+  color: #85e7ba;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.profile-avatar {
+  width: 30px;
+  height: 30px;
+}
+
+.profile-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #f1f1ef;
+}
+
+.profile-chevron {
+  color: #727974;
+  font-size: 13px;
+  line-height: 1;
+  margin-left: 1px;
+}
+
+/* Profile dropdown */
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 250px;
+  padding: 8px;
+  border: 1px solid rgba(241, 241, 239, 0.13);
+  border-radius: 12px;
+  background: rgba(16, 18, 17, 0.97);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(18px);
+  z-index: 1000;
+}
+
+.profile-menu[aria-hidden="true"] {
+  display: none;
+}
+
+.profile-menu[aria-hidden="false"] {
+  display: block;
+}
+
+.profile-menu-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 8px 11px;
+}
+
+.profile-menu-avatar {
+  width: 38px;
+  height: 38px;
+  font-size: 12px;
+}
+
+.profile-menu-identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-menu-identity strong {
+  color: #f1f1ef;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-menu-identity span {
+  color: #727974;
+  font-size: 10px;
+  font-family: "DM Mono", monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-menu-divider {
+  height: 1px;
+  margin: 5px 0;
+  background: rgba(241, 241, 239, 0.08);
+}
+
+.profile-menu a,
+.profile-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 9px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #a4aaa6;
+  text-decoration: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.profile-menu a:hover,
+.profile-logout:hover {
+  background: rgba(62, 207, 142, 0.07);
+  color: #f1f1ef;
+}
+
+.profile-logout {
+  color: #a4aaa6;
+}
+
+/* =========================================================
+   MOBILE PROFILE
+   ========================================================= */
+
+.mobile-auth-logged-out,
+.mobile-auth-logged-in {
+  width: 100%;
+}
+
+.mobile-auth-logged-in {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 0 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(241, 241, 239, 0.08);
+}
+
+.mobile-profile-summary > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mobile-profile-summary strong {
+  color: #f1f1ef;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.mobile-profile-summary span:not(.profile-avatar) {
+  color: #727974;
+  font-size: 10px;
+  font-family: "DM Mono", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-profile-logout {
+  margin-top: 6px;
+  padding: 10px 0;
+  border: 0;
+  border-top: 1px solid rgba(241, 241, 239, 0.08);
+  background: transparent;
+  color: #a4aaa6;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-profile-logout:hover {
+  color: #f1f1ef;
+}
+
+@media (max-width: 760px) {
+
+  .profile-name,
+  .profile-chevron {
+    display: none;
+  }
+
+  .profile-trigger {
+    padding: 3px;
+    border: 0;
+    background: transparent;
+  }
+
+  .profile-trigger:hover {
+    background: transparent;
+  }
+
+  .profile-menu {
+    right: -4px;
+    width: min(250px, calc(100vw - 32px));
+  }
+
+}
   </style>
 </head>
 
@@ -5679,6 +5929,435 @@ console.log(
   "%cAI Evaluation & LLM Quality Platform",
   "color:#a4aaa6;font-family:monospace;font-size:11px;"
 );
+    /* =========================================================
+
+   EvalLoop AI — Authentication-aware navigation
+
+   ========================================================= */
+
+(function () {
+
+  const authLoggedOut = document.getElementById("authLoggedOut");
+
+  const authLoggedIn = document.getElementById("authLoggedIn");
+
+  const mobileAuthLoggedOut =
+
+    document.getElementById("mobileAuthLoggedOut");
+
+  const mobileAuthLoggedIn =
+
+    document.getElementById("mobileAuthLoggedIn");
+
+  const profileTrigger =
+
+    document.getElementById("profileTrigger");
+
+  const profileMenu =
+
+    document.getElementById("profileMenu");
+
+  const profileLogout =
+
+    document.getElementById("profileLogout");
+
+  const mobileProfileLogout =
+
+    document.getElementById("mobileProfileLogout");
+
+  /* ---------------------------------------------------------
+
+     Generate initials from the user's name
+
+     --------------------------------------------------------- */
+
+  function getInitials(name) {
+
+    if (!name) {
+
+      return "U";
+
+    }
+
+    const parts = name
+
+      .trim()
+
+      .split(/\s+/)
+
+      .filter(Boolean);
+
+    if (parts.length === 1) {
+
+      return parts[0].charAt(0).toUpperCase();
+
+    }
+
+    return (
+
+      parts[0].charAt(0) +
+
+      parts[parts.length - 1].charAt(0)
+
+    ).toUpperCase();
+
+  }
+
+  /* ---------------------------------------------------------
+
+     Update all profile information
+
+     --------------------------------------------------------- */
+
+  function updateProfile(user) {
+
+    if (!user) {
+
+      return;
+
+    }
+
+    const name =
+
+      user.name ||
+
+      user.user_metadata?.full_name ||
+
+      user.user_metadata?.name ||
+
+      "User";
+
+    const email =
+
+      user.email ||
+
+      "";
+
+    const initials = getInitials(name);
+
+    /* Desktop */
+
+    const profileAvatar =
+
+      document.getElementById("profileAvatar");
+
+    const profileMenuAvatar =
+
+      document.getElementById("profileMenuAvatar");
+
+    const profileName =
+
+      document.getElementById("profileName");
+
+    const profileMenuName =
+
+      document.getElementById("profileMenuName");
+
+    const profileMenuEmail =
+
+      document.getElementById("profileMenuEmail");
+
+    if (profileAvatar) {
+
+      profileAvatar.textContent = initials;
+
+    }
+
+    if (profileMenuAvatar) {
+
+      profileMenuAvatar.textContent = initials;
+
+    }
+
+    if (profileName) {
+
+      profileName.textContent = name;
+
+    }
+
+    if (profileMenuName) {
+
+      profileMenuName.textContent = name;
+
+    }
+
+    if (profileMenuEmail) {
+
+      profileMenuEmail.textContent = email;
+
+    }
+
+    /* Mobile */
+
+    const mobileProfileAvatar =
+
+      document.getElementById("mobileProfileAvatar");
+
+    const mobileProfileName =
+
+      document.getElementById("mobileProfileName");
+
+    const mobileProfileEmail =
+
+      document.getElementById("mobileProfileEmail");
+
+    if (mobileProfileAvatar) {
+
+      mobileProfileAvatar.textContent = initials;
+
+    }
+
+    if (mobileProfileName) {
+
+      mobileProfileName.textContent = name;
+
+    }
+
+    if (mobileProfileEmail) {
+
+      mobileProfileEmail.textContent = email;
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+
+     Set logged-in / logged-out state
+
+     --------------------------------------------------------- */
+
+  function setAuthState(isLoggedIn, user = null) {
+
+    if (isLoggedIn) {
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden = true;
+
+      }
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden = false;
+
+      }
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden = true;
+
+      }
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden = false;
+
+      }
+
+      updateProfile(user);
+
+    } else {
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden = false;
+
+      }
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden = true;
+
+      }
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden = false;
+
+      }
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden = true;
+
+      }
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+
+     Profile dropdown
+
+     --------------------------------------------------------- */
+
+  function closeProfileMenu() {
+
+    if (!profileMenu || !profileTrigger) {
+
+      return;
+
+    }
+
+    profileMenu.setAttribute("aria-hidden", "true");
+
+    profileTrigger.setAttribute("aria-expanded", "false");
+
+  }
+
+  function toggleProfileMenu() {
+
+    if (!profileMenu || !profileTrigger) {
+
+      return;
+
+    }
+
+    const isOpen =
+
+      profileMenu.getAttribute("aria-hidden") === "false";
+
+    profileMenu.setAttribute(
+
+      "aria-hidden",
+
+      isOpen ? "true" : "false"
+
+    );
+
+    profileTrigger.setAttribute(
+
+      "aria-expanded",
+
+      isOpen ? "false" : "true"
+
+    );
+
+  }
+
+  if (profileTrigger) {
+
+    profileTrigger.addEventListener(
+
+      "click",
+
+      function (event) {
+
+        event.stopPropagation();
+
+        toggleProfileMenu();
+
+      }
+
+    );
+
+  }
+
+  document.addEventListener(
+
+    "click",
+
+    function (event) {
+
+      if (
+
+        profileMenu &&
+
+        profileTrigger &&
+
+        !profileMenu.contains(event.target) &&
+
+        !profileTrigger.contains(event.target)
+
+      ) {
+
+        closeProfileMenu();
+
+      }
+
+    }
+
+  );
+
+  /* ---------------------------------------------------------
+
+     Temporary logout
+
+     --------------------------------------------------------- */
+
+  function logout() {
+
+    /*
+
+      Supabase sign-out will replace this section.
+
+      For now, send the user back to the login page.
+
+    */
+
+    closeProfileMenu();
+
+    window.location.href = "/login/";
+
+  }
+
+  if (profileLogout) {
+
+    profileLogout.addEventListener("click", logout);
+
+  }
+
+  if (mobileProfileLogout) {
+
+    mobileProfileLogout.addEventListener("click", logout);
+
+  }
+
+  /* ---------------------------------------------------------
+
+     TEMPORARY AUTH STATE
+
+     
+
+     Change this to Supabase session detection later.
+
+     --------------------------------------------------------- */
+
+  const demoUser = null;
+
+  if (demoUser) {
+
+    setAuthState(true, demoUser);
+
+  } else {
+
+    setAuthState(false);
+
+  }
+
+  /*
+
+   * Expose this function so the Supabase authentication
+
+   * code can call it later:
+
+   *
+
+   * setEvalLoopAuthState(true, {
+
+   *   name: "Vivek Kaneti",
+
+   *   email: "vivek@example.com"
+
+   * });
+
+   */
+
+  window.setEvalLoopAuthState = setAuthState;
+
+})();
   </script>
 
 </body>
