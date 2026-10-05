@@ -3539,7 +3539,14 @@ body.is-scrolling-down .section-kicker::after {
     font-size: 7px;
   }
 }
+    .auth-logged-out[hidden],
+.auth-logged-in[hidden],
+.mobile-auth-logged-out[hidden],
+.mobile-auth-logged-in[hidden] {
+  display: none !important;
+}
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
