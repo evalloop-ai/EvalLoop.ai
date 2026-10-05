@@ -3182,17 +3182,88 @@ body.is-scrolling-down .section-kicker::after {
 
       </nav>
 
-      <div class="nav-actions">
+      <div class="nav-actions" id="navActions">
 
-        <a href="/login/" class="nav-login">
-          Login
-        </a>
+  <!-- Logged-out state -->
+  <div class="auth-logged-out" id="authLoggedOut">
+    <a href="/login/" class="nav-login">
+      Login
+    </a>
 
-        <a href="/signup/" class="button button-small">
-          Sign up <span>↗</span>
-        </a>
+    <a href="/signup/" class="button button-small">
+      Sign up <span>↗</span>
+    </a>
+  </div>
 
+  <!-- Logged-in state -->
+  <div class="auth-logged-in" id="authLoggedIn" hidden>
+
+    <button
+      class="profile-trigger"
+      id="profileTrigger"
+      type="button"
+      aria-label="Open account menu"
+      aria-expanded="false"
+      aria-haspopup="true"
+    >
+      <span class="profile-avatar" id="profileAvatar">VK</span>
+      <span class="profile-name" id="profileName">Vivek Kaneti</span>
+      <span class="profile-chevron">⌄</span>
+    </button>
+
+    <div
+      class="profile-menu"
+      id="profileMenu"
+      role="menu"
+      aria-hidden="true"
+    >
+
+      <div class="profile-menu-header">
+        <span class="profile-menu-avatar" id="profileMenuAvatar">VK</span>
+
+        <div class="profile-menu-identity">
+          <strong id="profileMenuName">Vivek Kaneti</strong>
+          <span id="profileMenuEmail">user@example.com</span>
+        </div>
       </div>
+
+      <div class="profile-menu-divider"></div>
+
+      <a href="/app/" role="menuitem">
+        <span>Workspace</span>
+      </a>
+
+      <a href="/account/" role="menuitem">
+        <span>Account</span>
+      </a>
+
+      <a href="/usage/" role="menuitem">
+        <span>Usage &amp; Plan</span>
+      </a>
+
+      <a href="/api-space/" role="menuitem">
+        <span>API Keys</span>
+      </a>
+
+      <a href="/settings/" role="menuitem">
+        <span>Settings</span>
+      </a>
+
+      <div class="profile-menu-divider"></div>
+
+      <button
+        type="button"
+        class="profile-logout"
+        id="profileLogout"
+      >
+        Sign out
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
       <!-- Mobile menu button -->
       <button
@@ -3245,17 +3316,62 @@ body.is-scrolling-down .section-kicker::after {
 
       <a href="/pricing/">Pricing</a>
 
-      <div class="mobile-nav-actions">
+     <div class="mobile-nav-actions" id="mobileAuthActions">
 
-        <a href="/login/">
-          Login
-        </a>
+  <!-- Logged-out -->
+  <div class="mobile-auth-logged-out" id="mobileAuthLoggedOut">
 
-        <a href="/signup/" class="button">
-          Sign up <span>↗</span>
-        </a>
+    <a href="/login/">
+      Login
+    </a>
 
+    <a href="/signup/" class="button">
+      Sign up <span>↗</span>
+    </a>
+
+  </div>
+
+  <!-- Logged-in -->
+  <div class="mobile-auth-logged-in" id="mobileAuthLoggedIn" hidden>
+
+    <div class="mobile-profile-summary">
+
+      <span
+        class="profile-avatar"
+        id="mobileProfileAvatar"
+      >
+        VK
+      </span>
+
+      <div>
+        <strong id="mobileProfileName">
+          Vivek Kaneti
+        </strong>
+
+        <span id="mobileProfileEmail">
+          user@example.com
+        </span>
       </div>
+
+    </div>
+
+    <a href="/app/">Workspace</a>
+    <a href="/account/">Account</a>
+    <a href="/usage/">Usage &amp; Plan</a>
+    <a href="/api-space/">API Keys</a>
+    <a href="/settings/">Settings</a>
+
+    <button
+      type="button"
+      id="mobileProfileLogout"
+      class="mobile-profile-logout"
+    >
+      Sign out
+    </button>
+
+  </div>
+
+</div>
 
     </div>
 
