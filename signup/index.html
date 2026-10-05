@@ -6,36 +6,36 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
+
   <title>Create Account — EvalLoop AI</title>
+
   <meta
     name="description"
     content="Create your EvalLoop AI account and start evaluating AI systems."
   >
+
   <link
     rel="stylesheet"
     href="/site.css"
   >
-  <!-- =====================================================
-       PAGE-SPECIFIC NAVIGATION OVERRIDES
-       Keeps the existing signup UI untouched.
-       ===================================================== -->
+
   <style>
     /* =====================================================
-       HEADER / NAVIGATION
+       PAGE-SPECIFIC NAVIGATION
        ===================================================== */
+
     .site-header {
       position: relative;
       z-index: 1000;
     }
+
     .nav-inner {
       position: relative;
       display: flex;
       align-items: center;
       gap: 32px;
     }
-    /* =====================================================
-       DESKTOP NAV
-       ===================================================== */
+
     .desktop-nav {
       display: flex;
       align-items: center;
@@ -44,6 +44,7 @@
       margin-left: auto;
       margin-right: 8px;
     }
+
     .desktop-nav > a,
     .nav-dropdown-trigger {
       display: inline-flex;
@@ -60,48 +61,42 @@
       white-space: nowrap;
       cursor: pointer;
     }
+
     .desktop-nav > a:hover,
     .nav-dropdown-trigger:hover {
       opacity: 0.75;
     }
-    /* =====================================================
-       DROPDOWN
-       ===================================================== */
+
     .nav-dropdown {
       position: relative;
     }
+
     .nav-chevron {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 14px;
       line-height: 1;
-      transition:
-        transform 0.2s ease;
+      transition: transform 0.2s ease;
     }
-    .nav-dropdown.active
-    .nav-chevron {
+
+    .nav-dropdown.active .nav-chevron {
       transform: rotate(180deg);
     }
-    /* =====================================================
-       DESKTOP DROPDOWN MENU
-       ===================================================== */
+
     .nav-dropdown-menu {
       position: absolute;
       top: calc(100% + 14px);
       left: 50%;
       width: 310px;
-      transform:
-        translateX(-50%)
-        translateY(-6px);
+      transform: translateX(-50%) translateY(-6px);
       display: flex;
       flex-direction: column;
       padding: 8px;
       background: rgba(11, 18, 36, 0.98);
       border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: 12px;
-      box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -111,18 +106,14 @@
         visibility 0.18s ease;
       z-index: 1000;
     }
-    .nav-dropdown.active
-    .nav-dropdown-menu {
+
+    .nav-dropdown.active .nav-dropdown-menu {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transform:
-        translateX(-50%)
-        translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
-    /* =====================================================
-       DROPDOWN LINKS
-       ===================================================== */
+
     .nav-dropdown-menu a {
       display: flex;
       flex-direction: column;
@@ -131,34 +122,34 @@
       border-radius: 8px;
       color: inherit;
       text-decoration: none;
-      transition:
-        background 0.18s ease;
+      transition: background 0.18s ease;
     }
+
     .nav-dropdown-menu a:hover {
-      background:
-        rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.06);
     }
+
     .nav-dropdown-menu a span {
       display: block;
       font-size: 13px;
       font-weight: 600;
       line-height: 1.35;
     }
+
     .nav-dropdown-menu a small {
       display: block;
       font-size: 11px;
       line-height: 1.45;
       opacity: 0.55;
     }
-    /* =====================================================
-       NAV ACTIONS
-       ===================================================== */
+
     .nav-actions {
       display: flex;
       align-items: center;
       gap: 14px;
       flex-shrink: 0;
     }
+
     .nav-login {
       display: inline-flex;
       align-items: center;
@@ -168,6 +159,7 @@
       text-decoration: none;
       white-space: nowrap;
     }
+
     .nav-actions .button {
       display: inline-flex;
       align-items: center;
@@ -175,27 +167,26 @@
       gap: 5px;
       white-space: nowrap;
     }
-    /* =====================================================
-       MOBILE NAV
-       ===================================================== */
+
     .mobile-nav {
       display: none;
     }
-    /* =====================================================
-       MOBILE
-       ===================================================== */
+
     @media (max-width: 900px) {
       .desktop-nav,
       .nav-actions {
         display: none;
       }
+
       .nav-inner {
         gap: 20px;
       }
+
       .mobile-menu-button {
         display: flex;
         margin-left: auto;
       }
+
       .mobile-nav {
         position: absolute;
         top: 100%;
@@ -204,58 +195,50 @@
         display: flex;
         flex-direction: column;
         gap: 0;
-        padding:
-          14px 20px 22px;
-        background:
-          rgba(11, 18, 36, 0.98);
-        border-top:
-          1px solid rgba(255, 255, 255, 0.06);
-        box-shadow:
-          0 20px 40px rgba(0, 0, 0, 0.3);
+        padding: 14px 20px 22px;
+        background: rgba(11, 18, 36, 0.98);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform:
-          translateY(-8px);
+        transform: translateY(-8px);
         transition:
           opacity 0.2s ease,
           transform 0.2s ease,
           visibility 0.2s ease;
         z-index: 999;
       }
+
       .mobile-nav.active {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transform:
-          translateY(0);
+        transform: translateY(0);
       }
-      /* MOBILE NORMAL LINKS */
+
       .mobile-nav > a {
         display: flex;
         align-items: center;
         min-height: 48px;
-        padding:
-          10px 4px;
+        padding: 10px 4px;
         color: inherit;
         text-decoration: none;
         font-size: 15px;
-        border-bottom:
-          1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
-      /* MOBILE DROPDOWN */
+
       .mobile-nav-dropdown {
-        border-bottom:
-          1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
+
       .mobile-nav-dropdown-trigger {
         width: 100%;
         min-height: 48px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding:
-          10px 4px;
+        padding: 10px 4px;
         border: 0;
         background: transparent;
         color: inherit;
@@ -264,114 +247,168 @@
         text-align: left;
         cursor: pointer;
       }
-      .mobile-nav-dropdown-trigger
-      .nav-chevron {
-        transition:
-          transform 0.2s ease;
+
+      .mobile-nav-dropdown-trigger .nav-chevron {
+        transition: transform 0.2s ease;
       }
-      .mobile-nav-dropdown.active
-      .nav-chevron {
-        transform:
-          rotate(180deg);
+
+      .mobile-nav-dropdown.active .nav-chevron {
+        transform: rotate(180deg);
       }
-      /* MOBILE DROPDOWN CONTENT */
+
       .mobile-nav-dropdown-menu {
         display: none;
         flex-direction: column;
-        padding:
-          0 0 8px 12px;
+        padding: 0 0 8px 12px;
       }
+
       .mobile-nav-dropdown.active
       .mobile-nav-dropdown-menu {
         display: flex;
       }
+
       .mobile-nav-dropdown-menu a {
         display: block;
-        padding:
-          10px 8px;
+        padding: 10px 8px;
         color: inherit;
         text-decoration: none;
         font-size: 14px;
         opacity: 0.75;
       }
+
       .mobile-nav-dropdown-menu a:hover {
         opacity: 1;
       }
-      /* MOBILE ACTIONS */
+
       .mobile-nav-actions {
         display: flex;
         align-items: center;
         gap: 12px;
         padding-top: 18px;
       }
+
       .mobile-nav-actions > a:first-child {
         display: inline-flex;
         align-items: center;
         min-height: 42px;
-        padding:
-          0 4px;
+        padding: 0 4px;
         color: inherit;
         text-decoration: none;
         font-size: 14px;
       }
+
       .mobile-nav-actions .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 5px;
         min-height: 42px;
-        padding:
-          0 16px;
+        padding: 0 16px;
       }
     }
-    /* =====================================================
-       SMALL MOBILE
-       ===================================================== */
+
     @media (max-width: 480px) {
       .mobile-nav {
         padding-left: 16px;
         padding-right: 16px;
       }
+
       .brand {
         font-size: 18px;
       }
     }
+
+    /* =====================================================
+       AUTH MESSAGE
+       ===================================================== */
+
+    .auth-message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .auth-message.show {
+      display: block;
+    }
+
+    .auth-message.success {
+      color: #85e7ba;
+      background: rgba(62, 207, 142, 0.08);
+      border-color: rgba(62, 207, 142, 0.22);
+    }
+
+    .auth-message.error {
+      color: #ffb4b4;
+      background: rgba(255, 80, 80, 0.07);
+      border-color: rgba(255, 80, 80, 0.20);
+    }
+
+    .auth-message.info {
+      color: #b9c0bc;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .auth-meta {
+      transition: opacity 0.2s ease;
+    }
+
+    .auth-social:disabled,
+    .button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
   </style>
 </head>
+
 <body>
+
   <!-- =====================================================
        BACKGROUND
        ===================================================== -->
+
   <div
     class="background-grid"
     aria-hidden="true"
   ></div>
+
   <div
     class="background-glow"
     aria-hidden="true"
   ></div>
-  <!-- =====================================================
-       PAGE PROGRESS
-       ===================================================== -->
+
   <div
     class="page-progress"
     aria-hidden="true"
   ></div>
+
   <!-- =====================================================
        ANNOUNCEMENT
        ===================================================== -->
+
   <div class="announcement-bar">
     <div class="container announcement-inner">
+
       <div class="announcement-left">
+
         <span class="status-dot"></span>
+
         <span class="mono-label">
           EVALLOOP AI
         </span>
+
         <span class="announcement-divider"></span>
+
         <span class="announcement-text">
           AI EVALUATION INFRASTRUCTURE
         </span>
+
       </div>
+
       <a
         href="/"
         class="announcement-link"
@@ -379,14 +416,18 @@
         BACK TO PLATFORM
         <span>↗</span>
       </a>
+
     </div>
   </div>
+
   <!-- =====================================================
        HEADER
        ===================================================== -->
+
   <header class="site-header">
+
     <div class="nav-inner">
-      <!-- BRAND -->
+
       <a
         href="/"
         class="brand"
@@ -394,15 +435,16 @@
       >
         EvalLoop AI<span class="brand-cursor">_</span>
       </a>
-      <!-- =================================================
-           DESKTOP NAVIGATION
-           ================================================= -->
+
+      <!-- DESKTOP NAV -->
+
       <nav
         class="desktop-nav"
         aria-label="Primary navigation"
       >
-        <!-- PRODUCTS -->
+
         <div class="nav-dropdown">
+
           <button
             class="nav-dropdown-trigger"
             type="button"
@@ -412,10 +454,12 @@
             Products
             <span class="nav-chevron">⌄</span>
           </button>
+
           <div
             class="nav-dropdown-menu"
             role="menu"
           >
+
             <a
               href="/labs/"
               role="menuitem"
@@ -427,6 +471,7 @@
                 Test and compare AI quality
               </small>
             </a>
+
             <a
               href="/jobs/"
               role="menuitem"
@@ -439,6 +484,7 @@
                 discovery platform
               </small>
             </a>
+
             <a
               href="/hub/"
               role="menuitem"
@@ -450,14 +496,17 @@
                 Explore the evaluation ecosystem
               </small>
             </a>
+
           </div>
+
         </div>
-        <!-- WORKSPACE -->
+
         <a href="/app/">
           Workspace
         </a>
-        <!-- RESOURCES -->
+
         <div class="nav-dropdown">
+
           <button
             class="nav-dropdown-trigger"
             type="button"
@@ -467,10 +516,12 @@
             Resources
             <span class="nav-chevron">⌄</span>
           </button>
+
           <div
             class="nav-dropdown-menu"
             role="menu"
           >
+
             <a
               href="/docs/"
               role="menuitem"
@@ -482,6 +533,7 @@
                 Build with EvalLoop AI
               </small>
             </a>
+
             <a
               href="/knowledge/"
               role="menuitem"
@@ -493,6 +545,7 @@
                 Guides and evaluation basics
               </small>
             </a>
+
             <a
               href="/blog/"
               role="menuitem"
@@ -504,6 +557,7 @@
                 Ideas, updates, and research
               </small>
             </a>
+
             <a
               href="/api-space/"
               role="menuitem"
@@ -515,23 +569,28 @@
                 Connect your AI workflows
               </small>
             </a>
+
           </div>
+
         </div>
-        <!-- PRICING -->
+
         <a href="/pricing/">
           Pricing
         </a>
+
       </nav>
-      <!-- =================================================
-           NAV ACTIONS
-           ================================================= -->
+
+      <!-- NAV ACTIONS -->
+
       <div class="nav-actions">
+
         <a
           href="/login/"
           class="nav-login"
         >
           Login
         </a>
+
         <a
           href="/signup/"
           class="button button-small"
@@ -539,10 +598,11 @@
           Sign up
           <span>↗</span>
         </a>
+
       </div>
-      <!-- =================================================
-           MOBILE MENU BUTTON
-           ================================================= -->
+
+      <!-- MOBILE BUTTON -->
+
       <button
         class="mobile-menu-button"
         id="mobileMenuButton"
@@ -553,16 +613,18 @@
         <span></span>
         <span></span>
       </button>
+
     </div>
-    <!-- ===================================================
-         MOBILE NAVIGATION
-         =================================================== -->
+
+    <!-- MOBILE NAV -->
+
     <div
       class="mobile-nav"
       id="mobileNav"
     >
-      <!-- MOBILE PRODUCTS -->
+
       <div class="mobile-nav-dropdown">
+
         <button
           class="mobile-nav-dropdown-trigger"
           type="button"
@@ -571,24 +633,31 @@
           Products
           <span class="nav-chevron">⌄</span>
         </button>
+
         <div class="mobile-nav-dropdown-menu">
+
           <a href="/labs/">
             Evaluation Engines/Models
           </a>
+
           <a href="/jobs/">
             EvalLoop Jobs
           </a>
+
           <a href="/hub/">
             EvalAI Hub
           </a>
+
         </div>
+
       </div>
-      <!-- MOBILE WORKSPACE -->
+
       <a href="/app/">
         Workspace
       </a>
-      <!-- MOBILE RESOURCES -->
+
       <div class="mobile-nav-dropdown">
+
         <button
           class="mobile-nav-dropdown-trigger"
           type="button"
@@ -597,30 +666,39 @@
           Resources
           <span class="nav-chevron">⌄</span>
         </button>
+
         <div class="mobile-nav-dropdown-menu">
+
           <a href="/docs/">
             Docs
           </a>
+
           <a href="/knowledge/">
             Learn
           </a>
+
           <a href="/blog/">
             Blog
           </a>
+
           <a href="/api-space/">
             API
           </a>
+
         </div>
+
       </div>
-      <!-- MOBILE PRICING -->
+
       <a href="/pricing/">
         Pricing
       </a>
-      <!-- MOBILE ACTIONS -->
+
       <div class="mobile-nav-actions">
+
         <a href="/login/">
           Login
         </a>
+
         <a
           href="/signup/"
           class="button"
@@ -628,51 +706,68 @@
           Sign up
           <span>↗</span>
         </a>
+
       </div>
+
     </div>
+
   </header>
+
   <!-- =====================================================
        MAIN
        ===================================================== -->
+
   <main>
+
     <section class="auth-shell">
+
       <div class="container">
+
         <div class="auth-wrapper">
-          <!-- ===============================================
-               AUTH HEADER
-               =============================================== -->
+
+          <!-- AUTH HEADER -->
+
           <div class="auth-header">
+
             <div class="auth-label">
               AUTHENTICATION
             </div>
+
             <h1>
               Create <span>account.</span>
             </h1>
+
             <p>
               Start evaluating AI systems with
               EvalLoop AI and build a more reliable
               evaluation workflow.
             </p>
+
           </div>
-          <!-- ===============================================
-               AUTH PANEL
-               =============================================== -->
+
+          <!-- AUTH PANEL -->
+
           <div class="auth-panel">
-            <!-- =============================================
-                 SIGNUP FORM
-                 ============================================= -->
+
+            <!-- SIGNUP FORM -->
+
             <form
               class="auth-form"
               id="signupForm"
+              novalidate
             >
+
               <!-- NAME -->
+
               <div class="form-group">
+
                 <label
                   class="form-label"
                   for="name"
                 >
                   NAME <span>(OPTIONAL)</span>
                 </label>
+
                 <input
                   class="form-input"
                   id="name"
@@ -681,15 +776,20 @@
                   placeholder="Your name"
                   autocomplete="name"
                 >
+
               </div>
+
               <!-- EMAIL -->
+
               <div class="form-group">
+
                 <label
                   class="form-label"
                   for="email"
                 >
                   EMAIL
                 </label>
+
                 <input
                   class="form-input"
                   id="email"
@@ -699,15 +799,20 @@
                   autocomplete="email"
                   required
                 >
+
               </div>
+
               <!-- PASSWORD -->
+
               <div class="form-group">
+
                 <label
                   class="form-label"
                   for="password"
                 >
                   PASSWORD
                 </label>
+
                 <input
                   class="form-input"
                   id="password"
@@ -718,15 +823,20 @@
                   required
                   minlength="8"
                 >
+
               </div>
+
               <!-- CONFIRM PASSWORD -->
+
               <div class="form-group">
+
                 <label
                   class="form-label"
                   for="confirmPassword"
                 >
                   CONFIRM PASSWORD
                 </label>
+
                 <input
                   class="form-input"
                   id="confirmPassword"
@@ -737,35 +847,52 @@
                   required
                   minlength="8"
                 >
+
               </div>
-              <!-- PASSWORD HINT -->
+
               <div class="form-hint">
                 USE AT LEAST 8 CHARACTERS.
               </div>
+
+              <!-- MESSAGE -->
+
+              <div
+                class="auth-message"
+                id="authMessage"
+                role="status"
+                aria-live="polite"
+              ></div>
+
               <!-- CREATE ACCOUNT -->
+
               <button
                 type="submit"
                 class="button button-primary button-large"
+                id="signupButton"
               >
                 CREATE ACCOUNT →
               </button>
+
             </form>
-            <!-- =============================================
-                 SOCIAL DIVIDER
-                 ============================================= -->
+
+            <!-- DIVIDER -->
+
             <div class="auth-divider">
               OR CONTINUE WITH
             </div>
-            <!-- =============================================
-                 SOCIAL SIGNUP
-                 ============================================= -->
+
+            <!-- SOCIAL -->
+
             <div class="auth-socials">
+
               <!-- GOOGLE -->
+
               <button
                 type="button"
                 class="auth-social"
                 id="googleSignup"
               >
+
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -774,27 +901,35 @@
                     fill="#4285F4"
                     d="M21.35 12.27c0-.73-.07-1.43-.21-2.1H12v3.98h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.27Z"
                   />
+
                   <path
                     fill="#34A853"
                     d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.04H3.27v2.53A9.74 9.74 0 0 0 12 21.75Z"
                   />
+
                   <path
                     fill="#FBBC05"
                     d="M6.51 13.82A5.86 5.86 0 0 1 6.2 12c0-.63.11-1.24.31-1.82V7.65H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.06 1.02 4.35l3.24-2.53Z"
                   />
+
                   <path
                     fill="#EA4335"
                     d="M12 6.14c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.24 14.63 2.25 12 2.25a9.74 9.74 0 0 0-8.73 5.4l3.24 2.53C7.29 7.86 9.45 6.14 12 6.14Z"
                   />
                 </svg>
+
                 SIGN UP WITH GOOGLE
+
               </button>
+
               <!-- GITHUB -->
+
               <button
                 type="button"
                 class="auth-social"
                 id="githubSignup"
               >
+
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -804,35 +939,55 @@
                     d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.1.79-.25.79-.56v-2.16c-3.23.7-3.91-1.38-3.91-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.58-.29-5.29-1.29-5.29-5.75 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.48.11-3.08 0 0 .97-.31 3.17 1.19A11 11 0 0 1 12 5.83c.98 0 1.96.13 2.88.39 2.2-1.5 3.17-1.19 3.17-1.19.63 1.6.23 2.79.11 3.08.74.81 1.19 1.85 1.19 3.12 0 4.47-2.72 5.46-5.31 5.75.42.36.79 1.08.79 2.18v3.18c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"
                   />
                 </svg>
+
                 SIGN UP WITH GITHUB
+
               </button>
+
             </div>
-            <!-- =============================================
-                 AUTH FOOTER
-                 ============================================= -->
+
+            <!-- FOOTER -->
+
             <div class="auth-footer">
+
               ALREADY HAVE AN ACCOUNT?
+
               <a href="/login/">
                 SIGN IN →
               </a>
+
             </div>
-            <div class="auth-meta">
-              Authentication integration is currently
-              being prepared for EvalLoop AI.
+
+            <div
+              class="auth-meta"
+              id="authMeta"
+            >
+              Your account is secured by Supabase
+              authentication.
             </div>
+
           </div>
+
         </div>
+
       </div>
+
     </section>
+
   </main>
+
   <!-- =====================================================
        FOOTER
        ===================================================== -->
+
   <footer class="site-footer">
+
     <div class="container">
+
       <div class="footer-top">
-        <!-- BRAND -->
+
         <div class="footer-brand">
+
           <a
             href="/"
             class="brand"
@@ -841,374 +996,1099 @@
             <span>EvalLoop AI</span>
             <span class="brand-cursor">_</span>
           </a>
+
           <p>
             AI evaluation &amp; LLM quality platform.
           </p>
+
         </div>
-        <!-- FOOTER COLUMNS -->
+
         <div class="footer-columns">
-          <!-- PRODUCT -->
+
           <div class="footer-column">
+
             <div class="footer-label">
               PRODUCT
             </div>
+
             <a href="#product">
               Overview
             </a>
+
             <a href="/app/">
               Workspace
             </a>
+
             <a href="/hub/">
               EvalAI Hub
             </a>
+
             <a href="/pricing/">
               Pricing
             </a>
+
           </div>
-          <!-- RESOURCES -->
+
           <div class="footer-column">
+
             <div class="footer-label">
               RESOURCES
             </div>
+
             <a href="/knowledge/">
               Learn
             </a>
-            <a href="/blog">
+
+            <a href="/blog/">
               Blog
             </a>
+
             <a href="/docs/">
               Documentation
             </a>
-            <a href="/api-space">
+
+            <a href="/api-space/">
               API
             </a>
+
           </div>
-          <!-- COMPANY -->
+
           <div class="footer-column">
+
             <div class="footer-label">
               COMPANY
             </div>
+
             <a href="/about/">
               About
             </a>
+
             <a href="/contact/">
               Contact
             </a>
+
           </div>
-          <!-- LEGAL -->
+
           <div class="footer-column">
+
             <div class="footer-label">
               LEGAL
             </div>
+
             <a href="/privacy/">
               Privacy Policy
             </a>
+
             <a href="/terms/">
               Terms of Service
             </a>
+
             <a href="/ai-usage/">
               AI Usage Disclaimer
             </a>
+
           </div>
+
         </div>
+
       </div>
-      <!-- FOOTER BOTTOM -->
+
       <div class="footer-bottom">
+
         <span>
           © 2026 EvalLoop AI
         </span>
+
         <span>
           BUILT FOR BETTER AI
         </span>
+
         <span>
           HYDERABAD · INDIA
         </span>
+
       </div>
+
     </div>
+
   </footer>
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <!-- =====================================================
        JAVASCRIPT
        ===================================================== -->
+
   <script>
+
     /* =====================================================
-       MOBILE MENU
+       SUPABASE CONFIGURATION
        ===================================================== */
-    const mobileMenuButton =
-      document.getElementById(
-        "mobileMenuButton"
-      );
-    const mobileNav =
-      document.getElementById(
-        "mobileNav"
-      );
-    mobileMenuButton.addEventListener(
-      "click",
-      () => {
-        const active =
-          mobileNav.classList.toggle(
-            "active"
-          );
-        mobileMenuButton.classList.toggle(
-          "active",
-          active
-        );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          active
-        );
-        document.body.classList.toggle(
-          "menu-open",
-          active
-        );
-      }
-    );
-    /* =====================================================
-       CLOSE MOBILE MENU WHEN LINK IS CLICKED
-       ===================================================== */
-    mobileNav
-      .querySelectorAll("a")
-      .forEach(
-        (link) => {
-          link.addEventListener(
-            "click",
-            () => {
-              mobileNav.classList.remove(
-                "active"
-              );
-              mobileMenuButton.classList.remove(
-                "active"
-              );
-              mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-              document.body.classList.remove(
-                "menu-open"
-              );
-            }
-          );
+
+    const SUPABASE_URL =
+      "https://vonknmobshxkhbewdoie.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
         }
       );
+
+
     /* =====================================================
-       DESKTOP DROPDOWNS
+       DOM
        ===================================================== */
-    const desktopDropdowns =
-      document.querySelectorAll(
-        ".nav-dropdown"
-      );
-    desktopDropdowns.forEach(
-      (dropdown) => {
-        const trigger =
-          dropdown.querySelector(
-            ".nav-dropdown-trigger"
-          );
-        trigger.addEventListener(
-          "click",
-          (event) => {
-            event.stopPropagation();
-            const isOpen =
-              dropdown.classList.contains(
-                "active"
-              );
-            /* Close every other dropdown */
-            desktopDropdowns.forEach(
-              (item) => {
-                item.classList.remove(
-                  "active"
-                );
-                const itemTrigger =
-                  item.querySelector(
-                    ".nav-dropdown-trigger"
-                  );
-                if (itemTrigger) {
-                  itemTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-                }
-              }
-            );
-            /* Open selected dropdown */
-            if (!isOpen) {
-              dropdown.classList.add(
-                "active"
-              );
-              trigger.setAttribute(
-                "aria-expanded",
-                "true"
-              );
-            }
-          }
-        );
-      }
-    );
-    /* =====================================================
-       CLOSE DESKTOP DROPDOWNS ON OUTSIDE CLICK
-       ===================================================== */
-    document.addEventListener(
-      "click",
-      () => {
-        desktopDropdowns.forEach(
-          (dropdown) => {
-            dropdown.classList.remove(
-              "active"
-            );
-            const trigger =
-              dropdown.querySelector(
-                ".nav-dropdown-trigger"
-              );
-            if (trigger) {
-              trigger.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-            }
-          }
-        );
-      }
-    );
-    /* =====================================================
-       MOBILE DROPDOWNS
-       ===================================================== */
-    const mobileDropdowns =
-      document.querySelectorAll(
-        ".mobile-nav-dropdown"
-      );
-    mobileDropdowns.forEach(
-      (dropdown) => {
-        const trigger =
-          dropdown.querySelector(
-            ".mobile-nav-dropdown-trigger"
-          );
-        trigger.addEventListener(
-          "click",
-          () => {
-            const isOpen =
-              dropdown.classList.contains(
-                "active"
-              );
-            /* Close other mobile dropdowns */
-            mobileDropdowns.forEach(
-              (item) => {
-                item.classList.remove(
-                  "active"
-                );
-                const itemTrigger =
-                  item.querySelector(
-                    ".mobile-nav-dropdown-trigger"
-                  );
-                if (itemTrigger) {
-                  itemTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-                }
-              }
-            );
-            /* Open selected dropdown */
-            if (!isOpen) {
-              dropdown.classList.add(
-                "active"
-              );
-              trigger.setAttribute(
-                "aria-expanded",
-                "true"
-              );
-            }
-          }
-        );
-      }
-    );
-    /* =====================================================
-       SIGNUP FORM
-       ===================================================== */
+
     const signupForm =
       document.getElementById(
         "signupForm"
       );
-    signupForm.addEventListener(
-      "submit",
-      (event) => {
-        event.preventDefault();
-        const password =
-          document.getElementById(
-            "password"
-          ).value;
-        const confirmPassword =
-          document.getElementById(
-            "confirmPassword"
-          ).value;
-        if (
-          password !==
-          confirmPassword
-        ) {
-          alert(
-            "Passwords do not match."
-          );
-          return;
-        }
-        /*
-         * Authentication backend is not
-         * connected yet.
-         */
-        alert(
-          "Authentication is not connected yet. The signup interface is ready for backend integration."
-        );
-      }
-    );
-    /* =====================================================
-       GOOGLE SIGNUP
-       ===================================================== */
+
+    const signupButton =
+      document.getElementById(
+        "signupButton"
+      );
+
     const googleSignup =
       document.getElementById(
         "googleSignup"
       );
-    googleSignup.addEventListener(
-      "click",
-      () => {
-        alert(
-          "Google authentication will be connected here."
-        );
-      }
-    );
-    /* =====================================================
-       GITHUB SIGNUP
-       ===================================================== */
+
     const githubSignup =
       document.getElementById(
         "githubSignup"
       );
-    githubSignup.addEventListener(
-      "click",
-      () => {
-        alert(
-          "GitHub authentication will be connected here."
+
+    const authMessage =
+      document.getElementById(
+        "authMessage"
+      );
+
+    const authMeta =
+      document.getElementById(
+        "authMeta"
+      );
+
+    const nameInput =
+      document.getElementById(
+        "name"
+      );
+
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+    const confirmPasswordInput =
+      document.getElementById(
+        "confirmPassword"
+      );
+
+
+    /* =====================================================
+       AUTH MESSAGE
+       ===================================================== */
+
+    function showAuthMessage(
+      message,
+      type = "info"
+    ) {
+
+      authMessage.textContent =
+        message;
+
+      authMessage.className =
+        "auth-message show " +
+        type;
+
+    }
+
+
+    function clearAuthMessage() {
+
+      authMessage.textContent =
+        "";
+
+      authMessage.className =
+        "auth-message";
+
+    }
+
+
+    /* =====================================================
+       FRIENDLY AUTH ERRORS
+       ===================================================== */
+
+    function getFriendlyAuthError(
+      error
+    ) {
+
+      const message =
+        String(
+          error?.message || ""
+        ).toLowerCase();
+
+      if (
+        message.includes(
+          "user already registered"
+        )
+      ) {
+        return (
+          "An account with this email already exists. " +
+          "Try signing in instead."
         );
       }
+
+      if (
+        message.includes(
+          "password"
+        ) &&
+        message.includes(
+          "6"
+        )
+      ) {
+        return (
+          "Your password must meet the minimum " +
+          "password requirements."
+        );
+      }
+
+      if (
+        message.includes(
+          "invalid email"
+        )
+      ) {
+        return (
+          "Please enter a valid email address."
+        );
+      }
+
+      if (
+        message.includes(
+          "rate limit"
+        ) ||
+        message.includes(
+          "too many requests"
+        )
+      ) {
+        return (
+          "Too many authentication attempts. " +
+          "Please wait a moment and try again."
+        );
+      }
+
+      return (
+        error?.message ||
+        "Something went wrong. Please try again."
+      );
+
+    }
+
+
+    /* =====================================================
+       BUTTON STATE
+       ===================================================== */
+
+    function setAuthLoading(
+      loading
+    ) {
+
+      signupButton.disabled =
+        loading;
+
+      googleSignup.disabled =
+        loading;
+
+      githubSignup.disabled =
+        loading;
+
+    }
+
+
+    /* =====================================================
+       REDIRECT IF ALREADY AUTHENTICATED
+       ===================================================== */
+
+    async function checkExistingSession() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .getSession();
+
+        if (
+          error
+        ) {
+          console.error(
+            "Session check error:",
+            error
+          );
+
+          return;
+        }
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          window.location.href =
+            "/app/";
+
+        }
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "Unexpected session error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    checkExistingSession();
+
+
+    /* =====================================================
+       EMAIL SIGNUP
+       ===================================================== */
+
+    signupForm.addEventListener(
+      "submit",
+      async (
+        event
+      ) => {
+
+        event.preventDefault();
+
+        clearAuthMessage();
+
+        const name =
+          nameInput.value.trim();
+
+        const email =
+          emailInput.value
+            .trim()
+            .toLowerCase();
+
+        const password =
+          passwordInput.value;
+
+        const confirmPassword =
+          confirmPasswordInput.value;
+
+
+        /* -----------------------------------------------
+           VALIDATION
+           ----------------------------------------------- */
+
+        if (
+          !email
+        ) {
+
+          showAuthMessage(
+            "Please enter your email address.",
+            "error"
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (
+          password.length < 8
+        ) {
+
+          showAuthMessage(
+            "Your password must contain at least 8 characters.",
+            "error"
+          );
+
+          passwordInput.focus();
+
+          return;
+
+        }
+
+
+        if (
+          password !==
+          confirmPassword
+        ) {
+
+          showAuthMessage(
+            "Passwords do not match.",
+            "error"
+          );
+
+          confirmPasswordInput.focus();
+
+          return;
+
+        }
+
+
+        /* -----------------------------------------------
+           CREATE ACCOUNT
+           ----------------------------------------------- */
+
+        setAuthLoading(
+          true
+        );
+
+        signupButton.textContent =
+          "CREATING ACCOUNT...";
+
+        authMeta.style.opacity =
+          "0.5";
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth
+              .signUp(
+                {
+                  email,
+                  password,
+                  options: {
+                    data: {
+                      full_name:
+                        name || null,
+                      name:
+                        name || null
+                    },
+                    emailRedirectTo:
+                      window.location.origin +
+                      "/app/"
+                  }
+                }
+              );
+
+
+          if (
+            error
+          ) {
+
+            console.error(
+              "Signup error:",
+              error
+            );
+
+            showAuthMessage(
+              getFriendlyAuthError(
+                error
+              ),
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          /* ---------------------------------------------
+             SESSION CREATED
+             --------------------------------------------- */
+
+          if (
+            data &&
+            data.session
+          ) {
+
+            showAuthMessage(
+              "Account created successfully. Opening your workspace...",
+              "success"
+            );
+
+            setTimeout(
+              () => {
+                window.location.href =
+                  "/app/";
+              },
+              700
+            );
+
+            return;
+
+          }
+
+
+          /* ---------------------------------------------
+             EMAIL CONFIRMATION REQUIRED
+             --------------------------------------------- */
+
+          showAuthMessage(
+            "Account created. Please check your email to confirm your account before signing in.",
+            "success"
+          );
+
+          signupForm.reset();
+
+        } catch (
+          error
+        ) {
+
+          console.error(
+            "Unexpected signup error:",
+            error
+          );
+
+          showAuthMessage(
+            getFriendlyAuthError(
+              error
+            ),
+            "error"
+          );
+
+        } finally {
+
+          setAuthLoading(
+            false
+          );
+
+          signupButton.textContent =
+            "CREATE ACCOUNT →";
+
+          authMeta.style.opacity =
+            "1";
+
+        }
+
+      }
     );
+
+
+    /* =====================================================
+       GOOGLE SIGNUP / LOGIN
+       ===================================================== */
+
+    googleSignup.addEventListener(
+      "click",
+      async () => {
+
+        clearAuthMessage();
+
+        setAuthLoading(
+          true
+        );
+
+        googleSignup.textContent =
+          "CONNECTING TO GOOGLE...";
+
+        try {
+
+          const {
+            error
+          } =
+            await supabaseClient.auth
+              .signInWithOAuth(
+                {
+                  provider: "google",
+                  options: {
+                    redirectTo:
+                      window.location.origin +
+                      "/app/"
+                  }
+                }
+              );
+
+
+          if (
+            error
+          ) {
+
+            console.error(
+              "Google OAuth error:",
+              error
+            );
+
+            showAuthMessage(
+              getFriendlyAuthError(
+                error
+              ),
+              "error"
+            );
+
+            setAuthLoading(
+              false
+            );
+
+            googleSignup.innerHTML =
+              "SIGN UP WITH GOOGLE";
+
+          }
+
+        } catch (
+          error
+        ) {
+
+          console.error(
+            "Unexpected Google error:",
+            error
+          );
+
+          showAuthMessage(
+            getFriendlyAuthError(
+              error
+            ),
+            "error"
+          );
+
+          setAuthLoading(
+            false
+          );
+
+          googleSignup.innerHTML =
+            "SIGN UP WITH GOOGLE";
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       GITHUB SIGNUP / LOGIN
+       ===================================================== */
+
+    githubSignup.addEventListener(
+      "click",
+      async () => {
+
+        clearAuthMessage();
+
+        setAuthLoading(
+          true
+        );
+
+        githubSignup.textContent =
+          "CONNECTING TO GITHUB...";
+
+        try {
+
+          const {
+            error
+          } =
+            await supabaseClient.auth
+              .signInWithOAuth(
+                {
+                  provider: "github",
+                  options: {
+                    redirectTo:
+                      window.location.origin +
+                      "/app/"
+                  }
+                }
+              );
+
+
+          if (
+            error
+          ) {
+
+            console.error(
+              "GitHub OAuth error:",
+              error
+            );
+
+            showAuthMessage(
+              getFriendlyAuthError(
+                error
+              ),
+              "error"
+            );
+
+            setAuthLoading(
+              false
+            );
+
+            githubSignup.innerHTML =
+              "SIGN UP WITH GITHUB";
+
+          }
+
+        } catch (
+          error
+        ) {
+
+          console.error(
+            "Unexpected GitHub error:",
+            error
+          );
+
+          showAuthMessage(
+            getFriendlyAuthError(
+              error
+            ),
+            "error"
+          );
+
+          setAuthLoading(
+            false
+          );
+
+          githubSignup.innerHTML =
+            "SIGN UP WITH GITHUB";
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       MOBILE MENU
+       ===================================================== */
+
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+
+    const mobileNav =
+      document.getElementById(
+        "mobileNav"
+      );
+
+
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+
+        const active =
+          mobileNav.classList.toggle(
+            "active"
+          );
+
+        mobileMenuButton.classList.toggle(
+          "active",
+          active
+        );
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          active
+        );
+
+        document.body.classList.toggle(
+          "menu-open",
+          active
+        );
+
+      }
+    );
+
+
+    mobileNav
+      .querySelectorAll("a")
+      .forEach(
+        (
+          link
+        ) => {
+
+          link.addEventListener(
+            "click",
+            () => {
+
+              mobileNav.classList.remove(
+                "active"
+              );
+
+              mobileMenuButton.classList.remove(
+                "active"
+              );
+
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+              document.body.classList.remove(
+                "menu-open"
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    /* =====================================================
+       DESKTOP DROPDOWNS
+       ===================================================== */
+
+    const desktopDropdowns =
+      document.querySelectorAll(
+        ".nav-dropdown"
+      );
+
+
+    desktopDropdowns.forEach(
+      (
+        dropdown
+      ) => {
+
+        const trigger =
+          dropdown.querySelector(
+            ".nav-dropdown-trigger"
+          );
+
+
+        trigger.addEventListener(
+          "click",
+          (
+            event
+          ) => {
+
+            event.stopPropagation();
+
+            const isOpen =
+              dropdown.classList.contains(
+                "active"
+              );
+
+
+            desktopDropdowns.forEach(
+              (
+                item
+              ) => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+                const itemTrigger =
+                  item.querySelector(
+                    ".nav-dropdown-trigger"
+                  );
+
+                if (
+                  itemTrigger
+                ) {
+
+                  itemTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+
+              }
+            );
+
+
+            if (
+              !isOpen
+            ) {
+
+              dropdown.classList.add(
+                "active"
+              );
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    document.addEventListener(
+      "click",
+      () => {
+
+        desktopDropdowns.forEach(
+          (
+            dropdown
+          ) => {
+
+            dropdown.classList.remove(
+              "active"
+            );
+
+            const trigger =
+              dropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (
+              trigger
+            ) {
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       MOBILE DROPDOWNS
+       ===================================================== */
+
+    const mobileDropdowns =
+      document.querySelectorAll(
+        ".mobile-nav-dropdown"
+      );
+
+
+    mobileDropdowns.forEach(
+      (
+        dropdown
+      ) => {
+
+        const trigger =
+          dropdown.querySelector(
+            ".mobile-nav-dropdown-trigger"
+          );
+
+
+        trigger.addEventListener(
+          "click",
+          () => {
+
+            const isOpen =
+              dropdown.classList.contains(
+                "active"
+              );
+
+
+            mobileDropdowns.forEach(
+              (
+                item
+              ) => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+                const itemTrigger =
+                  item.querySelector(
+                    ".mobile-nav-dropdown-trigger"
+                  );
+
+                if (
+                  itemTrigger
+                ) {
+
+                  itemTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+
+              }
+            );
+
+
+            if (
+              !isOpen
+            ) {
+
+              dropdown.classList.add(
+                "active"
+              );
+
+              trigger.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
     /* =====================================================
        PAGE PROGRESS
        ===================================================== */
+
     const progress =
       document.querySelector(
         ".page-progress"
       );
+
+
     window.addEventListener(
       "scroll",
       () => {
+
         const scrollTop =
           window.scrollY;
+
         const scrollHeight =
           document.documentElement.scrollHeight -
           window.innerHeight;
+
         const percentage =
           scrollHeight > 0
-            ? (scrollTop / scrollHeight) * 100
+            ? (
+                scrollTop /
+                scrollHeight
+              ) * 100
             : 0;
+
         progress.style.width =
           percentage + "%";
+
       }
     );
+
   </script>
+
 </body>
 </html>
