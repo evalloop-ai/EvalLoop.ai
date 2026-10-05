@@ -126,8 +126,7 @@ content=”#101211”
       top: 0;
       z-index: 1000;
       border-bottom: 1px solid var(--line-soft);
-      background:
-        rgba(16, 18, 17, 0.82);
+      background: rgba(16, 18, 17, 0.82);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -168,8 +167,7 @@ content=”#101211”
       font-size: 12px;
       font-weight: 400;
       white-space: nowrap;
-      transition:
-        color 0.25s ease;
+      transition: color 0.25s ease;
     }
     .desktop-nav > a:hover,
     .nav-dropdown:hover .nav-dropdown-trigger,
@@ -222,10 +220,8 @@ content=”#101211”
       visibility: hidden;
       pointer-events: none;
       border: 1px solid var(--line);
-      background:
-        rgba(23, 27, 24, 0.98);
-      box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.32);
+      background: rgba(23, 27, 24, 0.98);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
       transition:
         opacity 0.2s ease,
         transform 0.2s ease,
@@ -258,7 +254,7 @@ content=”#101211”
       display: flex;
       flex-direction: column;
       gap: 4px;
-      padding: 13px 13px;
+      padding: 13px;
       border: 1px solid transparent;
       color: var(--muted);
       transition:
@@ -267,10 +263,8 @@ content=”#101211”
         color 0.2s ease;
     }
     .nav-dropdown-menu a:hover {
-      background:
-        rgba(62, 207, 142, 0.055);
-      border-color:
-        rgba(62, 207, 142, 0.12);
+      background: rgba(62, 207, 142, 0.055);
+      border-color: rgba(62, 207, 142, 0.12);
       color: var(--ink);
     }
     .nav-dropdown-menu a span {
@@ -282,7 +276,6 @@ content=”#101211”
       font-family: var(--mono);
       font-size: 7px;
       line-height: 1.5;
-      letter-spacing: 0.01em;
     }
     /* =========================================
        NAV ACTIONS
@@ -327,8 +320,7 @@ content=”#101211”
       gap: 9px;
       padding: 5px 8px 5px 5px;
       border: 1px solid var(--line);
-      background:
-        rgba(23, 27, 24, 0.72);
+      background: rgba(23, 27, 24, 0.72);
       color: var(--ink);
       cursor: pointer;
       border-radius: 3px;
@@ -348,8 +340,7 @@ content=”#101211”
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid
-        rgba(62, 207, 142, 0.35);
+      border: 1px solid rgba(62, 207, 142, 0.35);
       background: var(--darkgreen);
       color: var(--green2);
       font-family: var(--mono);
@@ -375,10 +366,8 @@ content=”#101211”
       width: 260px;
       padding: 8px;
       border: 1px solid var(--line);
-      background:
-        rgba(23, 27, 24, 0.98);
-      box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.35);
+      background: rgba(23, 27, 24, 0.98);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       opacity: 0;
@@ -386,9 +375,9 @@ content=”#101211”
       pointer-events: none;
       transform: translateY(-6px);
       transition:
-        opacity .2s ease,
-        transform .2s ease,
-        visibility .2s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
       z-index: 1100;
     }
     .profile-menu.open {
@@ -448,10 +437,8 @@ content=”#101211”
     .profile-menu a:hover,
     .profile-logout:hover {
       color: var(--green2);
-      background:
-        rgba(62, 207, 142, 0.045);
-      border-color:
-        rgba(62, 207, 142, 0.12);
+      background: rgba(62, 207, 142, 0.045);
+      border-color: rgba(62, 207, 142, 0.12);
     }
     /* =========================================
        BUTTON
@@ -463,11 +450,9 @@ content=”#101211”
       align-items: center;
       justify-content: center;
       gap: 8px;
-      border: 1px solid
-        rgba(62, 207, 142, 0.35);
+      border: 1px solid rgba(62, 207, 142, 0.35);
       border-radius: 3px;
-      background:
-        rgba(62, 207, 142, 0.045);
+      background: rgba(62, 207, 142, 0.045);
       color: var(--green2);
       font-family: var(--mono);
       font-size: 10px;
@@ -478,10 +463,8 @@ content=”#101211”
         transform 0.25s ease;
     }
     .button:hover {
-      background:
-        rgba(62, 207, 142, 0.10);
-      border-color:
-        rgba(62, 207, 142, 0.8);
+      background: rgba(62, 207, 142, 0.10);
+      border-color: rgba(62, 207, 142, 0.8);
       color: var(--ink);
       transform: translateY(-1px);
     }
@@ -491,15 +474,14 @@ content=”#101211”
     }
     .button-primary {
       background: var(--darkgreen);
-      border-color:
-        rgba(62, 207, 142, 0.65);
+      border-color: rgba(62, 207, 142, 0.65);
     }
     .button-primary:hover {
       background: #193223;
       border-color: var(--green);
     }
     /* =========================================
-       MOBILE MENU BUTTON
+       MOBILE MENU
        ========================================= */
     .mobile-menu-button {
       display: none;
@@ -527,18 +509,17 @@ content=”#101211”
     .mobile-menu-button.active span:last-child {
       transform: translateY(-3.5px) rotate(-45deg);
     }
-    /* =========================================
-       MOBILE NAVIGATION
-       ========================================= */
     .mobile-nav {
       display: none;
       max-height: calc(100vh - 68px);
       overflow-y: auto;
       border-bottom: 1px solid var(--line-soft);
-      background:
-        rgba(16, 18, 17, 0.98);
+      background: rgba(16, 18, 17, 0.98);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+    }
+    .mobile-nav.active {
+      display: block;
     }
     .mobile-nav > a,
     .mobile-nav-dropdown-trigger {
@@ -563,15 +544,10 @@ content=”#101211”
     .mobile-nav-dropdown-menu {
       display: none;
       padding: 4px 12px 8px;
-      background:
-        rgba(23, 27, 24, 0.7);
+      background: rgba(23, 27, 24, 0.7);
     }
-    .mobile-nav-dropdown.open
-      .mobile-nav-dropdown-menu {
+    .mobile-nav-dropdown.open .mobile-nav-dropdown-menu {
       display: block;
-    }
-    .mobile-nav-dropdown-trigger .nav-chevron {
-      transition: transform 0.25s ease;
     }
     .mobile-nav-dropdown.open
       .mobile-nav-dropdown-trigger
@@ -581,7 +557,7 @@ content=”#101211”
     }
     .mobile-nav-dropdown-menu a {
       display: block;
-      padding: 12px 12px;
+      padding: 12px;
       color: var(--muted);
       font-size: 11px;
       border-bottom: 1px solid var(--line-soft);
@@ -591,19 +567,6 @@ content=”#101211”
     }
     .mobile-nav-dropdown-menu a:hover {
       color: var(--green2);
-    }
-    .mobile-nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 20px 24px;
-    }
-    .mobile-nav-actions > a:first-child {
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .mobile-nav.active {
-      display: block;
     }
     /* =========================================
        MOBILE AUTH
@@ -639,7 +602,6 @@ content=”#101211”
       border: 1px solid var(--line);
       background: var(--panel);
       color: var(--ink);
-      cursor: default;
     }
     .mobile-profile-info {
       min-width: 0;
@@ -689,10 +651,8 @@ content=”#101211”
     }
     .mobile-profile-logout:hover {
       color: var(--green2);
-      border-color:
-        rgba(62, 207, 142, 0.3);
-      background:
-        rgba(62, 207, 142, 0.045);
+      border-color: rgba(62, 207, 142, 0.3);
+      background: rgba(62, 207, 142, 0.045);
     }
     /* =========================================
        HERO
@@ -717,8 +677,7 @@ content=”#101211”
     .about-hero h1 {
       max-width: 1000px;
       margin-top: 25px;
-      font-size:
-        clamp(58px, 8vw, 100px);
+      font-size: clamp(58px, 8vw, 100px);
       line-height: 0.91;
       font-weight: 300;
       letter-spacing: -0.055em;
@@ -742,8 +701,7 @@ content=”#101211”
     }
     .intro-grid {
       display: grid;
-      grid-template-columns:
-        1.1fr 0.9fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 1px;
       background: var(--line);
       border: 1px solid var(--line);
@@ -812,8 +770,7 @@ content=”#101211”
     }
     .section-heading h2 {
       margin-top: 20px;
-      font-size:
-        clamp(42px, 6vw, 70px);
+      font-size: clamp(42px, 6vw, 70px);
       line-height: 0.98;
       font-weight: 300;
       letter-spacing: -0.05em;
@@ -823,8 +780,7 @@ content=”#101211”
     }
     .principles-grid {
       display: grid;
-      grid-template-columns:
-        repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: var(--line);
       border: 1px solid var(--line);
@@ -889,8 +845,7 @@ content=”#101211”
     }
     .ecosystem-grid {
       display: grid;
-      grid-template-columns:
-        repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       margin-top: 1px;
       background: var(--line-soft);
@@ -927,8 +882,7 @@ content=”#101211”
     }
     .cta-panel {
       padding: 65px;
-      border: 1px solid
-        rgba(62, 207, 142, 0.18);
+      border: 1px solid rgba(62, 207, 142, 0.18);
       background:
         radial-gradient(
           circle at 80% 50%,
@@ -939,8 +893,7 @@ content=”#101211”
     }
     .cta-panel h2 {
       max-width: 800px;
-      font-size:
-        clamp(45px, 6vw, 75px);
+      font-size: clamp(45px, 6vw, 75px);
       line-height: 0.95;
       font-weight: 300;
       letter-spacing: -0.05em;
@@ -967,8 +920,7 @@ content=”#101211”
     .site-footer {
       border-top: 1px solid var(--line-soft);
       padding: 65px 0 25px;
-      background:
-        rgba(16, 18, 17, 0.75);
+      background: rgba(16, 18, 17, 0.75);
     }
     .footer-top {
       display: grid;
@@ -982,8 +934,7 @@ content=”#101211”
     }
     .footer-columns {
       display: grid;
-      grid-template-columns:
-        repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 30px;
     }
     .footer-column {
@@ -1022,12 +973,10 @@ content=”#101211”
        ANIMATION
        ========================================= */
     @keyframes blink {
-      0%,
-      45% {
+      0%, 45% {
         opacity: 1;
       }
-      46%,
-      100% {
+      46%, 100% {
         opacity: 0.2;
       }
     }
@@ -1071,8 +1020,7 @@ content=”#101211”
       }
       .footer-columns {
         width: 100%;
-        grid-template-columns:
-          repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 32px;
       }
     }
@@ -1191,7 +1139,7 @@ content=”#101211”
     <a
       href="/"
       class="brand"
-      aria-label="EvalLoop AI"
+      aria-label="EvalLoop AI home"
     >
       EvalLoop AI<span class="brand-cursor">_</span>
     </a>
@@ -1218,41 +1166,30 @@ content=”#101211”
             href="/labs/"
             role="menuitem"
           >
-            <span>
-              Evaluation Engines/Models
-            </span>
-            <small>
-              Test and compare AI quality
-            </small>
+            <span>Evaluation Engines/Models</span>
+            <small>Test and compare AI quality</small>
           </a>
           <a
             href="/jobs/"
             role="menuitem"
           >
-            <span>
-              EvalLoop Jobs
-            </span>
+            <span>EvalLoop Jobs</span>
             <small>
-              Independent jobs directory &amp;
-              discovery platform
+              Independent jobs directory &amp; discovery platform
             </small>
           </a>
           <a
             href="/hub/"
             role="menuitem"
           >
-            <span>
-              EvalAI Hub
-            </span>
+            <span>EvalAI Hub</span>
             <small>
               Explore the evaluation ecosystem
             </small>
           </a>
         </div>
       </div>
-      <a href="/app/">
-        Workspace
-      </a>
+      <a href="/app/">Workspace</a>
       <div class="nav-dropdown">
         <button
           class="nav-dropdown-trigger"
@@ -1271,55 +1208,36 @@ content=”#101211”
             href="/docs/"
             role="menuitem"
           >
-            <span>
-              Docs
-            </span>
-            <small>
-              Build with EvalLoop AI
-            </small>
+            <span>Docs</span>
+            <small>Build with EvalLoop AI</small>
           </a>
           <a
             href="/knowledge/"
             role="menuitem"
           >
-            <span>
-              Learn
-            </span>
-            <small>
-              Guides and evaluation basics
-            </small>
+            <span>Learn</span>
+            <small>Guides and evaluation basics</small>
           </a>
           <a
             href="/blog/"
             role="menuitem"
           >
-            <span>
-              Blog
-            </span>
-            <small>
-              Ideas, updates, and research
-            </small>
+            <span>Blog</span>
+            <small>Ideas, updates, and research</small>
           </a>
           <a
             href="/api-space/"
             role="menuitem"
           >
-            <span>
-              API
-            </span>
-            <small>
-              Connect your AI workflows
-            </small>
+            <span>API</span>
+            <small>Connect your AI workflows</small>
           </a>
         </div>
       </div>
-      <a href="/pricing/">
-        Pricing
-      </a>
+      <a href="/pricing/">Pricing</a>
     </nav>
     <!-- DESKTOP AUTH -->
     <div class="nav-actions">
-      <!-- Logged out -->
       <div
         class="auth-logged-out"
         id="authLoggedOut"
@@ -1338,7 +1256,6 @@ content=”#101211”
           <span>↗</span>
         </a>
       </div>
-      <!-- Logged in -->
       <div
         class="auth-logged-in"
         id="authLoggedIn"
@@ -1365,9 +1282,7 @@ content=”#101211”
             >
               Account
             </span>
-            <span class="profile-chevron">
-              ⌄
-            </span>
+            <span class="profile-chevron">⌄</span>
           </button>
           <div
             class="profile-menu"
@@ -1383,14 +1298,10 @@ content=”#101211”
                 EL
               </span>
               <div class="profile-menu-identity">
-                <strong
-                  id="profileMenuName"
-                >
+                <strong id="profileMenuName">
                   Account
                 </strong>
-                <span
-                  id="profileMenuEmail"
-                >
+                <span id="profileMenuEmail">
                   user@example.com
                 </span>
               </div>
@@ -1438,10 +1349,11 @@ content=”#101211”
         </div>
       </div>
     </div>
-    <!-- Mobile menu button -->
+    <!-- MOBILE MENU BUTTON -->
     <button
       class="mobile-menu-button"
       id="mobileMenuButton"
+      type="button"
       aria-label="Open navigation menu"
       aria-expanded="false"
     >
@@ -1465,20 +1377,12 @@ content=”#101211”
       <span class="nav-chevron">⌄</span>
     </button>
     <div class="mobile-nav-dropdown-menu">
-      <a href="/labs/">
-        Evaluation Engines/Models
-      </a>
-      <a href="/jobs/">
-        EvalLoop Jobs
-      </a>
-      <a href="/hub/">
-        EvalAI Hub
-      </a>
+      <a href="/labs/">Evaluation Engines/Models</a>
+      <a href="/jobs/">EvalLoop Jobs</a>
+      <a href="/hub/">EvalAI Hub</a>
     </div>
   </div>
-  <a href="/app/">
-    Workspace
-  </a>
+  <a href="/app/">Workspace</a>
   <div class="mobile-nav-dropdown">
     <button
       class="mobile-nav-dropdown-trigger"
@@ -1489,31 +1393,19 @@ content=”#101211”
       <span class="nav-chevron">⌄</span>
     </button>
     <div class="mobile-nav-dropdown-menu">
-      <a href="/docs/">
-        Docs
-      </a>
-      <a href="/knowledge/">
-        Learn
-      </a>
-      <a href="/blog/">
-        Blog
-      </a>
-      <a href="/api-space/">
-        API
-      </a>
+      <a href="/docs/">Docs</a>
+      <a href="/knowledge/">Learn</a>
+      <a href="/blog/">Blog</a>
+      <a href="/api-space/">API</a>
     </div>
   </div>
-  <a href="/pricing/">
-    Pricing
-  </a>
-  <!-- MOBILE AUTH -->
+  <a href="/pricing/">Pricing</a>
+  <!-- MOBILE LOGGED OUT -->
   <div
     class="mobile-auth-logged-out"
     id="mobileAuthLoggedOut"
   >
-    <a href="/login/">
-      Login
-    </a>
+    <a href="/login/">Login</a>
     <a
       href="/signup/"
       class="button"
@@ -1522,6 +1414,7 @@ content=”#101211”
       <span>↗</span>
     </a>
   </div>
+  <!-- MOBILE LOGGED IN -->
   <div
     class="mobile-auth-logged-in"
     id="mobileAuthLoggedIn"
@@ -1535,34 +1428,20 @@ content=”#101211”
         EL
       </span>
       <div class="mobile-profile-info">
-        <strong
-          id="mobileProfileName"
-        >
+        <strong id="mobileProfileName">
           Account
         </strong>
-        <span
-          id="mobileProfileEmail"
-        >
+        <span id="mobileProfileEmail">
           user@example.com
         </span>
       </div>
     </div>
     <div class="mobile-profile-links">
-      <a href="/app/">
-        Workspace
-      </a>
-      <a href="/account/">
-        Account
-      </a>
-      <a href="/usage/">
-        Usage &amp; Plan
-      </a>
-      <a href="/api-space/">
-        API Keys
-      </a>
-      <a href="/settings/">
-        Settings
-      </a>
+      <a href="/app/">Workspace</a>
+      <a href="/account/">Account</a>
+      <a href="/usage/">Usage &amp; Plan</a>
+      <a href="/api-space/">API Keys</a>
+      <a href="/settings/">Settings</a>
     </div>
     <button
       type="button"
@@ -1721,12 +1600,8 @@ content=”#101211”
             01 / EVALUATE
           </div>
           <div>
-            <h3>
-              Evaluate
-            </h3>
-            <p>
-              CORE EVALUATION
-            </p>
+            <h3>Evaluate</h3>
+            <p>CORE EVALUATION</p>
           </div>
         </div>
         <div class="ecosystem-item">
@@ -1734,12 +1609,8 @@ content=”#101211”
             02 / KNOWLEDGE
           </div>
           <div>
-            <h3>
-              Knowledge
-            </h3>
-            <p>
-              LEARN &amp; UNDERSTAND
-            </p>
+            <h3>Knowledge</h3>
+            <p>LEARN &amp; UNDERSTAND</p>
           </div>
         </div>
         <div class="ecosystem-item">
@@ -1747,12 +1618,8 @@ content=”#101211”
             03 / LABS
           </div>
           <div>
-            <h3>
-              Labs
-            </h3>
-            <p>
-              EXPERIMENT &amp; TEST
-            </p>
+            <h3>Labs</h3>
+            <p>EXPERIMENT &amp; TEST</p>
           </div>
         </div>
         <div class="ecosystem-item">
@@ -1760,12 +1627,8 @@ content=”#101211”
             04 / BENCHMARKS
           </div>
           <div>
-            <h3>
-              Benchmarks
-            </h3>
-            <p>
-              COMPARE &amp; MEASURE
-            </p>
+            <h3>Benchmarks</h3>
+            <p>COMPARE &amp; MEASURE</p>
           </div>
         </div>
       </div>
@@ -1814,10 +1677,9 @@ content=”#101211”
       <a
         href="/"
         class="brand"
-        aria-label="EvalLoop AI"
+        aria-label="EvalLoop AI home"
       >
-        <span>EvalLoop AI</span>
-        <span class="brand-cursor">_</span>
+        EvalLoop AI<span class="brand-cursor">_</span>
       </a>
       <p>
         AI evaluation &amp; LLM quality platform.
@@ -1828,142 +1690,95 @@ content=”#101211”
         <div class="footer-label">
           PRODUCT
         </div>
-        <a href="#product">
-          Overview
-        </a>
-        <a href="/app/">
-          Workspace
-        </a>
-        <a href="/hub/">
-          EvalAI Hub
-        </a>
-        <a href="/pricing/">
-          Pricing
-        </a>
+        <a href="/app/">Workspace</a>
+        <a href="/hub/">EvalAI Hub</a>
+        <a href="/pricing/">Pricing</a>
       </div>
       <div class="footer-column">
         <div class="footer-label">
           RESOURCES
         </div>
-        <a href="/knowledge/">
-          Learn
-        </a>
-        <a href="/blog">
-          Blog
-        </a>
-        <a href="/docs/">
-          Documentation
-        </a>
-        <a href="/api-space">
-          API
-        </a>
+        <a href="/knowledge/">Learn</a>
+        <a href="/blog/">Blog</a>
+        <a href="/docs/">Documentation</a>
+        <a href="/api-space/">API</a>
       </div>
       <div class="footer-column">
         <div class="footer-label">
           COMPANY
         </div>
-        <a href="/about/">
-          About
-        </a>
-        <a href="/contact/">
-          Contact
-        </a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
       </div>
       <div class="footer-column">
         <div class="footer-label">
           LEGAL
         </div>
-        <a href="/privacy/">
-          Privacy Policy
-        </a>
-        <a href="/terms/">
-          Terms of Service
-        </a>
-        <a href="/ai-usage/">
-          AI Usage Disclaimer
-        </a>
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms of Service</a>
+        <a href="/ai-usage/">AI Usage Disclaimer</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>
-      © 2026 EvalLoop AI
-    </span>
-    <span>
-      BUILT FOR BETTER AI
-    </span>
-    <span>
-      HYDERABAD · INDIA
-    </span>
+    <span>© 2026 EvalLoop AI</span>
+    <span>BUILT FOR BETTER AI</span>
+    <span>HYDERABAD · INDIA</span>
   </div>
 </div>
   </footer>
   <!-- =========================================
-       NAVIGATION + AUTH SCRIPT
+       NAVIGATION + AUTH
        ========================================= -->
   <script>
     /* =========================================
        DESKTOP DROPDOWNS
        ========================================= */
     const desktopDropdowns =
-      document.querySelectorAll(
-        ".nav-dropdown"
-      );
-    desktopDropdowns.forEach(
-      dropdown => {
+      document.querySelectorAll(".nav-dropdown");
+    desktopDropdowns.forEach(dropdown => {
+      const trigger =
+        dropdown.querySelector(
+          ".nav-dropdown-trigger"
+        );
+      if (!trigger) return;
+      trigger.addEventListener("click", event => {
+        event.stopPropagation();
+        const isOpen =
+          trigger.getAttribute("aria-expanded") ===
+          "true";
+        desktopDropdowns.forEach(otherDropdown => {
+          const otherTrigger =
+            otherDropdown.querySelector(
+              ".nav-dropdown-trigger"
+            );
+          if (otherTrigger) {
+            otherTrigger.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+          }
+        });
+        trigger.setAttribute(
+          "aria-expanded",
+          String(!isOpen)
+        );
+      });
+    });
+    document.addEventListener("click", () => {
+      desktopDropdowns.forEach(dropdown => {
         const trigger =
           dropdown.querySelector(
             ".nav-dropdown-trigger"
           );
-        trigger.addEventListener(
-          "click",
-          event => {
-            event.stopPropagation();
-            const isOpen =
-              trigger.getAttribute(
-                "aria-expanded"
-              ) === "true";
-            desktopDropdowns.forEach(
-              otherDropdown => {
-                const otherTrigger =
-                  otherDropdown.querySelector(
-                    ".nav-dropdown-trigger"
-                  );
-                if (otherTrigger) {
-                  otherTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-                }
-              }
-            );
-            trigger.setAttribute(
-              "aria-expanded",
-              String(!isOpen)
-            );
-          }
-        );
-      }
-    );
-    document.addEventListener(
-      "click",
-      () => {
-        desktopDropdowns.forEach(
-          dropdown => {
-            const trigger =
-              dropdown.querySelector(
-                ".nav-dropdown-trigger"
-              );
-            if (trigger) {
-              trigger.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-            }
-          }
-        );
-      }
-    );
+        if (trigger) {
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+        }
+      });
+    });
     /* =========================================
        MOBILE MENU
        ========================================= */
@@ -1975,23 +1790,25 @@ content=”#101211”
       document.getElementById(
         "mobileNav"
       );
-    mobileMenuButton.addEventListener(
-      "click",
-      () => {
-        const active =
-          mobileNav.classList.toggle(
-            "active"
+    if (mobileMenuButton && mobileNav) {
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
+          const active =
+            mobileNav.classList.toggle(
+              "active"
+            );
+          mobileMenuButton.classList.toggle(
+            "active",
+            active
           );
-        mobileMenuButton.classList.toggle(
-          "active",
-          active
-        );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          String(active)
-        );
-      }
-    );
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            String(active)
+          );
+        }
+      );
+    }
     /* =========================================
        MOBILE DROPDOWNS
        ========================================= */
@@ -1999,36 +1816,33 @@ content=”#101211”
       document.querySelectorAll(
         ".mobile-nav-dropdown"
       );
-    mobileDropdowns.forEach(
-      dropdown => {
-        const trigger =
-          dropdown.querySelector(
-            ".mobile-nav-dropdown-trigger"
-          );
-        trigger.addEventListener(
-          "click",
-          () => {
-            const isOpen =
-              dropdown.classList.toggle(
-                "open"
-              );
-            trigger.setAttribute(
-              "aria-expanded",
-              String(isOpen)
-            );
-          }
+    mobileDropdowns.forEach(dropdown => {
+      const trigger =
+        dropdown.querySelector(
+          ".mobile-nav-dropdown-trigger"
         );
-      }
-    );
+      if (!trigger) return;
+      trigger.addEventListener(
+        "click",
+        () => {
+          const isOpen =
+            dropdown.classList.toggle(
+              "open"
+            );
+          trigger.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+          );
+        }
+      );
+    });
     /* =========================================
        CLOSE MOBILE MENU AFTER LINK CLICK
        ========================================= */
-    mobileNav
-      .querySelectorAll(
-        "a"
-      )
-      .forEach(
-        link => {
+    if (mobileNav && mobileMenuButton) {
+      mobileNav
+        .querySelectorAll("a")
+        .forEach(link => {
           link.addEventListener(
             "click",
             () => {
@@ -2044,16 +1858,20 @@ content=”#101211”
               );
             }
           );
-        }
-      );
+        });
+    }
     /* =========================================
        SUPABASE AUTH
        ========================================= */
     const SUPABASE_URL =
       "https://vonknmobshxkhbewdoie.supabase.co";
+    /*
+      IMPORTANT:
+      Keep the publishable key on ONE LINE.
+      Do not add spaces or line breaks.
+    */
     const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t
-";
+      "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
     const authLoggedOut =
       document.getElementById(
         "authLoggedOut"
@@ -2118,6 +1936,18 @@ content=”#101211”
       document.getElementById(
         "mobileProfileLogout"
       );
+    /* =========================================
+       USER DISPLAY HELPERS
+       ========================================= */
+    function getDisplayName(user) {
+      return (
+        user?.user_metadata?.full_name ||
+        user?.user_metadata?.name ||
+        user?.user_metadata?.user_name ||
+        user?.email?.split("@")[0] ||
+        "Account"
+      );
+    }
     function getInitials(user) {
       const name =
         user?.user_metadata?.full_name ||
@@ -2134,31 +1964,25 @@ content=”#101211”
         }
         return parts
           .slice(0, 2)
-          .map(
-            part => part[0]
-          )
+          .map(part => part[0])
           .join("")
           .toUpperCase();
       }
       const email =
         user?.email || "";
       return (
-        email.slice(0, 2).toUpperCase() ||
+        email
+          .slice(0, 2)
+          .toUpperCase() ||
         "EL"
       );
     }
-    function getDisplayName(user) {
-      return (
-        user?.user_metadata?.full_name ||
-        user?.user_metadata?.name ||
-        user?.user_metadata?.user_name ||
-        user?.email?.split("@")[0] ||
-        "Account"
-      );
-    }
+    /* =========================================
+       APPLY AUTH STATE
+       ========================================= */
     function setAuthState(user) {
       const loggedIn =
-        !!user;
+        Boolean(user);
       if (authLoggedOut) {
         authLoggedOut.hidden =
           loggedIn;
@@ -2217,6 +2041,9 @@ content=”#101211”
           email;
       }
     }
+    /* =========================================
+       CLOSE PROFILE MENU
+       ========================================= */
     function closeProfileMenu() {
       if (!profileMenu) {
         return;
@@ -2235,6 +2062,9 @@ content=”#101211”
         "true"
       );
     }
+    /* =========================================
+       CREATE SUPABASE CLIENT
+       ========================================= */
     if (
       window.supabase &&
       typeof window.supabase.createClient ===
@@ -2252,17 +2082,25 @@ content=”#101211”
             }
           }
         );
-      /* Initial session */
+      /* =======================================
+         INITIAL SESSION
+         ======================================= */
       supabaseClient.auth
         .getSession()
-        .then(
-          ({ data }) => {
-            setAuthState(
-              data?.session?.user || null
-            );
-          }
-        );
-      /* Session changes */
+        .then(({ data }) => {
+          setAuthState(
+            data?.session?.user || null
+          );
+        })
+        .catch(error => {
+          console.error(
+            "EvalLoop AI session error:",
+            error
+          );
+        });
+      /* =======================================
+         AUTH STATE CHANGES
+         ======================================= */
       supabaseClient.auth
         .onAuthStateChange(
           (_event, session) => {
@@ -2271,7 +2109,9 @@ content=”#101211”
             );
           }
         );
-      /* Desktop profile menu */
+      /* =======================================
+         DESKTOP PROFILE MENU
+         ======================================= */
       if (
         profileTrigger &&
         profileMenu
@@ -2295,7 +2135,9 @@ content=”#101211”
           }
         );
       }
-      /* Close profile menu */
+      /* =======================================
+         CLOSE PROFILE MENU
+         ======================================= */
       document.addEventListener(
         "click",
         event => {
@@ -2312,7 +2154,9 @@ content=”#101211”
           }
         }
       );
-      /* Desktop sign out */
+      /* =======================================
+         DESKTOP SIGN OUT
+         ======================================= */
       if (profileLogout) {
         profileLogout.addEventListener(
           "click",
@@ -2339,7 +2183,9 @@ content=”#101211”
           }
         );
       }
-      /* Mobile sign out */
+      /* =======================================
+         MOBILE SIGN OUT
+         ======================================= */
       if (mobileProfileLogout) {
         mobileProfileLogout.addEventListener(
           "click",
@@ -2367,7 +2213,7 @@ content=”#101211”
       }
     } else {
       console.error(
-        "EvalLoop AI: Supabase library was not loaded. Make sure the Supabase CDN script is loaded before this script."
+        "EvalLoop AI: Supabase library was not loaded."
       );
     }
   </script>
