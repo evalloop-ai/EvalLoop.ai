@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Reset Password — EvalLoop AI</title>
+
+  <meta
+    name="description"
+    content="Reset your EvalLoop AI account password."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel-2: #1d221f;
+      --text: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --green: #3ecf8e;
+      --green-light: #85e7ba;
+      --green-dark: #13261c;
+      --border: rgba(241, 241, 239, 0.14);
+      --border-soft: rgba(241, 241, 239, 0.08);
+      --danger: #ff8f8f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(
+          rgba(62, 207, 142, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(62, 207, 142, 0.025) 1px,
+          transparent 1px
+        ),
+        var(--bg);
+      background-size: 42px 42px;
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .brand a {
+      color: var(--text);
+      text-decoration: none;
+      font-family: "DM Mono", monospace;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+    }
+
+    .card {
+      background: rgba(23, 27, 24, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 34px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 500;
+      letter-spacing: -0.035em;
+    }
+
+    .description {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      outline: none;
+      background: var(--panel-2);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus {
+      border-color: rgba(62, 207, 142, 0.65);
+      box-shadow: 0 0 0 3px rgba(62, 207, 142, 0.08);
+    }
+
+    button {
+      width: 100%;
+      height: 46px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--green);
+      color: #07140d;
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--green-light);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      color: var(--green-light);
+      background: var(--green-dark);
+      border: 1px solid rgba(62, 207, 142, 0.18);
+    }
+
+    .message.error {
+      color: var(--danger);
+      background: rgba(255, 143, 143, 0.06);
+      border: 1px solid rgba(255, 143, 143, 0.16);
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+    }
+
+    .footer a {
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--green-light);
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        padding: 26px 22px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="brand">
+      <a href="/">EvalLoop AI_</a>
+    </div>
+
+    <section class="card">
+
+      <div class="eyebrow">Account recovery</div>
+
+      <h1>Reset your password</h1>
+
+      <p class="description">
+        Enter a new password for your EvalLoop AI account.
+      </p>
+
+      <form id="resetPasswordForm">
+
+        <div class="field">
+          <label for="password">New password</label>
+
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your new password"
+            minlength="6"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm your new password"
+            minlength="6"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <button
+          id="resetButton"
+          type="submit"
+        >
+          Update password
+        </button>
+
+      </form>
+
+      <div
+        id="message"
+        class="message"
+        role="alert"
+      ></div>
+
+      <div
+        id="loading"
+        class="loading"
+      >
+        Updating password...
+      </div>
+
+      <div class="footer">
+        <a href="/login/">
+          ← Back to login
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const SUPABASE_URL =
+      "https://vonknmobshxkhbewdoie.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "YOUR_PUBLISHABLE_KEY";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+    const form =
+      document.getElementById("resetPasswordForm");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const confirmPasswordInput =
+      document.getElementById("confirmPassword");
+
+    const resetButton =
+      document.getElementById("resetButton");
+
+    const message =
+      document.getElementById("message");
+
+    const loading =
+      document.getElementById("loading");
+
+
+    function showMessage(text, type) {
+      message.textContent = text;
+
+      message.className =
+        "message show " + type;
+    }
+
+
+    function setLoading(isLoading) {
+      resetButton.disabled = isLoading;
+
+      loading.classList.toggle(
+        "show",
+        isLoading
+      );
+
+      resetButton.textContent =
+        isLoading
+          ? "Updating..."
+          : "Update password";
+    }
+
+
+    form.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+        const password =
+          passwordInput.value.trim();
+
+        const confirmPassword =
+          confirmPasswordInput.value.trim();
+
+
+        if (password.length < 6) {
+          showMessage(
+            "Password must contain at least 6 characters.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (password !== confirmPassword) {
+          showMessage(
+            "Passwords do not match.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        setLoading(true);
+
+        message.className = "message";
+
+
+        try {
+
+          const {
+            error
+          } =
+            await supabaseClient.auth.updateUser({
+              password: password
+            });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          showMessage(
+            "Your password has been updated successfully. You can now log in with your new password.",
+            "success"
+          );
+
+
+          form.reset();
+
+
+          setTimeout(() => {
+            window.location.href = "/login/";
+          }, 2500);
+
+
+        } catch (error) {
+
+          console.error(
+            "Password reset failed:",
+            error
+          );
+
+
+          showMessage(
+            error.message ||
+            "Unable to update your password. Please try again.",
+            "error"
+          );
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      }
+    );
+  </script>
+
+</body>
+</html>
