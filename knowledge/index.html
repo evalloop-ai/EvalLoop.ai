@@ -1,64 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Learn AI Evaluation — EvalLoop AI</title>
+  <title>Learn AI Evaluation — EvalLoop AI_</title>
 
   <meta
     name="description"
-    content="A structured learning path from LLM evaluation fundamentals to professional RAG, multimodal, safety, and agentic AI evaluation."
-  >
+    content="Learn AI and LLM evaluation from fundamentals to advanced evaluation systems, RAG, safety, multimodal, agents, regressions, benchmarks, and production monitoring."
+  />
 
-  <meta name="theme-color" content="#0b1224">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
-      --bg: #0b1224;
-      --bg-soft: #10192f;
-      --panel: rgba(17, 27, 48, 0.78);
-      --panel-solid: #111b30;
-      --panel-hover: #15213a;
-
-      --border: rgba(255, 255, 255, 0.09);
-      --border-strong: rgba(255, 255, 255, 0.15);
-
-      --text: #f5f7fb;
-      --muted: #9ca8bd;
-      --muted-2: #718099;
-
-      --green: #73f0bd;
-      --green-soft: rgba(115, 240, 189, 0.11);
-      --green-border: rgba(115, 240, 189, 0.25);
-
-      --blue: #4db3ff;
-      --blue-soft: rgba(77, 179, 255, 0.11);
-
-      --danger: #ff7c91;
-
-      --radius: 18px;
-      --radius-sm: 12px;
-
-      --max-width: 1240px;
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+      --border: #2b312d;
+      --text: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+      --danger: #ff817f;
+      --max: 1200px;
+      --radius: 16px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
@@ -66,23 +45,25 @@
     }
 
     body {
-      min-height: 100vh;
-      background:
-        radial-gradient(
-          circle at 15% 5%,
-          rgba(115, 240, 189, 0.06),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 85% 12%,
-          rgba(77, 179, 255, 0.06),
-          transparent 30%
-        ),
-        var(--bg);
+      margin: 0;
+      background: var(--bg);
       color: var(--text);
-      font-family: "Inter", sans-serif;
+      font-family: Inter, sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
     }
 
     a {
@@ -91,982 +72,731 @@
     }
 
     button,
-    input {
+    input,
+    select {
       font: inherit;
     }
 
-    button {
-      cursor: pointer;
+    .mono {
+      font-family: "DM Mono", monospace;
     }
 
     .container {
-      width: min(
-        calc(100% - 40px),
-        var(--max-width)
-      );
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
     }
 
-    /* =========================================
-       HEADER
-    ========================================= */
+    /* HEADER */
 
     header {
       position: sticky;
       top: 0;
-      z-index: 1000;
-
-      background: rgba(11, 18, 36, 0.86);
-      border-bottom: 1px solid var(--border);
-
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(16,18,17,.82);
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
     }
 
-    .nav {
-      min-height: 74px;
-
+    .header-inner {
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      gap: 28px;
+      gap: 24px;
     }
 
     .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing: -0.03em;
-
-      white-space: nowrap;
-    }
-
-    .brand-mark {
-      width: 31px;
-      height: 31px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid var(--green-border);
-      border-radius: 9px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(115, 240, 189, 0.16),
-          rgba(77, 179, 255, 0.1)
-        );
-
-      color: var(--green);
       font-family: "DM Mono", monospace;
-      font-size: 14px;
+      font-size: 16px;
+      white-space: nowrap;
+      letter-spacing: -.04em;
     }
 
-    .nav-links {
+    .brand span {
+      color: var(--green);
+    }
+
+    .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 26px;
+      margin-left: auto;
     }
 
-    .nav-item {
+    .desktop-nav > a,
+    .nav-trigger {
+      color: var(--muted);
+      font-size: 13px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: .2s ease;
+    }
+
+    .desktop-nav > a:hover,
+    .nav-trigger:hover {
+      color: var(--text);
+    }
+
+    .nav-group {
       position: relative;
     }
 
-    .nav-link {
-      min-height: 40px;
-
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-
-      padding: 8px 11px;
-
-      color: #c8d1df;
-      border-radius: 9px;
-
-      font-size: 13px;
-      font-weight: 500;
-
-      transition:
-        color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.045);
-    }
-
-    .chevron {
-      font-size: 10px;
-      color: var(--muted-2);
+    .nav-trigger::after {
+      content: "⌄";
+      margin-left: 6px;
+      font-size: 11px;
+      color: var(--dim);
     }
 
     .dropdown {
       position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-
-      min-width: 210px;
-
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 230px;
       padding: 8px;
-
-      background: #101a2e;
-      border: 1px solid var(--border-strong);
-      border-radius: 13px;
-
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(23,27,24,.98);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-5px);
-
-      transition:
-        opacity 0.18s ease,
-        visibility 0.18s ease,
-        transform 0.18s ease;
+      transform-origin: top center;
+      transition: .18s ease;
     }
 
-    .nav-item:hover .dropdown {
+    .nav-group:hover .dropdown,
+    .nav-group:focus-within .dropdown {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
     }
 
     .dropdown a {
       display: block;
-
-      padding: 10px 11px;
-
-      border-radius: 8px;
-
-      color: #aeb9cb;
-
-      font-size: 12px;
-      line-height: 1.4;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
+      padding: 11px 12px;
+      border-radius: 9px;
     }
 
     .dropdown a:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--panel2);
     }
 
-    .nav-actions {
+    .dropdown strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .dropdown small {
+      display: block;
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .nav-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      min-height: 39px;
-      padding: 0 14px;
-
-      border-radius: 9px;
-
-      font-size: 12px;
-      font-weight: 600;
-
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
-    }
-
-    .nav-button:hover {
-      transform: translateY(-1px);
+      gap: 10px;
     }
 
     .login {
-      color: #c8d1df;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.025);
+      color: var(--muted);
+      font-size: 13px;
     }
 
     .signup {
-      color: #07140f;
-      background: var(--green);
-      border: 1px solid var(--green);
+      padding: 9px 14px;
+      border-radius: 9px;
+      background: var(--text);
+      color: #111;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .mobile-toggle {
+      display: none;
+      border: 0;
+      background: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
     }
 
     .mobile-menu {
       display: none;
-
-      width: 40px;
-      height: 40px;
-
-      border: 1px solid var(--border);
-      border-radius: 9px;
-
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.025);
+      padding: 12px 0 22px;
+      border-top: 1px solid rgba(255,255,255,.06);
     }
 
-    /* =========================================
-       HERO
-    ========================================= */
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 11px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mobile-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .mobile-section-label {
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      margin-bottom: 5px;
+    }
+
+    /* HERO */
 
     .hero {
-      position: relative;
-      padding: 105px 0 78px;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: "";
-
-      position: absolute;
-      width: 500px;
-      height: 500px;
-
-      left: -180px;
-      top: -180px;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(115, 240, 189, 0.08),
-          transparent 68%
-        );
-
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: "";
-
-      position: absolute;
-      width: 500px;
-      height: 500px;
-
-      right: -220px;
-      top: -170px;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(77, 179, 255, 0.07),
-          transparent 68%
-        );
-
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-
-      max-width: 850px;
-      margin: 0 auto;
-
-      text-align: center;
+      padding: 105px 0 72px;
+      max-width: 920px;
     }
 
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-
-      padding: 7px 11px;
-
-      margin-bottom: 22px;
-
-      border: 1px solid var(--green-border);
-      border-radius: 999px;
-
-      background: var(--green-soft);
-
       color: var(--green);
-
       font-family: "DM Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .13em;
+      margin-bottom: 22px;
     }
 
-    .eyebrow-dot {
-      width: 6px;
-      height: 6px;
-
-      border-radius: 50%;
-      background: var(--green);
-
-      box-shadow: 0 0 10px rgba(115, 240, 189, 0.6);
+    h1 {
+      margin: 0;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: .98;
+      letter-spacing: -.065em;
+      font-weight: 600;
     }
 
-    .hero h1 {
-      margin-bottom: 20px;
-
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: 1.02;
-
-      letter-spacing: -0.055em;
-    }
-
-    .hero h1 span {
-      background:
-        linear-gradient(
-          90deg,
-          var(--green),
-          #a0f8d4 48%,
-          var(--blue)
-        );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    h1 span {
+      color: var(--green);
     }
 
     .hero-description {
-      max-width: 710px;
-      margin: 0 auto;
-
+      max-width: 700px;
+      margin-top: 28px;
       color: var(--muted);
-
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1.75;
     }
 
-    /* =========================================
-       STATS
-    ========================================= */
-
-    .stats {
-      padding: 0 0 80px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-
-      overflow: hidden;
-
-      background: rgba(255, 255, 255, 0.015);
-    }
-
-    .stat {
-      padding: 27px;
-
-      text-align: center;
-
-      border-right: 1px solid var(--border);
-    }
-
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat-value {
-      margin-bottom: 5px;
-
-      color: var(--text);
-
+    .hero-note {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--dim);
       font-family: "DM Mono", monospace;
-      font-size: 28px;
-      font-weight: 500;
-    }
-
-    .stat-label {
-      color: var(--muted-2);
       font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
-    /* =========================================
-       SECTION
-    ========================================= */
+    .hero-note::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(62,207,142,.45);
+    }
 
-    section {
-      padding: 0 0 100px;
+    /* FEATURED */
+
+    .section {
+      padding: 42px 0;
     }
 
     .section-heading {
       display: flex;
-      align-items: flex-end;
       justify-content: space-between;
-
+      align-items: flex-end;
       gap: 30px;
-
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
-    .section-heading-left {
-      max-width: 720px;
-    }
-
-    .section-kicker {
-      margin-bottom: 8px;
-
-      color: var(--green);
-
+    .section-label {
       font-family: "DM Mono", monospace;
+      color: var(--dim);
       font-size: 10px;
-      letter-spacing: 0.09em;
+      letter-spacing: .14em;
       text-transform: uppercase;
     }
 
     .section-title {
-      margin-bottom: 8px;
-
-      font-size: 30px;
-      line-height: 1.15;
-
-      letter-spacing: -0.035em;
+      margin: 6px 0 0;
+      font-size: 25px;
+      letter-spacing: -.035em;
     }
 
-    .section-description {
-      color: var(--muted);
-
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    /* =========================================
-       ROADMAP
-    ========================================= */
-
-    .roadmap {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .level-card {
-      overflow: hidden;
-
+    .featured {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-
-      background: var(--panel);
-
-      transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
+      background: linear-gradient(135deg, var(--panel), rgba(19,38,28,.72));
+      overflow: hidden;
     }
 
-    .level-card:hover {
-      border-color: rgba(115, 240, 189, 0.16);
+    .featured-main {
+      padding: 36px;
     }
 
-    .level-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-
-      padding: 20px 22px;
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    .level-number {
-      flex: 0 0 auto;
-
-      width: 39px;
-      height: 39px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid var(--green-border);
-      border-radius: 10px;
-
-      background: var(--green-soft);
-
-      color: var(--green);
-
+    .featured-number {
       font-family: "DM Mono", monospace;
+      color: var(--green);
       font-size: 12px;
+      margin-bottom: 26px;
     }
 
-    .level-info {
-      flex: 1;
+    .featured h2 {
+      margin: 0;
+      max-width: 700px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -.05em;
     }
 
-    .level-title {
-      margin-bottom: 3px;
-
-      font-size: 16px;
-      font-weight: 700;
+    .featured p {
+      max-width: 680px;
+      color: var(--muted);
+      margin: 18px 0 28px;
     }
 
-    .level-description {
-      color: var(--muted-2);
-
-      font-size: 12px;
+    .featured-side {
+      padding: 30px;
+      border-left: 1px solid var(--border);
+      background: rgba(0,0,0,.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .level-count {
-      color: var(--muted-2);
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
+    .pill {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 9px;
       font-family: "DM Mono", monospace;
       font-size: 10px;
-
-      white-space: nowrap;
     }
 
-    .lesson-list {
+    .featured-side-text {
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 28px 0;
+    }
+
+    .read-button {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 9px;
+      color: #0d1712;
+      background: var(--green);
+      padding: 11px 15px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .read-button:hover {
+      background: var(--green2);
+      transform: translateY(-1px);
+    }
+
+    /* ROADMAP */
+
+    .roadmap {
+      margin-top: 60px;
+    }
+
+    .roadmap-line {
+      position: relative;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .roadmap-line::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 25px;
+      bottom: 25px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .roadmap-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: 32px 210px 1fr;
+      gap: 24px;
+      padding: 25px 0;
+    }
+
+    .stage-dot {
+      width: 31px;
+      height: 31px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      z-index: 1;
+    }
+
+    .stage-name {
+      font-size: 14px;
+      font-weight: 600;
+      padding-top: 5px;
+    }
+
+    .stage-description {
+      color: var(--muted);
+      font-size: 13px;
+      padding-top: 3px;
+      max-width: 650px;
+    }
+
+    /* FILTER */
+
+    .library-toolbar {
+      margin: 75px 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      width: min(360px, 100%);
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      padding: 12px 14px 12px 38px;
+      border-radius: 9px;
+      font-size: 12px;
+    }
+
+    .search input:focus {
+      border-color: rgba(62,207,142,.5);
+    }
+
+    .search::before {
+      content: "⌕";
+      position: absolute;
+      left: 14px;
+      top: 8px;
+      color: var(--dim);
+      font-size: 18px;
+      z-index: 1;
+    }
+
+    .filters {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    .filter:hover,
+    .filter.active {
+      color: var(--green);
+      border-color: rgba(62,207,142,.45);
+      background: var(--darkgreen);
+    }
+
+    /* LESSONS */
+
+    .lessons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
     }
 
     .lesson-card {
-      position: relative;
-
       display: flex;
-      align-items: center;
-      gap: 14px;
-
-      min-height: 82px;
-
-      padding: 16px 20px;
-
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-
-      transition:
-        background 0.2s ease,
-        padding-left 0.2s ease;
-    }
-
-    .lesson-card:nth-child(2n) {
-      border-right: 0;
-    }
-
-    .lesson-card:nth-last-child(-n + 2) {
-      border-bottom: 0;
+      flex-direction: column;
+      min-height: 250px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      transition: .2s ease;
     }
 
     .lesson-card:hover {
-      padding-left: 24px;
-      background: var(--panel-hover);
+      border-color: rgba(62,207,142,.38);
+      transform: translateY(-2px);
+      background: var(--panel2);
     }
 
-    .lesson-order {
-      flex: 0 0 auto;
+    .lesson-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
 
-      width: 29px;
-      height: 29px;
+    .lesson-number {
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
 
-      display: grid;
-      place-items: center;
-
-      border: 1px solid var(--border);
-      border-radius: 8px;
-
-      color: var(--muted-2);
-
+    .lesson-track {
+      color: var(--dim);
       font-family: "DM Mono", monospace;
       font-size: 9px;
+      letter-spacing: .08em;
     }
 
-    .lesson-content {
-      min-width: 0;
-      flex: 1;
+    .lesson-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
     }
 
-    .lesson-title {
-      margin-bottom: 4px;
-
-      color: #e9edf4;
-
+    .lesson-card p {
+      color: var(--muted);
       font-size: 13px;
-      font-weight: 600;
+      line-height: 1.65;
+      margin: 11px 0 20px;
+    }
 
-      line-height: 1.35;
+    .lesson-bottom {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
     }
 
     .lesson-meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 7px;
-
-      color: var(--muted-2);
-
+      color: var(--dim);
       font-family: "DM Mono", monospace;
       font-size: 9px;
     }
 
-    .lesson-arrow {
-      color: var(--muted-2);
-      font-size: 15px;
-      transition: transform 0.2s ease;
-    }
-
-    .lesson-card:hover .lesson-arrow {
-      transform: translateX(3px);
+    .lesson-link {
       color: var(--green);
-    }
-
-    /* =========================================
-       LIBRARY
-    ========================================= */
-
-    .library-controls {
-      display: flex;
-      align-items: center;
-
-      margin-bottom: 25px;
-    }
-
-    .search-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    .search-icon {
-      position: absolute;
-
-      left: 15px;
-      top: 50%;
-
-      transform: translateY(-50%);
-
-      color: var(--muted-2);
-
-      font-size: 14px;
-    }
-
-    #search {
-      width: 100%;
-      height: 46px;
-
-      padding: 0 15px 0 41px;
-
-      border: 1px solid var(--border);
-      border-radius: 11px;
-
-      outline: none;
-
-      background: rgba(255, 255, 255, 0.025);
-
-      color: var(--text);
-
-      font-size: 12px;
-
-      transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    #search::placeholder {
-      color: var(--muted-2);
-    }
-
-    #search:focus {
-      border-color: var(--green-border);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .library-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .library-card {
-      display: flex;
-      flex-direction: column;
-
-      min-height: 225px;
-
-      padding: 20px;
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-
-      background: var(--panel);
-
-      transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .library-card:hover {
-      transform: translateY(-3px);
-
-      border-color: rgba(115, 240, 189, 0.2);
-      background: var(--panel-hover);
-    }
-
-    .library-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 13px;
-    }
-
-    .library-category {
-      color: var(--green);
-
       font-family: "DM Mono", monospace;
-      font-size: 9px;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-
-    .library-difficulty {
-      color: var(--muted-2);
-
-      font-family: "DM Mono", monospace;
-      font-size: 9px;
-    }
-
-    .library-title {
-      margin-bottom: 8px;
-
-      font-size: 15px;
-      line-height: 1.35;
-    }
-
-    .library-definition {
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-
-      overflow: hidden;
-
-      color: var(--muted);
-
-      font-size: 11px;
-      line-height: 1.65;
-    }
-
-    .library-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-top: auto;
-      padding-top: 17px;
-    }
-
-    .library-time {
-      color: var(--muted-2);
-
-      font-family: "DM Mono", monospace;
-      font-size: 9px;
-    }
-
-    .library-link {
-      color: var(--green);
-
       font-size: 10px;
-      font-weight: 600;
     }
-
-    /* =========================================
-       EMPTY / ERROR
-    ========================================= */
 
     .empty {
-      grid-column: 1 / -1;
-
-      padding: 55px 20px;
-
+      display: none;
+      border: 1px dashed var(--border);
+      padding: 45px;
+      border-radius: 14px;
       text-align: center;
+      color: var(--dim);
+    }
 
-      border: 1px dashed var(--border-strong);
+    /* CTA */
+
+    .cta {
+      margin: 90px 0;
+      padding: 42px;
+      border: 1px solid var(--border);
       border-radius: var(--radius);
+      background: var(--darkgreen);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
 
+    .cta h2 {
+      margin: 0 0 8px;
+      font-size: 25px;
+      letter-spacing: -.04em;
+    }
+
+    .cta p {
       color: var(--muted);
+      margin: 0;
+      max-width: 650px;
       font-size: 13px;
     }
 
-    .error {
-      padding: 30px;
+    /* FOOTER */
 
-      border: 1px solid rgba(255, 124, 145, 0.2);
-      border-radius: var(--radius);
+    footer {
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding: 55px 0 30px;
+      margin-top: 30px;
+    }
 
-      background: rgba(255, 124, 145, 0.05);
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+      gap: 35px;
+    }
 
-      color: #ffb0bd;
-
-      font-size: 13px;
+    .footer-brand p {
+      color: var(--dim);
+      max-width: 280px;
+      font-size: 12px;
       line-height: 1.7;
     }
 
-    .error strong {
-      color: #ffd4db;
-    }
-
-    /* =========================================
-       FOOTER
-    ========================================= */
-
-    footer {
-      padding: 42px 0;
-
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 25px;
-    }
-
-    .footer-brand {
-      color: var(--muted);
-
-      font-size: 11px;
-    }
-
-    .footer-links {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 17px;
-    }
-
-    .footer-links a {
-      color: var(--muted-2);
-      font-size: 10px;
-    }
-
-    .footer-links a:hover {
+    .footer-col h4 {
       color: var(--text);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      margin: 0 0 15px;
     }
 
-    /* =========================================
-       RESPONSIVE
-    ========================================= */
+    .footer-col a {
+      display: block;
+      color: var(--dim);
+      font-size: 12px;
+      margin: 8px 0;
+    }
 
-    @media (max-width: 1050px) {
-      .nav-links {
+    .footer-col a:hover {
+      color: var(--green);
+    }
+
+    .footer-bottom {
+      margin-top: 45px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      justify-content: space-between;
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .desktop-nav,
+      .header-actions {
         display: none;
       }
 
-      .mobile-menu {
+      .mobile-toggle {
         display: block;
       }
 
-      .nav-actions {
-        margin-left: auto;
+      .featured {
+        grid-template-columns: 1fr;
       }
 
-      .library-grid {
+      .featured-side {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 680px) {
       .container {
-        width: min(
-          calc(100% - 28px),
-          var(--max-width)
-        );
-      }
-
-      .nav {
-        min-height: 65px;
-      }
-
-      .nav-actions .login {
-        display: none;
+        width: min(100% - 28px, var(--max));
       }
 
       .hero {
-        padding: 75px 0 60px;
+        padding: 70px 0 50px;
       }
 
-      .hero h1 {
-        font-size: clamp(38px, 12vw, 58px);
+      h1 {
+        font-size: 49px;
       }
 
       .hero-description {
-        font-size: 14px;
+        font-size: 15px;
       }
 
-      .stats {
-        padding-bottom: 60px;
+      .section {
+        padding: 30px 0;
       }
 
-      .stats-grid {
+      .featured-main,
+      .featured-side {
+        padding: 24px;
+      }
+
+      .roadmap-stage {
+        grid-template-columns: 32px 1fr;
+        gap: 15px;
+      }
+
+      .stage-description {
+        grid-column: 2;
+        padding-top: 0;
+      }
+
+      .lessons {
         grid-template-columns: 1fr;
       }
 
-      .stat {
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .stat:last-child {
-        border-bottom: 0;
-      }
-
-      section {
-        padding-bottom: 70px;
-      }
-
-      .section-heading {
+      .cta {
+        flex-direction: column;
         align-items: flex-start;
+        padding: 28px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-bottom {
         flex-direction: column;
         gap: 8px;
-      }
-
-      .lesson-list {
-        grid-template-columns: 1fr;
-      }
-
-      .lesson-card,
-      .lesson-card:nth-child(2n) {
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .lesson-card:last-child {
-        border-bottom: 0;
-      }
-
-      .library-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 450px) {
-      .signup {
-        display: none;
-      }
-
-      .level-header {
-        align-items: flex-start;
-      }
-
-      .level-count {
-        display: none;
       }
     }
   </style>
@@ -1074,958 +804,617 @@
 
 <body>
 
-  <!-- =========================================
-       HEADER
-  ========================================= -->
+<header>
+  <div class="container header-inner">
 
-  <header>
-    <div class="container nav">
+    <a href="/" class="brand">EvalLoop<span> AI_</span></a>
 
-      <a href="/" class="brand">
-        <span class="brand-mark">E</span>
-        <span>EvalLoop AI</span>
-      </a>
+    <nav class="desktop-nav">
 
-      <nav class="nav-links">
-
-        <!-- Products -->
-        <div class="nav-item">
-          <a href="#" class="nav-link">
-            Products
-            <span class="chevron">▾</span>
+      <div class="nav-group">
+        <button class="nav-trigger">Products</button>
+        <div class="dropdown">
+          <a href="/labs/">
+            <strong>Evaluation Engines</strong>
+            <small>Explore evaluation capabilities</small>
           </a>
+          <a href="/jobs/">
+            <strong>EvalLoop Jobs</strong>
+            <small>AI opportunity discovery</small>
+          </a>
+          <a href="/hub/">
+            <strong>EvalAI Hub</strong>
+            <small>AI evaluation ecosystem</small>
+          </a>
+        </div>
+      </div>
 
-          <div class="dropdown">
-            <a href="/labs/">Evaluation Engines</a>
-            <a href="/jobs/">EvalLoop Jobs</a>
-            <a href="/hub/">EvalAI Hub</a>
-          </div>
+      <a href="/app/">Workspace</a>
+
+      <div class="nav-group">
+        <button class="nav-trigger" style="color:var(--text);">Resources</button>
+        <div class="dropdown">
+          <a href="/docs/">
+            <strong>Docs</strong>
+            <small>Platform documentation</small>
+          </a>
+          <a href="/knowledge/" style="background:var(--darkgreen);">
+            <strong style="color:var(--green);">Learn</strong>
+            <small>Learn AI evaluation</small>
+          </a>
+          <a href="/blog/">
+            <strong>Blog</strong>
+            <small>Ideas and research</small>
+          </a>
+          <a href="/api-space/">
+            <strong>API</strong>
+            <small>Build with EvalLoop</small>
+          </a>
+        </div>
+      </div>
+
+      <a href="/pricing/">Pricing</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="login" href="/login/">Login</a>
+      <a class="signup" href="/signup/">Sign up</a>
+    </div>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+      ☰
+    </button>
+  </div>
+
+  <div class="container mobile-menu" id="mobileMenu">
+    <a href="/labs/">Evaluation Engines</a>
+    <a href="/jobs/">EvalLoop Jobs</a>
+    <a href="/hub/">EvalAI Hub</a>
+    <a href="/app/">Workspace</a>
+
+    <div class="mobile-section">
+      <div class="mobile-section-label">RESOURCES</div>
+      <a href="/docs/">Docs</a>
+      <a href="/knowledge/">Learn</a>
+      <a href="/blog/">Blog</a>
+      <a href="/api-space/">API</a>
+    </div>
+
+    <div class="mobile-section">
+      <a href="/pricing/">Pricing</a>
+      <a href="/login/">Login</a>
+      <a href="/signup/">Sign up</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="container hero">
+    <div class="eyebrow">EVALLOOP LEARN / 01</div>
+
+    <h1>
+      Learn AI<br />
+      evaluation<span>.</span>
+    </h1>
+
+    <p class="hero-description">
+      A structured path from zero knowledge to advanced AI evaluation.
+      Learn how to test LLMs, compare models, detect regressions,
+      evaluate RAG and agents, measure safety, and build reliable
+      evaluation systems.
+    </p>
+
+    <div class="hero-note">
+      START WITH THE FUNDAMENTALS. GO AS DEEP AS YOU WANT.
+    </div>
+  </section>
+
+  <section class="container section">
+
+    <div class="section-heading">
+      <div>
+        <div class="section-label">START HERE</div>
+        <h2 class="section-title">Your first step into AI evaluation.</h2>
+      </div>
+    </div>
+
+    <div id="featuredLesson">
+      <div class="featured">
+        <div class="featured-main">
+          <div class="featured-number">LESSON 01</div>
+
+          <h2>Loading your first lesson...</h2>
+
+          <p>
+            Building your learning path from the EvalLoop curriculum.
+          </p>
         </div>
 
-        <!-- Workspace -->
-        <a href="/app/" class="nav-link">
-          Workspace
-        </a>
-
-        <!-- Resources -->
-        <div class="nav-item">
-          <a href="#" class="nav-link active">
-            Resources
-            <span class="chevron">▾</span>
-          </a>
-
-          <div class="dropdown">
-            <a href="/docs/">Docs</a>
-            <a href="/knowledge/">Learn</a>
-            <a href="/blog/">Blog</a>
-            <a href="/api-space/">API</a>
+        <div class="featured-side">
+          <div class="meta">
+            <span class="pill">BEGINNER</span>
+            <span class="pill">FOUNDATIONS</span>
           </div>
+
+          <div class="featured-side-text">
+            Start with the basic concepts before moving into
+            technical evaluation methods and advanced systems.
+          </div>
+
+          <a class="read-button" href="#">
+            READ LESSON →
+          </a>
         </div>
+      </div>
+    </div>
 
-        <!-- Pricing -->
-        <a href="/pricing/" class="nav-link">
-          Pricing
-        </a>
+  </section>
 
-      </nav>
+  <section class="container section roadmap">
 
-      <div class="nav-actions">
+    <div class="section-heading">
+      <div>
+        <div class="section-label">THE LEARNING PATH</div>
+        <h2 class="section-title">From first principles to advanced systems.</h2>
+      </div>
+    </div>
 
-        <a
-          href="/login/"
-          class="nav-button login"
-        >
-          Login
-        </a>
+    <div class="roadmap-line">
 
-        <a
-          href="/signup/"
-          class="nav-button signup"
-        >
-          Sign up
-        </a>
+      <div class="roadmap-stage">
+        <div class="stage-dot">01</div>
+        <div class="stage-name">Foundations</div>
+        <div class="stage-description">
+          Understand AI, machine learning, LLMs, prompts, outputs,
+          hallucinations, and why evaluation exists.
+        </div>
+      </div>
 
-        <button
-          class="mobile-menu"
-          type="button"
-          aria-label="Menu"
-        >
-          ☰
-        </button>
+      <div class="roadmap-stage">
+        <div class="stage-dot">02</div>
+        <div class="stage-name">Evaluation Fundamentals</div>
+        <div class="stage-description">
+          Learn test cases, evaluation criteria, datasets, expected
+          outputs, quality dimensions, and evaluation design.
+        </div>
+      </div>
 
+      <div class="roadmap-stage">
+        <div class="stage-dot">03</div>
+        <div class="stage-name">Core Evaluation</div>
+        <div class="stage-description">
+          Master factuality, relevance, completeness, instruction
+          following, fluency, and other quality dimensions.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">04</div>
+        <div class="stage-name">Methods & Scoring</div>
+        <div class="stage-description">
+          Explore human evaluation, LLM judges, deterministic checks,
+          classifiers, embeddings, scales, normalization, and aggregation.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">05</div>
+        <div class="stage-name">Test Design</div>
+        <div class="stage-description">
+          Build useful datasets, golden sets, edge cases, adversarial
+          tests, sampling strategies, and evaluation suites.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">06</div>
+        <div class="stage-name">Model Comparison</div>
+        <div class="stage-description">
+          Compare models using pairwise evaluation, win rates,
+          disagreement analysis, and evidence-based judgments.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">07</div>
+        <div class="stage-name">Regression Testing</div>
+        <div class="stage-description">
+          Learn baselines, release gates, thresholds, regression
+          detection, failure analysis, and continuous evaluation.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">08</div>
+        <div class="stage-name">RAG & Grounding</div>
+        <div class="stage-description">
+          Evaluate retrieval, context relevance, faithfulness,
+          answer relevance, citations, and grounded answers.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">09</div>
+        <div class="stage-name">Safety</div>
+        <div class="stage-description">
+          Learn toxicity, jailbreaks, harmful content, privacy,
+          bias, safety classifiers, and red-team evaluation.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">10</div>
+        <div class="stage-name">Multimodal & Vision</div>
+        <div class="stage-description">
+          Evaluate image understanding, visual grounding,
+          generated images, bounding boxes, IoU, precision, recall,
+          and mAP.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">11</div>
+        <div class="stage-name">Conversation & Memory</div>
+        <div class="stage-description">
+          Evaluate multi-turn conversations, coherence,
+          context retention, memory accuracy, and personal context.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">12</div>
+        <div class="stage-name">Agents</div>
+        <div class="stage-description">
+          Understand agent trajectories, tool use, planning,
+          task completion, tool errors, and end-to-end evaluation.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">13</div>
+        <div class="stage-name">Production Evaluation</div>
+        <div class="stage-description">
+          Learn monitoring, production datasets, drift, continuous
+          testing, quality alerts, and evaluation pipelines.
+        </div>
+      </div>
+
+      <div class="roadmap-stage">
+        <div class="stage-dot">14</div>
+        <div class="stage-name">Advanced Evaluation</div>
+        <div class="stage-description">
+          Go deeper into judge calibration, statistical confidence,
+          disagreement, jury evaluation, human gold sets, and benchmark design.
+        </div>
       </div>
 
     </div>
-  </header>
+  </section>
 
+  <section class="container section">
 
-  <!-- =========================================
-       HERO
-  ========================================= -->
+    <div class="library-toolbar">
 
-  <main>
+      <div>
+        <div class="section-label">LESSON LIBRARY</div>
+        <h2 class="section-title">Explore the curriculum.</h2>
+      </div>
 
-    <section class="hero">
+      <div class="search">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search lessons..."
+          autocomplete="off"
+        />
+      </div>
 
-      <div class="container hero-content">
+    </div>
 
-        <div class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          EvalLoop AI Learning
-        </div>
+    <div class="filters" id="filters"></div>
 
-        <h1>
-          Learn AI evaluation
-          <br>
-          <span>from zero to advanced.</span>
-        </h1>
+    <div class="lessons" id="lessons"></div>
 
-        <p
-          class="hero-description"
-          id="courseSubtitle"
-        >
-          A structured learning path from LLM evaluation
-          fundamentals to professional RAG, multimodal,
-          safety, and agentic AI evaluation.
+    <div class="empty" id="emptyState">
+      No lessons matched your search.
+    </div>
+
+  </section>
+
+  <section class="container">
+
+    <div class="cta">
+      <div>
+        <h2>Learn it. Then evaluate it.</h2>
+        <p>
+          Once you understand an evaluation concept, take it into
+          EvalLoop Workspace and see how the same idea works on real
+          AI outputs.
         </p>
-
       </div>
 
-    </section>
+      <a class="read-button" href="/app/">
+        OPEN WORKSPACE →
+      </a>
+    </div>
 
+  </section>
 
-    <!-- =========================================
-         STATS
-    ========================================= -->
+</main>
 
-    <section class="stats">
+<footer>
+  <div class="container">
 
-      <div class="container">
-
-        <div class="stats-grid">
-
-          <div class="stat">
-            <div
-              class="stat-value"
-              id="lessonCount"
-            >
-              —
-            </div>
-
-            <div class="stat-label">
-              Lessons
-            </div>
-          </div>
-
-          <div class="stat">
-            <div
-              class="stat-value"
-              id="levelCount"
-            >
-              —
-            </div>
-
-            <div class="stat-label">
-              Levels
-            </div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-value">
-              Beginner → Advanced
-            </div>
-
-            <div class="stat-label">
-              Learning Path
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         ROADMAP
-    ========================================= -->
-
-    <section>
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="section-heading-left">
-
-            <div class="section-kicker">
-              Learning roadmap
-            </div>
-
-            <h2 class="section-title">
-              Build your evaluation knowledge step by step.
-            </h2>
-
-            <p class="section-description">
-              Follow the structured path from evaluation
-              fundamentals through RAG, multimodal,
-              safety, agentic, and advanced evaluation.
-            </p>
-
-          </div>
-
-        </div>
-
-        <div
-          class="roadmap"
-          id="roadmap"
-        >
-          <div class="empty">
-            Loading learning roadmap…
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         LIBRARY
-    ========================================= -->
-
-    <section>
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="section-heading-left">
-
-            <div class="section-kicker">
-              Lesson library
-            </div>
-
-            <h2 class="section-title">
-              Explore every lesson.
-            </h2>
-
-            <p class="section-description">
-              Search the complete AI evaluation curriculum
-              by topic, category, track, or keyword.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="library-controls">
-
-          <div class="search-wrap">
-
-            <span class="search-icon">
-              ⌕
-            </span>
-
-            <input
-              id="search"
-              type="search"
-              placeholder="Search lessons, topics, RAG, safety, multimodal…"
-              autocomplete="off"
-            >
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="library-grid"
-          id="libraryGrid"
-        >
-          <div class="empty">
-            Loading lessons…
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =========================================
-       FOOTER
-  ========================================= -->
-
-  <footer>
-
-    <div class="container footer-inner">
+    <div class="footer-grid">
 
       <div class="footer-brand">
-        © 2026 EvalLoop AI. Building better AI starts
-        with better evaluation.
+        <div class="brand">EvalLoop<span> AI_</span></div>
+        <p>
+          Building better AI starts with better evaluation.
+          Learn, test, measure, and improve AI systems.
+        </p>
       </div>
 
-      <div class="footer-links">
+      <div class="footer-col">
+        <h4>PRODUCT</h4>
+        <a href="/labs/">Evaluation Engines</a>
+        <a href="/app/">Workspace</a>
+        <a href="/pricing/">Pricing</a>
+      </div>
 
-        <a href="/docs/">
-          Docs
-        </a>
+      <div class="footer-col">
+        <h4>RESOURCES</h4>
+        <a href="/docs/">Docs</a>
+        <a href="/knowledge/">Learn</a>
+        <a href="/blog/">Blog</a>
+        <a href="/api-space/">API</a>
+      </div>
 
-        <a href="/knowledge/">
-          Learn
-        </a>
+      <div class="footer-col">
+        <h4>COMPANY</h4>
+        <a href="/about/">About</a>
+        <a href="/jobs/">EvalLoop Jobs</a>
+        <a href="/hub/">EvalAI Hub</a>
+      </div>
 
-        <a href="/blog/">
-          Blog
-        </a>
-
-        <a href="/pricing/">
-          Pricing
-        </a>
-
-        <a href="/privacy/">
-          Privacy
-        </a>
-
-        <a href="/terms/">
-          Terms
-        </a>
-
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
       </div>
 
     </div>
 
-  </footer>
+    <div class="footer-bottom">
+      <span>© 2026 EvalLoop AI</span>
+      <span class="mono">BUILDING BETTER AI STARTS WITH BETTER EVALUATION.</span>
+    </div>
 
+  </div>
+</footer>
 
-  <!-- =========================================
-       JAVASCRIPT
-  ========================================= -->
+<script>
+  const lessonsEl = document.getElementById("lessons");
+  const filtersEl = document.getElementById("filters");
+  const searchInput = document.getElementById("searchInput");
+  const emptyState = document.getElementById("emptyState");
+  const featuredLesson = document.getElementById("featuredLesson");
 
-  <script>
+  let lessons = [];
+  let activeTrack = "ALL";
 
-    /*
-     * IMPORTANT:
-     *
-     * index.html
-     * lesson.html
-     * lessons.json
-     *
-     * are all inside:
-     *
-     * /knowledge/
-     *
-     * Therefore we use RELATIVE paths:
-     *
-     * ./lessons.json
-     * ./lesson.html
-     */
+  async function loadLessons() {
+    try {
+      const response = await fetch("./lesson.json", {
+        cache: "no-store"
+      });
 
-    const DATA_URL = "./lessons.json";
-
-
-    let courseData = null;
-    let allLessons = [];
-
-
-    /* =========================================
-       HELPERS
-    ========================================= */
-
-    function $(selector) {
-      return document.querySelector(selector);
-    }
-
-
-    function escapeHTML(value) {
-
-      if (value === null || value === undefined) {
-        return "";
+      if (!response.ok) {
+        throw new Error("Unable to load lesson.json");
       }
 
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      lessons = await response.json();
+
+      lessons = lessons.filter(lesson => lesson.published !== false);
+
+      renderFeatured();
+      renderFilters();
+      renderLessons();
+
+    } catch (error) {
+      console.error(error);
+
+      lessonsEl.innerHTML = `
+        <div class="empty" style="display:block;grid-column:1/-1;">
+          The lesson library could not be loaded.
+          Please make sure <span class="mono">lesson.json</span> exists
+          inside <span class="mono">/knowledge/</span>.
+        </div>
+      `;
     }
+  }
 
+  function renderFeatured() {
+    if (!lessons.length) return;
 
-    function normalize(value) {
+    const lesson =
+      lessons.find(item => item.number === "01") ||
+      lessons[0];
 
-      return String(value || "")
-        .toLowerCase()
-        .trim();
-
-    }
-
-
-    /* =========================================
-       RENDER ROADMAP
-    ========================================= */
-
-    function renderRoadmap() {
-
-      const roadmap = $("#roadmap");
-
-      if (
-        !courseData ||
-        !Array.isArray(courseData.levels)
-      ) {
-        roadmap.innerHTML = `
-          <div class="empty">
-            No learning levels were found.
+    featuredLesson.innerHTML = `
+      <div class="featured">
+        <div class="featured-main">
+          <div class="featured-number">
+            LESSON ${escapeHTML(lesson.number || "01")}
           </div>
-        `;
 
-        return;
-      }
+          <h2>${escapeHTML(lesson.title)}</h2>
 
+          <p>
+            ${escapeHTML(lesson.description || "")}
+          </p>
+        </div>
 
-      roadmap.innerHTML =
-        courseData.levels
-          .map(level => {
+        <div class="featured-side">
 
-            const lessonSlugs =
-              Array.isArray(level.lessons)
-                ? level.lessons
-                : [];
+          <div class="meta">
+            <span class="pill">
+              ${escapeHTML(lesson.level || "BEGINNER")}
+            </span>
 
+            <span class="pill">
+              ${escapeHTML(lesson.track || "FOUNDATIONS")}
+            </span>
 
-            const lessons =
-              lessonSlugs
-                .map(slug =>
-                  allLessons.find(
-                    lesson =>
-                      lesson.slug === slug
-                  )
-                )
-                .filter(Boolean);
-
-
-            return `
-
-              <article class="level-card">
-
-                <div class="level-header">
-
-                  <div class="level-number">
-                    ${escapeHTML(level.level)}
-                  </div>
-
-                  <div class="level-info">
-
-                    <div class="level-title">
-                      ${escapeHTML(level.title)}
-                    </div>
-
-                    <div class="level-description">
-                      ${escapeHTML(level.description)}
-                    </div>
-
-                  </div>
-
-                  <div class="level-count">
-                    ${lessons.length}
-                    ${lessons.length === 1 ? "lesson" : "lessons"}
-                  </div>
-
-                </div>
-
-
-                <div class="lesson-list">
-
-                  ${
-                    lessons.length
-                      ? lessons.map(lesson => `
-
-                        <a
-                          class="lesson-card"
-                          href="./lesson.html?slug=${encodeURIComponent(
-                            lesson.slug
-                          )}"
-                        >
-
-                          <div class="lesson-order">
-                            ${escapeHTML(lesson.order)}
-                          </div>
-
-                          <div class="lesson-content">
-
-                            <div class="lesson-title">
-                              ${escapeHTML(lesson.title)}
-                            </div>
-
-                            <div class="lesson-meta">
-
-                              <span>
-                                ${escapeHTML(
-                                  lesson.category || "Evaluation"
-                                )}
-                              </span>
-
-                              <span>•</span>
-
-                              <span>
-                                ${escapeHTML(
-                                  lesson.readTime || ""
-                                )}
-                              </span>
-
-                              <span>•</span>
-
-                              <span>
-                                ${escapeHTML(
-                                  lesson.difficulty || ""
-                                )}
-                              </span>
-
-                            </div>
-
-                          </div>
-
-                          <div class="lesson-arrow">
-                            →
-                          </div>
-
-                        </a>
-
-                      `).join("")
-                      : `
-                        <div class="empty">
-                          No lessons found for this level.
-                        </div>
-                      `
-                  }
-
-                </div>
-
-              </article>
-
-            `;
-
-          })
-          .join("");
-    }
-
-
-    /* =========================================
-       RENDER LIBRARY
-    ========================================= */
-
-    function renderLibrary(searchTerm = "") {
-
-      const grid = $("#libraryGrid");
-
-      const query =
-        normalize(searchTerm);
-
-
-      const filtered =
-        allLessons.filter(lesson => {
-
-          if (!query) {
-            return true;
-          }
-
-
-          const searchableText = [
-
-            lesson.title,
-
-            lesson.category,
-
-            lesson.track,
-
-            lesson.definition,
-
-            lesson.description,
-
-            lesson.difficulty,
-
-            lesson.readTime,
-
-            ...(Array.isArray(lesson.tags)
-              ? lesson.tags
-              : []),
-
-            ...(Array.isArray(lesson.objectives)
-              ? lesson.objectives
-              : [])
-
-          ]
-            .join(" ")
-            .toLowerCase();
-
-
-          return searchableText.includes(query);
-
-        });
-
-
-      if (!filtered.length) {
-
-        grid.innerHTML = `
-          <div class="empty">
-            No lessons matched
-            "<strong>${escapeHTML(searchTerm)}</strong>".
+            <span class="pill">
+              ${escapeHTML(lesson.readTime || "")}
+            </span>
           </div>
-        `;
 
-        return;
-      }
-
-
-      grid.innerHTML =
-        filtered
-          .map(lesson => `
-
-            <a
-              class="library-card"
-              href="./lesson.html?slug=${encodeURIComponent(
-                lesson.slug
-              )}"
-            >
-
-              <div class="library-top">
-
-                <span class="library-category">
-                  ${escapeHTML(
-                    lesson.category || "Evaluation"
-                  )}
-                </span>
-
-                <span class="library-difficulty">
-                  ${escapeHTML(
-                    lesson.difficulty || ""
-                  )}
-                </span>
-
-              </div>
-
-
-              <h3 class="library-title">
-                ${escapeHTML(lesson.title)}
-              </h3>
-
-
-              <p class="library-definition">
-                ${escapeHTML(
-                  lesson.definition ||
-                  lesson.description ||
-                  "Explore this AI evaluation lesson."
-                )}
-              </p>
-
-
-              <div class="library-footer">
-
-                <span class="library-time">
-                  ${escapeHTML(
-                    lesson.readTime || ""
-                  )}
-                </span>
-
-                <span class="library-link">
-                  Read lesson →
-                </span>
-
-              </div>
-
-            </a>
-
-          `)
-          .join("");
-
-    }
-
-
-    /* =========================================
-       LOAD JSON
-    ========================================= */
-
-    async function init() {
-
-      try {
-
-        console.log(
-          "EvalLoop Learn: loading",
-          DATA_URL
-        );
-
-
-        const response =
-          await fetch(
-            DATA_URL,
-            {
-              cache: "no-store"
-            }
-          );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            `Unable to load lessons.json: ${response.status} ${response.statusText}`
-          );
-
-        }
-
-
-        /*
-         * Read the response as text first.
-         *
-         * This gives us a much clearer error if the
-         * server accidentally returns an HTML 404 page
-         * instead of JSON.
-         */
-
-        const responseText =
-          await response.text();
-
-
-        try {
-
-          courseData =
-            JSON.parse(responseText);
-
-        } catch (parseError) {
-
-          console.error(
-            "lessons.json returned invalid JSON or HTML:",
-            responseText
-          );
-
-          throw new Error(
-            "lessons.json contains invalid JSON, or the server returned HTML instead of JSON."
-          );
-
-        }
-
-
-        /* =========================================
-           VALIDATE JSON STRUCTURE
-        ========================================= */
-
-        if (
-          !courseData ||
-          !courseData.course ||
-          !Array.isArray(courseData.lessons)
-        ) {
-
-          throw new Error(
-            "Invalid lessons.json structure. The file must contain course, levels, and lessons."
-          );
-
-        }
-
-
-        allLessons =
-          courseData.lessons;
-
-
-        /* =========================================
-           CREATE LEVEL NAME MAP
-        ========================================= */
-
-        const levelMap =
-          new Map();
-
-
-        (
-          Array.isArray(courseData.levels)
-            ? courseData.levels
-            : []
-        ).forEach(level => {
-
-          levelMap.set(
-            level.level,
-            level.title
-          );
-
-        });
-
-
-        /* =========================================
-           ADD LEVEL NAME TO EACH LESSON
-        ========================================= */
-
-        allLessons =
-          allLessons.map(lesson => ({
-
-            ...lesson,
-
-            levelName:
-              levelMap.get(
-                lesson.level
-              ) ||
-              "Evaluation"
-
-          }));
-
-
-        /* =========================================
-           UPDATE COURSE INFORMATION
-        ========================================= */
-
-        $("#courseSubtitle")
-          .textContent =
-            courseData.course.subtitle ||
-            "Learn AI evaluation from fundamentals to advanced workflows.";
-
-
-        $("#lessonCount")
-          .textContent =
-            courseData.course.totalLessons ||
-            allLessons.length;
-
-
-        $("#levelCount")
-          .textContent =
-            courseData.course.totalLevels ||
-            (
-              Array.isArray(courseData.levels)
-                ? courseData.levels.length
-                : 0
-            );
-
-
-        /* =========================================
-           RENDER CONTENT
-        ========================================= */
-
-        renderRoadmap();
-
-        renderLibrary();
-
-
-        /* =========================================
-           SEARCH
-        ========================================= */
-
-        $("#search")
-          .addEventListener(
-            "input",
-            event => {
-
-              renderLibrary(
-                event.target.value
-              );
-
-            }
-          );
-
-
-        console.log(
-          "EvalLoop Learn: lessons loaded successfully.",
-          allLessons.length,
-          "lessons"
-        );
-
-      } catch (error) {
-
-        console.error(
-          "EvalLoop Learn loading error:",
-          error
-        );
-
-
-        $("#roadmap").innerHTML = `
-
-          <div class="error">
-
-            <strong>
-              Unable to load the learning roadmap.
-            </strong>
-
-            <br><br>
-
-            ${escapeHTML(error.message)}
-
-            <br><br>
-
-            Expected file:
-
-            <strong>
-              ./lessons.json
-            </strong>
-
-            <br><br>
-
-            Make sure these three files are together
-            inside the same
-            <strong>knowledge/</strong>
-            folder:
-
-            <br><br>
-
-            <strong>
-              knowledge/index.html
-              <br>
-              knowledge/lesson.html
-              <br>
-              knowledge/lessons.json
-            </strong>
+          <div class="featured-side-text">
+            Start here if you are new to AI evaluation.
+            This lesson builds the mental model you'll need
+            for everything that follows.
+          </div>
+
+          <a
+            class="read-button"
+            href="./lesson.html?lesson=${encodeURIComponent(lesson.slug || lesson.id)}"
+          >
+            START LESSON →
+          </a>
+
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFilters() {
+    const tracks = [
+      "ALL",
+      ...new Set(
+        lessons
+          .map(lesson => lesson.track)
+          .filter(Boolean)
+      )
+    ];
+
+    filtersEl.innerHTML = tracks
+      .map(track => `
+        <button
+          class="filter ${track === activeTrack ? "active" : ""}"
+          data-track="${escapeHTML(track)}"
+        >
+          ${escapeHTML(track)}
+        </button>
+      `)
+      .join("");
+
+    filtersEl.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        activeTrack = button.dataset.track;
+        renderFilters();
+        renderLessons();
+      });
+    });
+  }
+
+  function renderLessons() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    const filtered = lessons.filter(lesson => {
+
+      const matchesTrack =
+        activeTrack === "ALL" ||
+        lesson.track === activeTrack;
+
+      const searchable = [
+        lesson.title,
+        lesson.description,
+        lesson.track,
+        lesson.level,
+        ...(lesson.tags || [])
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return matchesTrack && searchable.includes(query);
+    });
+
+    lessonsEl.innerHTML = filtered
+      .map(lesson => `
+        <a
+          class="lesson-card"
+          href="./lesson.html?lesson=${encodeURIComponent(lesson.slug || lesson.id)}"
+        >
+
+          <div class="lesson-top">
+
+            <span class="lesson-number">
+              ${escapeHTML(lesson.number || "--")}
+            </span>
+
+            <span class="lesson-track">
+              ${escapeHTML(lesson.track || "")}
+            </span>
 
           </div>
 
-        `;
+          <h3>
+            ${escapeHTML(lesson.title)}
+          </h3>
 
+          <p>
+            ${escapeHTML(lesson.description || "")}
+          </p>
 
-        $("#libraryGrid").innerHTML = `
+          <div class="lesson-bottom">
 
-          <div class="empty">
+            <span class="lesson-meta">
+              ${escapeHTML(lesson.level || "ALL LEVELS")}
+              ·
+              ${escapeHTML(lesson.readTime || "")}
+            </span>
 
-            The lesson library could not be loaded.
+            <span class="lesson-link">
+              READ LESSON →
+            </span>
 
           </div>
 
-        `;
+        </a>
+      `)
+      .join("");
 
-      }
+    emptyState.style.display =
+      filtered.length === 0 ? "block" : "none";
+  }
 
-    }
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 
+  searchInput.addEventListener("input", renderLessons);
 
-    /* =========================================
-       MOBILE MENU
-    ========================================= */
+  const mobileToggle =
+    document.getElementById("mobileToggle");
 
-    const mobileMenu =
-      document.querySelector(
-        ".mobile-menu"
-      );
+  const mobileMenu =
+    document.getElementById("mobileMenu");
 
+  mobileToggle.addEventListener("click", () => {
+    mobileMenu.classList.toggle("open");
+  });
 
-    if (mobileMenu) {
-
-      mobileMenu.addEventListener(
-        "click",
-        () => {
-
-          alert(
-            "Use the navigation links from the desktop menu. Mobile navigation can be expanded in a future update."
-          );
-
-        }
-      );
-
-    }
-
-
-    /* =========================================
-       START
-    ========================================= */
-
-    init();
-
-  </script>
+  loadLessons();
+</script>
 
 </body>
 </html>
