@@ -15,13 +15,10 @@
     name="theme-color"
     content="#101211"
   >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
+    href="https://fonts.gstatic.com"
     crossorigin
   >
   <link
@@ -31,6 +28,2155 @@
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    /* KEEP YOUR EXISTING ABOUT PAGE CSS HERE */
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel-2: #1d221f;
+      --text: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --green: #3ecf8e;
+      --green-light: #85e7ba;
+      --green-dark: #13261c;
+      --border: rgba(241, 241, 239, 0.14);
+      --border-soft: rgba(241, 241, 239, 0.08);
+      --max: 1200px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      opacity: 0.32;
+      background-image:
+        linear-gradient(
+          rgba(62, 207, 142, 0.035) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(62, 207, 142, 0.035) 1px,
+          transparent 1px
+        );
+      background-size: 48px 48px;
+    }
+    .background-grid::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(62, 207, 142, 0.08),
+          transparent 35%
+        ),
+        linear-gradient(
+          to bottom,
+          transparent 0%,
+          var(--bg) 82%
+        );
+    }
+    /* =========================================================
+       HEADER
+    ========================================================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-soft);
+      background: rgba(16, 18, 17, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .nav-shell {
+      width: min(var(--max), calc(100% - 40px));
+      height: 68px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand-logo {
+      color: var(--text);
+      text-decoration: none;
+      font-family: "DM Mono", monospace;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+    .brand-cursor {
+      color: var(--green);
+      animation: blinkCursor 1.1s steps(1, end) infinite;
+    }
+    @keyframes blinkCursor {
+      0%,
+      45% {
+        opacity: 1;
+      }
+      46%,
+      100% {
+        opacity: 0;
+      }
+    }
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+    .nav-link,
+    .nav-dropdown-trigger {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 11px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+    .nav-link:hover,
+    .nav-dropdown-trigger:hover {
+      color: var(--text);
+      background: rgba(241, 241, 239, 0.045);
+    }
+    .nav-chevron {
+      font-size: 11px;
+      opacity: 0.65;
+      transition: transform 0.2s ease;
+    }
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropdown.open .nav-chevron {
+      transform: rotate(180deg);
+    }
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 9px);
+      left: 0;
+      min-width: 230px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(23, 27, 24, 0.98);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+    }
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 10px 11px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+    .nav-dropdown-menu a:hover {
+      color: var(--text);
+      background: rgba(241, 241, 239, 0.055);
+    }
+    .dropdown-title {
+      display: block;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .dropdown-description {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    /* =========================================================
+       AUTH
+    ========================================================= */
+    .auth-logged-out,
+    .auth-logged-in {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 12px;
+    }
+    .auth-logged-out[hidden],
+    .auth-logged-in[hidden],
+    .mobile-auth-logged-out[hidden],
+    .mobile-auth-logged-in[hidden] {
+      display: none !important;
+    }
+    .nav-login {
+      color: var(--muted);
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+    .nav-login:hover {
+      color: var(--text);
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 0 17px;
+      border: 1px solid rgba(62, 207, 142, 0.38);
+      border-radius: 8px;
+      background: var(--green);
+      color: #07110c;
+      font-size: 13px;
+      font-weight: 500;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+    .button:hover {
+      transform: translateY(-1px);
+      background: var(--green-light);
+      box-shadow: 0 10px 30px rgba(62, 207, 142, 0.12);
+    }
+    .button-small {
+      min-height: 38px;
+      padding: 0 14px;
+      font-size: 12px;
+    }
+    .button-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .button-secondary:hover {
+      background: rgba(241, 241, 239, 0.05);
+      border-color: rgba(241, 241, 239, 0.22);
+      box-shadow: none;
+    }
+    .profile-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px 5px 5px;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      background: rgba(241, 241, 239, 0.035);
+      color: var(--text);
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+    .profile-trigger:hover {
+      background: rgba(241, 241, 239, 0.07);
+      border-color: var(--border);
+    }
+    .profile-avatar,
+    .profile-menu-avatar,
+    .mobile-profile-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--green-dark);
+      border: 1px solid rgba(62, 207, 142, 0.32);
+      color: var(--green-light);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+    .profile-avatar {
+      width: 29px;
+      height: 29px;
+    }
+    .profile-name {
+      max-width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+    .profile-chevron {
+      color: var(--dim);
+      font-size: 12px;
+      margin-left: 1px;
+    }
+    .profile-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 20px;
+      width: 270px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(23, 27, 24, 0.98);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+    }
+    .profile-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .profile-menu-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px;
+    }
+    .profile-menu-avatar {
+      width: 38px;
+      height: 38px;
+      font-size: 12px;
+    }
+    .profile-menu-identity {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .profile-menu-identity strong {
+      font-size: 13px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .profile-menu-identity span {
+      margin-top: 2px;
+      color: var(--dim);
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .profile-menu-divider {
+      height: 1px;
+      margin: 6px 0;
+      background: var(--border-soft);
+    }
+    .profile-menu a,
+    .profile-logout {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      font-size: 12px;
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+    .profile-menu a:hover,
+    .profile-logout:hover {
+      color: var(--text);
+      background: rgba(241, 241, 239, 0.05);
+    }
+    .profile-logout {
+      color: #e3aaa4;
+    }
+    /* =========================================================
+       MOBILE NAV
+    ========================================================= */
+    .mobile-menu-button {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+    }
+    .mobile-menu-button span {
+      display: block;
+      width: 17px;
+      height: 1px;
+      margin: 4px auto;
+      background: currentColor;
+    }
+    .mobile-panel {
+      display: none;
+      border-top: 1px solid var(--border-soft);
+      background: rgba(16, 18, 17, 0.98);
+    }
+    .mobile-panel.open {
+      display: block;
+    }
+    .mobile-panel-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 18px 0 22px;
+    }
+    .mobile-nav-link,
+    .mobile-nav-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 0;
+      border: 0;
+      border-bottom: 1px solid var(--border-soft);
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      font-size: 14px;
+    }
+    .mobile-nav-link:hover,
+    .mobile-nav-trigger:hover {
+      color: var(--text);
+    }
+    .mobile-submenu {
+      display: none;
+      padding: 3px 0 8px 12px;
+    }
+    .mobile-submenu.open {
+      display: block;
+    }
+    .mobile-submenu a {
+      display: block;
+      padding: 9px 0;
+      color: var(--dim);
+      font-size: 12px;
+    }
+    .mobile-submenu a:hover {
+      color: var(--text);
+    }
+    .mobile-auth-logged-out,
+    .mobile-auth-logged-in {
+      padding-top: 18px;
+    }
+    .mobile-auth-logged-out {
+      display: flex;
+      gap: 10px;
+    }
+    .mobile-auth-logged-out .button {
+      flex: 1;
+    }
+    .mobile-auth-logged-in {
+      position: relative;
+    }
+    .mobile-profile-card {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      background: rgba(241, 241, 239, 0.025);
+    }
+    .mobile-profile-avatar {
+      width: 38px;
+      height: 38px;
+      font-size: 12px;
+    }
+    .mobile-profile-identity {
+      min-width: 0;
+    }
+    .mobile-profile-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mobile-profile-email {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mobile-profile-links {
+      margin-top: 8px;
+    }
+    .mobile-profile-links a,
+    .mobile-profile-logout {
+      width: 100%;
+      display: block;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      font-size: 12px;
+    }
+    .mobile-profile-links a:hover,
+    .mobile-profile-logout:hover {
+      color: var(--text);
+      background: rgba(241, 241, 239, 0.05);
+    }
+    .mobile-profile-logout {
+      margin-top: 4px;
+      color: #e3aaa4;
+    }
+    /* =========================================================
+       MAIN
+    ========================================================= */
+    main {
+      position: relative;
+    }
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+    .hero {
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      padding: 110px 0 100px;
+    }
+    .hero-inner {
+      width: 100%;
+      max-width: 850px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 24px;
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 25px;
+      height: 1px;
+      background: var(--green);
+    }
+    .hero h1 {
+      max-width: 900px;
+      font-size: clamp(48px, 7vw, 84px);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+      font-weight: 300;
+    }
+    .hero h1 span {
+      color: var(--muted);
+    }
+    .hero-description {
+      max-width: 650px;
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 34px;
+    }
+    /* =========================================================
+       SECTIONS
+    ========================================================= */
+    .section {
+      padding: 100px 0;
+      border-top: 1px solid var(--border-soft);
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 80px;
+    }
+    .section-label {
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .section-heading {
+      max-width: 700px;
+      margin-top: 12px;
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+      font-weight: 300;
+    }
+    .section-copy {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .section-copy + .section-copy {
+      margin-top: 22px;
+    }
+    /* =========================================================
+       PRINCIPLES
+    ========================================================= */
+    .principles {
+      margin-top: 64px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .principle {
+      min-height: 260px;
+      padding: 30px;
+      border-right: 1px solid var(--border);
+    }
+    .principle:last-child {
+      border-right: 0;
+    }
+    .principle-number {
+      color: var(--green);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+    .principle h3 {
+      margin-top: 58px;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+    }
+    .principle p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    /* =========================================================
+       ECOSYSTEM
+    ========================================================= */
+    .ecosystem-grid {
+      margin-top: 58px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+    .ecosystem-card {
+      min-height: 230px;
+      padding: 30px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+    .ecosystem-card:hover {
+      background: rgba(62, 207, 142, 0.025);
+    }
+    .ecosystem-index {
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+    .ecosystem-card h3 {
+      margin-top: 42px;
+      font-size: 23px;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+    }
+    .ecosystem-card p {
+      max-width: 460px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .ecosystem-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 22px;
+      color: var(--green-light);
+      font-size: 12px;
+    }
+    /* =========================================================
+       CTA
+    ========================================================= */
+    .cta-section {
+      padding: 110px 0;
+      border-top: 1px solid var(--border-soft);
+    }
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      padding: 70px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(62, 207, 142, 0.1),
+          transparent 32%
+        ),
+        var(--panel);
+    }
+    .cta-box::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      bottom: -140px;
+      width: 350px;
+      height: 350px;
+      border: 1px solid rgba(62, 207, 142, 0.08);
+      border-radius: 50%;
+    }
+    .cta-box h2 {
+      max-width: 760px;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.04;
+      letter-spacing: -0.055em;
+      font-weight: 300;
+    }
+    .cta-box p {
+      max-width: 620px;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .cta-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+    footer {
+      border-top: 1px solid var(--border-soft);
+    }
+    .footer-main {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 50px;
+      display: grid;
+      grid-template-columns: 1.4fr repeat(4, 1fr);
+      gap: 40px;
+    }
+    .footer-brand {
+      max-width: 280px;
+    }
+    .footer-brand .brand-logo {
+      display: inline-block;
+    }
+    .footer-description {
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .footer-heading {
+      margin-bottom: 15px;
+      color: var(--text);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .footer-links a {
+      color: var(--dim);
+      font-size: 12px;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--text);
+    }
+    .footer-bottom {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--border-soft);
+      color: var(--dim);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 900px) {
+      .desktop-nav,
+      .auth-logged-out,
+      .auth-logged-in {
+        display: none !important;
+      }
+      .mobile-menu-button {
+        display: block;
+      }
+      .section-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+      .principles {
+        grid-template-columns: 1fr;
+      }
+      .principle {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .principle:last-child {
+        border-bottom: 0;
+      }
+      .ecosystem-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-main {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 600px) {
+      .nav-shell,
+      .container,
+      .mobile-panel-inner,
+      .footer-main,
+      .footer-bottom {
+        width: min(100% - 28px, var(--max));
+      }
+      .hero {
+        min-height: auto;
+        padding: 82px 0 80px;
+      }
+      .hero h1 {
+        font-size: clamp(45px, 14vw, 68px);
+      }
+      .hero-description {
+        font-size: 16px;
+      }
+      .section {
+        padding: 75px 0;
+      }
+      .principles {
+        margin-top: 42px;
+      }
+      .principle {
+        min-height: auto;
+        padding: 25px;
+      }
+      .principle h3 {
+        margin-top: 38px;
+      }
+      .ecosystem-grid {
+        margin-top: 40px;
+      }
+      .ecosystem-card {
+        min-height: auto;
+        padding: 25px;
+      }
+      .ecosystem-card h3 {
+        margin-top: 32px;
+      }
+      .cta-section {
+        padding: 75px 0;
+      }
+      .cta-box {
+        padding: 38px 25px;
+      }
+      .footer-main {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 34px 20px;
+        padding: 55px 0 38px;
+      }
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px 0;
+      }
+    }
   </style>
 </head>
+<body>
+  <div class="background-grid"></div>
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+  <header class="site-header">
+    <div class="nav-shell">
+      <a
+        href="/"
+        class="brand-logo"
+        aria-label="EvalLoop AI home"
+      >
+        EvalLoop AI<span class="brand-cursor">_</span>
+      </a>
+      <!-- Desktop navigation -->
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <div class="nav-dropdown" id="productsDropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Products
+            <span class="nav-chevron">⌄</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="/labs/">
+              <span class="dropdown-title">Evaluation Labs</span>
+              <span class="dropdown-description">
+                Run practical AI and LLM evaluations.
+              </span>
+            </a>
+            <a href="/jobs/">
+              <span class="dropdown-title">EvalLoop Jobs</span>
+              <span class="dropdown-description">
+                Discover AI evaluation and training opportunities.
+              </span>
+            </a>
+            <a href="/hub/">
+              <span class="dropdown-title">EvalAI Hub</span>
+              <span class="dropdown-description">
+                Explore the AI evaluation ecosystem.
+              </span>
+            </a>
+          </div>
+        </div>
+        <a
+          href="/app/"
+          class="nav-link"
+        >
+          Workspace
+        </a>
+        <div class="nav-dropdown" id="resourcesDropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+          >
+            Resources
+            <span class="nav-chevron">⌄</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="/docs/">
+              <span class="dropdown-title">Docs</span>
+              <span class="dropdown-description">
+                Learn how EvalLoop AI works.
+              </span>
+            </a>
+            <a href="/knowledge/">
+              <span class="dropdown-title">Knowledge</span>
+              <span class="dropdown-description">
+                Guides and evaluation concepts.
+              </span>
+            </a>
+            <a href="/blog/">
+              <span class="dropdown-title">Blog</span>
+              <span class="dropdown-description">
+                Research, ideas, and updates.
+              </span>
+            </a>
+            <a href="/api-space/">
+              <span class="dropdown-title">API</span>
+              <span class="dropdown-description">
+                Evaluation infrastructure for builders.
+              </span>
+            </a>
+          </div>
+        </div>
+        <a
+          href="/pricing/"
+          class="nav-link"
+        >
+          Pricing
+        </a>
+      </nav>
+      <!-- Logged out -->
+      <div
+        class="auth-logged-out"
+        id="authLoggedOut"
+      >
+        <a
+          href="/login/"
+          class="nav-login"
+        >
+          Login
+        </a>
+        <a
+          href="/signup/"
+          class="button button-small"
+        >
+          Sign up
+          <span>↗</span>
+        </a>
+      </div>
+      <!-- Logged in -->
+      <div
+        class="auth-logged-in"
+        id="authLoggedIn"
+        hidden
+      >
+        <button
+          class="profile-trigger"
+          id="profileTrigger"
+          type="button"
+          aria-label="Open account menu"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          <span
+            class="profile-avatar"
+            id="profileAvatar"
+          >
+            VK
+          </span>
+          <span
+            class="profile-name"
+            id="profileName"
+          >
+            Vivek Kaneti
+          </span>
+          <span class="profile-chevron">
+            ⌄
+          </span>
+        </button>
+        <div
+          class="profile-menu"
+          id="profileMenu"
+          role="menu"
+          aria-hidden="true"
+        >
+          <div class="profile-menu-header">
+            <span
+              class="profile-menu-avatar"
+              id="profileMenuAvatar"
+            >
+              VK
+            </span>
+            <div class="profile-menu-identity">
+              <strong id="profileMenuName">
+                Vivek Kaneti
+              </strong>
+              <span id="profileMenuEmail">
+                user@example.com
+              </span>
+            </div>
+          </div>
+          <div class="profile-menu-divider"></div>
+          <a
+            href="/app/"
+            role="menuitem"
+          >
+            <span>Workspace</span>
+          </a>
+          <a
+            href="/account/"
+            role="menuitem"
+          >
+            <span>Account</span>
+          </a>
+          <a
+            href="/usage/"
+            role="menuitem"
+          >
+            <span>Usage &amp; Plan</span>
+          </a>
+          <a
+            href="/api-space/"
+            role="menuitem"
+          >
+            <span>API Keys</span>
+          </a>
+          <a
+            href="/settings/"
+            role="menuitem"
+          >
+            <span>Settings</span>
+          </a>
+          <div class="profile-menu-divider"></div>
+          <button
+            type="button"
+            class="profile-logout"
+            id="profileLogout"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+      <!-- Mobile menu button -->
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!-- =====================================================
+         MOBILE PANEL
+    ====================================================== -->
+    <div
+      class="mobile-panel"
+      id="mobilePanel"
+    >
+      <div class="mobile-panel-inner">
+        <button
+          class="mobile-nav-trigger"
+          type="button"
+          data-mobile-toggle="mobileProducts"
+          aria-expanded="false"
+        >
+          <span>Products</span>
+          <span>⌄</span>
+        </button>
+        <div
+          class="mobile-submenu"
+          id="mobileProducts"
+        >
+          <a href="/labs/">
+            Evaluation Labs
+          </a>
+          <a href="/jobs/">
+            EvalLoop Jobs
+          </a>
+          <a href="/hub/">
+            EvalAI Hub
+          </a>
+        </div>
+        <a
+          href="/app/"
+          class="mobile-nav-link"
+        >
+          <span>Workspace</span>
+          <span>→</span>
+        </a>
+        <button
+          class="mobile-nav-trigger"
+          type="button"
+          data-mobile-toggle="mobileResources"
+          aria-expanded="false"
+        >
+          <span>Resources</span>
+          <span>⌄</span>
+        </button>
+        <div
+          class="mobile-submenu"
+          id="mobileResources"
+        >
+          <a href="/docs/">
+            Docs
+          </a>
+          <a href="/knowledge/">
+            Knowledge
+          </a>
+          <a href="/blog/">
+            Blog
+          </a>
+          <a href="/api-space/">
+            API
+          </a>
+        </div>
+        <a
+          href="/pricing/"
+          class="mobile-nav-link"
+        >
+          <span>Pricing</span>
+          <span>→</span>
+        </a>
+        <!-- Mobile logged out -->
+        <div
+          class="mobile-auth-logged-out"
+          id="mobileAuthLoggedOut"
+        >
+          <a
+            href="/login/"
+            class="button button-secondary"
+          >
+            Login
+          </a>
+          <a
+            href="/signup/"
+            class="button"
+          >
+            Sign up
+          </a>
+        </div>
+        <!-- Mobile logged in -->
+        <div
+          class="mobile-auth-logged-in"
+          id="mobileAuthLoggedIn"
+          hidden
+        >
+          <div class="mobile-profile-card">
+            <span
+              class="mobile-profile-avatar"
+              id="mobileProfileAvatar"
+            >
+              VK
+            </span>
+            <div class="mobile-profile-identity">
+              <span
+                class="mobile-profile-name"
+                id="mobileProfileName"
+              >
+                Vivek Kaneti
+              </span>
+              <span
+                class="mobile-profile-email"
+                id="mobileProfileEmail"
+              >
+                user@example.com
+              </span>
+            </div>
+          </div>
+          <div class="mobile-profile-links">
+            <a href="/app/">
+              Workspace
+            </a>
+            <a href="/account/">
+              Account
+            </a>
+            <a href="/usage/">
+              Usage &amp; Plan
+            </a>
+            <a href="/api-space/">
+              API Keys
+            </a>
+            <a href="/settings/">
+              Settings
+            </a>
+            <button
+              type="button"
+              class="mobile-profile-logout"
+              id="mobileProfileLogout"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="eyebrow">
+            About EvalLoop AI
+          </div>
+          <h1>
+            Building better
+            <span>AI evaluation.</span>
+          </h1>
+          <p class="hero-description">
+            EvalLoop AI is building practical infrastructure for
+            evaluating AI systems, measuring model quality, and
+            helping teams understand whether their AI actually
+            performs the way it should.
+          </p>
+          <div class="hero-actions">
+            <a
+              href="/app/"
+              class="button"
+            >
+              Start Evaluating
+              <span>↗</span>
+            </a>
+            <a
+              href="/labs/"
+              class="button button-secondary"
+            >
+              Explore Labs
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- WHY -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div>
+            <div class="section-label">
+              01 / Why
+            </div>
+            <h2 class="section-heading">
+              AI systems need measurement.
+            </h2>
+          </div>
+          <div>
+            <p class="section-copy">
+              AI is becoming part of products, workflows, research,
+              and everyday applications. But producing an answer is
+              not the same as producing a good answer.
+            </p>
+            <p class="section-copy">
+              Evaluation makes quality measurable. It helps teams
+              identify factual errors, instruction failures,
+              hallucinations, safety issues, retrieval problems,
+              multimodal mistakes, and other weaknesses before
+              they become larger problems.
+            </p>
+            <p class="section-copy">
+              EvalLoop AI is designed to make that process easier,
+              clearer, and more accessible — without requiring every
+              evaluator to become a machine-learning engineer.
+            </p>
+          </div>
+        </div>
+        <!-- PRINCIPLES -->
+        <div class="principles">
+          <article class="principle">
+            <span class="principle-number">
+              01
+            </span>
+            <h3>
+              Practical Evaluation
+            </h3>
+            <p>
+              Evaluation should work on real AI outputs and real
+              product scenarios, not only research benchmarks.
+            </p>
+          </article>
+          <article class="principle">
+            <span class="principle-number">
+              02
+            </span>
+            <h3>
+              Clear Measurement
+            </h3>
+            <p>
+              Quality dimensions should be understandable,
+              measurable, and useful for making decisions.
+            </p>
+          </article>
+          <article class="principle">
+            <span class="principle-number">
+              03
+            </span>
+            <h3>
+              Continuous Improvement
+            </h3>
+            <p>
+              Evaluation is not a one-time check. It is a continuous
+              loop between models, data, measurements, and improvement.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- ECOSYSTEM -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div>
+            <div class="section-label">
+              02 / Ecosystem
+            </div>
+            <h2 class="section-heading">
+              One evaluation ecosystem.
+            </h2>
+          </div>
+          <div>
+            <p class="section-copy">
+              EvalLoop AI is being developed as an ecosystem rather
+              than a single evaluation screen. The goal is to connect
+              practical evaluation, knowledge, experimentation, and
+              future benchmarking in one place.
+            </p>
+          </div>
+        </div>
+        <div class="ecosystem-grid">
+          <article class="ecosystem-card">
+            <span class="ecosystem-index">
+              01
+            </span>
+            <h3>
+              Evaluate
+            </h3>
+            <p>
+              Compare and evaluate AI responses across dimensions
+              such as factuality, relevance, instruction following,
+              completeness, fluency, and safety.
+            </p>
+            <a
+              href="/app/"
+              class="ecosystem-link"
+            >
+              Open Workspace →
+            </a>
+          </article>
+          <article class="ecosystem-card">
+            <span class="ecosystem-index">
+              02
+            </span>
+            <h3>
+              Knowledge
+            </h3>
+            <p>
+              Learn evaluation concepts, methodologies, quality
+              dimensions, and practical approaches to understanding
+              AI system performance.
+            </p>
+            <a
+              href="/knowledge/"
+              class="ecosystem-link"
+            >
+              Explore Knowledge →
+            </a>
+          </article>
+          <article class="ecosystem-card">
+            <span class="ecosystem-index">
+              03
+            </span>
+            <h3>
+              Labs
+            </h3>
+            <p>
+              Experiment with different evaluation workflows,
+              including text, vision, multimodal, conversational,
+              safety, retrieval, and annotation-focused evaluation.
+            </p>
+            <a
+              href="/labs/"
+              class="ecosystem-link"
+            >
+              Explore Labs →
+            </a>
+          </article>
+          <article class="ecosystem-card">
+            <span class="ecosystem-index">
+              04
+            </span>
+            <h3>
+              Benchmarks
+            </h3>
+            <p>
+              A future benchmarking layer for measuring model
+              performance against consistent evaluation standards.
+            </p>
+            <a
+              href="/hub/"
+              class="ecosystem-link"
+            >
+              Coming Soon →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>
+            Better AI starts with better evaluation.
+          </h2>
+          <p>
+            Explore EvalLoop AI and start measuring AI quality
+            with a practical evaluation workflow built for modern
+            AI systems.
+          </p>
+          <div class="cta-actions">
+            <a
+              href="/app/"
+              class="button"
+            >
+              Start Evaluating
+              <span>↗</span>
+            </a>
+            <a
+              href="/labs/"
+              class="button button-secondary"
+            >
+              Explore Labs
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
+  <footer>
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a
+          href="/"
+          class="brand-logo"
+        >
+          EvalLoop AI<span class="brand-cursor">_</span>
+        </a>
+        <p class="footer-description">
+          Building practical infrastructure for AI evaluation,
+          model quality, and continuous improvement.
+        </p>
+      </div>
+      <div>
+        <div class="footer-heading">
+          Product
+        </div>
+        <div class="footer-links">
+          <a href="/labs/">
+            Evaluation Labs
+          </a>
+          <a href="/app/">
+            Workspace
+          </a>
+          <a href="/hub/">
+            EvalAI Hub
+          </a>
+          <a href="/pricing/">
+            Pricing
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">
+          Resources
+        </div>
+        <div class="footer-links">
+          <a href="/docs/">
+            Docs
+          </a>
+          <a href="/knowledge/">
+            Knowledge
+          </a>
+          <a href="/blog/">
+            Blog
+          </a>
+          <a href="/api-space/">
+            API
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">
+          Company
+        </div>
+        <div class="footer-links">
+          <a href="/about/">
+            About
+          </a>
+          <a href="/jobs/">
+            EvalLoop Jobs
+          </a>
+          <a href="/contact/">
+            Contact
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">
+          Legal
+        </div>
+        <div class="footer-links">
+          <a href="/privacy/">
+            Privacy
+          </a>
+          <a href="/terms/">
+            Terms
+          </a>
+          <a href="/disclaimer/">
+            Disclaimer
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>
+        © 2026 EvalLoop AI
+      </span>
+      <span>
+        Built for better AI
+      </span>
+      <span>
+        Hyderabad · India
+      </span>
+    </div>
+  </footer>
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+  <script>
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
+    const SUPABASE_URL =
+      "https://vonknmobshxkhbewdoie.supabase.co";
+    /*
+      IMPORTANT:
+      Replace ONLY the value below with your Supabase
+      Publishable Key.
+      Do NOT use the secret/service-role key.
+    */
+    const SUPABASE_PUBLISHABLE_KEY =
+      "YOUR_PUBLISHABLE_KEY";
+    let supabaseClient = null;
+    function getInitials(name, email) {
+      const value =
+        String(name || "").trim() ||
+        String(email || "").trim();
+      if (!value) {
+        return "EL";
+      }
+      const parts = value
+        .split(/\s+/)
+        .filter(Boolean);
+      if (parts.length >= 2) {
+        return (
+          parts[0].charAt(0) +
+          parts[parts.length - 1].charAt(0)
+        ).toUpperCase();
+      }
+      return value
+        .slice(0, 2)
+        .toUpperCase();
+    }
+    function getDisplayName(user) {
+      if (!user) {
+        return "Account";
+      }
+      const metadata =
+        user.user_metadata || {};
+      return (
+        metadata.full_name ||
+        metadata.name ||
+        metadata.user_name ||
+        metadata.preferred_username ||
+        user.email ||
+        "Account"
+      );
+    }
+    function setText(id, value) {
+      const element =
+        document.getElementById(id);
+      if (element) {
+        element.textContent =
+          value || "";
+      }
+    }
+    function setAuthState(
+      loggedIn,
+      user = null
+    ) {
+      const loggedOut =
+        document.getElementById(
+          "authLoggedOut"
+        );
+      const loggedInElement =
+        document.getElementById(
+          "authLoggedIn"
+        );
+      const mobileLoggedOut =
+        document.getElementById(
+          "mobileAuthLoggedOut"
+        );
+      const mobileLoggedIn =
+        document.getElementById(
+          "mobileAuthLoggedIn"
+        );
+      if (loggedIn) {
+        if (loggedOut) {
+          loggedOut.hidden = true;
+        }
+        if (loggedInElement) {
+          loggedInElement.hidden = false;
+        }
+        if (mobileLoggedOut) {
+          mobileLoggedOut.hidden = true;
+        }
+        if (mobileLoggedIn) {
+          mobileLoggedIn.hidden = false;
+        }
+        const name =
+          getDisplayName(user);
+        const email =
+          user?.email || "";
+        const initials =
+          getInitials(
+            name,
+            email
+          );
+        setText(
+          "profileAvatar",
+          initials
+        );
+        setText(
+          "profileMenuAvatar",
+          initials
+        );
+        setText(
+          "profileName",
+          name
+        );
+        setText(
+          "profileMenuName",
+          name
+        );
+        setText(
+          "profileMenuEmail",
+          email
+        );
+        setText(
+          "mobileProfileAvatar",
+          initials
+        );
+        setText(
+          "mobileProfileName",
+          name
+        );
+        setText(
+          "mobileProfileEmail",
+          email
+        );
+      } else {
+        if (loggedOut) {
+          loggedOut.hidden = false;
+        }
+        if (loggedInElement) {
+          loggedInElement.hidden = true;
+        }
+        if (mobileLoggedOut) {
+          mobileLoggedOut.hidden = false;
+        }
+        if (mobileLoggedIn) {
+          mobileLoggedIn.hidden = true;
+        }
+      }
+      /*
+        Keep the function available if another
+        EvalLoop AI script needs it.
+      */
+      window.setEvalLoopAuthState =
+        setAuthState;
+    }
+    async function initializeSupabase() {
+      if (
+        typeof window.supabase ===
+        "undefined"
+      ) {
+        console.error(
+          "EvalLoop AI: Supabase library was not loaded."
+        );
+        setAuthState(false);
+        return;
+      }
+      if (
+        !SUPABASE_PUBLISHABLE_KEY ||
+        SUPABASE_PUBLISHABLE_KEY ===
+          "YOUR_PUBLISHABLE_KEY"
+      ) {
+        console.warn(
+          "EvalLoop AI: Add your Supabase Publishable Key."
+        );
+        setAuthState(false);
+        return;
+      }
+      try {
+        supabaseClient =
+          window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY,
+            {
+              auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+              }
+            }
+          );
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .getSession();
+        if (error) {
+          console.error(
+            "EvalLoop AI auth session error:",
+            error
+          );
+          setAuthState(false);
+        } else {
+          const session =
+            data?.session;
+          setAuthState(
+            !!session?.user,
+            session?.user || null
+          );
+        }
+        supabaseClient.auth
+          .onAuthStateChange(
+            (_event, session) => {
+              setAuthState(
+                !!session?.user,
+                session?.user || null
+              );
+            }
+          );
+      } catch (error) {
+        console.error(
+          "EvalLoop AI Supabase initialization error:",
+          error
+        );
+        setAuthState(false);
+      }
+    }
+    /* =========================================================
+       PROFILE MENU
+    ========================================================= */
+    const profileTrigger =
+      document.getElementById(
+        "profileTrigger"
+      );
+    const profileMenu =
+      document.getElementById(
+        "profileMenu"
+      );
+    function closeProfileMenu() {
+      if (!profileMenu) {
+        return;
+      }
+      profileMenu.classList.remove(
+        "open"
+      );
+      if (profileTrigger) {
+        profileTrigger.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+      profileMenu.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+    if (profileTrigger && profileMenu) {
+      profileTrigger.addEventListener(
+        "click",
+        (event) => {
+          event.stopPropagation();
+          const isOpen =
+            profileMenu.classList.contains(
+              "open"
+            );
+          if (isOpen) {
+            closeProfileMenu();
+          } else {
+            profileMenu.classList.add(
+              "open"
+            );
+            profileTrigger.setAttribute(
+              "aria-expanded",
+              "true"
+            );
+            profileMenu.setAttribute(
+              "aria-hidden",
+              "false"
+            );
+          }
+        }
+      );
+    }
+    document.addEventListener(
+      "click",
+      (event) => {
+        if (
+          profileMenu &&
+          profileTrigger &&
+          !profileMenu.contains(event.target) &&
+          !profileTrigger.contains(event.target)
+        ) {
+          closeProfileMenu();
+        }
+      }
+    );
+    /* =========================================================
+       SIGN OUT
+    ========================================================= */
+    async function signOut() {
+      try {
+        if (supabaseClient) {
+          const {
+            error
+          } =
+            await supabaseClient.auth
+              .signOut();
+          if (error) {
+            console.error(
+              "Sign out error:",
+              error
+            );
+          }
+        }
+      } catch (error) {
+        console.error(
+          "Sign out error:",
+          error
+        );
+      } finally {
+        window.location.href = "/";
+      }
+    }
+    const profileLogout =
+      document.getElementById(
+        "profileLogout"
+      );
+    const mobileProfileLogout =
+      document.getElementById(
+        "mobileProfileLogout"
+      );
+    if (profileLogout) {
+      profileLogout.addEventListener(
+        "click",
+        signOut
+      );
+    }
+    if (mobileProfileLogout) {
+      mobileProfileLogout.addEventListener(
+        "click",
+        signOut
+      );
+    }
+    /* =========================================================
+       DESKTOP DROPDOWNS
+    ========================================================= */
+    const desktopDropdowns =
+      document.querySelectorAll(
+        ".nav-dropdown"
+      );
+    desktopDropdowns.forEach(
+      (dropdown) => {
+        const trigger =
+          dropdown.querySelector(
+            ".nav-dropdown-trigger"
+          );
+        if (!trigger) {
+          return;
+        }
+        trigger.addEventListener(
+          "click",
+          (event) => {
+            event.stopPropagation();
+            desktopDropdowns.forEach(
+              (other) => {
+                if (
+                  other !== dropdown
+                ) {
+                  other.classList.remove(
+                    "open"
+                  );
+                  const otherTrigger =
+                    other.querySelector(
+                      ".nav-dropdown-trigger"
+                    );
+                  if (otherTrigger) {
+                    otherTrigger.setAttribute(
+                      "aria-expanded",
+                      "false"
+                    );
+                  }
+                }
+              }
+            );
+            const open =
+              dropdown.classList.toggle(
+                "open"
+              );
+            trigger.setAttribute(
+              "aria-expanded",
+              String(open)
+            );
+          }
+        );
+      }
+    );
+    document.addEventListener(
+      "click",
+      () => {
+        desktopDropdowns.forEach(
+          (dropdown) => {
+            dropdown.classList.remove(
+              "open"
+            );
+            const trigger =
+              dropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+            if (trigger) {
+              trigger.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+            }
+          }
+        );
+      }
+    );
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+    const mobilePanel =
+      document.getElementById(
+        "mobilePanel"
+      );
+    if (
+      mobileMenuButton &&
+      mobilePanel
+    ) {
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
+          const open =
+            mobilePanel.classList.toggle(
+              "open"
+            );
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            String(open)
+          );
+        }
+      );
+    }
+    const mobileToggleButtons =
+      document.querySelectorAll(
+        "[data-mobile-toggle]"
+      );
+    mobileToggleButtons.forEach(
+      (button) => {
+        button.addEventListener(
+          "click",
+          () => {
+            const targetId =
+              button.getAttribute(
+                "data-mobile-toggle"
+              );
+            const target =
+              document.getElementById(
+                targetId
+              );
+            if (!target) {
+              return;
+            }
+            const open =
+              target.classList.toggle(
+                "open"
+              );
+            button.setAttribute(
+              "aria-expanded",
+              String(open)
+            );
+          }
+        );
+      }
+    );
+    /* Close mobile panel after navigation */
+    document
+      .querySelectorAll(
+        ".mobile-panel a"
+      )
+      .forEach(
+        (link) => {
+          link.addEventListener(
+            "click",
+            () => {
+              if (mobilePanel) {
+                mobilePanel.classList.remove(
+                  "open"
+                );
+              }
+              if (mobileMenuButton) {
+                mobileMenuButton.setAttribute(
+                  "aria-expanded",
+                  "false"
+                );
+              }
+            }
+          );
+        }
+      );
+    /* =========================================================
+       START
+    ========================================================= */
+    initializeSupabase();
+  </script>
+</body>
+</html>
