@@ -8,22 +8,23 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Workspace — EvalLoop AI</title>
+  <meta
+    name="theme-color"
+    content="#101211"
+  />
 
   <meta
     name="description"
-    content="EvalLoop AI Workspace — evaluate, compare, and monitor AI system quality."
+    content="EvalLoop AI Workspace — evaluate, compare, test, and improve AI systems."
   />
 
-  <meta name="theme-color" content="#101211" />
+  <title>Workspace — EvalLoop AI</title>
 
+  <!-- =========================================================
+       FONTS
+  ========================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
@@ -31,72 +32,100 @@
   />
 
   <style>
+    /* =========================================================
+       ROOT
+    ========================================================== */
+
     :root {
       --bg: #101211;
       --panel: #171b18;
-      --panel2: #1d221f;
+      --panel-2: #1d221f;
 
-      --ink: #f1f1ef;
+      --text: #f1f1ef;
       --muted: #a4aaa6;
       --dim: #727974;
 
-      --line: rgba(241, 241, 239, 0.14);
-      --line-soft: rgba(241, 241, 239, 0.08);
-
       --green: #3ecf8e;
-      --green2: #85e7ba;
-      --darkgreen: #13261c;
+      --green-light: #85e7ba;
+      --green-dark: #13261c;
 
-      --sans:
-        "Inter",
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+      --border: rgba(241, 241, 239, 0.14);
+      --border-soft: rgba(241, 241, 239, 0.08);
 
-      --mono: "DM Mono", monospace;
+      --danger: #ff7777;
 
-      --max: 1440px;
-      --sidebar: 220px;
+      --max: 1200px;
+
+      --sidebar-width: 238px;
+      --header-height: 68px;
+
+      --radius: 10px;
     }
 
-    * {
+    /* =========================================================
+       RESET
+    ========================================================== */
+
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
-      scroll-behavior: smooth;
+      min-height: 100%;
       background: var(--bg);
+      color-scheme: dark;
+      scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
 
       background:
-        radial-gradient(
-          circle at 65% -10%,
-          rgba(62, 207, 142, 0.075),
-          transparent 32%
+        linear-gradient(
+          rgba(16, 18, 17, 0.96),
+          rgba(16, 18, 17, 0.96)
         ),
-        var(--bg);
+        repeating-linear-gradient(
+          0deg,
+          transparent 0,
+          transparent 39px,
+          rgba(241, 241, 239, 0.028) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 39px,
+          rgba(241, 241, 239, 0.028) 40px
+        );
 
-      color: var(--ink);
+      color: var(--text);
 
-      font-family: var(--sans);
+      font-family: "Inter", sans-serif;
+      font-size: 15px;
       font-weight: 400;
-
       line-height: 1.6;
 
-      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    body,
+    body.menu-open {
+      overflow: hidden;
+    }
+
     button,
-    input {
-      font-family: var(--sans);
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
     }
 
     a {
@@ -106,121 +135,120 @@
 
     button {
       border: 0;
+      cursor: pointer;
     }
 
     ::selection {
-      background: rgba(62, 207, 142, 0.25);
-      color: var(--ink);
+      background: rgba(62, 207, 142, 0.22);
+      color: var(--text);
     }
 
     /* =========================================================
-       BACKGROUND
-    ========================================================= */
+       ACCESSIBILITY
+    ========================================================== */
 
-    .background-grid {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      pointer-events: none;
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
-      background-image:
-        linear-gradient(
-          rgba(241, 241, 239, 0.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(241, 241, 239, 0.025) 1px,
-          transparent 1px
-        );
+    :focus-visible {
+      outline: 1px solid var(--green);
+      outline-offset: 3px;
+    }
 
-      background-size: 48px 48px;
+    /* =========================================================
+       APP SHELL
+    ========================================================== */
 
-      mask-image:
-        linear-gradient(
-          to bottom,
-          black 0%,
-          rgba(0, 0, 0, 0.55) 55%,
-          transparent 100%
-        );
+    .app-shell {
+      min-height: 100vh;
+      position: relative;
     }
 
     /* =========================================================
        HEADER
-    ========================================================= */
+    ========================================================== */
 
     .workspace-header {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
+      z-index: 100;
 
-      z-index: 1000;
-
-      height: 70px;
-
-      border-bottom: 1px solid var(--line-soft);
-
-      background:
-        rgba(16, 18, 17, 0.86);
-
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .header-inner {
-      height: 100%;
-
-      padding: 0 26px;
+      height: var(--header-height);
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      gap: 25px;
+      padding: 0 24px;
+
+      background: rgba(16, 18, 17, 0.86);
+      border-bottom: 1px solid var(--border-soft);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
     }
 
     .header-left {
-      display: flex;
-      align-items: center;
-
-      gap: 28px;
-
+      gap: 18px;
       min-width: 0;
     }
 
-    .brand {
-      display: inline-flex;
-      align-items: baseline;
-
-      color: var(--ink);
-
-      font-family: var(--mono);
-      font-size: 15px;
-
-      letter-spacing: -0.04em;
-
-      white-space: nowrap;
+    .header-right {
+      gap: 12px;
     }
 
-    .brand-cursor {
-      color: var(--green);
+    .brand-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
 
-      animation: blink 1.2s infinite;
+      color: var(--text);
+
+      font-family: "DM Mono", monospace;
+      font-size: 13px;
+      font-weight: 500;
+
+      white-space: nowrap;
+
+      transition:
+        color 180ms ease,
+        opacity 180ms ease;
+    }
+
+    .brand-back:hover {
+      color: var(--green-light);
+    }
+
+    .brand-arrow {
+      color: var(--green);
+      font-size: 15px;
     }
 
     .header-divider {
       width: 1px;
       height: 22px;
-
-      background: var(--line-soft);
+      background: var(--border);
     }
 
-    .workspace-name {
+    .workspace-identity {
       display: flex;
-      flex-direction: column;
-
-      gap: 1px;
+      align-items: center;
+      gap: 9px;
 
       min-width: 0;
     }
@@ -228,206 +256,217 @@
     .workspace-label {
       color: var(--dim);
 
-      font-family: var(--mono);
-      font-size: 9px;
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      font-weight: 400;
+
+      letter-spacing: 0.02em;
+    }
+
+    .workspace-name {
+      max-width: 230px;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .system-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      color: var(--muted);
+
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      box-shadow: 0 0 0 3px rgba(62, 207, 142, 0.08);
+    }
+
+    .account-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 5px 8px 5px 5px;
+
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+
+      background: rgba(241, 241, 239, 0.025);
+
+      color: var(--text);
+
+      transition:
+        border-color 180ms ease,
+        background 180ms ease;
+    }
+
+    .account-button:hover {
+      border-color: var(--border);
+      background: rgba(241, 241, 239, 0.045);
+    }
+
+    .account-avatar {
+      width: 30px;
+      height: 30px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid rgba(62, 207, 142, 0.28);
+      border-radius: 7px;
+
+      background: var(--green-dark);
+
+      color: var(--green-light);
+
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .account-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      min-width: 0;
+    }
+
+    .account-name {
+      max-width: 120px;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      color: var(--text);
+
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .account-email {
+      max-width: 120px;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      color: var(--dim);
+
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .account-chevron {
+      color: var(--dim);
+      font-size: 12px;
+    }
+
+    .mobile-menu-button {
+      display: none;
+
+      width: 38px;
+      height: 38px;
+
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+
+      background: transparent;
+      color: var(--text);
+
+      font-size: 18px;
+    }
+
+    /* =========================================================
+       MAIN LAYOUT
+    ========================================================== */
+
+    .workspace-layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================== */
+
+    .sidebar {
+      position: sticky;
+      top: var(--header-height);
+
+      height: calc(100vh - var(--header-height));
+
+      display: flex;
+      flex-direction: column;
+
+      padding: 24px 14px;
+
+      border-right: 1px solid var(--border-soft);
+
+      background: rgba(16, 18, 17, 0.52);
+
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      margin-bottom: 26px;
+    }
+
+    .sidebar-heading {
+      padding: 0 11px;
+      margin-bottom: 9px;
+
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
 
       letter-spacing: 0.09em;
       text-transform: uppercase;
     }
 
-    .workspace-title {
-      color: var(--ink);
-
-      font-size: 13px;
-      font-weight: 500;
-
-      white-space: nowrap;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-
-      gap: 18px;
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-
-      gap: 7px;
-
-      color: var(--muted);
-
-      font-family: var(--mono);
-      font-size: 10px;
-
-      transition:
-        color 0.2s ease;
-    }
-
-    .back-link:hover {
-      color: var(--green2);
-    }
-
-    .back-arrow {
-      color: var(--green);
-    }
-
-    .account-button {
-      width: 36px;
-      height: 36px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border: 1px solid var(--line);
-
-      background: var(--panel);
-
-      color: var(--green2);
-
-      font-family: var(--mono);
-      font-size: 10px;
-
-      cursor: pointer;
-
-      transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .account-button:hover {
-      border-color:
-        rgba(62, 207, 142, 0.4);
-
-      background: var(--panel2);
-    }
-
-    /* =========================================================
-       MOBILE SIDEBAR BUTTON
-    ========================================================= */
-
-    .mobile-sidebar-button {
-      display: none;
-
-      width: 36px;
-      height: 36px;
-
-      align-items: center;
-      justify-content: center;
-
-      border: 1px solid var(--line);
-
-      background: var(--panel);
-
-      color: var(--muted);
-
-      cursor: pointer;
-    }
-
-    .mobile-sidebar-button span {
-      width: 15px;
-      height: 1px;
-
-      position: relative;
-
-      background: var(--muted);
-    }
-
-    .mobile-sidebar-button span::before,
-    .mobile-sidebar-button span::after {
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-
-      width: 15px;
-      height: 1px;
-
-      background: var(--muted);
-    }
-
-    .mobile-sidebar-button span::before {
-      top: -5px;
-    }
-
-    .mobile-sidebar-button span::after {
-      top: 5px;
-    }
-
-    /* =========================================================
-       LAYOUT
-    ========================================================= */
-
-    .workspace-layout {
-      min-height: 100vh;
-
-      padding-top: 70px;
-    }
-
-    .sidebar {
-      position: fixed;
-
-      top: 70px;
-      left: 0;
-      bottom: 0;
-
-      width: var(--sidebar);
-
-      padding: 28px 16px;
-
-      border-right: 1px solid var(--line-soft);
-
-      background:
-        rgba(16, 18, 17, 0.72);
-
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-
-      z-index: 900;
-    }
-
-    .sidebar-section {
-      margin-bottom: 30px;
-    }
-
-    .sidebar-label {
-      padding: 0 10px;
-
-      margin-bottom: 9px;
-
-      color: var(--dim);
-
-      font-family: var(--mono);
-      font-size: 9px;
-
-      letter-spacing: 0.10em;
-    }
-
     .sidebar-nav {
       display: flex;
       flex-direction: column;
-
       gap: 2px;
     }
 
     .sidebar-link {
-      min-height: 40px;
+      position: relative;
 
       display: flex;
       align-items: center;
+      gap: 11px;
 
-      gap: 10px;
+      min-height: 40px;
 
-      padding: 0 10px;
+      padding: 8px 11px;
 
       border: 1px solid transparent;
+      border-radius: 7px;
 
       color: var(--muted);
 
@@ -435,886 +474,1218 @@
       font-weight: 400;
 
       transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
     }
 
     .sidebar-link:hover {
-      color: var(--ink);
-
-      background:
-        rgba(62, 207, 142, 0.035);
-
-      border-color: var(--line-soft);
+      color: var(--text);
+      background: rgba(241, 241, 239, 0.035);
     }
 
     .sidebar-link.active {
-      color: var(--green2);
+      border-color: rgba(62, 207, 142, 0.13);
+      background: rgba(62, 207, 142, 0.07);
 
-      background:
-        rgba(62, 207, 142, 0.065);
-
-      border-color:
-        rgba(62, 207, 142, 0.16);
+      color: var(--green-light);
     }
 
     .sidebar-icon {
-      width: 18px;
+      width: 16px;
 
-      color: var(--dim);
+      color: currentColor;
 
-      font-family: var(--mono);
-      font-size: 9px;
-
+      font-family: "DM Mono", monospace;
+      font-size: 12px;
       text-align: center;
     }
 
-    .sidebar-link.active .sidebar-icon {
-      color: var(--green);
+    .sidebar-divider {
+      height: 1px;
+      margin: 2px 11px 24px;
+
+      background: var(--border-soft);
     }
 
     .sidebar-bottom {
-      position: absolute;
-
-      left: 16px;
-      right: 16px;
-      bottom: 25px;
-
-      padding-top: 18px;
-
-      border-top: 1px solid var(--line-soft);
+      margin-top: auto;
     }
 
-    .system-status {
+    .workspace-health {
+      padding: 13px;
+
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+
+      background: rgba(241, 241, 239, 0.018);
+    }
+
+    .health-top {
       display: flex;
       align-items: center;
+      justify-content: space-between;
 
-      gap: 8px;
+      margin-bottom: 8px;
+    }
 
-      padding: 0 10px;
+    .health-label {
+      color: var(--muted);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    .health-value {
+      color: var(--green-light);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    .health-description {
+      margin: 0;
 
       color: var(--dim);
 
-      font-family: var(--mono);
-      font-size: 9px;
-
-      letter-spacing: 0.05em;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-
-      flex-shrink: 0;
-
-      border-radius: 50%;
-
-      background: var(--green);
-
-      box-shadow:
-        0 0 10px
-        rgba(62, 207, 142, 0.6);
-    }
-
-    .main {
-      margin-left: var(--sidebar);
-
-      width: calc(100% - var(--sidebar));
-    }
-
-    .main-inner {
-      width: min(
-        calc(100% - 64px),
-        var(--max)
-      );
-
-      margin: 0 auto;
-
-      padding: 52px 0 90px;
+      font-size: 11px;
+      line-height: 1.5;
     }
 
     /* =========================================================
-       PAGE HEADING
-    ========================================================= */
+       MAIN CONTENT
+    ========================================================== */
 
-    .page-heading {
+    .main-content {
+      min-width: 0;
+      padding: 42px 42px 60px;
+    }
+
+    .content-inner {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       PAGE INTRO
+    ========================================================== */
+
+    .page-intro {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-
       gap: 30px;
 
-      margin-bottom: 34px;
+      padding-bottom: 30px;
+
+      border-bottom: 1px solid var(--border-soft);
     }
 
     .page-kicker {
-      display: flex;
-      align-items: center;
+      margin-bottom: 9px;
 
-      gap: 9px;
+      color: var(--green);
 
-      color: var(--green2);
-
-      font-family: var(--mono);
-      font-size: 10px;
-
-      letter-spacing: 0.10em;
-    }
-
-    .kicker-line {
-      width: 22px;
-      height: 1px;
-
-      background: var(--green);
-    }
-
-    .page-heading h1 {
-      margin-top: 15px;
-
-      color: var(--ink);
-
-      font-size:
-        clamp(34px, 4vw, 52px);
-
-      line-height: 0.98;
-
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
       font-weight: 500;
 
-      letter-spacing: -0.045em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .page-heading h1 span {
-      color: var(--green);
+    .page-title {
+      margin: 0;
+
+      color: var(--text);
+
+      font-size: clamp(29px, 4vw, 42px);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+    }
+
+    .page-title span {
+      color: var(--green-light);
     }
 
     .page-description {
-      max-width: 550px;
+      max-width: 650px;
 
-      margin-top: 15px;
+      margin: 12px 0 0;
 
       color: var(--muted);
 
       font-size: 14px;
-      font-weight: 300;
-
-      line-height: 1.75;
+      font-weight: 400;
+      line-height: 1.7;
     }
 
-    .heading-actions {
+    .page-actions {
       display: flex;
       align-items: center;
-
       gap: 9px;
 
       flex-shrink: 0;
     }
 
     .button {
-      min-height: 42px;
-
-      padding: 0 15px;
-
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
       gap: 8px;
 
-      border: 1px solid
-        rgba(62, 207, 142, 0.35);
+      min-height: 39px;
 
-      border-radius: 3px;
+      padding: 8px 13px;
 
-      background:
-        rgba(62, 207, 142, 0.045);
+      border: 1px solid var(--border);
+      border-radius: 7px;
 
-      color: var(--green2);
+      background: transparent;
 
-      font-family: var(--mono);
-      font-size: 10px;
+      color: var(--text);
 
-      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
 
       transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease;
+        border-color 180ms ease,
+        color 180ms ease,
+        background 180ms ease,
+        transform 180ms ease;
     }
 
     .button:hover {
-      background:
-        rgba(62, 207, 142, 0.10);
-
-      border-color:
-        rgba(62, 207, 142, 0.8);
-
-      color: var(--ink);
-
+      border-color: rgba(62, 207, 142, 0.4);
+      background: rgba(62, 207, 142, 0.045);
+      color: var(--green-light);
       transform: translateY(-1px);
     }
 
-    .button.secondary {
-      border-color: var(--line);
+    .button-primary {
+      border-color: rgba(62, 207, 142, 0.34);
+      background: rgba(62, 207, 142, 0.08);
+      color: var(--green-light);
+    }
 
-      background: var(--panel);
+    .button-primary:hover {
+      border-color: rgba(62, 207, 142, 0.55);
+      background: rgba(62, 207, 142, 0.12);
+    }
+
+    /* =========================================================
+       SYSTEM STRIP
+    ========================================================== */
+
+    .system-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-top: 22px;
+      padding: 12px 14px;
+
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+
+      background: rgba(241, 241, 239, 0.018);
 
       color: var(--muted);
+
+      font-size: 12px;
     }
 
-    .button.secondary:hover {
-      border-color:
-        rgba(62, 207, 142, 0.25);
-
-      background: var(--panel2);
-
-      color: var(--ink);
+    .system-strip strong {
+      color: var(--text);
+      font-weight: 500;
     }
 
-    /* =========================================================
-       WORKSPACE STATUS
-    ========================================================= */
+    .system-strip .strip-dot {
+      width: 6px;
+      height: 6px;
 
-    .workspace-status {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-shrink: 0;
 
-      gap: 20px;
-
-      padding: 16px 18px;
-
-      margin-bottom: 25px;
-
-      border: 1px solid var(--line);
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(19, 38, 28, 0.55),
-          rgba(23, 27, 24, 0.80)
-        );
+      border-radius: 50%;
+      background: var(--green);
     }
 
-    .status-content {
-      display: flex;
-      align-items: center;
+    .system-strip .strip-status {
+      margin-left: auto;
 
-      gap: 11px;
-    }
+      color: var(--green);
 
-    .status-copy {
-      display: flex;
-      flex-direction: column;
-
-      gap: 2px;
-    }
-
-    .status-title {
-      color: var(--green2);
-
-      font-family: var(--mono);
+      font-family: "DM Mono", monospace;
       font-size: 10px;
-
-      letter-spacing: 0.06em;
-    }
-
-    .status-description {
-      color: var(--dim);
-
-      font-size: 11px;
-      font-weight: 300;
-    }
-
-    .status-meta {
-      color: var(--dim);
-
-      font-family: var(--mono);
-      font-size: 9px;
-
-      letter-spacing: 0.05em;
     }
 
     /* =========================================================
-       KPI
-    ========================================================= */
+       KPI GRID
+    ========================================================== */
 
     .kpi-grid {
       display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
 
-      grid-template-columns:
-        repeat(4, 1fr);
+      gap: 10px;
 
-      gap: 1px;
-
-      border: 1px solid var(--line);
-
-      background: var(--line);
-
-      margin-bottom: 35px;
+      margin-top: 18px;
     }
 
     .kpi-card {
-      min-height: 132px;
+      min-height: 128px;
 
-      padding: 21px;
+      padding: 18px;
 
-      background: var(--panel);
+      border: 1px solid var(--border-soft);
+      border-radius: 9px;
 
-      transition:
-        background 0.25s ease;
-    }
-
-    .kpi-card:hover {
-      background: var(--panel2);
+      background: rgba(23, 27, 24, 0.66);
     }
 
     .kpi-label {
+      margin-bottom: 17px;
+
       color: var(--dim);
 
-      font-family: var(--mono);
-      font-size: 9px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
 
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .kpi-value {
-      margin-top: 16px;
+      color: var(--text);
 
-      color: var(--ink);
-
-      font-family: var(--mono);
-      font-size: 27px;
+      font-family: "DM Mono", monospace;
+      font-size: 25px;
       font-weight: 400;
-
       letter-spacing: -0.04em;
     }
 
-    .kpi-value.accent {
-      color: var(--green2);
-    }
-
-    .kpi-meta {
-      margin-top: 7px;
+    .kpi-sub {
+      margin-top: 5px;
 
       color: var(--dim);
 
-      font-size: 10px;
-      font-weight: 300;
+      font-size: 11px;
     }
 
     /* =========================================================
        SECTION
-    ========================================================= */
+    ========================================================== */
 
     .section {
-      margin-top: 35px;
+      margin-top: 38px;
     }
 
     .section-header {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
-
-      gap: 20px;
 
       margin-bottom: 13px;
     }
 
-    .section-label {
+    .section-kicker {
+      margin-bottom: 4px;
+
       color: var(--dim);
 
-      font-family: var(--mono);
+      font-family: "DM Mono", monospace;
       font-size: 10px;
+      font-weight: 500;
 
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin: 0;
+
+      color: var(--text);
+
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
     }
 
     .section-link {
-      color: var(--green2);
+      color: var(--green-light);
 
-      font-family: var(--mono);
-      font-size: 9px;
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
 
-      letter-spacing: 0.04em;
-
-      transition: color 0.2s ease;
+      transition: color 180ms ease;
     }
 
     .section-link:hover {
-      color: var(--ink);
+      color: var(--green);
     }
 
     /* =========================================================
-       RECENT RUNS + QUALITY TREND
-    ========================================================= */
+       CONTENT GRID
+    ========================================================== */
 
     .overview-grid {
       display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
 
-      grid-template-columns:
-        1.35fr 0.65fr;
-
-      gap: 1px;
-
-      background: var(--line);
-
-      border: 1px solid var(--line);
+      gap: 10px;
     }
 
     .panel {
-      min-height: 290px;
+      min-width: 0;
 
-      padding: 25px;
+      border: 1px solid var(--border-soft);
+      border-radius: 9px;
 
-      background: var(--panel);
+      background: rgba(23, 27, 24, 0.66);
     }
 
-    .empty-panel {
-      min-height: 235px;
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      min-height: 52px;
+
+      padding: 0 17px;
+
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .panel-title {
+      color: var(--text);
+
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .panel-meta {
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================== */
+
+    .empty-state {
+      min-height: 258px;
 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
+      padding: 35px 25px;
 
       text-align: center;
     }
 
-    .empty-symbol {
-      width: 44px;
-      height: 44px;
+    .empty-icon {
+      width: 42px;
+      height: 42px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
 
-      border: 1px solid
-        rgba(62, 207, 142, 0.18);
+      margin-bottom: 16px;
 
-      background:
-        rgba(62, 207, 142, 0.035);
+      border: 1px solid var(--border);
+      border-radius: 8px;
 
-      color: var(--green);
+      background: rgba(241, 241, 239, 0.018);
 
-      font-family: var(--mono);
-      font-size: 13px;
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 15px;
     }
 
     .empty-title {
-      margin-top: 16px;
+      margin: 0;
 
-      color: var(--ink);
+      color: var(--text);
 
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
     }
 
     .empty-description {
-      max-width: 360px;
+      max-width: 390px;
 
-      margin-top: 8px;
+      margin: 7px 0 15px;
 
-      color: var(--dim);
+      color: var(--muted);
 
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .text-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      color: var(--green-light);
+
+      font-family: "DM Mono", monospace;
       font-size: 11px;
-      font-weight: 300;
 
-      line-height: 1.7;
+      transition: color 180ms ease;
     }
 
-    /*
-      Deliberately kept as a green text action.
-      No white button background.
-    */
-
-    .empty-action {
-      margin-top: 17px;
-
-      padding: 0;
-
-      background: transparent;
-
-      color: var(--green2);
-
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 400;
-
-      letter-spacing: 0.04em;
-
-      cursor: pointer;
-
-      transition:
-        color 0.2s ease;
-    }
-
-    .empty-action:hover {
+    .text-action:hover {
       color: var(--green);
     }
 
     /* =========================================================
-       QUALITY TREND
-    ========================================================= */
+       TREND VISUAL
+    ========================================================== */
 
-    .trend-panel {
+    .trend-area {
       position: relative;
+
+      height: 258px;
 
       overflow: hidden;
     }
 
+    .trend-grid {
+      position: absolute;
+      inset: 25px 18px 30px;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0,
+          transparent 39px,
+          rgba(241, 241, 239, 0.055) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 59px,
+          rgba(241, 241, 239, 0.04) 60px
+        );
+    }
+
     .trend-empty {
-      min-height: 205px;
+      position: absolute;
+      inset: 0;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      position: relative;
-    }
-
-    .trend-grid {
-      position: absolute;
-      inset: 18px 0;
-
-      background-image:
-        linear-gradient(
-          rgba(241, 241, 239, 0.035) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(241, 241, 239, 0.035) 1px,
-          transparent 1px
-        );
-
-      background-size: 42px 42px;
-
-      border-top: 1px solid var(--line-soft);
-      border-bottom: 1px solid var(--line-soft);
-
-      opacity: 0.8;
-    }
-
-    .trend-line {
-      position: absolute;
-
-      width: 72%;
-      height: 1px;
-
-      left: 14%;
-      top: 54%;
-
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          rgba(62, 207, 142, 0.35),
-          transparent
-        );
-
-      opacity: 0.55;
-    }
-
-    .trend-center {
-      position: relative;
-      z-index: 2;
+      padding: 30px;
 
       color: var(--dim);
 
-      font-family: var(--mono);
-      font-size: 10px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .trend-empty-inner {
+      max-width: 220px;
+    }
+
+    .trend-empty strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: var(--muted);
+
+      font-weight: 500;
     }
 
     /* =========================================================
        QUICK START
-    ========================================================= */
+    ========================================================== */
 
     .quick-grid {
       display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
 
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 1px;
-
-      border: 1px solid var(--line);
-
-      background: var(--line);
+      gap: 10px;
     }
 
     .quick-card {
-      min-height: 215px;
+      position: relative;
+
+      min-height: 170px;
 
       display: flex;
       flex-direction: column;
 
-      padding: 23px;
+      padding: 18px;
 
-      background: var(--panel);
+      border: 1px solid var(--border-soft);
+      border-radius: 9px;
+
+      background: rgba(23, 27, 24, 0.66);
 
       transition:
-        background 0.25s ease,
-        transform 0.25s ease;
+        border-color 180ms ease,
+        background 180ms ease,
+        transform 180ms ease;
     }
 
     .quick-card:hover {
-      background: var(--panel2);
-
+      border-color: rgba(62, 207, 142, 0.22);
+      background: rgba(29, 34, 31, 0.76);
       transform: translateY(-2px);
     }
 
-    .quick-number {
+    .quick-type {
+      margin-bottom: 18px;
+
       color: var(--green);
 
-      font-family: var(--mono);
+      font-family: "DM Mono", monospace;
       font-size: 10px;
-    }
-
-    .quick-card h3 {
-      margin-top: 20px;
-
-      color: var(--ink);
-
-      font-size: 17px;
-      line-height: 1.25;
-
       font-weight: 500;
 
-      letter-spacing: -0.02em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
-    .quick-card p {
-      margin-top: 10px;
+    .quick-title {
+      margin: 0 0 7px;
+
+      color: var(--text);
+
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .quick-description {
+      margin: 0;
 
       color: var(--muted);
 
-      font-size: 11px;
-      font-weight: 300;
-
-      line-height: 1.7;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
     .quick-arrow {
       margin-top: auto;
       padding-top: 18px;
 
-      color: var(--green2);
+      color: var(--green-light);
 
-      font-family: var(--mono);
-      font-size: 9px;
-
-      letter-spacing: 0.04em;
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
     }
 
     /* =========================================================
-       ACTIVITY
-    ========================================================= */
+       FLOW
+    ========================================================== */
 
-    .activity-panel {
-      border: 1px solid var(--line);
-
-      background: var(--panel);
+    .flow-panel {
+      padding: 23px;
     }
 
-    .activity-empty {
-      min-height: 150px;
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+
+      align-items: center;
+
+      gap: 0;
+    }
+
+    .flow-step {
+      position: relative;
+
+      padding: 5px 18px 5px 0;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "→";
+
+      position: absolute;
+      top: 5px;
+      right: 10px;
+
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 13px;
+    }
+
+    .flow-number {
+      margin-bottom: 8px;
+
+      color: var(--green);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    .flow-title {
+      margin-bottom: 4px;
+
+      color: var(--text);
+
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .flow-description {
+      color: var(--dim);
+
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================== */
+
+    .workspace-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-top: 48px;
+      padding-top: 20px;
+
+      border-top: 1px solid var(--border-soft);
+
+      color: var(--dim);
+
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      transition: color 180ms ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--green-light);
+    }
+
+    /* =========================================================
+       AUTH LOCK OVERLAY
+    ========================================================== */
+
+    .auth-lock {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      padding: 25px;
+      padding: 24px;
+
+      background: rgba(5, 7, 6, 0.88);
+
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 200ms ease,
+        visibility 200ms ease;
+    }
+
+    .auth-lock.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-lock-content {
+      width: min(420px, 100%);
+
+      padding: 34px 30px;
+
+      border: 1px solid rgba(241, 241, 239, 0.12);
+      border-radius: 11px;
+
+      background: rgba(16, 18, 17, 0.93);
+
+      text-align: center;
+
+      box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    .lock-symbol {
+      width: 45px;
+      height: 45px;
+
+      display: grid;
+      place-items: center;
+
+      margin: 0 auto 18px;
+
+      border: 1px solid rgba(62, 207, 142, 0.25);
+      border-radius: 9px;
+
+      background: rgba(62, 207, 142, 0.06);
+
+      color: var(--green-light);
+
+      font-family: "DM Mono", monospace;
+      font-size: 16px;
+    }
+
+    .auth-lock-title {
+      margin: 0;
+
+      color: var(--text);
+
+      font-size: 21px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .auth-lock-title span {
+      color: var(--green-light);
+    }
+
+    .auth-lock-description {
+      max-width: 340px;
+
+      margin: 9px auto 22px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .auth-lock-actions {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .auth-lock-note {
+      margin: 18px 0 0;
 
       color: var(--dim);
 
-      font-family: var(--mono);
+      font-family: "DM Mono", monospace;
       font-size: 10px;
+    }
 
-      text-align: center;
+    /* =========================================================
+       AUTH CHECK LOADING
+    ========================================================== */
+
+    .auth-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: var(--bg);
+
+      transition:
+        opacity 220ms ease,
+        visibility 220ms ease;
+    }
+
+    .auth-loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 13px;
+
+      color: var(--muted);
+
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+
+    .loading-mark {
+      width: 28px;
+      height: 28px;
+
+      border: 1px solid rgba(62, 207, 142, 0.22);
+      border-top-color: var(--green);
+
+      border-radius: 50%;
+
+      animation: spin 850ms linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================================================
+       ACCOUNT MENU
+    ========================================================== */
+
+    .account-menu {
+      position: fixed;
+
+      top: 58px;
+      right: 24px;
+
+      z-index: 150;
+
+      width: 190px;
+
+      padding: 6px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: #171b18;
+
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.32);
+
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+
+      transition:
+        opacity 160ms ease,
+        visibility 160ms ease,
+        transform 160ms ease;
+    }
+
+    .account-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .account-menu-item {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+
+      min-height: 37px;
+
+      padding: 8px 10px;
+
+      border-radius: 6px;
+
+      background: transparent;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      text-align: left;
+
+      transition:
+        color 160ms ease,
+        background 160ms ease;
+    }
+
+    .account-menu-item:hover {
+      background: rgba(241, 241, 239, 0.045);
+      color: var(--text);
+    }
+
+    .account-menu-divider {
+      height: 1px;
+      margin: 5px 3px;
+
+      background: var(--border-soft);
+    }
+
+    .account-menu-item.logout {
+      color: #df8b8b;
+    }
+
+    /* =========================================================
+       MOBILE BACKDROP
+    ========================================================== */
+
+    .sidebar-backdrop {
+      display: none;
+
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+
+      background: rgba(0, 0, 0, 0.56);
     }
 
     /* =========================================================
        RESPONSIVE
-    ========================================================= */
+    ========================================================== */
 
     @media (max-width: 1100px) {
-      :root {
-        --sidebar: 200px;
-      }
-
-      .kpi-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+      .main-content {
+        padding: 36px 28px 50px;
       }
 
       .quick-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 900px) {
-      .mobile-sidebar-button {
-        display: flex;
+      :root {
+        --sidebar-width: 220px;
       }
 
-      .header-left {
-        gap: 14px;
+      .workspace-header {
+        padding: 0 18px;
       }
 
-      .header-divider {
+      .system-status {
         display: none;
       }
 
-      .back-link {
+      .page-intro {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .page-actions {
+        width: 100%;
+      }
+
+      .page-actions .button {
+        flex: 0 0 auto;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 0;
+      }
+
+      .flow-step:nth-child(2)::after {
         display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .mobile-menu-button {
+        display: grid;
+        place-items: center;
+      }
+
+      .workspace-layout {
+        display: block;
       }
 
       .sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        bottom: 0;
+        z-index: 95;
+
+        width: min(280px, 86vw);
+        height: auto;
+
         transform: translateX(-100%);
 
-        transition:
-          transform 0.25s ease;
+        background: #101211;
 
-        box-shadow:
-          20px 0 50px
-          rgba(0, 0, 0, 0.25);
+        transition: transform 220ms ease;
       }
 
       .sidebar.open {
         transform: translateX(0);
       }
 
-      .main {
-        margin-left: 0;
-
-        width: 100%;
+      .sidebar-backdrop.open {
+        display: block;
       }
 
-      .main-inner {
-        width: min(
-          calc(100% - 42px),
-          var(--max)
-        );
+      .main-content {
+        padding: 30px 18px 45px;
       }
 
-      .overview-grid {
-        grid-template-columns: 1fr;
+      .header-divider,
+      .workspace-label {
+        display: none;
       }
 
-      .page-heading {
-        align-items: flex-start;
-
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .workspace-header {
-        height: 64px;
+      .workspace-name {
+        max-width: 180px;
       }
 
-      .workspace-layout {
-        padding-top: 64px;
-      }
-
-      .sidebar {
-        top: 64px;
-      }
-
-      .header-inner {
-        padding: 0 16px;
-      }
-
-      .workspace-title {
-        max-width: 130px;
+      .account-info,
+      .account-chevron {
+        display: none;
       }
 
       .account-button {
-        width: 34px;
-        height: 34px;
+        padding: 4px;
       }
 
-      .main-inner {
-        width: calc(100% - 32px);
-
-        padding-top: 38px;
-        padding-bottom: 60px;
-      }
-
-      .page-heading h1 {
-        font-size: 38px;
-      }
-
-      .page-description {
-        font-size: 13px;
-      }
-
-      .heading-actions {
-        width: 100%;
-      }
-
-      .heading-actions .button {
-        flex: 1;
-      }
-
-      .workspace-status {
-        align-items: flex-start;
-
-        flex-direction: column;
+      .page-title {
+        font-size: 30px;
       }
 
       .kpi-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       .quick-grid {
         grid-template-columns: 1fr;
       }
 
-      .panel {
-        padding: 20px;
+      .flow {
+        grid-template-columns: 1fr;
+        gap: 18px;
       }
 
-      .quick-card {
-        min-height: 195px;
+      .flow-step {
+        padding-right: 0;
+      }
+
+      .flow-step:not(:last-child)::after {
+        content: "↓";
+
+        top: auto;
+        right: auto;
+        bottom: -18px;
+        left: 0;
+      }
+
+      .workspace-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .auth-lock-content {
+        padding: 30px 22px;
       }
     }
 
-    @media (max-width: 400px) {
-      .brand {
+    @media (max-width: 500px) {
+      .workspace-header {
+        height: 62px;
+      }
+
+      :root {
+        --header-height: 62px;
+      }
+
+      .brand-back {
+        font-size: 12px;
+      }
+
+      .workspace-name {
+        max-width: 130px;
+      }
+
+      .main-content {
+        padding: 26px 14px 40px;
+      }
+
+      .page-description {
         font-size: 13px;
       }
 
-      .workspace-title {
-        max-width: 100px;
-      }
-
-      .page-heading h1 {
-        font-size: 34px;
-      }
-
-      .heading-actions {
+      .page-actions {
         flex-direction: column;
         align-items: stretch;
+      }
+
+      .page-actions .button {
+        width: 100%;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-card {
+        min-height: 112px;
+      }
+
+      .system-strip {
+        align-items: flex-start;
+      }
+
+      .system-strip .strip-status {
+        display: none;
+      }
+
+      .panel-header {
+        padding: 0 14px;
+      }
+
+      .empty-state {
+        min-height: 235px;
+      }
+
+      .trend-area {
+        height: 235px;
+      }
+
+      .auth-lock-actions {
+        flex-direction: column;
+      }
+
+      .auth-lock-actions .button {
+        width: 100%;
+      }
+
+      .account-menu {
+        right: 14px;
       }
     }
 
     /* =========================================================
-       ANIMATION
-    ========================================================= */
+       REDUCED MOTION
+    ========================================================== */
 
-    @keyframes blink {
-      0%,
-      45% {
-        opacity: 1;
-      }
-
-      46%,
-      100% {
-        opacity: 0.2;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
       }
     }
   </style>
@@ -1322,49 +1693,69 @@
 
 <body>
 
-  <div class="background-grid"></div>
+  <!-- =======================================================
+       AUTH CHECK LOADING
+  ======================================================== -->
+
+  <div
+    class="auth-loading"
+    id="authLoading"
+    aria-live="polite"
+  >
+    <div class="loading-inner">
+      <div class="loading-mark" aria-hidden="true"></div>
+      <span>Checking your workspace…</span>
+    </div>
+  </div>
 
 
   <!-- =======================================================
-       WORKSPACE HEADER
+       APPLICATION
   ======================================================== -->
 
-  <header class="workspace-header">
+  <div class="app-shell" id="appShell">
 
-    <div class="header-inner">
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="workspace-header">
 
       <div class="header-left">
 
         <button
-          class="mobile-sidebar-button"
-          id="mobileSidebarButton"
+          class="mobile-menu-button"
+          id="mobileMenuButton"
           type="button"
           aria-label="Open workspace navigation"
           aria-expanded="false"
         >
-          <span></span>
+          ☰
         </button>
 
         <a
+          class="brand-back"
           href="/"
-          class="brand"
-          aria-label="EvalLoop AI home"
+          aria-label="Back to EvalLoop AI"
         >
-          EvalLoop AI<span class="brand-cursor">_</span>
+          <span class="brand-arrow">←</span>
+          <span>EvalLoop AI_</span>
         </a>
 
-        <div class="header-divider"></div>
+        <span
+          class="header-divider"
+          aria-hidden="true"
+        ></span>
 
-        <div class="workspace-name">
+        <div class="workspace-identity">
+          <span class="workspace-label">Workspace</span>
 
-          <span class="workspace-label">
-            WORKSPACE
+          <span
+            class="workspace-name"
+            id="workspaceName"
+          >
+            Default Workspace
           </span>
-
-          <span class="workspace-title">
-            Personal Workspace
-          </span>
-
         </div>
 
       </div>
@@ -1372,532 +1763,921 @@
 
       <div class="header-right">
 
-        <a
-          href="/"
-          class="back-link"
+        <div
+          class="system-status"
+          aria-label="Workspace system status"
         >
-          <span class="back-arrow">←</span>
-          BACK TO EVALLOOP AI
-        </a>
+          <span
+            class="status-dot"
+            aria-hidden="true"
+          ></span>
+
+          <span>SYSTEM READY</span>
+        </div>
+
 
         <button
           class="account-button"
+          id="accountButton"
           type="button"
-          aria-label="Account"
+          aria-haspopup="true"
+          aria-expanded="false"
         >
-          VK
+          <span
+            class="account-avatar"
+            id="accountAvatar"
+          >
+            U
+          </span>
+
+          <span class="account-info">
+            <span
+              class="account-name"
+              id="accountName"
+            >
+              User
+            </span>
+
+            <span
+              class="account-email"
+              id="accountEmail"
+            >
+              —
+            </span>
+          </span>
+
+          <span
+            class="account-chevron"
+            aria-hidden="true"
+          >
+            ▾
+          </span>
         </button>
 
       </div>
 
-    </div>
-
-  </header>
-
-
-  <!-- =======================================================
-       WORKSPACE LAYOUT
-  ======================================================== -->
-
-  <div class="workspace-layout">
-
-
-    <!-- SIDEBAR -->
-
-    <aside
-      class="sidebar"
-      id="sidebar"
-    >
-
-      <div class="sidebar-section">
-
-        <div class="sidebar-label">
-          WORKSPACE
-        </div>
-
-        <nav class="sidebar-nav">
-
-          <a
-            href="/app/"
-            class="sidebar-link active"
-          >
-            <span class="sidebar-icon">01</span>
-            <span>Overview</span>
-          </a>
-
-          <a
-            href="/app/evaluations/"
-            class="sidebar-link"
-          >
-            <span class="sidebar-icon">02</span>
-            <span>Evaluations</span>
-          </a>
-
-          <a
-            href="/app/runs/"
-            class="sidebar-link"
-          >
-            <span class="sidebar-icon">03</span>
-            <span>Runs</span>
-          </a>
-
-          <a
-            href="/app/datasets/"
-            class="sidebar-link"
-          >
-            <span class="sidebar-icon">04</span>
-            <span>Datasets</span>
-          </a>
-
-        </nav>
-
-      </div>
-
-
-      <div class="sidebar-section">
-
-        <div class="sidebar-label">
-          ACCOUNT
-        </div>
-
-        <nav class="sidebar-nav">
-
-          <a
-            href="/settings/"
-            class="sidebar-link"
-          >
-            <span class="sidebar-icon">05</span>
-            <span>Settings</span>
-          </a>
-
-        </nav>
-
-      </div>
-
-
-      <div class="sidebar-bottom">
-
-        <div class="system-status">
-
-          <span class="status-dot"></span>
-
-          <span>
-            EVALLOOP SYSTEMS READY
-          </span>
-
-        </div>
-
-      </div>
-
-    </aside>
+    </header>
 
 
     <!-- =====================================================
-         MAIN CONTENT
+         ACCOUNT MENU
     ====================================================== -->
 
-    <main class="main">
+    <div
+      class="account-menu"
+      id="accountMenu"
+      role="menu"
+      aria-hidden="true"
+    >
 
-      <div class="main-inner">
+      <button
+        class="account-menu-item"
+        type="button"
+        role="menuitem"
+        data-action="profile"
+      >
+        Profile
+      </button>
+
+      <button
+        class="account-menu-item"
+        type="button"
+        role="menuitem"
+        data-action="settings"
+      >
+        Settings
+      </button>
+
+      <div
+        class="account-menu-divider"
+        aria-hidden="true"
+      ></div>
+
+      <button
+        class="account-menu-item logout"
+        type="button"
+        role="menuitem"
+        id="logoutButton"
+      >
+        Log out
+      </button>
+
+    </div>
 
 
-        <!-- PAGE HEADING -->
+    <!-- =====================================================
+         WORKSPACE LAYOUT
+    ====================================================== -->
 
-        <section class="page-heading">
+    <div class="workspace-layout">
 
-          <div>
+      <!-- ===================================================
+           SIDEBAR
+      ==================================================== -->
 
-            <div class="page-kicker">
+      <aside
+        class="sidebar"
+        id="sidebar"
+        aria-label="Workspace navigation"
+      >
 
-              <span class="kicker-line"></span>
+        <div class="sidebar-section">
 
-              EVALLOOP AI / WORKSPACE
+          <div class="sidebar-heading">
+            Workspace
+          </div>
+
+          <nav class="sidebar-nav">
+
+            <a
+              href="/app/"
+              class="sidebar-link active"
+              aria-current="page"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                /
+              </span>
+
+              <span>Overview</span>
+            </a>
+
+
+            <a
+              href="/app/evaluations/"
+              class="sidebar-link"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                ◫
+              </span>
+
+              <span>Evaluations</span>
+            </a>
+
+
+            <a
+              href="/app/runs/"
+              class="sidebar-link"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                ≡
+              </span>
+
+              <span>Runs</span>
+            </a>
+
+
+            <a
+              href="/app/datasets/"
+              class="sidebar-link"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                ▦
+              </span>
+
+              <span>Datasets</span>
+            </a>
+
+          </nav>
+
+        </div>
+
+
+        <div
+          class="sidebar-divider"
+          aria-hidden="true"
+        ></div>
+
+
+        <div class="sidebar-section">
+
+          <div class="sidebar-heading">
+            Tools
+          </div>
+
+          <nav class="sidebar-nav">
+
+            <a
+              href="/docs/"
+              class="sidebar-link"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                ?
+              </span>
+
+              <span>Documentation</span>
+            </a>
+
+
+            <a
+              href="/app/settings/"
+              class="sidebar-link"
+            >
+              <span
+                class="sidebar-icon"
+                aria-hidden="true"
+              >
+                ⚙
+              </span>
+
+              <span>Settings</span>
+            </a>
+
+          </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+          <div class="workspace-health">
+
+            <div class="health-top">
+
+              <span class="health-label">
+                WORKSPACE
+              </span>
+
+              <span
+                class="health-value"
+                id="workspaceHealth"
+              >
+                READY
+              </span>
 
             </div>
 
-            <h1>
-              Evaluate.
-              <span>Improve.</span>
-            </h1>
-
-            <p class="page-description">
-              Run structured evaluations, compare AI systems,
-              and build a clearer picture of model quality
-              from one workspace.
+            <p class="health-description">
+              Your evaluation environment is ready to create its first run.
             </p>
 
           </div>
 
+        </div>
 
-          <div class="heading-actions">
-
-            <button
-              type="button"
-              class="button secondary"
-              id="importDatasetButton"
-            >
-              IMPORT DATASET
-            </button>
-
-            <button
-              type="button"
-              class="button"
-              id="newEvaluationButton"
-            >
-              + NEW EVALUATION
-            </button>
-
-          </div>
-
-        </section>
+      </aside>
 
 
-        <!-- WORKSPACE STATUS -->
+      <div
+        class="sidebar-backdrop"
+        id="sidebarBackdrop"
+        aria-hidden="true"
+      ></div>
 
-        <section class="workspace-status">
 
-          <div class="status-content">
+      <!-- ===================================================
+           MAIN
+      ==================================================== -->
 
-            <span class="status-dot"></span>
+      <main class="main-content">
 
-            <div class="status-copy">
+        <div class="content-inner">
 
-              <span class="status-title">
-                WORKSPACE READY
-              </span>
+          <!-- =================================================
+               INTRO
+          ================================================== -->
 
-              <span class="status-description">
-                Your evaluation environment is ready for its first run.
-              </span>
+          <section class="page-intro">
+
+            <div>
+
+              <div class="page-kicker">
+                Workspace / Overview
+              </div>
+
+              <h1 class="page-title">
+                Your evaluation
+                <span>workspace.</span>
+              </h1>
+
+              <p class="page-description">
+                Build evaluations, run AI quality checks, compare outputs,
+                inspect results, and track model performance from one place.
+              </p>
 
             </div>
 
-          </div>
 
-          <span class="status-meta">
-            SESSION / ACTIVE
-          </span>
+            <div class="page-actions">
 
-        </section>
+              <a
+                href="/app/evaluations/new/"
+                class="button button-primary"
+              >
+                <span aria-hidden="true">+</span>
+                <span>New evaluation</span>
+              </a>
 
+              <a
+                href="/app/datasets/"
+                class="button"
+              >
+                Import dataset
+              </a>
 
-        <!-- KPI CARDS -->
-
-        <section class="kpi-grid">
-
-          <article class="kpi-card">
-
-            <div class="kpi-label">
-              RUNS THIS WEEK
             </div>
 
-            <div class="kpi-value">
-              0
-            </div>
-
-            <div class="kpi-meta">
-              No evaluations run yet
-            </div>
-
-          </article>
+          </section>
 
 
-          <article class="kpi-card">
+          <!-- =================================================
+               SYSTEM STRIP
+          ================================================== -->
 
-            <div class="kpi-label">
-              AVERAGE SCORE
-            </div>
+          <div class="system-strip">
 
-            <div class="kpi-value accent">
-              —
-            </div>
+            <span
+              class="strip-dot"
+              aria-hidden="true"
+            ></span>
 
-            <div class="kpi-meta">
-              Appears after your first run
-            </div>
+            <span>
+              <strong>Workspace initialized.</strong>
+              No evaluations are currently running.
+            </span>
 
-          </article>
-
-
-          <article class="kpi-card">
-
-            <div class="kpi-label">
-              REGRESSIONS
-            </div>
-
-            <div class="kpi-value">
-              0
-            </div>
-
-            <div class="kpi-meta">
-              No comparison history yet
-            </div>
-
-          </article>
-
-
-          <article class="kpi-card">
-
-            <div class="kpi-label">
-              SPEND / MONTH
-            </div>
-
-            <div class="kpi-value">
-              $0.00
-            </div>
-
-            <div class="kpi-meta">
-              Usage will appear here
-            </div>
-
-          </article>
-
-        </section>
-
-
-        <!-- RECENT RUNS -->
-
-        <section class="section">
-
-          <div class="section-header">
-
-            <div class="section-label">
-              RECENT RUNS
-            </div>
-
-            <a
-              href="/app/runs/"
-              class="section-link"
-            >
-              VIEW ALL →
-            </a>
+            <span class="strip-status">
+              READY
+            </span>
 
           </div>
 
 
-          <div class="overview-grid">
+          <!-- =================================================
+               KPI
+          ================================================== -->
+
+          <section
+            class="kpi-grid"
+            aria-label="Workspace metrics"
+          >
+
+            <div class="kpi-card">
+
+              <div class="kpi-label">
+                Runs this week
+              </div>
+
+              <div class="kpi-value">
+                0
+              </div>
+
+              <div class="kpi-sub">
+                No runs recorded
+              </div>
+
+            </div>
 
 
-            <!-- RECENT RUNS EMPTY STATE -->
+            <div class="kpi-card">
+
+              <div class="kpi-label">
+                Average score
+              </div>
+
+              <div class="kpi-value">
+                —
+              </div>
+
+              <div class="kpi-sub">
+                Awaiting evaluation
+              </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+              <div class="kpi-label">
+                Regressions
+              </div>
+
+              <div class="kpi-value">
+                0
+              </div>
+
+              <div class="kpi-sub">
+                Nothing to compare
+              </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+              <div class="kpi-label">
+                Spend this month
+              </div>
+
+              <div class="kpi-value">
+                $0.00
+              </div>
+
+              <div class="kpi-sub">
+                No provider usage
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               RECENT RUNS / QUALITY TREND
+          ================================================== -->
+
+          <section class="section">
+
+            <div class="section-header">
+
+              <div>
+                <div class="section-kicker">
+                  Activity
+                </div>
+
+                <h2 class="section-title">
+                  Evaluation activity
+                </h2>
+              </div>
+
+              <a
+                href="/app/runs/"
+                class="section-link"
+              >
+                View runs →
+              </a>
+
+            </div>
+
+
+            <div class="overview-grid">
+
+              <!-- Recent runs -->
+
+              <div class="panel">
+
+                <div class="panel-header">
+
+                  <span class="panel-title">
+                    Recent runs
+                  </span>
+
+                  <span class="panel-meta">
+                    0 RUNS
+                  </span>
+
+                </div>
+
+
+                <div class="empty-state">
+
+                  <div
+                    class="empty-icon"
+                    aria-hidden="true"
+                  >
+                    ∅
+                  </div>
+
+                  <h3 class="empty-title">
+                    No runs yet
+                  </h3>
+
+                  <p class="empty-description">
+                    Create an evaluation and run your first dataset or live
+                    example to start seeing results here.
+                  </p>
+
+                  <a
+                    href="/app/evaluations/new/"
+                    class="text-action"
+                  >
+                    Create evaluation →
+                  </a>
+
+                </div>
+
+              </div>
+
+
+              <!-- Quality trend -->
+
+              <div class="panel">
+
+                <div class="panel-header">
+
+                  <span class="panel-title">
+                    Quality trend
+                  </span>
+
+                  <span class="panel-meta">
+                    LAST 30 DAYS
+                  </span>
+
+                </div>
+
+
+                <div class="trend-area">
+
+                  <div
+                    class="trend-grid"
+                    aria-hidden="true"
+                  ></div>
+
+                  <div class="trend-empty">
+
+                    <div class="trend-empty-inner">
+
+                      <strong>
+                        No quality data yet
+                      </strong>
+
+                      Run an evaluation to generate your first quality trend.
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               QUICK START
+          ================================================== -->
+
+          <section class="section">
+
+            <div class="section-header">
+
+              <div>
+                <div class="section-kicker">
+                  Start here
+                </div>
+
+                <h2 class="section-title">
+                  Choose an evaluation
+                </h2>
+              </div>
+
+              <a
+                href="/app/evaluations/"
+                class="section-link"
+              >
+                View all →
+              </a>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+              <!-- Guided -->
+
+              <a
+                href="/app/evaluations/new/?type=guided"
+                class="quick-card"
+              >
+
+                <div class="quick-type">
+                  Manual
+                </div>
+
+                <h3 class="quick-title">
+                  Guided Evaluation
+                </h3>
+
+                <p class="quick-description">
+                  Define your own criteria and evaluate AI outputs with a
+                  structured human review workflow.
+                </p>
+
+                <div class="quick-arrow">
+                  Start →
+                </div>
+
+              </a>
+
+
+              <!-- AI Response -->
+
+              <a
+                href="/app/evaluations/new/?type=response"
+                class="quick-card"
+              >
+
+                <div class="quick-type">
+                  Text
+                </div>
+
+                <h3 class="quick-title">
+                  AI Response Evaluation
+                </h3>
+
+                <p class="quick-description">
+                  Evaluate responses across factuality, instruction
+                  following, relevance, completeness, safety, and fluency.
+                </p>
+
+                <div class="quick-arrow">
+                  Start →
+                </div>
+
+              </a>
+
+
+              <!-- Model comparison -->
+
+              <a
+                href="/app/evaluations/new/?type=comparison"
+                class="quick-card"
+              >
+
+                <div class="quick-type">
+                  Compare
+                </div>
+
+                <h3 class="quick-title">
+                  Model Comparison
+                </h3>
+
+                <p class="quick-description">
+                  Compare two model outputs and identify which response
+                  performs better across your selected criteria.
+                </p>
+
+                <div class="quick-arrow">
+                  Start →
+                </div>
+
+              </a>
+
+
+              <!-- Safety -->
+
+              <a
+                href="/app/evaluations/new/?type=safety"
+                class="quick-card"
+              >
+
+                <div class="quick-type">
+                  Safety
+                </div>
+
+                <h3 class="quick-title">
+                  Safety Evaluation
+                </h3>
+
+                <p class="quick-description">
+                  Test AI outputs for unsafe content, policy violations,
+                  harmful behavior, and severity.
+                </p>
+
+                <div class="quick-arrow">
+                  Start →
+                </div>
+
+              </a>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               HOW IT WORKS
+          ================================================== -->
+
+          <section class="section">
+
+            <div class="section-header">
+
+              <div>
+                <div class="section-kicker">
+                  Evaluation pipeline
+                </div>
+
+                <h2 class="section-title">
+                  From input to insight.
+                </h2>
+              </div>
+
+            </div>
+
 
             <div class="panel">
 
-              <div class="empty-panel">
+              <div class="flow-panel">
 
-                <div class="empty-symbol">
-                  ∅
+                <div class="flow">
+
+                  <div class="flow-step">
+
+                    <div class="flow-number">
+                      01
+                    </div>
+
+                    <div class="flow-title">
+                      Input
+                    </div>
+
+                    <div class="flow-description">
+                      Dataset or live example
+                    </div>
+
+                  </div>
+
+
+                  <div class="flow-step">
+
+                    <div class="flow-number">
+                      02
+                    </div>
+
+                    <div class="flow-title">
+                      Evaluation
+                    </div>
+
+                    <div class="flow-description">
+                      Criteria and evaluator
+                    </div>
+
+                  </div>
+
+
+                  <div class="flow-step">
+
+                    <div class="flow-number">
+                      03
+                    </div>
+
+                    <div class="flow-title">
+                      Run
+                    </div>
+
+                    <div class="flow-description">
+                      Generate and score outputs
+                    </div>
+
+                  </div>
+
+
+                  <div class="flow-step">
+
+                    <div class="flow-number">
+                      04
+                    </div>
+
+                    <div class="flow-title">
+                      Results
+                    </div>
+
+                    <div class="flow-description">
+                      Inspect quality and regressions
+                    </div>
+
+                  </div>
+
                 </div>
 
-                <div class="empty-title">
-                  No evaluation runs yet
-                </div>
-
-                <p class="empty-description">
-                  Your completed evaluations will appear here
-                  with scores, models, datasets, and run status.
-                </p>
-
-                <button
-                  type="button"
-                  class="empty-action"
-                  id="emptyStartButton"
-                >
-                  START YOUR FIRST EVALUATION →
-                </button>
-
               </div>
 
             </div>
 
+          </section>
 
-            <!-- QUALITY TREND -->
 
-            <div class="panel trend-panel">
+          <!-- =================================================
+               FOOTER
+          ================================================== -->
 
-              <div class="section-label">
-                QUALITY TREND
-              </div>
+          <footer class="workspace-footer">
 
-              <div class="trend-empty">
+            <span>
+              EvalLoop AI / Workspace
+            </span>
 
-                <div class="trend-grid"></div>
+            <div class="footer-links">
 
-                <div class="trend-line"></div>
+              <a href="/docs/">
+                Docs
+              </a>
 
-                <div class="trend-center">
-                  NO SCORE DATA YET
-                </div>
+              <a href="/privacy/">
+                Privacy
+              </a>
 
-              </div>
+              <a href="/terms/">
+                Terms
+              </a>
+
+              <span>
+                v0.1
+              </span>
 
             </div>
 
-          </div>
+          </footer>
 
-        </section>
+        </div>
 
+      </main>
 
-        <!-- QUICK START -->
+    </div>
 
-        <section class="section">
-
-          <div class="section-header">
-
-            <div class="section-label">
-              QUICK START
-            </div>
-
-            <a
-              href="/app/evaluations/"
-              class="section-link"
-            >
-              ALL EVALUATIONS →
-            </a>
-
-          </div>
+  </div>
 
 
-          <div class="quick-grid">
+  <!-- =======================================================
+       MOBILE SIDEBAR BACKDROP
+  ======================================================== -->
+
+  <div
+    class="sidebar-backdrop"
+    id="globalSidebarBackdrop"
+    aria-hidden="true"
+  ></div>
 
 
-            <a
-              href="/app/evaluations/response/"
-              class="quick-card"
-            >
+  <!-- =======================================================
+       AUTH LOCK
+  ======================================================== -->
 
-              <div class="quick-number">
-                01
-              </div>
+  <section
+    class="auth-lock"
+    id="authLock"
+    aria-labelledby="authLockTitle"
+    aria-describedby="authLockDescription"
+  >
 
-              <h3>
-                AI Response Evaluation
-              </h3>
+    <div class="auth-lock-content">
 
-              <p>
-                Evaluate an AI response for factuality,
-                relevance, completeness, instruction following,
-                safety, and fluency.
-              </p>
+      <div
+        class="lock-symbol"
+        aria-hidden="true"
+      >
+        ◈
+      </div>
 
-              <div class="quick-arrow">
-                START EVALUATION →
-              </div>
+      <h2
+        class="auth-lock-title"
+        id="authLockTitle"
+      >
+        Please <span>log in</span> to use the workspace.
+      </h2>
 
-            </a>
+      <p
+        class="auth-lock-description"
+        id="authLockDescription"
+      >
+        Your evaluation workspace is available to authenticated
+        EvalLoop AI users. Log in to create evaluations, run tests,
+        manage datasets, and view results.
+      </p>
 
+      <div class="auth-lock-actions">
 
-            <a
-              href="/app/evaluations/comparison/"
-              class="quick-card"
-            >
+        <a
+          href="/login/"
+          class="button button-primary"
+        >
+          Log in →
+        </a>
 
-              <div class="quick-number">
-                02
-              </div>
-
-              <h3>
-                Model Comparison
-              </h3>
-
-              <p>
-                Compare two AI model outputs and identify
-                which response performs better across
-                selected evaluation dimensions.
-              </p>
-
-              <div class="quick-arrow">
-                COMPARE MODELS →
-              </div>
-
-            </a>
-
-
-            <a
-              href="/app/evaluations/guided/"
-              class="quick-card"
-            >
-
-              <div class="quick-number">
-                03
-              </div>
-
-              <h3>
-                Guided Evaluation
-              </h3>
-
-              <p>
-                Define your own evaluation criteria and
-                review AI responses against a clear,
-                structured rubric.
-              </p>
-
-              <div class="quick-arrow">
-                CREATE RUBRIC →
-              </div>
-
-            </a>
-
-
-            <a
-              href="/app/evaluations/safety/"
-              class="quick-card"
-            >
-
-              <div class="quick-number">
-                04
-              </div>
-
-              <h3>
-                Safety Evaluation
-              </h3>
-
-              <p>
-                Test AI outputs for harmful, unsafe,
-                policy-sensitive, or adversarial behavior
-                using structured safety checks.
-              </p>
-
-              <div class="quick-arrow">
-                TEST SAFETY →
-              </div>
-
-            </a>
-
-          </div>
-
-        </section>
-
-
-        <!-- ACTIVITY -->
-
-        <section class="section">
-
-          <div class="section-header">
-
-            <div class="section-label">
-              WORKSPACE ACTIVITY
-            </div>
-
-          </div>
-
-
-          <div class="activity-panel">
-
-            <div class="activity-empty">
-              NO ACTIVITY TO DISPLAY.
-              YOUR WORKSPACE HISTORY WILL APPEAR HERE.
-            </div>
-
-          </div>
-
-        </section>
-
+        <a
+          href="/"
+          class="button"
+        >
+          Back to EvalLoop AI
+        </a>
 
       </div>
 
-    </main>
+      <p class="auth-lock-note">
+        AUTHENTICATION REQUIRED
+      </p>
 
-  </div>
+    </div>
+
+  </section>
 
 
   <!-- =======================================================
@@ -1905,35 +2685,327 @@
   ======================================================== -->
 
   <script>
+    /*
+      =========================================================
+      EVALLOOP AI WORKSPACE
+      AUTHENTICATION FOUNDATION
+      =========================================================
 
-    /* =======================================================
-       MOBILE SIDEBAR
-    ======================================================== */
+      IMPORTANT:
 
-    const mobileSidebarButton =
-      document.getElementById(
-        "mobileSidebarButton"
-      );
+      This is intentionally structured so that a real
+      authentication provider such as Supabase can be connected
+      later without redesigning the Workspace.
+
+      Current state:
+        isAuthenticated = false
+
+      Later:
+        Replace checkAuthentication() with the real auth check.
+
+      Example future user object:
+
+        {
+          id: "user-id",
+          name: "Vivek Kaneti",
+          email: "vivek@example.com",
+          avatarUrl: ""
+        }
+    */
+
+
+    /* =========================================================
+       AUTH STATE
+    ========================================================== */
+
+    const authState = {
+      isAuthenticated: false,
+
+      user: null
+    };
+
+
+    /* =========================================================
+       DEMO USER
+       ---------------------------------------------------------
+       DO NOT HARD-CODE THIS FOR PRODUCTION.
+
+       This object demonstrates the structure that a real
+       authentication provider will eventually return.
+    ========================================================== */
+
+    const demoUser = {
+      id: null,
+      name: "",
+      email: "",
+      avatarUrl: ""
+    };
+
+
+    /* =========================================================
+       DOM REFERENCES
+    ========================================================== */
+
+    const authLoading =
+      document.getElementById("authLoading");
+
+    const authLock =
+      document.getElementById("authLock");
+
+    const accountAvatar =
+      document.getElementById("accountAvatar");
+
+    const accountName =
+      document.getElementById("accountName");
+
+    const accountEmail =
+      document.getElementById("accountEmail");
+
+    const workspaceName =
+      document.getElementById("workspaceName");
+
+    const accountButton =
+      document.getElementById("accountButton");
+
+    const accountMenu =
+      document.getElementById("accountMenu");
+
+    const mobileMenuButton =
+      document.getElementById("mobileMenuButton");
 
     const sidebar =
-      document.getElementById(
-        "sidebar"
+      document.getElementById("sidebar");
+
+    const sidebarBackdrop =
+      document.getElementById("sidebarBackdrop");
+
+    const globalSidebarBackdrop =
+      document.getElementById("globalSidebarBackdrop");
+
+
+    /* =========================================================
+       INITIALS
+       ---------------------------------------------------------
+       Generates unique initials for every user.
+
+       Vivek Kaneti → VK
+       Rahul Sharma → RS
+       Ananya → A
+    ========================================================== */
+
+    function getInitials(name) {
+
+      if (!name || !name.trim()) {
+        return "U";
+      }
+
+      const parts =
+        name.trim().split(/\s+/);
+
+      if (parts.length === 1) {
+        return parts[0]
+          .charAt(0)
+          .toUpperCase();
+      }
+
+      return (
+        parts[0].charAt(0) +
+        parts[parts.length - 1].charAt(0)
+      ).toUpperCase();
+    }
+
+
+    /* =========================================================
+       UPDATE USER INTERFACE
+    ========================================================== */
+
+    function updateUserInterface(user) {
+
+      if (!user) {
+        accountAvatar.textContent = "U";
+        accountName.textContent = "User";
+        accountEmail.textContent = "—";
+
+        return;
+      }
+
+
+      const initials =
+        getInitials(user.name);
+
+
+      /*
+        If a real avatar URL exists, display the image.
+        Otherwise use initials.
+      */
+
+      if (user.avatarUrl) {
+
+        accountAvatar.innerHTML = "";
+
+        accountAvatar.style.backgroundImage =
+          `url("${user.avatarUrl}")`;
+
+        accountAvatar.style.backgroundSize =
+          "cover";
+
+        accountAvatar.style.backgroundPosition =
+          "center";
+
+        accountAvatar.style.color =
+          "transparent";
+
+      } else {
+
+        accountAvatar.style.backgroundImage =
+          "none";
+
+        accountAvatar.style.backgroundColor =
+          "var(--green-dark)";
+
+        accountAvatar.style.color =
+          "var(--green-light)";
+
+        accountAvatar.textContent =
+          initials;
+      }
+
+
+      accountName.textContent =
+        user.name || "User";
+
+      accountEmail.textContent =
+        user.email || "—";
+    }
+
+
+    /* =========================================================
+       AUTH LOCK
+    ========================================================== */
+
+    function setWorkspaceAccess(isAuthenticated) {
+
+      authState.isAuthenticated =
+        Boolean(isAuthenticated);
+
+
+      if (authState.isAuthenticated) {
+
+        authLock.classList.add("hidden");
+
+        document.body.classList.remove("workspace-locked");
+
+      } else {
+
+        authLock.classList.remove("hidden");
+
+        document.body.classList.add("workspace-locked");
+
+      }
+    }
+
+
+    /* =========================================================
+       AUTHENTICATION CHECK
+       ---------------------------------------------------------
+       CURRENTLY:
+         Always logged out.
+
+       LATER:
+         Connect Supabase/Auth here.
+
+       Example concept:
+
+         const {
+           data: { user }
+         } = await supabase.auth.getUser();
+
+         authState.user = user;
+         setWorkspaceAccess(Boolean(user));
+    ========================================================== */
+
+    async function checkAuthentication() {
+
+      /*
+        Small delay only to make the authentication loading
+        state visible during development.
+
+        Remove this delay when real authentication is connected.
+      */
+
+      await new Promise(resolve => {
+        setTimeout(resolve, 350);
+      });
+
+
+      /*
+        Current production-safe default:
+        unauthenticated until a real auth provider confirms
+        a logged-in user.
+      */
+
+      authState.isAuthenticated = false;
+      authState.user = null;
+
+
+      updateUserInterface(
+        authState.user
       );
 
 
-    mobileSidebarButton.addEventListener(
-      "click",
-      () => {
+      setWorkspaceAccess(
+        authState.isAuthenticated
+      );
 
-        const isOpen =
-          sidebar.classList.toggle("open");
 
-        mobileSidebarButton.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
+      authLoading.classList.add("hidden");
+    }
 
+
+    /* =========================================================
+       ACCOUNT MENU
+    ========================================================== */
+
+    function toggleAccountMenu() {
+
+      if (!authState.isAuthenticated) {
+        return;
       }
+
+      const isOpen =
+        accountMenu.classList.toggle("open");
+
+      accountButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      accountMenu.setAttribute(
+        "aria-hidden",
+        String(!isOpen)
+      );
+    }
+
+
+    function closeAccountMenu() {
+
+      accountMenu.classList.remove("open");
+
+      accountButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      accountMenu.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+
+    accountButton.addEventListener(
+      "click",
+      toggleAccountMenu
     );
 
 
@@ -1942,108 +3014,181 @@
       event => {
 
         if (
-          window.innerWidth > 900
+          !accountMenu.contains(event.target) &&
+          !accountButton.contains(event.target)
         ) {
-          return;
+          closeAccountMenu();
         }
-
-        if (
-          sidebar.contains(event.target) ||
-          mobileSidebarButton.contains(event.target)
-        ) {
-          return;
-        }
-
-        sidebar.classList.remove("open");
-
-        mobileSidebarButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
 
       }
     );
 
 
-    /* =======================================================
-       NEW EVALUATION
-    ======================================================== */
+    /* =========================================================
+       MOBILE SIDEBAR
+    ========================================================== */
 
-    const newEvaluationButton =
-      document.getElementById(
-        "newEvaluationButton"
+    function openSidebar() {
+
+      sidebar.classList.add("open");
+
+      globalSidebarBackdrop.classList.add("open");
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        "true"
       );
 
-    const emptyStartButton =
-      document.getElementById(
-        "emptyStartButton"
-      );
-
-
-    function openNewEvaluation() {
-
-      window.location.href =
-        "/app/evaluations/";
-
+      document.body.classList.add("menu-open");
     }
 
 
-    newEvaluationButton.addEventListener(
-      "click",
-      openNewEvaluation
-    );
+    function closeSidebar() {
 
+      sidebar.classList.remove("open");
 
-    emptyStartButton.addEventListener(
-      "click",
-      openNewEvaluation
-    );
+      globalSidebarBackdrop.classList.remove("open");
 
-
-    /* =======================================================
-       IMPORT DATASET
-    ======================================================== */
-
-    const importDatasetButton =
-      document.getElementById(
-        "importDatasetButton"
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
       );
 
+      document.body.classList.remove("menu-open");
+    }
 
-    importDatasetButton.addEventListener(
+
+    mobileMenuButton.addEventListener(
       "click",
       () => {
 
-        window.location.href =
-          "/app/datasets/";
+        if (sidebar.classList.contains("open")) {
+          closeSidebar();
+        } else {
+          openSidebar();
+        }
 
       }
     );
 
 
-    /* =======================================================
-       ESCAPE
-    ======================================================== */
+    globalSidebarBackdrop.addEventListener(
+      "click",
+      closeSidebar
+    );
+
+
+    /* =========================================================
+       CLOSE MOBILE SIDEBAR AFTER NAVIGATION
+    ========================================================== */
+
+    document
+      .querySelectorAll(".sidebar-link")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            if (
+              window.innerWidth <= 760
+            ) {
+              closeSidebar();
+            }
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       ACCOUNT ACTIONS
+    ========================================================== */
+
+    document
+      .querySelectorAll("[data-action]")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const action =
+              button.dataset.action;
+
+
+            if (action === "profile") {
+              window.location.href =
+                "/app/settings/?section=profile";
+            }
+
+
+            if (action === "settings") {
+              window.location.href =
+                "/app/settings/";
+            }
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       LOGOUT
+       ---------------------------------------------------------
+       Real authentication logout will be connected here.
+
+       Example later:
+
+         await supabase.auth.signOut();
+         window.location.href = "/login/";
+    ========================================================== */
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener(
+        "click",
+        () => {
+
+          authState.isAuthenticated = false;
+          authState.user = null;
+
+          updateUserInterface(null);
+
+          setWorkspaceAccess(false);
+
+          closeAccountMenu();
+
+        }
+      );
+
+
+    /* =========================================================
+       KEYBOARD ESCAPE
+    ========================================================== */
 
     document.addEventListener(
       "keydown",
       event => {
 
-        if (
-          event.key !== "Escape"
-        ) {
-          return;
+        if (event.key === "Escape") {
+
+          closeAccountMenu();
+          closeSidebar();
+
         }
-
-        sidebar.classList.remove("open");
-
-        mobileSidebarButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
 
       }
     );
+
+
+    /* =========================================================
+       START AUTH CHECK
+    ========================================================== */
+
+    checkAuthentication();
 
   </script>
 
