@@ -33,6 +33,9 @@
     rel="stylesheet"
   />
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
 
     :root {
@@ -103,6 +106,18 @@
     ::selection {
       background: rgba(62, 207, 142, 0.25);
       color: var(--ink);
+    }
+
+
+    /* =========================================
+       AUTH VISIBILITY
+       ========================================= */
+
+    .auth-logged-out[hidden],
+    .auth-logged-in[hidden],
+    .mobile-auth-logged-out[hidden],
+    .mobile-auth-logged-in[hidden] {
+      display: none !important;
     }
 
 
@@ -447,6 +462,262 @@
 
 
     /* =========================================
+       LOGGED-IN PROFILE
+       ========================================= */
+
+    .auth-logged-in {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .profile-trigger {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      min-height: 38px;
+
+      padding: 4px 8px 4px 5px;
+
+      border: 1px solid var(--line-soft);
+
+      border-radius: 3px;
+
+      background:
+        rgba(23, 27, 24, 0.75);
+
+      color: var(--muted);
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .profile-trigger:hover,
+    .profile-trigger[aria-expanded="true"] {
+      color: var(--ink);
+
+      border-color:
+        rgba(62, 207, 142, 0.3);
+
+      background:
+        rgba(62, 207, 142, 0.045);
+    }
+
+    .profile-avatar,
+    .profile-menu-avatar,
+    .mobile-profile-avatar {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 28px;
+      height: 28px;
+
+      flex: 0 0 28px;
+
+      overflow: hidden;
+
+      border: 1px solid
+        rgba(62, 207, 142, 0.35);
+
+      border-radius: 50%;
+
+      background: var(--darkgreen);
+
+      color: var(--green2);
+
+      font-family: var(--mono);
+
+      font-size: 8px;
+
+      line-height: 1;
+    }
+
+    .profile-avatar img,
+    .profile-menu-avatar img,
+    .mobile-profile-avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .profile-name {
+      max-width: 110px;
+
+      overflow: hidden;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+    .profile-chevron {
+      color: var(--dim);
+
+      font-size: 12px;
+
+      line-height: 1;
+    }
+
+    .profile-menu {
+      position: absolute;
+
+      top: calc(100% + 10px);
+      right: 0;
+
+      width: 245px;
+
+      padding: 8px;
+
+      border: 1px solid var(--line);
+
+      background:
+        rgba(23, 27, 24, 0.98);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.35);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transform: translateY(-5px);
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+      z-index: 1100;
+    }
+
+    .profile-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      transform: translateY(0);
+    }
+
+    .profile-menu-header {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 8px;
+    }
+
+    .profile-menu-avatar {
+      width: 34px;
+      height: 34px;
+
+      flex-basis: 34px;
+    }
+
+    .profile-menu-identity {
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+    .profile-menu-identity strong {
+      overflow: hidden;
+
+      color: var(--ink);
+
+      font-size: 11px;
+      font-weight: 500;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .profile-menu-identity span {
+      overflow: hidden;
+
+      color: var(--dim);
+
+      font-size: 8px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .profile-menu-divider {
+      height: 1px;
+
+      margin: 6px 0;
+
+      background: var(--line-soft);
+    }
+
+    .profile-menu a,
+    .profile-logout {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+
+      padding: 9px 10px;
+
+      border: 1px solid transparent;
+
+      background: transparent;
+
+      color: var(--muted);
+
+      font-family: var(--sans);
+
+      font-size: 10px;
+
+      text-align: left;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .profile-menu a:hover,
+    .profile-logout:hover {
+      color: var(--green2);
+
+      background:
+        rgba(62, 207, 142, 0.045);
+
+      border-color:
+        rgba(62, 207, 142, 0.10);
+    }
+
+    .profile-logout {
+      color: #b8beb9;
+    }
+
+
+    /* =========================================
        BUTTON
        ========================================= */
 
@@ -726,6 +997,117 @@
 
     .mobile-nav-actions .button {
       flex: 1;
+    }
+
+
+    /* =========================================
+       MOBILE AUTH PROFILE
+       ========================================= */
+
+    .mobile-auth-logged-in {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 8px;
+
+      padding: 16px 10px 5px;
+    }
+
+    .mobile-profile-card {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 10px;
+
+      border: 1px solid var(--line-soft);
+
+      background:
+        rgba(23, 27, 24, 0.75);
+    }
+
+    .mobile-profile-avatar {
+      width: 34px;
+      height: 34px;
+
+      flex-basis: 34px;
+    }
+
+    .mobile-profile-identity {
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+    .mobile-profile-name {
+      color: var(--ink);
+
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .mobile-profile-email {
+      overflow: hidden;
+
+      color: var(--dim);
+
+      font-size: 8px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mobile-auth-links {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 5px;
+    }
+
+    .mobile-auth-links a,
+    .mobile-profile-logout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 36px;
+
+      padding: 8px;
+
+      border: 1px solid var(--line-soft);
+
+      background: transparent;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      cursor: pointer;
+    }
+
+    .mobile-auth-links a:hover,
+    .mobile-profile-logout:hover {
+      color: var(--green2);
+
+      border-color:
+        rgba(62, 207, 142, 0.25);
+
+      background:
+        rgba(62, 207, 142, 0.045);
+    }
+
+    .mobile-profile-logout {
+      width: 100%;
+
+      color: var(--muted);
+
+      font-family: var(--sans);
     }
 
 
@@ -1503,9 +1885,14 @@
         </nav>
 
 
-        <!-- NAV ACTIONS -->
+        <!-- =========================================
+             DESKTOP LOGGED-OUT AUTH
+             ========================================= -->
 
-        <div class="nav-actions">
+        <div
+          class="nav-actions auth-logged-out"
+          id="authLoggedOut"
+        >
 
           <a
             href="/login/"
@@ -1521,6 +1908,136 @@
             Sign up
             <span>↗</span>
           </a>
+
+        </div>
+
+
+        <!-- =========================================
+             DESKTOP LOGGED-IN AUTH
+             ========================================= -->
+
+        <div
+          class="auth-logged-in"
+          id="authLoggedIn"
+          hidden
+        >
+
+          <button
+            class="profile-trigger"
+            id="profileTrigger"
+            type="button"
+            aria-label="Open account menu"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+
+            <span
+              class="profile-avatar"
+              id="profileAvatar"
+            >
+              EL
+            </span>
+
+            <span
+              class="profile-name"
+              id="profileName"
+            >
+              Account
+            </span>
+
+            <span class="profile-chevron">
+              ⌄
+            </span>
+
+          </button>
+
+
+          <div
+            class="profile-menu"
+            id="profileMenu"
+            role="menu"
+            aria-hidden="true"
+          >
+
+            <div class="profile-menu-header">
+
+              <span
+                class="profile-menu-avatar"
+                id="profileMenuAvatar"
+              >
+                EL
+              </span>
+
+              <div class="profile-menu-identity">
+
+                <strong
+                  id="profileMenuName"
+                >
+                  Account
+                </strong>
+
+                <span
+                  id="profileMenuEmail"
+                >
+                  —
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="profile-menu-divider"></div>
+
+
+            <a
+              href="/app/"
+              role="menuitem"
+            >
+              Workspace
+            </a>
+
+            <a
+              href="/account/"
+              role="menuitem"
+            >
+              Account
+            </a>
+
+            <a
+              href="/usage/"
+              role="menuitem"
+            >
+              Usage &amp; Plan
+            </a>
+
+            <a
+              href="/api-space/"
+              role="menuitem"
+            >
+              API Keys
+            </a>
+
+            <a
+              href="/settings/"
+              role="menuitem"
+            >
+              Settings
+            </a>
+
+
+            <div class="profile-menu-divider"></div>
+
+
+            <button
+              type="button"
+              class="profile-logout"
+              id="profileLogout"
+            >
+              Sign out
+            </button>
+
+          </div>
 
         </div>
 
@@ -1637,21 +2154,105 @@
         </a>
 
 
-        <!-- MOBILE ACTIONS -->
+        <!-- =========================================
+             MOBILE LOGGED-OUT AUTH
+             ========================================= -->
 
-        <div class="mobile-nav-actions">
+        <div
+          class="mobile-auth-logged-out"
+          id="mobileAuthLoggedOut"
+        >
 
-          <a href="/login/">
-            Login
-          </a>
+          <div class="mobile-nav-actions">
 
-          <a
-            href="/signup/"
-            class="button"
-          >
-            Sign up
-            <span>↗</span>
-          </a>
+            <a href="/login/">
+              Login
+            </a>
+
+            <a
+              href="/signup/"
+              class="button"
+            >
+              Sign up
+              <span>↗</span>
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================================
+             MOBILE LOGGED-IN AUTH
+             ========================================= -->
+
+        <div
+          class="mobile-auth-logged-in"
+          id="mobileAuthLoggedIn"
+          hidden
+        >
+
+          <div class="mobile-profile-card">
+
+            <span
+              class="mobile-profile-avatar"
+              id="mobileProfileAvatar"
+            >
+              EL
+            </span>
+
+            <div class="mobile-profile-identity">
+
+              <span
+                class="mobile-profile-name"
+                id="mobileProfileName"
+              >
+                Account
+              </span>
+
+              <span
+                class="mobile-profile-email"
+                id="mobileProfileEmail"
+              >
+                —
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="mobile-auth-links">
+
+            <a href="/app/">
+              Workspace
+            </a>
+
+            <a href="/account/">
+              Account
+            </a>
+
+            <a href="/usage/">
+              Usage &amp; Plan
+            </a>
+
+            <a href="/api-space/">
+              API Keys
+            </a>
+
+            <a href="/settings/">
+              Settings
+            </a>
+
+            <button
+              type="button"
+              class="mobile-profile-logout"
+              id="mobileProfileLogout"
+            >
+              Sign out
+            </button>
+
+          </div>
 
         </div>
 
@@ -2189,16 +2790,601 @@
 
 
   <!-- =========================================
-       NAVIGATION SCRIPT
+       NAVIGATION + AUTHENTICATION SCRIPT
        ========================================= -->
 
   <script>
 
-    /*
-     * =========================================
-     * DESKTOP DROPDOWNS
-     * =========================================
-     */
+    /* =========================================
+       SUPABASE CONFIGURATION
+       ========================================= */
+
+    const SUPABASE_URL =
+      "https://vonknmobshxkhbewdoie.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+
+
+    /* =========================================
+       SUPABASE INITIALIZATION
+       ========================================= */
+
+    let supabaseClient = null;
+
+    if (window.supabase) {
+
+      supabaseClient =
+        window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+    } else {
+
+      console.error(
+        "EvalLoop AI: Supabase library was not loaded."
+      );
+
+    }
+
+
+    /* =========================================
+       AUTH HELPERS
+       ========================================= */
+
+    function getUserName(user) {
+
+      if (!user) {
+        return "Account";
+      }
+
+      const metadata =
+        user.user_metadata || {};
+
+      return (
+        metadata.full_name ||
+        metadata.name ||
+        metadata.user_name ||
+        user.email?.split("@")[0] ||
+        "Account"
+      );
+
+    }
+
+
+    function getInitials(name, email) {
+
+      const cleanName =
+        (name || "").trim();
+
+      if (cleanName) {
+
+        const parts =
+          cleanName.split(/\s+/);
+
+        if (parts.length >= 2) {
+
+          return (
+            parts[0].charAt(0) +
+            parts[parts.length - 1].charAt(0)
+          ).toUpperCase();
+
+        }
+
+        return cleanName
+          .substring(0, 2)
+          .toUpperCase();
+
+      }
+
+      if (email) {
+
+        return email
+          .substring(0, 2)
+          .toUpperCase();
+
+      }
+
+      return "EL";
+
+    }
+
+
+    function getAvatarUrl(user) {
+
+      if (!user) {
+        return null;
+      }
+
+      const metadata =
+        user.user_metadata || {};
+
+      return (
+        metadata.avatar_url ||
+        metadata.picture ||
+        null
+      );
+
+    }
+
+
+    /* =========================================
+       UPDATE DESKTOP AUTH UI
+       ========================================= */
+
+    function updateDesktopAuth(user) {
+
+      const loggedOut =
+        document.getElementById(
+          "authLoggedOut"
+        );
+
+      const loggedIn =
+        document.getElementById(
+          "authLoggedIn"
+        );
+
+      if (!loggedOut || !loggedIn) {
+        return;
+      }
+
+
+      if (user) {
+
+        const name =
+          getUserName(user);
+
+        const email =
+          user.email || "";
+
+        const initials =
+          getInitials(
+            name,
+            email
+          );
+
+        const avatarUrl =
+          getAvatarUrl(user);
+
+
+        loggedOut.hidden = true;
+        loggedIn.hidden = false;
+
+
+        const profileName =
+          document.getElementById(
+            "profileName"
+          );
+
+        const profileMenuName =
+          document.getElementById(
+            "profileMenuName"
+          );
+
+        const profileMenuEmail =
+          document.getElementById(
+            "profileMenuEmail"
+          );
+
+        const profileAvatar =
+          document.getElementById(
+            "profileAvatar"
+          );
+
+        const profileMenuAvatar =
+          document.getElementById(
+            "profileMenuAvatar"
+          );
+
+
+        if (profileName) {
+
+          profileName.textContent =
+            name;
+
+        }
+
+
+        if (profileMenuName) {
+
+          profileMenuName.textContent =
+            name;
+
+        }
+
+
+        if (profileMenuEmail) {
+
+          profileMenuEmail.textContent =
+            email;
+
+        }
+
+
+        if (profileAvatar) {
+
+          if (avatarUrl) {
+
+            profileAvatar.innerHTML =
+              "";
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+            image.src =
+              avatarUrl;
+
+            image.alt =
+              "";
+
+            profileAvatar.appendChild(
+              image
+            );
+
+          } else {
+
+            profileAvatar.textContent =
+              initials;
+
+          }
+
+        }
+
+
+        if (profileMenuAvatar) {
+
+          if (avatarUrl) {
+
+            profileMenuAvatar.innerHTML =
+              "";
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+            image.src =
+              avatarUrl;
+
+            image.alt =
+              "";
+
+            profileMenuAvatar.appendChild(
+              image
+            );
+
+          } else {
+
+            profileMenuAvatar.textContent =
+              initials;
+
+          }
+
+        }
+
+      } else {
+
+        loggedOut.hidden = false;
+        loggedIn.hidden = true;
+
+      }
+
+    }
+
+
+    /* =========================================
+       UPDATE MOBILE AUTH UI
+       ========================================= */
+
+    function updateMobileAuth(user) {
+
+      const loggedOut =
+        document.getElementById(
+          "mobileAuthLoggedOut"
+        );
+
+      const loggedIn =
+        document.getElementById(
+          "mobileAuthLoggedIn"
+        );
+
+      if (!loggedOut || !loggedIn) {
+        return;
+      }
+
+
+      if (user) {
+
+        const name =
+          getUserName(user);
+
+        const email =
+          user.email || "";
+
+        const initials =
+          getInitials(
+            name,
+            email
+          );
+
+        const avatarUrl =
+          getAvatarUrl(user);
+
+
+        loggedOut.hidden = true;
+        loggedIn.hidden = false;
+
+
+        const nameElement =
+          document.getElementById(
+            "mobileProfileName"
+          );
+
+        const emailElement =
+          document.getElementById(
+            "mobileProfileEmail"
+          );
+
+        const avatarElement =
+          document.getElementById(
+            "mobileProfileAvatar"
+          );
+
+
+        if (nameElement) {
+
+          nameElement.textContent =
+            name;
+
+        }
+
+
+        if (emailElement) {
+
+          emailElement.textContent =
+            email;
+
+        }
+
+
+        if (avatarElement) {
+
+          if (avatarUrl) {
+
+            avatarElement.innerHTML =
+              "";
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+            image.src =
+              avatarUrl;
+
+            image.alt =
+              "";
+
+            avatarElement.appendChild(
+              image
+            );
+
+          } else {
+
+            avatarElement.textContent =
+              initials;
+
+          }
+
+        }
+
+      } else {
+
+        loggedOut.hidden = false;
+        loggedIn.hidden = true;
+
+      }
+
+    }
+
+
+    /* =========================================
+       UPDATE COMPLETE AUTH STATE
+       ========================================= */
+
+    function setAuthState(user) {
+
+      updateDesktopAuth(user);
+      updateMobileAuth(user);
+
+      window.evalLoopCurrentUser =
+        user || null;
+
+    }
+
+
+    /* =========================================
+       PROFILE DROPDOWN
+       ========================================= */
+
+    const profileTrigger =
+      document.getElementById(
+        "profileTrigger"
+      );
+
+    const profileMenu =
+      document.getElementById(
+        "profileMenu"
+      );
+
+
+    function closeProfileMenu() {
+
+      if (!profileTrigger || !profileMenu) {
+        return;
+      }
+
+      profileTrigger.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      profileMenu.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      profileMenu.classList.remove(
+        "is-open"
+      );
+
+    }
+
+
+    function openProfileMenu() {
+
+      if (!profileTrigger || !profileMenu) {
+        return;
+      }
+
+      profileTrigger.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+      profileMenu.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      profileMenu.classList.add(
+        "is-open"
+      );
+
+    }
+
+
+    if (profileTrigger && profileMenu) {
+
+      profileTrigger.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          const isOpen =
+            profileTrigger.getAttribute(
+              "aria-expanded"
+            ) === "true";
+
+          if (isOpen) {
+
+            closeProfileMenu();
+
+          } else {
+
+            openProfileMenu();
+
+          }
+
+        }
+      );
+
+
+      profileMenu.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+        }
+      );
+
+    }
+
+
+    /* =========================================
+       SIGN OUT
+       ========================================= */
+
+    async function handleSignOut() {
+
+      if (!supabaseClient) {
+        return;
+      }
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+          console.error(
+            "EvalLoop AI: Sign out failed.",
+            error
+          );
+
+          return;
+
+        }
+
+
+        window.location.href =
+          "/";
+
+      } catch (error) {
+
+        console.error(
+          "EvalLoop AI: Sign out error.",
+          error
+        );
+
+      }
+
+    }
+
+
+    const profileLogout =
+      document.getElementById(
+        "profileLogout"
+      );
+
+    const mobileProfileLogout =
+      document.getElementById(
+        "mobileProfileLogout"
+      );
+
+
+    if (profileLogout) {
+
+      profileLogout.addEventListener(
+        "click",
+        handleSignOut
+      );
+
+    }
+
+
+    if (mobileProfileLogout) {
+
+      mobileProfileLogout.addEventListener(
+        "click",
+        handleSignOut
+      );
+
+    }
+
+
+    /* =========================================
+       DESKTOP DROPDOWNS
+       ========================================= */
 
     const desktopDropdowns =
       document.querySelectorAll(
@@ -2212,6 +3398,10 @@
           dropdown.querySelector(
             ".nav-dropdown-trigger"
           );
+
+        if (!trigger) {
+          return;
+        }
 
         trigger.addEventListener(
           "click",
@@ -2248,6 +3438,7 @@
               }
             );
 
+
             if (!isOpen) {
 
               dropdown.classList.add(
@@ -2268,14 +3459,13 @@
     );
 
 
-    /*
-     * Close desktop dropdowns when
-     * clicking outside navigation.
-     */
+    /* =========================================
+       DOCUMENT CLICK
+       ========================================= */
 
     document.addEventListener(
       "click",
-      () => {
+      event => {
 
         desktopDropdowns.forEach(
           dropdown => {
@@ -2301,15 +3491,29 @@
           }
         );
 
+
+        if (
+          profileMenu &&
+          profileTrigger &&
+          !profileMenu.contains(
+            event.target
+          ) &&
+          !profileTrigger.contains(
+            event.target
+          )
+        ) {
+
+          closeProfileMenu();
+
+        }
+
       }
     );
 
 
-    /*
-     * =========================================
-     * MOBILE MENU
-     * =========================================
-     */
+    /* =========================================
+       MOBILE MENU
+       ========================================= */
 
     const mobileMenuButton =
       document.getElementById(
@@ -2322,34 +3526,39 @@
       );
 
 
-    mobileMenuButton.addEventListener(
-      "click",
-      () => {
+    if (
+      mobileMenuButton &&
+      mobileNav
+    ) {
 
-        const active =
-          mobileNav.classList.toggle(
-            "active"
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
+
+          const active =
+            mobileNav.classList.toggle(
+              "active"
+            );
+
+          mobileMenuButton.classList.toggle(
+            "active",
+            active
           );
 
-        mobileMenuButton.classList.toggle(
-          "active",
-          active
-        );
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            active
+          );
 
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          active
-        );
+        }
+      );
 
-      }
-    );
+    }
 
 
-    /*
-     * =========================================
-     * MOBILE DROPDOWNS
-     * =========================================
-     */
+    /* =========================================
+       MOBILE DROPDOWNS
+       ========================================= */
 
     const mobileDropdowns =
       document.querySelectorAll(
@@ -2365,6 +3574,10 @@
             ".mobile-nav-dropdown-trigger"
           );
 
+        if (!trigger) {
+          return;
+        }
+
         trigger.addEventListener(
           "click",
           event => {
@@ -2376,11 +3589,6 @@
                 "open"
               );
 
-
-            /*
-             * Close other mobile
-             * dropdowns.
-             */
 
             mobileDropdowns.forEach(
               item => {
@@ -2407,10 +3615,6 @@
             );
 
 
-            /*
-             * Open selected dropdown.
-             */
-
             if (!isOpen) {
 
               dropdown.classList.add(
@@ -2431,71 +3635,75 @@
     );
 
 
-    /*
-     * =========================================
-     * CLOSE MOBILE MENU WHEN LINK IS CLICKED
-     * =========================================
-     */
+    /* =========================================
+       CLOSE MOBILE MENU WHEN LINK IS CLICKED
+       ========================================= */
 
-    mobileNav
-      .querySelectorAll("a")
-      .forEach(
-        link => {
+    if (mobileNav) {
 
-          link.addEventListener(
-            "click",
-            () => {
+      mobileNav
+        .querySelectorAll("a")
+        .forEach(
+          link => {
 
-              mobileNav.classList.remove(
-                "active"
-              );
+            link.addEventListener(
+              "click",
+              () => {
 
-              mobileMenuButton.classList.remove(
-                "active"
-              );
+                mobileNav.classList.remove(
+                  "active"
+                );
 
-              mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-              );
+                if (mobileMenuButton) {
 
-
-              mobileDropdowns.forEach(
-                dropdown => {
-
-                  dropdown.classList.remove(
-                    "open"
+                  mobileMenuButton.classList.remove(
+                    "active"
                   );
 
-                  const trigger =
-                    dropdown.querySelector(
-                      ".mobile-nav-dropdown-trigger"
-                    );
-
-                  if (trigger) {
-
-                    trigger.setAttribute(
-                      "aria-expanded",
-                      "false"
-                    );
-
-                  }
+                  mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
 
                 }
-              );
-
-            }
-          );
-
-        }
-      );
 
 
-    /*
-     * =========================================
-     * ESCAPE KEY
-     * =========================================
-     */
+                mobileDropdowns.forEach(
+                  dropdown => {
+
+                    dropdown.classList.remove(
+                      "open"
+                    );
+
+                    const trigger =
+                      dropdown.querySelector(
+                        ".mobile-nav-dropdown-trigger"
+                      );
+
+                    if (trigger) {
+
+                      trigger.setAttribute(
+                        "aria-expanded",
+                        "false"
+                      );
+
+                    }
+
+                  }
+                );
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    /* =========================================
+       ESCAPE KEY
+       ========================================= */
 
     document.addEventListener(
       "keydown",
@@ -2505,10 +3713,6 @@
           return;
         }
 
-
-        /*
-         * Close desktop dropdowns.
-         */
 
         desktopDropdowns.forEach(
           dropdown => {
@@ -2535,27 +3739,31 @@
         );
 
 
-        /*
-         * Close mobile menu.
-         */
-
-        mobileNav.classList.remove(
-          "active"
-        );
-
-        mobileMenuButton.classList.remove(
-          "active"
-        );
-
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
+        closeProfileMenu();
 
 
-        /*
-         * Close mobile dropdowns.
-         */
+        if (mobileNav) {
+
+          mobileNav.classList.remove(
+            "active"
+          );
+
+        }
+
+
+        if (mobileMenuButton) {
+
+          mobileMenuButton.classList.remove(
+            "active"
+          );
+
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
 
         mobileDropdowns.forEach(
           dropdown => {
@@ -2583,6 +3791,81 @@
 
       }
     );
+
+
+    /* =========================================
+       INITIALIZE SUPABASE AUTH
+       ========================================= */
+
+    async function initializeSupabaseAuth() {
+
+      if (!supabaseClient) {
+
+        console.error(
+          "EvalLoop AI: Supabase client could not be initialized."
+        );
+
+        setAuthState(null);
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (error) {
+
+          console.error(
+            "EvalLoop AI: Could not read authentication session.",
+            error
+          );
+
+          setAuthState(null);
+
+          return;
+
+        }
+
+
+        setAuthState(
+          data.session?.user || null
+        );
+
+
+        supabaseClient.auth.onAuthStateChange(
+          (_event, session) => {
+
+            setAuthState(
+              session?.user || null
+            );
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "EvalLoop AI: Authentication initialization failed.",
+          error
+        );
+
+        setAuthState(null);
+
+      }
+
+    }
+
+
+    initializeSupabaseAuth();
 
   </script>
 
