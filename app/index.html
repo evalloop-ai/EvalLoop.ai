@@ -47,9 +47,6 @@
       --green2: #85e7ba;
       --darkgreen: #13261c;
 
-      --danger: #e98b8b;
-      --warning: #d9c47a;
-
       --sans:
         "Inter",
         system-ui,
@@ -149,7 +146,7 @@
     }
 
     /* =========================================================
-       TOP BAR
+       HEADER
     ========================================================= */
 
     .workspace-header {
@@ -232,7 +229,7 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.09em;
       text-transform: uppercase;
@@ -241,7 +238,7 @@
     .workspace-title {
       color: var(--ink);
 
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 500;
 
       white-space: nowrap;
@@ -254,7 +251,7 @@
       display: flex;
       align-items: center;
 
-      gap: 16px;
+      gap: 18px;
     }
 
     .back-link {
@@ -266,7 +263,7 @@
       color: var(--muted);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       transition:
         color 0.2s ease;
@@ -281,8 +278,8 @@
     }
 
     .account-button {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
 
       display: flex;
       align-items: center;
@@ -295,7 +292,7 @@
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 10px;
 
       cursor: pointer;
 
@@ -312,7 +309,7 @@
     }
 
     /* =========================================================
-       MOBILE HEADER BUTTON
+       MOBILE SIDEBAR BUTTON
     ========================================================= */
 
     .mobile-sidebar-button {
@@ -408,7 +405,7 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.10em;
     }
@@ -421,7 +418,7 @@
     }
 
     .sidebar-link {
-      min-height: 38px;
+      min-height: 40px;
 
       display: flex;
       align-items: center;
@@ -434,7 +431,7 @@
 
       color: var(--muted);
 
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 400;
 
       transition:
@@ -463,12 +460,12 @@
     }
 
     .sidebar-icon {
-      width: 15px;
+      width: 18px;
 
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 9px;
 
       text-align: center;
     }
@@ -500,14 +497,14 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.05em;
     }
 
     .status-dot {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
 
       flex-shrink: 0;
 
@@ -560,7 +557,7 @@
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       letter-spacing: 0.10em;
     }
@@ -594,11 +591,11 @@
     .page-description {
       max-width: 550px;
 
-      margin-top: 13px;
+      margin-top: 15px;
 
       color: var(--muted);
 
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 300;
 
       line-height: 1.75;
@@ -614,9 +611,9 @@
     }
 
     .button {
-      min-height: 40px;
+      min-height: 42px;
 
-      padding: 0 14px;
+      padding: 0 15px;
 
       display: inline-flex;
       align-items: center;
@@ -635,7 +632,7 @@
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       cursor: pointer;
 
@@ -686,7 +683,7 @@
 
       gap: 20px;
 
-      padding: 15px 17px;
+      padding: 16px 18px;
 
       margin-bottom: 25px;
 
@@ -707,23 +704,18 @@
       gap: 11px;
     }
 
-    .status-content .status-dot {
-      width: 6px;
-      height: 6px;
-    }
-
     .status-copy {
       display: flex;
       flex-direction: column;
 
-      gap: 1px;
+      gap: 2px;
     }
 
     .status-title {
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       letter-spacing: 0.06em;
     }
@@ -731,7 +723,7 @@
     .status-description {
       color: var(--dim);
 
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 300;
     }
 
@@ -739,13 +731,13 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.05em;
     }
 
     /* =========================================================
-       KPI CARDS
+       KPI
     ========================================================= */
 
     .kpi-grid {
@@ -764,9 +756,9 @@
     }
 
     .kpi-card {
-      min-height: 128px;
+      min-height: 132px;
 
-      padding: 20px;
+      padding: 21px;
 
       background: var(--panel);
 
@@ -782,7 +774,7 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.08em;
     }
@@ -793,7 +785,7 @@
       color: var(--ink);
 
       font-family: var(--mono);
-      font-size: 25px;
+      font-size: 27px;
       font-weight: 400;
 
       letter-spacing: -0.04em;
@@ -808,12 +800,12 @@
 
       color: var(--dim);
 
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 300;
     }
 
     /* =========================================================
-       SECTION HEADER
+       SECTION
     ========================================================= */
 
     .section {
@@ -834,7 +826,7 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       letter-spacing: 0.08em;
     }
@@ -843,7 +835,7 @@
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.04em;
 
@@ -855,7 +847,7 @@
     }
 
     /* =========================================================
-       RECENT + TREND
+       RECENT RUNS + QUALITY TREND
     ========================================================= */
 
     .overview-grid {
@@ -915,33 +907,56 @@
 
       color: var(--ink);
 
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 500;
     }
 
     .empty-description {
-      max-width: 330px;
+      max-width: 360px;
 
-      margin-top: 7px;
+      margin-top: 8px;
 
       color: var(--dim);
 
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 300;
 
       line-height: 1.7;
     }
 
+    /*
+      Deliberately kept as a green text action.
+      No white button background.
+    */
+
     .empty-action {
       margin-top: 17px;
+
+      padding: 0;
+
+      background: transparent;
 
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
+      font-weight: 400;
+
+      letter-spacing: 0.04em;
 
       cursor: pointer;
+
+      transition:
+        color 0.2s ease;
     }
+
+    .empty-action:hover {
+      color: var(--green);
+    }
+
+    /* =========================================================
+       QUALITY TREND
+    ========================================================= */
 
     .trend-panel {
       position: relative;
@@ -1009,7 +1024,7 @@
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
     }
 
     /* =========================================================
@@ -1030,7 +1045,7 @@
     }
 
     .quick-card {
-      min-height: 205px;
+      min-height: 215px;
 
       display: flex;
       flex-direction: column;
@@ -1041,8 +1056,7 @@
 
       transition:
         background 0.25s ease,
-        transform 0.25s ease,
-        border-color 0.25s ease;
+        transform 0.25s ease;
     }
 
     .quick-card:hover {
@@ -1055,7 +1069,7 @@
       color: var(--green);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
     }
 
     .quick-card h3 {
@@ -1063,7 +1077,7 @@
 
       color: var(--ink);
 
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.25;
 
       font-weight: 500;
@@ -1076,7 +1090,7 @@
 
       color: var(--muted);
 
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 300;
 
       line-height: 1.7;
@@ -1089,7 +1103,7 @@
       color: var(--green2);
 
       font-family: var(--mono);
-      font-size: 7px;
+      font-size: 9px;
 
       letter-spacing: 0.04em;
     }
@@ -1111,10 +1125,12 @@
       align-items: center;
       justify-content: center;
 
+      padding: 25px;
+
       color: var(--dim);
 
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
 
       text-align: center;
     }
@@ -1217,8 +1233,8 @@
       }
 
       .account-button {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
       }
 
       .main-inner {
@@ -1230,6 +1246,10 @@
 
       .page-heading h1 {
         font-size: 38px;
+      }
+
+      .page-description {
+        font-size: 13px;
       }
 
       .heading-actions {
@@ -1259,7 +1279,7 @@
       }
 
       .quick-card {
-        min-height: 180px;
+        min-height: 195px;
       }
     }
 
@@ -1274,6 +1294,11 @@
 
       .page-heading h1 {
         font-size: 34px;
+      }
+
+      .heading-actions {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
 
@@ -1298,6 +1323,7 @@
 <body>
 
   <div class="background-grid"></div>
+
 
   <!-- =======================================================
        WORKSPACE HEADER
@@ -1343,6 +1369,7 @@
 
       </div>
 
+
       <div class="header-right">
 
         <a
@@ -1369,10 +1396,11 @@
 
 
   <!-- =======================================================
-       WORKSPACE
+       WORKSPACE LAYOUT
   ======================================================== -->
 
   <div class="workspace-layout">
+
 
     <!-- SIDEBAR -->
 
@@ -1464,11 +1492,14 @@
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
     <main class="main">
 
       <div class="main-inner">
+
 
         <!-- PAGE HEADING -->
 
@@ -1550,7 +1581,7 @@
         </section>
 
 
-        <!-- KPI -->
+        <!-- KPI CARDS -->
 
         <section class="kpi-grid">
 
@@ -1646,6 +1677,9 @@
 
           <div class="overview-grid">
 
+
+            <!-- RECENT RUNS EMPTY STATE -->
+
             <div class="panel">
 
               <div class="empty-panel">
@@ -1724,6 +1758,7 @@
 
 
           <div class="quick-grid">
+
 
             <a
               href="/app/evaluations/response/"
@@ -1845,6 +1880,7 @@
 
           </div>
 
+
           <div class="activity-panel">
 
             <div class="activity-empty">
@@ -1855,6 +1891,7 @@
           </div>
 
         </section>
+
 
       </div>
 
@@ -1868,6 +1905,10 @@
   ======================================================== -->
 
   <script>
+
+    /* =======================================================
+       MOBILE SIDEBAR
+    ======================================================== */
 
     const mobileSidebarButton =
       document.getElementById(
@@ -1924,6 +1965,10 @@
     );
 
 
+    /* =======================================================
+       NEW EVALUATION
+    ======================================================== */
+
     const newEvaluationButton =
       document.getElementById(
         "newEvaluationButton"
@@ -1955,6 +2000,10 @@
     );
 
 
+    /* =======================================================
+       IMPORT DATASET
+    ======================================================== */
+
     const importDatasetButton =
       document.getElementById(
         "importDatasetButton"
@@ -1972,22 +2021,26 @@
     );
 
 
+    /* =======================================================
+       ESCAPE
+    ======================================================== */
+
     document.addEventListener(
       "keydown",
       event => {
 
         if (
-          event.key === "Escape"
+          event.key !== "Escape"
         ) {
-
-          sidebar.classList.remove("open");
-
-          mobileSidebarButton.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
+          return;
         }
+
+        sidebar.classList.remove("open");
+
+        mobileSidebarButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
 
       }
     );
