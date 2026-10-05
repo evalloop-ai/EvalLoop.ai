@@ -31,6 +31,11 @@
     rel="stylesheet"
   />
 
+  <!-- =========================================================
+       SUPABASE
+  ========================================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     /* =========================================================
        ROOT
@@ -340,6 +345,8 @@
       font-family: "DM Mono", monospace;
       font-size: 11px;
       font-weight: 500;
+
+      overflow: hidden;
     }
 
     .account-info {
@@ -1429,6 +1436,11 @@
       color: #df8b8b;
     }
 
+    .account-menu-item.logout:hover {
+      color: #ffaaaa;
+      background: rgba(255, 100, 100, 0.05);
+    }
+
     /* =========================================================
        MOBILE BACKDROP
     ========================================================== */
@@ -2226,8 +2238,6 @@
 
             <div class="overview-grid">
 
-              <!-- Recent runs -->
-
               <div class="panel">
 
                 <div class="panel-header">
@@ -2272,8 +2282,6 @@
 
               </div>
 
-
-              <!-- Quality trend -->
 
               <div class="panel">
 
@@ -2350,8 +2358,6 @@
 
             <div class="quick-grid">
 
-              <!-- Guided -->
-
               <a
                 href="/app/evaluations/new/?type=guided"
                 class="quick-card"
@@ -2376,8 +2382,6 @@
 
               </a>
 
-
-              <!-- AI Response -->
 
               <a
                 href="/app/evaluations/new/?type=response"
@@ -2404,8 +2408,6 @@
               </a>
 
 
-              <!-- Model comparison -->
-
               <a
                 href="/app/evaluations/new/?type=comparison"
                 class="quick-card"
@@ -2430,8 +2432,6 @@
 
               </a>
 
-
-              <!-- Safety -->
 
               <a
                 href="/app/evaluations/new/?type=safety"
@@ -2607,7 +2607,7 @@
 
 
   <!-- =======================================================
-       MOBILE SIDEBAR BACKDROP
+       GLOBAL MOBILE SIDEBAR BACKDROP
   ======================================================== -->
 
   <div
@@ -2688,30 +2688,65 @@
     /*
       =========================================================
       EVALLOOP AI WORKSPACE
-      AUTHENTICATION FOUNDATION
+      REAL SUPABASE AUTHENTICATION
       =========================================================
-
-      IMPORTANT:
-
-      This is intentionally structured so that a real
-      authentication provider such as Supabase can be connected
-      later without redesigning the Workspace.
-
-      Current state:
-        isAuthenticated = false
-
-      Later:
-        Replace checkAuthentication() with the real auth check.
-
-      Example future user object:
-
-        {
-          id: "user-id",
-          name: "Vivek Kaneti",
-          email: "vivek@example.com",
-          avatarUrl: ""
-        }
     */
+
+    /* =========================================================
+       SUPABASE CONFIGURATION
+    ========================================================== */
+
+    const SUPABASE_URL =
+      "https://vonknmobshxkhbewdoie.supabase.co";
+
+    /*
+      IMPORTANT:
+      Replace only the value below with your Supabase
+      Publishable key.
+
+      Use the Publishable key.
+
+      DO NOT use:
+        - service_role key
+        - secret key
+        - database password
+    */
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+
+
+    /* =========================================================
+       CREATE SUPABASE CLIENT
+    ========================================================== */
+
+    let supabaseClient = null;
+
+    try {
+
+      if (
+        !window.supabase ||
+        typeof window.supabase.createClient !== "function"
+      ) {
+        throw new Error(
+          "Supabase library failed to load."
+        );
+      }
+
+      supabaseClient =
+        window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+    } catch (error) {
+
+      console.error(
+        "Supabase initialization failed:",
+        error
+      );
+
+    }
 
 
     /* =========================================================
@@ -2720,25 +2755,7 @@
 
     const authState = {
       isAuthenticated: false,
-
       user: null
-    };
-
-
-    /* =========================================================
-       DEMO USER
-       ---------------------------------------------------------
-       DO NOT HARD-CODE THIS FOR PRODUCTION.
-
-       This object demonstrates the structure that a real
-       authentication provider will eventually return.
-    ========================================================== */
-
-    const demoUser = {
-      id: null,
-      name: "",
-      email: "",
-      avatarUrl: ""
     };
 
 
@@ -2776,21 +2793,12 @@
     const sidebar =
       document.getElementById("sidebar");
 
-    const sidebarBackdrop =
-      document.getElementById("sidebarBackdrop");
-
     const globalSidebarBackdrop =
       document.getElementById("globalSidebarBackdrop");
 
 
     /* =========================================================
        INITIALS
-       ---------------------------------------------------------
-       Generates unique initials for every user.
-
-       Vivek Kaneti → VK
-       Rahul Sharma → RS
-       Ananya → A
     ========================================================== */
 
     function getInitials(name) {
@@ -2803,9 +2811,11 @@
         name.trim().split(/\s+/);
 
       if (parts.length === 1) {
+
         return parts[0]
           .charAt(0)
           .toUpperCase();
+
       }
 
       return (
@@ -2816,15 +2826,68 @@
 
 
     /* =========================================================
+       CONVERT SUPABASE USER
+       INTO EVALLOOP USER OBJECT
+    ========================================================== */
+
+    function normalizeSupabaseUser(user) {
+
+      if (!user) {
+        return null;
+      }
+
+      const metadata =
+        user.user_metadata || {};
+
+      const name =
+        metadata.full_name ||
+        metadata.name ||
+        metadata.display_name ||
+        metadata.user_name ||
+        (
+          user.email
+            ? user.email.split("@")[0]
+            : "User"
+        );
+
+      const avatarUrl =
+        metadata.avatar_url ||
+        metadata.picture ||
+        "";
+
+      return {
+        id: user.id,
+        name: name,
+        email: user.email || "",
+        avatarUrl: avatarUrl
+      };
+    }
+
+
+    /* =========================================================
        UPDATE USER INTERFACE
     ========================================================== */
 
     function updateUserInterface(user) {
 
       if (!user) {
+
         accountAvatar.textContent = "U";
-        accountName.textContent = "User";
-        accountEmail.textContent = "—";
+
+        accountAvatar.style.backgroundImage =
+          "none";
+
+        accountAvatar.style.backgroundColor =
+          "var(--green-dark)";
+
+        accountAvatar.style.color =
+          "var(--green-light)";
+
+        accountName.textContent =
+          "User";
+
+        accountEmail.textContent =
+          "—";
 
         return;
       }
@@ -2833,11 +2896,6 @@
       const initials =
         getInitials(user.name);
 
-
-      /*
-        If a real avatar URL exists, display the image.
-        Otherwise use initials.
-      */
 
       if (user.avatarUrl) {
 
@@ -2880,7 +2938,7 @@
 
 
     /* =========================================================
-       AUTH LOCK
+       WORKSPACE ACCESS
     ========================================================== */
 
     function setWorkspaceAccess(isAuthenticated) {
@@ -2893,72 +2951,278 @@
 
         authLock.classList.add("hidden");
 
-        document.body.classList.remove("workspace-locked");
+        document.body.classList.remove(
+          "workspace-locked"
+        );
 
       } else {
 
         authLock.classList.remove("hidden");
 
-        document.body.classList.add("workspace-locked");
+        document.body.classList.add(
+          "workspace-locked"
+        );
 
       }
     }
 
 
     /* =========================================================
-       AUTHENTICATION CHECK
-       ---------------------------------------------------------
-       CURRENTLY:
-         Always logged out.
+       SHOW AUTH ERROR
+    ========================================================== */
 
-       LATER:
-         Connect Supabase/Auth here.
+    function showAuthenticationError(message) {
 
-       Example concept:
+      console.error(
+        "EvalLoop authentication error:",
+        message
+      );
 
-         const {
-           data: { user }
-         } = await supabase.auth.getUser();
+      /*
+        If Supabase itself failed to initialize,
+        provide a useful console message instead of
+        exposing technical details to the user.
+      */
 
-         authState.user = user;
-         setWorkspaceAccess(Boolean(user));
+      if (
+        authLoading &&
+        !authLoading.classList.contains("hidden")
+      ) {
+
+        authLoading.querySelector(
+          ".loading-inner span"
+        ).textContent =
+          "Unable to verify your session.";
+
+      }
+    }
+
+
+    /* =========================================================
+       REAL AUTHENTICATION CHECK
     ========================================================== */
 
     async function checkAuthentication() {
 
-      /*
-        Small delay only to make the authentication loading
-        state visible during development.
+      if (!supabaseClient) {
 
-        Remove this delay when real authentication is connected.
-      */
+        showAuthenticationError(
+          "Supabase client is unavailable."
+        );
 
-      await new Promise(resolve => {
-        setTimeout(resolve, 350);
-      });
+        authState.isAuthenticated = false;
+        authState.user = null;
 
+        updateUserInterface(null);
 
-      /*
-        Current production-safe default:
-        unauthenticated until a real auth provider confirms
-        a logged-in user.
-      */
+        setWorkspaceAccess(false);
 
-      authState.isAuthenticated = false;
-      authState.user = null;
+        authLoading.classList.add("hidden");
+
+        return;
+      }
 
 
-      updateUserInterface(
-        authState.user
+      try {
+
+        /*
+          getSession() reads the persisted Supabase session.
+
+          If the user logged in on /login/,
+          Supabase keeps the session available here.
+        */
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        const session =
+          data?.session || null;
+
+
+        if (!session || !session.user) {
+
+          /*
+            No valid session.
+
+            Keep the authentication lock visible.
+          */
+
+          authState.isAuthenticated = false;
+          authState.user = null;
+
+          updateUserInterface(null);
+
+          setWorkspaceAccess(false);
+
+          authLoading.classList.add("hidden");
+
+          return;
+        }
+
+
+        /*
+          User is authenticated.
+        */
+
+        const normalizedUser =
+          normalizeSupabaseUser(
+            session.user
+          );
+
+
+        authState.isAuthenticated =
+          true;
+
+        authState.user =
+          normalizedUser;
+
+
+        updateUserInterface(
+          normalizedUser
+        );
+
+
+        setWorkspaceAccess(true);
+
+        authLoading.classList.add("hidden");
+
+
+        console.log(
+          "EvalLoop AI authenticated user:",
+          normalizedUser
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Failed to check Supabase session:",
+          error
+        );
+
+        authState.isAuthenticated = false;
+        authState.user = null;
+
+        updateUserInterface(null);
+
+        setWorkspaceAccess(false);
+
+        authLoading.classList.add("hidden");
+      }
+    }
+
+
+    /* =========================================================
+       SUPABASE AUTH STATE LISTENER
+       ---------------------------------------------------------
+       This keeps the workspace synchronized if the session
+       changes while the user is on the page.
+    ========================================================== */
+
+    if (supabaseClient) {
+
+      supabaseClient.auth.onAuthStateChange(
+        (event, session) => {
+
+          console.log(
+            "Supabase auth event:",
+            event
+          );
+
+
+          if (
+            event === "SIGNED_IN" &&
+            session?.user
+          ) {
+
+            const normalizedUser =
+              normalizeSupabaseUser(
+                session.user
+              );
+
+            authState.isAuthenticated =
+              true;
+
+            authState.user =
+              normalizedUser;
+
+            updateUserInterface(
+              normalizedUser
+            );
+
+            setWorkspaceAccess(true);
+
+            authLoading.classList.add(
+              "hidden"
+            );
+
+            return;
+          }
+
+
+          if (
+            event === "TOKEN_REFRESHED" &&
+            session?.user
+          ) {
+
+            const normalizedUser =
+              normalizeSupabaseUser(
+                session.user
+              );
+
+            authState.isAuthenticated =
+              true;
+
+            authState.user =
+              normalizedUser;
+
+            updateUserInterface(
+              normalizedUser
+            );
+
+            setWorkspaceAccess(true);
+
+            return;
+          }
+
+
+          if (
+            event === "SIGNED_OUT"
+          ) {
+
+            authState.isAuthenticated =
+              false;
+
+            authState.user =
+              null;
+
+            updateUserInterface(null);
+
+            setWorkspaceAccess(false);
+
+            closeAccountMenu();
+
+            /*
+              Send the user back to the real login page
+              after a genuine Supabase logout.
+            */
+
+            window.location.replace(
+              "/login/"
+            );
+          }
+
+        }
       );
 
-
-      setWorkspaceAccess(
-        authState.isAuthenticated
-      );
-
-
-      authLoading.classList.add("hidden");
     }
 
 
@@ -2973,7 +3237,9 @@
       }
 
       const isOpen =
-        accountMenu.classList.toggle("open");
+        accountMenu.classList.toggle(
+          "open"
+        );
 
       accountButton.setAttribute(
         "aria-expanded",
@@ -2989,7 +3255,9 @@
 
     function closeAccountMenu() {
 
-      accountMenu.classList.remove("open");
+      accountMenu.classList.remove(
+        "open"
+      );
 
       accountButton.setAttribute(
         "aria-expanded",
@@ -3014,10 +3282,16 @@
       event => {
 
         if (
-          !accountMenu.contains(event.target) &&
-          !accountButton.contains(event.target)
+          !accountMenu.contains(
+            event.target
+          ) &&
+          !accountButton.contains(
+            event.target
+          )
         ) {
+
           closeAccountMenu();
+
         }
 
       }
@@ -3030,31 +3304,43 @@
 
     function openSidebar() {
 
-      sidebar.classList.add("open");
+      sidebar.classList.add(
+        "open"
+      );
 
-      globalSidebarBackdrop.classList.add("open");
+      globalSidebarBackdrop.classList.add(
+        "open"
+      );
 
       mobileMenuButton.setAttribute(
         "aria-expanded",
         "true"
       );
 
-      document.body.classList.add("menu-open");
+      document.body.classList.add(
+        "menu-open"
+      );
     }
 
 
     function closeSidebar() {
 
-      sidebar.classList.remove("open");
+      sidebar.classList.remove(
+        "open"
+      );
 
-      globalSidebarBackdrop.classList.remove("open");
+      globalSidebarBackdrop.classList.remove(
+        "open"
+      );
 
       mobileMenuButton.setAttribute(
         "aria-expanded",
         "false"
       );
 
-      document.body.classList.remove("menu-open");
+      document.body.classList.remove(
+        "menu-open"
+      );
     }
 
 
@@ -3062,10 +3348,18 @@
       "click",
       () => {
 
-        if (sidebar.classList.contains("open")) {
+        if (
+          sidebar.classList.contains(
+            "open"
+          )
+        ) {
+
           closeSidebar();
+
         } else {
+
           openSidebar();
+
         }
 
       }
@@ -3093,7 +3387,9 @@
             if (
               window.innerWidth <= 760
             ) {
+
               closeSidebar();
+
             }
 
           }
@@ -3118,15 +3414,23 @@
               button.dataset.action;
 
 
-            if (action === "profile") {
+            if (
+              action === "profile"
+            ) {
+
               window.location.href =
                 "/app/settings/?section=profile";
+
             }
 
 
-            if (action === "settings") {
+            if (
+              action === "settings"
+            ) {
+
               window.location.href =
                 "/app/settings/";
+
             }
 
           }
@@ -3136,30 +3440,65 @@
 
 
     /* =========================================================
-       LOGOUT
-       ---------------------------------------------------------
-       Real authentication logout will be connected here.
-
-       Example later:
-
-         await supabase.auth.signOut();
-         window.location.href = "/login/";
+       REAL SUPABASE LOGOUT
     ========================================================== */
 
     document
       .getElementById("logoutButton")
       .addEventListener(
         "click",
-        () => {
+        async () => {
 
-          authState.isAuthenticated = false;
-          authState.user = null;
+          if (!supabaseClient) {
 
-          updateUserInterface(null);
+            window.location.replace(
+              "/login/"
+            );
 
-          setWorkspaceAccess(false);
+            return;
+          }
 
-          closeAccountMenu();
+
+          const logoutButton =
+            document.getElementById(
+              "logoutButton"
+            );
+
+
+          logoutButton.disabled =
+            true;
+
+          logoutButton.textContent =
+            "Logging out…";
+
+
+          try {
+
+            const {
+              error
+            } =
+              await supabaseClient.auth.signOut();
+
+
+            if (error) {
+              throw error;
+            }
+
+
+          } catch (error) {
+
+            console.error(
+              "Supabase logout failed:",
+              error
+            );
+
+            logoutButton.disabled =
+              false;
+
+            logoutButton.textContent =
+              "Log out";
+
+          }
 
         }
       );
@@ -3185,7 +3524,7 @@
 
 
     /* =========================================================
-       START AUTH CHECK
+       START REAL AUTH CHECK
     ========================================================== */
 
     checkAuthentication();
