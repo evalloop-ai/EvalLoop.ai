@@ -67,6 +67,7 @@
       min-height: 100vh;
 
       color: var(--ink);
+
       background:
         radial-gradient(
           circle at 50% -15%,
@@ -97,8 +98,10 @@
 
     body::before {
       content: "";
+
       position: fixed;
       inset: 0;
+
       pointer-events: none;
       z-index: -1;
 
@@ -130,7 +133,7 @@
     }
 
     /* =========================================================
-       HEADER
+       STANDARD EVALLOOP AI HEADER
     ========================================================= */
 
     .site-header {
@@ -167,12 +170,13 @@
       font-family: var(--mono);
       font-size: 15px;
       font-weight: 500;
+
       letter-spacing: -0.03em;
       white-space: nowrap;
     }
 
-    .brand::after {
-      content: "";
+    .brand-cursor {
+      display: inline-block;
 
       width: 7px;
       height: 16px;
@@ -196,6 +200,10 @@
       }
     }
 
+    /* =========================================================
+       DESKTOP NAVIGATION
+    ========================================================= */
+
     .desktop-nav {
       display: flex;
       align-items: center;
@@ -206,13 +214,14 @@
     }
 
     .desktop-nav > a,
-    .nav-dropdown > button {
+    .nav-dropdown-trigger {
       border: 0;
       background: transparent;
 
       color: var(--muted);
 
       padding: 9px 11px;
+
       border-radius: 4px;
 
       font-family: var(--sans);
@@ -227,10 +236,11 @@
     }
 
     .desktop-nav > a:hover,
-    .nav-dropdown > button:hover,
     .desktop-nav > a.active,
-    .nav-dropdown > button.active {
+    .nav-dropdown-trigger:hover,
+    .nav-dropdown.open .nav-dropdown-trigger {
       color: var(--ink);
+
       background: rgba(241, 241, 239, 0.045);
     }
 
@@ -238,29 +248,31 @@
       position: relative;
     }
 
-    .nav-dropdown > button {
+    .nav-dropdown-trigger {
       display: inline-flex;
       align-items: center;
       gap: 7px;
     }
 
     .nav-chevron {
-      width: 6px;
-      height: 6px;
+      display: inline-block;
 
-      border-right: 1px solid currentColor;
-      border-bottom: 1px solid currentColor;
+      color: currentColor;
 
-      transform: rotate(45deg) translateY(-2px);
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1;
+
+      transform: translateY(-1px);
 
       transition: transform 160ms ease;
     }
 
     .nav-dropdown.open .nav-chevron {
-      transform: rotate(225deg) translateY(-1px);
+      transform: rotate(180deg) translateY(1px);
     }
 
-    .dropdown-menu {
+    .nav-dropdown-menu {
       position: absolute;
 
       top: calc(100% + 9px);
@@ -289,7 +301,7 @@
         visibility 150ms ease;
     }
 
-    .nav-dropdown.open .dropdown-menu {
+    .nav-dropdown.open .nav-dropdown-menu {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -297,7 +309,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .dropdown-item {
+    .nav-dropdown-menu a {
       display: block;
 
       padding: 11px 12px;
@@ -307,22 +319,23 @@
       transition: background 150ms ease;
     }
 
-    .dropdown-item:hover,
-    .dropdown-item.active {
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a.active {
       background: rgba(62, 207, 142, 0.07);
     }
 
-    .dropdown-title {
+    .nav-dropdown-menu a span {
       display: block;
 
       color: var(--ink);
 
       font-size: 13px;
       font-weight: 400;
+
       line-height: 1.35;
     }
 
-    .dropdown-description {
+    .nav-dropdown-menu a small {
       display: block;
 
       margin-top: 3px;
@@ -331,41 +344,98 @@
 
       font-family: var(--mono);
       font-size: 10px;
+
       line-height: 1.45;
     }
+
+    /* =========================================================
+       NAV ACTIONS
+    ========================================================= */
 
     .nav-actions {
       display: flex;
       align-items: center;
 
       gap: 3px;
+
       margin-left: 4px;
     }
 
     .nav-login {
-      color: var(--muted) !important;
+      color: var(--muted);
+
+      padding: 9px 11px;
+
+      border-radius: 4px;
+
+      font-size: 13px;
+      font-weight: 400;
+
+      transition:
+        color 160ms ease,
+        background 160ms ease;
     }
 
-    .nav-signup {
-      color: var(--bg) !important;
-      background: var(--green) !important;
+    .nav-login:hover {
+      color: var(--ink);
 
-      padding-inline: 14px !important;
+      background: rgba(241, 241, 239, 0.045);
     }
 
-    .nav-signup:hover {
-      background: var(--green2) !important;
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 44px;
+
+      padding: 0 17px;
+
+      border: 1px solid var(--line);
+      border-radius: 4px;
+
+      font-size: 13px;
+      font-weight: 400;
+
+      transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        color 160ms ease;
+    }
+
+    .button-small {
+      min-height: 36px;
+
+      padding: 0 14px;
+
+      color: var(--bg);
+
+      background: var(--green);
+
+      border-color: var(--green);
+
+      gap: 6px;
+    }
+
+    .button-small:hover {
+      color: var(--bg);
+
+      background: var(--green2);
+
+      border-color: var(--green2);
     }
 
     /* =========================================================
-       MOBILE NAV
+       MOBILE HEADER
     ========================================================= */
 
-    .mobile-toggle {
+    .mobile-menu-button {
       display: none;
 
       width: 42px;
       height: 42px;
+
+      padding: 0;
 
       border: 1px solid var(--line);
       border-radius: 4px;
@@ -374,46 +444,52 @@
       color: var(--ink);
 
       cursor: pointer;
+
+      position: relative;
     }
 
-    .mobile-toggle span,
-    .mobile-toggle span::before,
-    .mobile-toggle span::after {
-      display: block;
+    .mobile-menu-button span {
+      position: absolute;
+
+      left: 50%;
 
       width: 17px;
       height: 1px;
 
       background: currentColor;
 
-      margin: 0 auto;
+      transform: translateX(-50%);
 
       transition:
         transform 160ms ease,
         opacity 160ms ease;
     }
 
-    .mobile-toggle span {
-      position: relative;
+    .mobile-menu-button span:first-child {
+      top: 16px;
     }
 
-    .mobile-toggle span::before,
-    .mobile-toggle span::after {
-      content: "";
-
-      position: absolute;
-      left: 0;
+    .mobile-menu-button span:last-child {
+      top: 23px;
     }
 
-    .mobile-toggle span::before {
-      top: -6px;
+    .mobile-menu-button.open span:first-child {
+      top: 20px;
+
+      transform:
+        translateX(-50%)
+        rotate(45deg);
     }
 
-    .mobile-toggle span::after {
-      top: 6px;
+    .mobile-menu-button.open span:last-child {
+      top: 20px;
+
+      transform:
+        translateX(-50%)
+        rotate(-45deg);
     }
 
-    .mobile-menu {
+    .mobile-nav {
       display: none;
 
       padding: 10px 24px 20px;
@@ -421,66 +497,71 @@
       border-top: 1px solid var(--line-soft);
     }
 
-    .mobile-menu.open {
+    .mobile-nav.open {
       display: block;
     }
 
-    .mobile-link {
+    .mobile-nav > a,
+    .mobile-nav-dropdown-trigger {
       display: block;
+
+      width: 100%;
 
       padding: 11px 0;
 
-      color: var(--muted);
-
-      font-size: 14px;
-
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .mobile-link:hover,
-    .mobile-link.active {
-      color: var(--ink);
-    }
-
-    .mobile-group {
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .mobile-group-button {
-      width: 100%;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 12px 0;
-
       border: 0;
+      border-bottom: 1px solid var(--line-soft);
+
       background: transparent;
 
       color: var(--muted);
 
       font-size: 14px;
+
       text-align: left;
 
       cursor: pointer;
     }
 
-    .mobile-group.open .mobile-group-button {
+    .mobile-nav > a:hover,
+    .mobile-nav > a.active,
+    .mobile-nav-dropdown-trigger:hover,
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-trigger {
       color: var(--ink);
     }
 
-    .mobile-submenu {
+    .mobile-nav-dropdown-trigger {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-nav-dropdown-trigger .nav-chevron {
+      transition: transform 160ms ease;
+    }
+
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-trigger
+      .nav-chevron {
+      transform: rotate(180deg);
+    }
+
+    .mobile-nav-dropdown-menu {
       display: none;
 
       padding: 0 0 8px 13px;
+
+      border-bottom: 1px solid var(--line-soft);
     }
 
-    .mobile-group.open .mobile-submenu {
+    .mobile-nav-dropdown.open
+      .mobile-nav-dropdown-menu {
       display: block;
     }
 
-    .mobile-sub-link {
+    .mobile-nav-dropdown-menu a {
       display: block;
 
       padding: 9px 0;
@@ -490,13 +571,14 @@
       font-size: 13px;
     }
 
-    .mobile-sub-link:hover,
-    .mobile-sub-link.active {
+    .mobile-nav-dropdown-menu a:hover,
+    .mobile-nav-dropdown-menu a.active {
       color: var(--green2);
     }
 
-    .mobile-actions {
+    .mobile-nav-actions {
       display: grid;
+
       grid-template-columns: 1fr 1fr;
 
       gap: 8px;
@@ -504,20 +586,30 @@
       margin-top: 14px;
     }
 
-    .mobile-action {
-      padding: 11px;
+    .mobile-nav-actions a {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 42px;
+
+      padding: 10px;
 
       border: 1px solid var(--line);
       border-radius: 4px;
+
+      color: var(--muted);
 
       text-align: center;
       font-size: 13px;
     }
 
-    .mobile-action.primary {
+    .mobile-nav-actions a.button {
       color: var(--bg);
 
       background: var(--green);
+
       border-color: var(--green);
     }
 
@@ -568,7 +660,10 @@
       z-index: 2;
 
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.8fr);
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(360px, 0.8fr);
 
       align-items: center;
 
@@ -586,8 +681,11 @@
       color: var(--green);
 
       font-family: var(--mono);
+
       font-size: 10px;
+
       letter-spacing: 0.12em;
+
       text-transform: uppercase;
     }
 
@@ -613,6 +711,7 @@
       background: rgba(62, 207, 142, 0.045);
 
       font-size: 9px;
+
       letter-spacing: 0.08em;
     }
 
@@ -648,6 +747,7 @@
 
     .hero-description strong {
       color: var(--ink);
+
       font-weight: 400;
     }
 
@@ -660,41 +760,23 @@
       margin-top: 34px;
     }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      min-height: 44px;
-
-      padding: 0 17px;
-
-      border: 1px solid var(--line);
-      border-radius: 4px;
-
-      font-size: 13px;
-      font-weight: 400;
-
-      transition:
-        border-color 160ms ease,
-        background 160ms ease,
-        color 160ms ease;
-    }
-
     .button.primary {
       color: var(--bg);
 
       background: var(--green);
+
       border-color: var(--green);
     }
 
     .button.primary:hover {
       background: var(--green2);
+
       border-color: var(--green2);
     }
 
     .button.secondary:hover {
       border-color: rgba(62, 207, 142, 0.42);
+
       background: rgba(62, 207, 142, 0.05);
     }
 
@@ -884,7 +966,7 @@
     }
 
     /* =========================================================
-       COMING SOON PANEL
+       COMING SOON DETAILS
     ========================================================= */
 
     .details {
@@ -991,7 +1073,7 @@
     }
 
     /* =========================================================
-       ECOSYSTEM STRIP
+       ECOSYSTEM
     ========================================================= */
 
     .ecosystem-section {
@@ -1138,10 +1220,10 @@
     }
 
     /* =========================================================
-       FOOTER
+       STANDARD EVALLOOP AI FOOTER
     ========================================================= */
 
-    footer {
+    .site-footer {
       padding: 55px 0 26px;
 
       border-top: 1px solid var(--line);
@@ -1150,25 +1232,23 @@
     .footer-top {
       display: grid;
 
-      grid-template-columns:
-        1.5fr
-        repeat(4, 1fr);
+      grid-template-columns: 1.5fr 2.5fr;
 
       gap: 40px;
     }
 
     .footer-brand {
-      color: var(--ink);
-
-      font-family: var(--mono);
-
-      font-size: 15px;
+      min-width: 0;
     }
 
-    .footer-brand-description {
+    .footer-brand .brand {
+      color: var(--ink);
+    }
+
+    .footer-brand p {
       max-width: 220px;
 
-      margin-top: 11px;
+      margin: 11px 0 0;
 
       color: var(--dim);
 
@@ -1177,8 +1257,25 @@
       line-height: 1.6;
     }
 
-    .footer-heading {
-      margin-bottom: 14px;
+    .footer-columns {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 30px;
+    }
+
+    .footer-column {
+      display: grid;
+
+      align-content: start;
+
+      gap: 8px;
+    }
+
+    .footer-label {
+      margin-bottom: 6px;
 
       color: var(--dim);
 
@@ -1189,13 +1286,7 @@
       letter-spacing: 0.1em;
     }
 
-    .footer-links {
-      display: grid;
-
-      gap: 8px;
-    }
-
-    .footer-links a {
+    .footer-column a {
       color: var(--muted);
 
       font-size: 12px;
@@ -1203,7 +1294,7 @@
       transition: color 150ms ease;
     }
 
-    .footer-links a:hover {
+    .footer-column a:hover {
       color: var(--green);
     }
 
@@ -1232,11 +1323,12 @@
     ========================================================= */
 
     @media (max-width: 1050px) {
-      .desktop-nav {
+      .desktop-nav,
+      .nav-actions {
         display: none;
       }
 
-      .mobile-toggle {
+      .mobile-menu-button {
         display: block;
       }
 
@@ -1251,10 +1343,12 @@
       }
 
       .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-columns {
         grid-template-columns:
-          1.4fr
-          1fr
-          1fr;
+          repeat(4, minmax(0, 1fr));
       }
     }
 
@@ -1289,14 +1383,10 @@
         border-bottom: 1px solid var(--line);
       }
 
-      .footer-top {
+      .footer-columns {
         grid-template-columns: 1fr 1fr;
 
         gap: 35px 24px;
-      }
-
-      .footer-brand {
-        grid-column: 1 / -1;
       }
     }
 
@@ -1306,7 +1396,7 @@
         width: min(var(--max), calc(100% - 28px));
       }
 
-      .mobile-menu {
+      .mobile-nav {
         padding-left: 14px;
         padding-right: 14px;
       }
@@ -1374,7 +1464,7 @@
         padding: 22px;
       }
 
-      .footer-top {
+      .footer-columns {
         grid-template-columns: 1fr 1fr;
       }
 
@@ -1406,7 +1496,7 @@
 <body>
 
   <!-- =======================================================
-       HEADER
+       STANDARD EVALLOOP AI HEADER
   ======================================================== -->
 
   <header class="site-header">
@@ -1414,12 +1504,16 @@
     <div class="header-inner">
 
       <a
-        class="brand"
         href="/"
-        aria-label="EvalLoop AI home"
+        class="brand"
+        aria-label="EvalLoop AI"
       >
-        EvalLoop AI
+        <span>EvalLoop AI</span>
+        <span class="brand-cursor">_</span>
       </a>
+
+
+      <!-- DESKTOP NAVIGATION -->
 
       <nav
         class="desktop-nav"
@@ -1429,281 +1523,285 @@
         <div class="nav-dropdown">
 
           <button
+            class="nav-dropdown-trigger"
             type="button"
             aria-expanded="false"
+            aria-haspopup="true"
           >
             Products
-            <span class="nav-chevron"></span>
+            <span class="nav-chevron">⌄</span>
           </button>
 
-          <div class="dropdown-menu">
+          <div
+            class="nav-dropdown-menu"
+            role="menu"
+          >
 
             <a
-              class="dropdown-item"
               href="/labs/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 Evaluation Engines/Models
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Test and compare AI quality
-              </span>
+              </small>
             </a>
 
             <a
-              class="dropdown-item"
               href="/jobs/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 EvalLoop Jobs
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Independent jobs directory &amp; discovery platform
-              </span>
+              </small>
             </a>
 
             <a
-              class="dropdown-item active"
               href="/hub/"
+              role="menuitem"
+              class="active"
               aria-current="page"
             >
-              <span class="dropdown-title">
+              <span>
                 EvalAI Hub
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Explore the evaluation ecosystem
-              </span>
+              </small>
             </a>
 
           </div>
         </div>
+
 
         <a href="/app/">
           Workspace
         </a>
 
+
         <div class="nav-dropdown">
 
           <button
+            class="nav-dropdown-trigger"
             type="button"
             aria-expanded="false"
+            aria-haspopup="true"
           >
             Resources
-            <span class="nav-chevron"></span>
+            <span class="nav-chevron">⌄</span>
           </button>
 
-          <div class="dropdown-menu">
+          <div
+            class="nav-dropdown-menu"
+            role="menu"
+          >
 
             <a
-              class="dropdown-item"
               href="/docs/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 Docs
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Build with EvalLoop AI
-              </span>
+              </small>
             </a>
 
             <a
-              class="dropdown-item"
               href="/knowledge/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 Learn
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Guides and evaluation basics
-              </span>
+              </small>
             </a>
 
             <a
-              class="dropdown-item"
               href="/blog/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 Blog
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Ideas, updates, and research
-              </span>
+              </small>
             </a>
 
             <a
-              class="dropdown-item"
               href="/api-space/"
+              role="menuitem"
             >
-              <span class="dropdown-title">
+              <span>
                 API
               </span>
 
-              <span class="dropdown-description">
+              <small>
                 Connect your AI workflows
-              </span>
+              </small>
             </a>
 
           </div>
         </div>
 
+
         <a href="/pricing/">
           Pricing
         </a>
 
-        <div class="nav-actions">
-
-          <a
-            class="nav-login"
-            href="/login/"
-          >
-            Login
-          </a>
-
-          <a
-            class="nav-signup"
-            href="/signup/"
-          >
-            Sign up
-          </a>
-
-        </div>
-
       </nav>
 
+
+      <!-- NAV ACTIONS -->
+
+      <div class="nav-actions">
+
+        <a
+          href="/login/"
+          class="nav-login"
+        >
+          Login
+        </a>
+
+        <a
+          href="/signup/"
+          class="button button-small"
+        >
+          Sign up
+          <span>↗</span>
+        </a>
+
+      </div>
+
+
+      <!-- MOBILE MENU BUTTON -->
+
       <button
-        class="mobile-toggle"
+        class="mobile-menu-button"
+        id="mobileMenuButton"
         type="button"
-        aria-label="Open menu"
+        aria-label="Open navigation menu"
         aria-expanded="false"
       >
+        <span></span>
         <span></span>
       </button>
 
     </div>
 
+
+    <!-- MOBILE NAVIGATION -->
+
     <div
-      class="mobile-menu"
-      aria-label="Mobile navigation"
+      class="mobile-nav"
+      id="mobileNav"
     >
 
-      <a
-        class="mobile-link"
-        href="/app/"
-      >
-        Workspace
-      </a>
-
-      <div class="mobile-group">
+      <div class="mobile-nav-dropdown">
 
         <button
-          class="mobile-group-button"
+          class="mobile-nav-dropdown-trigger"
           type="button"
           aria-expanded="false"
         >
           Products
-
-          <span class="nav-chevron"></span>
+          <span class="nav-chevron">⌄</span>
         </button>
 
-        <div class="mobile-submenu">
+        <div class="mobile-nav-dropdown-menu">
 
-          <a
-            class="mobile-sub-link"
-            href="/labs/"
-          >
+          <a href="/labs/">
             Evaluation Engines/Models
           </a>
 
-          <a
-            class="mobile-sub-link"
-            href="/jobs/"
-          >
+          <a href="/jobs/">
             EvalLoop Jobs
           </a>
 
           <a
-            class="mobile-sub-link active"
             href="/hub/"
+            class="active"
             aria-current="page"
           >
             EvalAI Hub
           </a>
 
         </div>
+
       </div>
 
-      <div class="mobile-group">
+
+      <a href="/app/">
+        Workspace
+      </a>
+
+
+      <div class="mobile-nav-dropdown">
 
         <button
-          class="mobile-group-button"
+          class="mobile-nav-dropdown-trigger"
           type="button"
           aria-expanded="false"
         >
           Resources
-
-          <span class="nav-chevron"></span>
+          <span class="nav-chevron">⌄</span>
         </button>
 
-        <div class="mobile-submenu">
+        <div class="mobile-nav-dropdown-menu">
 
-          <a
-            class="mobile-sub-link"
-            href="/docs/"
-          >
+          <a href="/docs/">
             Docs
           </a>
 
-          <a
-            class="mobile-sub-link"
-            href="/knowledge/"
-          >
+          <a href="/knowledge/">
             Learn
           </a>
 
-          <a
-            class="mobile-sub-link"
-            href="/blog/"
-          >
+          <a href="/blog/">
             Blog
           </a>
 
-          <a
-            class="mobile-sub-link"
-            href="/api-space/"
-          >
+          <a href="/api-space/">
             API
           </a>
 
         </div>
+
       </div>
 
-      <a
-        class="mobile-link"
-        href="/pricing/"
-      >
+
+      <a href="/pricing/">
         Pricing
       </a>
 
-      <div class="mobile-actions">
 
-        <a
-          class="mobile-action"
-          href="/login/"
-        >
+      <div class="mobile-nav-actions">
+
+        <a href="/login/">
           Login
         </a>
 
         <a
-          class="mobile-action primary"
           href="/signup/"
+          class="button"
         >
           Sign up
+          <span>↗</span>
         </a>
 
       </div>
@@ -1740,7 +1838,9 @@
               A discovery layer for the people, methods, benchmarks,
               datasets, frameworks, research, and tools shaping how
               AI systems are evaluated.
-              <strong>EvalAI Hub is coming soon.</strong>
+              <strong>
+                EvalAI Hub is coming soon.
+              </strong>
             </p>
 
             <div class="hero-actions">
@@ -1785,6 +1885,7 @@
 
             </div>
 
+
             <div class="status-node node-top">
 
               <span class="status-node-title">
@@ -1796,6 +1897,7 @@
               </span>
 
             </div>
+
 
             <div class="status-node node-right">
 
@@ -1809,6 +1911,7 @@
 
             </div>
 
+
             <div class="status-node node-bottom">
 
               <span class="status-node-title">
@@ -1820,6 +1923,7 @@
               </span>
 
             </div>
+
 
             <div class="status-node node-left">
 
@@ -1858,7 +1962,9 @@
 
           <h2>
             One place to understand
-            <span class="green">AI evaluation.</span>
+            <span class="green">
+              AI evaluation.
+            </span>
           </h2>
 
           <p class="details-intro">
@@ -2012,7 +2118,9 @@
 
             <h2>
               From scattered
-              <span class="green">to connected.</span>
+              <span class="green">
+                to connected.
+              </span>
             </h2>
 
             <p>
@@ -2128,7 +2236,9 @@
 
           <h2>
             Start evaluating
-            <span class="green">today.</span>
+            <span class="green">
+              today.
+            </span>
           </h2>
 
           <p>
@@ -2166,37 +2276,42 @@
 
 
   <!-- =========================================================
-       FOOTER
+       STANDARD EVALLOOP AI FOOTER
   ========================================================== -->
 
-  <footer>
+  <footer class="site-footer">
 
     <div class="container">
 
       <div class="footer-top">
 
-        <div>
+        <div class="footer-brand">
 
-          <div class="footer-brand">
-            EvalLoop AI_
-          </div>
+          <a
+            href="/"
+            class="brand"
+            aria-label="EvalLoop AI"
+          >
+            <span>EvalLoop AI</span>
+            <span class="brand-cursor">_</span>
+          </a>
 
-          <div class="footer-brand-description">
+          <p>
             AI evaluation &amp; LLM quality platform.
-          </div>
+          </p>
 
         </div>
 
 
-        <div>
+        <div class="footer-columns">
 
-          <div class="footer-heading">
-            PRODUCT
-          </div>
+          <div class="footer-column">
 
-          <div class="footer-links">
+            <div class="footer-label">
+              PRODUCT
+            </div>
 
-            <a href="/">
+            <a href="#product">
               Overview
             </a>
 
@@ -2214,22 +2329,18 @@
 
           </div>
 
-        </div>
 
+          <div class="footer-column">
 
-        <div>
-
-          <div class="footer-heading">
-            RESOURCES
-          </div>
-
-          <div class="footer-links">
+            <div class="footer-label">
+              RESOURCES
+            </div>
 
             <a href="/knowledge/">
               Learn
             </a>
 
-            <a href="/blog/">
+            <a href="/blog">
               Blog
             </a>
 
@@ -2237,22 +2348,18 @@
               Documentation
             </a>
 
-            <a href="/api-space/">
+            <a href="/api-space">
               API
             </a>
 
           </div>
 
-        </div>
 
+          <div class="footer-column">
 
-        <div>
-
-          <div class="footer-heading">
-            COMPANY
-          </div>
-
-          <div class="footer-links">
+            <div class="footer-label">
+              COMPANY
+            </div>
 
             <a href="/about/">
               About
@@ -2264,16 +2371,12 @@
 
           </div>
 
-        </div>
 
+          <div class="footer-column">
 
-        <div>
-
-          <div class="footer-heading">
-            LEGAL
-          </div>
-
-          <div class="footer-links">
+            <div class="footer-label">
+              LEGAL
+            </div>
 
             <a href="/privacy/">
               Privacy Policy
@@ -2315,45 +2418,67 @@
   </footer>
 
 
+  <!-- =========================================================
+       NAVIGATION JAVASCRIPT
+  ========================================================== -->
+
   <script>
+
     /* =========================================================
        DESKTOP DROPDOWNS
     ========================================================= */
 
-    const dropdowns =
+    const desktopDropdowns =
       document.querySelectorAll(".nav-dropdown");
 
-    dropdowns.forEach((dropdown) => {
 
-      const button =
-        dropdown.querySelector("button");
+    desktopDropdowns.forEach((dropdown) => {
 
-      button.addEventListener("click", (event) => {
+      const trigger =
+        dropdown.querySelector(
+          ".nav-dropdown-trigger"
+        );
+
+      if (!trigger) {
+        return;
+      }
+
+
+      trigger.addEventListener("click", (event) => {
 
         event.stopPropagation();
 
-        dropdowns.forEach((other) => {
 
-          if (other !== dropdown) {
-            other.classList.remove("open");
+        desktopDropdowns.forEach((otherDropdown) => {
 
-            const otherButton =
-              other.querySelector("button");
+          if (otherDropdown !== dropdown) {
 
-            if (otherButton) {
-              otherButton.setAttribute(
+            otherDropdown.classList.remove("open");
+
+            const otherTrigger =
+              otherDropdown.querySelector(
+                ".nav-dropdown-trigger"
+              );
+
+            if (otherTrigger) {
+
+              otherTrigger.setAttribute(
                 "aria-expanded",
                 "false"
               );
+
             }
+
           }
 
         });
 
+
         const isOpen =
           dropdown.classList.toggle("open");
 
-        button.setAttribute(
+
+        trigger.setAttribute(
           "aria-expanded",
           String(isOpen)
         );
@@ -2363,20 +2488,30 @@
     });
 
 
+    /* =========================================================
+       CLOSE DESKTOP DROPDOWNS
+    ========================================================= */
+
     document.addEventListener("click", () => {
 
-      dropdowns.forEach((dropdown) => {
+      desktopDropdowns.forEach((dropdown) => {
 
         dropdown.classList.remove("open");
 
-        const button =
-          dropdown.querySelector("button");
 
-        if (button) {
-          button.setAttribute(
+        const trigger =
+          dropdown.querySelector(
+            ".nav-dropdown-trigger"
+          );
+
+
+        if (trigger) {
+
+          trigger.setAttribute(
             "aria-expanded",
             "false"
           );
+
         }
 
       });
@@ -2388,32 +2523,51 @@
        MOBILE MENU
     ========================================================= */
 
-    const mobileToggle =
-      document.querySelector(".mobile-toggle");
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
 
-    const mobileMenu =
-      document.querySelector(".mobile-menu");
 
-    if (mobileToggle && mobileMenu) {
+    const mobileNav =
+      document.getElementById(
+        "mobileNav"
+      );
 
-      mobileToggle.addEventListener("click", () => {
 
-        const isOpen =
-          mobileMenu.classList.toggle("open");
+    if (mobileMenuButton && mobileNav) {
 
-        mobileToggle.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
+      mobileMenuButton.addEventListener(
+        "click",
+        () => {
 
-        mobileToggle.setAttribute(
-          "aria-label",
-          isOpen
-            ? "Close menu"
-            : "Open menu"
-        );
+          const isOpen =
+            mobileNav.classList.toggle(
+              "open"
+            );
 
-      });
+
+          mobileMenuButton.classList.toggle(
+            "open",
+            isOpen
+          );
+
+
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+          );
+
+
+          mobileMenuButton.setAttribute(
+            "aria-label",
+            isOpen
+              ? "Close navigation menu"
+              : "Open navigation menu"
+          );
+
+        }
+      );
 
     }
 
@@ -2422,65 +2576,129 @@
        MOBILE DROPDOWNS
     ========================================================= */
 
-    const mobileGroups =
-      document.querySelectorAll(".mobile-group");
+    const mobileDropdowns =
+      document.querySelectorAll(
+        ".mobile-nav-dropdown"
+      );
 
-    mobileGroups.forEach((group) => {
 
-      const button =
-        group.querySelector(".mobile-group-button");
+    mobileDropdowns.forEach((dropdown) => {
 
-      if (!button) {
+      const trigger =
+        dropdown.querySelector(
+          ".mobile-nav-dropdown-trigger"
+        );
+
+
+      if (!trigger) {
         return;
       }
 
-      button.addEventListener("click", () => {
 
-        const isOpen =
-          group.classList.toggle("open");
+      trigger.addEventListener(
+        "click",
+        () => {
 
-        button.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
+          const isOpen =
+            dropdown.classList.toggle(
+              "open"
+            );
 
-      });
+
+          trigger.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+          );
+
+
+          mobileDropdowns.forEach(
+            (otherDropdown) => {
+
+              if (
+                otherDropdown !== dropdown
+              ) {
+
+                otherDropdown.classList.remove(
+                  "open"
+                );
+
+
+                const otherTrigger =
+                  otherDropdown.querySelector(
+                    ".mobile-nav-dropdown-trigger"
+                  );
+
+
+                if (otherTrigger) {
+
+                  otherTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+
+              }
+
+            }
+          );
+
+        }
+      );
 
     });
 
 
     /* =========================================================
-       CLOSE MOBILE MENU AFTER NAVIGATION
+       CLOSE MOBILE NAV AFTER NAVIGATION
     ========================================================= */
 
-    const mobileLinks =
+    const mobileNavLinks =
       document.querySelectorAll(
-        ".mobile-menu a"
+        ".mobile-nav a"
       );
 
-    mobileLinks.forEach((link) => {
 
-      link.addEventListener("click", () => {
+    mobileNavLinks.forEach((link) => {
 
-        if (mobileMenu) {
-          mobileMenu.classList.remove("open");
+      link.addEventListener(
+        "click",
+        () => {
+
+          if (mobileNav) {
+
+            mobileNav.classList.remove(
+              "open"
+            );
+
+          }
+
+
+          if (mobileMenuButton) {
+
+            mobileMenuButton.classList.remove(
+              "open"
+            );
+
+
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+
+            mobileMenuButton.setAttribute(
+              "aria-label",
+              "Open navigation menu"
+            );
+
+          }
+
         }
-
-        if (mobileToggle) {
-          mobileToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-          mobileToggle.setAttribute(
-            "aria-label",
-            "Open menu"
-          );
-        }
-
-      });
+      );
 
     });
+
   </script>
 
 </body>
