@@ -625,7 +625,7 @@ evaluateButton.addEventListener(
     evaluateButton.querySelector(
       "span:first-child"
     ).textContent =
-      "Evaluating with Groq...";
+      "Evaluating with our system...";
 
 
     showMessage(
