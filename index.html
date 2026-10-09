@@ -420,6 +420,100 @@ p {
   margin-left: auto;
 }
 
+.nav-dropdown {
+  position: relative;
+  height: 76px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.nav-chevron {
+  color: var(--green2);
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(-1px);
+  transition: transform 0.3s var(--ease);
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger,
+.nav-dropdown:focus-within .nav-dropdown-trigger,
+.nav-dropdown-trigger[aria-expanded="true"] {
+  color: var(--ink);
+}
+
+.nav-dropdown:hover .nav-chevron,
+.nav-dropdown:focus-within .nav-chevron,
+.nav-dropdown-trigger[aria-expanded="true"] .nav-chevron {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  z-index: 200;
+  min-width: 250px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(23, 27, 24, 0.98);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -8px) scale(0.97);
+  transform-origin: top center;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s var(--ease);
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu,
+.nav-dropdown-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.nav-dropdown-menu a {
+  display: grid;
+  gap: 3px;
+  min-width: 232px;
+  padding: 12px 13px;
+  border-radius: 3px;
+  color: var(--ink);
+  font-size: 11px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a:focus-visible {
+  outline: none;
+  background: rgba(62, 207, 142, 0.09);
+  color: var(--green2);
+}
+
+.nav-dropdown-menu small {
+  color: var(--dim);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+}
+
 .desktop-nav a,
 .nav-login {
   color: var(--muted);
@@ -2216,6 +2310,7 @@ p {
   color: var(--green2);
 }
 
+
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -2238,16 +2333,141 @@ p {
 
 .reveal {
   opacity: 0;
-  transform: translateY(25px);
+  transform: translate3d(0, 34px, 0) scale(0.985);
+  filter: blur(4px);
+  will-change: opacity, transform, filter;
 
   transition:
-    opacity 0.8s var(--ease),
-    transform 0.8s var(--ease);
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease);
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+/* Scroll-linked depth layers */
+.scroll-depth {
+  --scroll-shift: 0px;
+  translate: 0 var(--scroll-shift);
+  will-change: translate;
+}
+
+.scroll-depth-slow {
+  --scroll-shift: 0px;
+  translate: 0 var(--scroll-shift);
+  will-change: translate;
+}
+
+.hero-visual.scroll-depth {
+  rotate: var(--scroll-rotate, 0deg);
+  scale: var(--scroll-scale, 1);
+  transition: rotate 0.35s var(--ease), scale 0.35s var(--ease);
+}
+
+.capability-card,
+.process-step,
+.about-card,
+.pricing-card,
+.faq-item {
+  translate: 0 var(--scroll-lift, 0px);
+  scale: var(--scroll-scale, 1);
+  transition: translate 0.18s linear, scale 0.18s linear, border-color 0.35s ease, background 0.35s ease;
+  will-change: translate, scale;
+}
+
+body.is-scrolling-down .section-kicker::after {
+  transform: scaleX(1.35);
+  transform-origin: left center;
+}
+
+.section-kicker::after {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--green);
+  opacity: 0.65;
+  transform: scaleX(1);
+  transition: transform 0.5s var(--ease);
+}
+
+.section-border {
+  isolation: isolate;
+}
+
+.section-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 15%,
+    rgba(62, 207, 142, 0.055),
+    transparent 48%
+  );
+  transition: opacity 0.7s ease;
+}
+
+.section-border.in-view::before {
+  opacity: 1;
+}
+
+/* Focus the section currently being read */
+.scroll-focus-enabled main > .section {
+  position: relative;
+  transition: opacity 0.95s var(--ease), filter 0.95s var(--ease), transform 0.95s var(--ease);
+  will-change: opacity, filter, transform;
+}
+
+.scroll-focus-enabled main > .section:not(.is-current) > .container {
+  opacity: 0.28;
+  filter: blur(3px) saturate(0.62);
+  transform: scale(0.94) translate3d(0, 12px, 0);
+  transition: opacity 0.65s var(--ease), filter 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.scroll-focus-enabled main > .section.is-current > .container {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.035) translate3d(0, 0, 0);
+  transition: opacity 0.65s var(--ease), filter 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.scroll-focus-enabled main > .section.is-current {
+  z-index: 2;
+}
+
+@media (max-width: 700px) {
+  .scroll-focus-enabled main > .section:not(.is-current) > .container {
+    opacity: 0.46;
+    filter: blur(1.5px) saturate(0.76);
+    transform: scale(0.975) translate3d(0, 6px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.visible,
+  .scroll-depth,
+  .scroll-depth-slow {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    translate: none;
+    transition: none;
+  }
 }
 
 /* =========================================================
@@ -2456,6 +2676,61 @@ p {
     color: var(--muted);
 
     font-size: 14px;
+  }
+
+  .mobile-nav-dropdown {
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .mobile-nav-dropdown-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 5px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .mobile-nav-dropdown-trigger .nav-chevron {
+    transition: transform 0.3s var(--ease);
+  }
+
+  .mobile-nav-dropdown.is-open .mobile-nav-dropdown-trigger {
+    color: var(--green2);
+  }
+
+  .mobile-nav-dropdown.is-open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .mobile-nav-dropdown-menu {
+    display: grid;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s var(--ease), opacity 0.3s ease;
+  }
+
+  .mobile-nav-dropdown.is-open .mobile-nav-dropdown-menu {
+    max-height: 240px;
+    padding: 0 0 8px;
+    opacity: 1;
+  }
+
+  .mobile-nav-dropdown-menu a {
+    padding: 10px 18px;
+    color: var(--dim);
+    font-size: 12px;
+  }
+
+  .mobile-nav-dropdown-menu a:hover,
+  .mobile-nav-dropdown-menu a:focus-visible {
+    color: var(--green2);
   }
 
   .mobile-nav-actions {
@@ -2842,42 +3117,153 @@ p {
         <span>EvalLoop AI</span><span class="brand-cursor">_</span>
       </a>
 
-      <!-- UPDATED DESKTOP NAVIGATION -->
-      <nav class="desktop-nav">
+      <!-- DESKTOP NAVIGATION -->
+      <nav class="desktop-nav" aria-label="Primary navigation">
 
-        <a href="/app/">Evaluate</a>
+        <div class="nav-dropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Products <span class="nav-chevron">⌄</span>
+          </button>
 
-        <a href="https://evalloop-ai.vercel.app/knowledge">
-          Knowledge
-        </a>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/labs/" role="menuitem">
+              <span>Evaluation Engines/Models</span>
+              <small>Test and compare AI quality</small>
+            </a>
+            <a href="/jobs/" role="menuitem">
+              <span>EvalLoop Jobs</span>
+              <small>Independent jobs directory &amp; discovery platform</small>
+            </a>
+            <a href="/hub/" role="menuitem">
+              <span>EvalAI Hub</span>
+              <small>Explore the evaluation ecosystem</small>
+            </a>
+          </div>
+        </div>
 
-        <a href="/labs/">
-          Labs
-        </a>
+        <a href="/app/">Workspace</a>
 
-        <a href="/benchmarks/">
-          Benchmarks
-        </a>
+        <div class="nav-dropdown">
+          <button
+            class="nav-dropdown-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Resources <span class="nav-chevron">⌄</span>
+          </button>
 
-        <a href="/docs/">
-          Docs
-        </a>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/docs/" role="menuitem">
+              <span>Docs</span>
+              <small>Build with EvalLoop AI</small>
+            </a>
+            <a href="/knowledge/" role="menuitem">
+              <span>Learn</span>
+              <small>Guides and evaluation basics</small>
+            </a>
+            <a href="/blog/" role="menuitem">
+              <span>Blog</span>
+              <small>Ideas, updates, and research</small>
+            </a>
+            <a href="/api-space/" role="menuitem">
+              <span>API</span>
+              <small>Connect your AI workflows</small>
+            </a>
+          </div>
+        </div>
 
         <a href="/pricing/">Pricing</a>
 
       </nav>
 
-      <div class="nav-actions">
+      <div class="nav-actions" id="navActions">
 
-        <a href="/login/" class="nav-login">
-          Login
-        </a>
+  <!-- Logged-out state -->
+  <div class="auth-logged-out" id="authLoggedOut">
+    <a href="/login/" class="nav-login">
+      Login
+    </a>
 
-        <a href="/signup/" class="button button-small">
-          Sign up <span>↗</span>
-        </a>
+    <a href="/signup/" class="button button-small">
+      Sign up <span>↗</span>
+    </a>
+  </div>
 
+  <!-- Logged-in state -->
+  <div class="auth-logged-in" id="authLoggedIn" hidden>
+
+    <button
+      class="profile-trigger"
+      id="profileTrigger"
+      type="button"
+      aria-label="Open account menu"
+      aria-expanded="false"
+      aria-haspopup="true"
+    >
+      <span class="profile-avatar" id="profileAvatar">VK</span>
+      <span class="profile-name" id="profileName">Vivek Kaneti</span>
+      <span class="profile-chevron">⌄</span>
+    </button>
+
+    <div
+      class="profile-menu"
+      id="profileMenu"
+      role="menu"
+      aria-hidden="true"
+    >
+
+      <div class="profile-menu-header">
+        <span class="profile-menu-avatar" id="profileMenuAvatar">VK</span>
+
+        <div class="profile-menu-identity">
+          <strong id="profileMenuName">Vivek Kaneti</strong>
+          <span id="profileMenuEmail">user@example.com</span>
+        </div>
       </div>
+
+      <div class="profile-menu-divider"></div>
+
+      <a href="/app/" role="menuitem">
+        <span>Workspace</span>
+      </a>
+
+      <a href="/account/" role="menuitem">
+        <span>Account</span>
+      </a>
+
+      <a href="/usage/" role="menuitem">
+        <span>Usage &amp; Plan</span>
+      </a>
+
+      <a href="/api-space/" role="menuitem">
+        <span>API Keys</span>
+      </a>
+
+      <a href="/settings/" role="menuitem">
+        <span>Settings</span>
+      </a>
+
+      <div class="profile-menu-divider"></div>
+
+      <button
+        type="button"
+        class="profile-logout"
+        id="profileLogout"
+      >
+        Sign out
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
       <!-- Mobile menu button -->
       <button
@@ -2892,40 +3278,100 @@ p {
 
     </div>
 
-    <!-- UPDATED MOBILE NAVIGATION -->
+    <!-- MOBILE NAVIGATION -->
     <div class="mobile-nav" id="mobileNav">
 
-      <a href="/app/">Evaluate</a>
+      <div class="mobile-nav-dropdown">
+        <button
+          class="mobile-nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Products <span class="nav-chevron">⌄</span>
+        </button>
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/labs/">Evaluation Engines/Models</a>
+          <a href="/jobs/">EvalLoop Jobs</a>
+          <a href="/hub/">EvalAI Hub</a>
+        </div>
+      </div>
 
-      <a href="/knowledge/">
-        Knowledge
-      </a>
+      <a href="/app/">Workspace</a>
 
-      <a href="/labs/">
-        Labs
-      </a>
-
-      <a href="/benchmarks/">
-        Benchmarks
-      </a>
-
-      <a href="/docs/">
-        Docs
-      </a>
+      <div class="mobile-nav-dropdown">
+        <button
+          class="mobile-nav-dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+        >
+          Resources <span class="nav-chevron">⌄</span>
+        </button>
+        <div class="mobile-nav-dropdown-menu">
+          <a href="/docs/">Docs</a>
+          <a href="/knowledge/">Learn</a>
+          <a href="/blog/">Blog</a>
+          <a href="/api-space/">API</a>
+        </div>
+      </div>
 
       <a href="/pricing/">Pricing</a>
 
-      <div class="mobile-nav-actions">
+     <div class="mobile-nav-actions" id="mobileAuthActions">
 
-        <a href="/login/">
-          Login
-        </a>
+  <!-- Logged-out -->
+  <div class="mobile-auth-logged-out" id="mobileAuthLoggedOut">
 
-        <a href="/signup/" class="button">
-          Sign up <span>↗</span>
-        </a>
+    <a href="/login/">
+      Login
+    </a>
 
+    <a href="/signup/" class="button">
+      Sign up <span>↗</span>
+    </a>
+
+  </div>
+
+  <!-- Logged-in -->
+  <div class="mobile-auth-logged-in" id="mobileAuthLoggedIn" hidden>
+
+    <div class="mobile-profile-summary">
+
+      <span
+        class="profile-avatar"
+        id="mobileProfileAvatar"
+      >
+        VK
+      </span>
+
+      <div>
+        <strong id="mobileProfileName">
+          Vivek Kaneti
+        </strong>
+
+        <span id="mobileProfileEmail">
+          user@example.com
+        </span>
       </div>
+
+    </div>
+
+    <a href="/app/">Workspace</a>
+    <a href="/account/">Account</a>
+    <a href="/usage/">Usage &amp; Plan</a>
+    <a href="/api-space/">API Keys</a>
+    <a href="/settings/">Settings</a>
+
+    <button
+      type="button"
+      id="mobileProfileLogout"
+      class="mobile-profile-logout"
+    >
+      Sign out
+    </button>
+
+  </div>
+
+</div>
 
     </div>
 
@@ -4140,7 +4586,7 @@ p {
 
           <div class="auth-actions">
 
-            <a href="#" class="button button-primary">
+            <a href="/signup/" class="button button-primary">
               Create account
               <span>↗</span>
             </a>
@@ -4375,7 +4821,7 @@ p {
 
             <div class="cta-action">
 
-              <a href="#product" class="button button-primary button-large">
+              <a href="#/app/" class="button button-primary button-large">
                 Start evaluating
                 <span>↗</span>
               </a>
@@ -4411,16 +4857,17 @@ p {
         <div class="footer-column">
           <div class="footer-label">PRODUCT</div>
           <a href="#product">Overview</a>
-          <a href="/app/">Evaluate</a>
-          <a href="/labs/">Labs</a>
+          <a href="/app/">Workspace</a>
+          <a href="/hub/">EvalAI Hub</a>
           <a href="/pricing/">Pricing</a>
         </div>
 
         <div class="footer-column">
           <div class="footer-label">RESOURCES</div>
-          <a href="/knowledge/">Knowledge</a>
+          <a href="/knowledge/">Learn</a>
+          <a href="/blog">Blog</a>
           <a href="/docs/">Documentation</a>
-          <a href="#faq">FAQ</a>
+          <a href="/api-space">API</a>
         </div>
 
         <div class="footer-column">
@@ -4487,6 +4934,159 @@ updatePageProgress();
 
 
 /* =========================================================
+   FLUID SCROLL MOTION
+   ========================================================= */
+
+const reduceMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+const depthElements = [
+  [document.querySelector(".hero-visual"), 0.14, "scroll-depth"],
+  [document.querySelector(".background-grid"), 0.05, "scroll-depth-slow"],
+  [document.querySelector(".background-glow"), 0.08, "scroll-depth-slow"]
+];
+
+depthElements.forEach(([element, speed, className]) => {
+  if (element && !reduceMotion) {
+    element.classList.add(className);
+  }
+});
+
+const animatedSections = document.querySelectorAll(
+  ".section-border, .final-cta"
+);
+
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle("in-view", entry.isIntersecting);
+    });
+  },
+  { threshold: 0.08 }
+);
+
+animatedSections.forEach((section) => sectionObserver.observe(section));
+
+const focusSections = Array.from(
+  document.querySelectorAll("main > .section")
+);
+
+document.body.classList.add("scroll-focus-enabled");
+
+function updateFocusedSection() {
+  if (!focusSections.length) return;
+
+  const focusLine = window.innerHeight * 0.48;
+  let closestSection = focusSections[0];
+  let closestDistance = Infinity;
+
+  focusSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const sectionCenter = rect.top + rect.height * 0.5;
+    const distance = Math.abs(sectionCenter - focusLine);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestSection = section;
+    }
+  });
+
+  focusSections.forEach((section) => {
+    section.classList.toggle("is-current", section === closestSection);
+  });
+}
+
+updateFocusedSection();
+
+let motionFrame = null;
+let targetScrollY = window.scrollY;
+let smoothScrollY = window.scrollY;
+let scrollVelocity = 0;
+let previousSmoothY = smoothScrollY;
+let scrollDirectionTimer = null;
+
+function updateScrollTarget() {
+  const nextScrollY = window.scrollY;
+  const delta = nextScrollY - targetScrollY;
+  targetScrollY = nextScrollY;
+
+  if (Math.abs(delta) > 0.5) {
+    document.body.classList.toggle("is-scrolling-down", delta > 0);
+    document.body.classList.add("is-scrolling");
+    clearTimeout(scrollDirectionTimer);
+    scrollDirectionTimer = setTimeout(() => {
+      document.body.classList.remove("is-scrolling");
+    }, 140);
+  }
+
+  requestScrollMotion();
+}
+
+function updateScrollMotion() {
+  motionFrame = null;
+
+  if (reduceMotion) return;
+
+  /* Ease toward the real scroll position instead of jumping on every event. */
+  const distanceToTarget = targetScrollY - smoothScrollY;
+  smoothScrollY += distanceToTarget * 0.075;
+  scrollVelocity = smoothScrollY - previousSmoothY;
+  previousSmoothY = smoothScrollY;
+
+  updateFocusedSection();
+
+  const viewportCenter = window.innerHeight * 0.5;
+  const velocityTilt = Math.max(-2.4, Math.min(2.4, scrollVelocity * 0.26));
+  const velocityScale = 1 + Math.min(0.026, Math.abs(scrollVelocity) * 0.0018);
+
+  depthElements.forEach(([element, speed]) => {
+    if (!element) return;
+    element.style.setProperty(
+      "--scroll-shift",
+      `${(smoothScrollY * speed + scrollVelocity * speed * 2.4).toFixed(2)}px`
+    );
+  });
+
+  const heroVisual = document.querySelector(".hero-visual");
+  if (heroVisual) {
+    heroVisual.style.setProperty("--scroll-rotate", `${velocityTilt.toFixed(2)}deg`);
+    heroVisual.style.setProperty("--scroll-scale", velocityScale.toFixed(4));
+  }
+
+  document.querySelectorAll(
+    ".capability-card, .process-step, .about-card, .pricing-card, .faq-item"
+  ).forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const distance = (rect.top + rect.height * 0.5 - viewportCenter) / window.innerHeight;
+    const shift = Math.max(-18, Math.min(18, distance * -10 + scrollVelocity * -1.2));
+    const scale = 1 + Math.max(-0.018, Math.min(0.018, -Math.abs(distance) * 0.009));
+    element.style.setProperty("--scroll-lift", `${shift.toFixed(2)}px`);
+    element.style.setProperty("--scroll-scale", scale.toFixed(4));
+  });
+
+  /* Keep the inertial layer alive until it catches up. */
+  if (Math.abs(distanceToTarget) > 0.15 || Math.abs(scrollVelocity) > 0.02) {
+    motionFrame = requestAnimationFrame(updateScrollMotion);
+  }
+}
+
+function requestScrollMotion() {
+  if (!motionFrame && !reduceMotion) {
+    motionFrame = requestAnimationFrame(updateScrollMotion);
+  }
+}
+
+window.addEventListener("scroll", updateScrollTarget, { passive: true });
+window.addEventListener("resize", () => {
+  targetScrollY = window.scrollY;
+  smoothScrollY = targetScrollY;
+  requestScrollMotion();
+}, { passive: true });
+requestScrollMotion();
+
+
+/* =========================================================
    MOBILE MENU
    ========================================================= */
 
@@ -4545,6 +5145,104 @@ if (mobileMenuButton && mobileNav) {
   });
 
 }
+
+
+/* =========================================================
+   NAVIGATION DROPDOWNS
+   ========================================================= */
+
+const desktopDropdowns =
+  document.querySelectorAll(".nav-dropdown");
+
+function closeDesktopDropdowns(except = null) {
+  desktopDropdowns.forEach((dropdown) => {
+    if (dropdown === except) return;
+
+    const trigger = dropdown.querySelector(
+      ".nav-dropdown-trigger"
+    );
+    const menu = dropdown.querySelector(
+      ".nav-dropdown-menu"
+    );
+
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    if (menu) {
+      menu.classList.remove("is-open");
+    }
+  });
+}
+
+desktopDropdowns.forEach((dropdown) => {
+  const trigger = dropdown.querySelector(
+    ".nav-dropdown-trigger"
+  );
+  const menu = dropdown.querySelector(
+    ".nav-dropdown-menu"
+  );
+
+  if (!trigger || !menu) return;
+
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const isOpen =
+      trigger.getAttribute("aria-expanded") === "true";
+
+    closeDesktopDropdowns(dropdown);
+    trigger.setAttribute("aria-expanded", String(!isOpen));
+    menu.classList.toggle("is-open", !isOpen);
+  });
+});
+
+document.addEventListener("click", () => {
+  closeDesktopDropdowns();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeDesktopDropdowns();
+  }
+});
+
+const mobileDropdowns = document.querySelectorAll(
+  ".mobile-nav-dropdown"
+);
+
+mobileDropdowns.forEach((dropdown) => {
+  const trigger = dropdown.querySelector(
+    ".mobile-nav-dropdown-trigger"
+  );
+
+  if (!trigger) return;
+
+  trigger.addEventListener("click", () => {
+    const isOpen = dropdown.classList.toggle("is-open");
+
+    trigger.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    mobileDropdowns.forEach((otherDropdown) => {
+      if (otherDropdown === dropdown) return;
+
+      otherDropdown.classList.remove("is-open");
+      const otherTrigger = otherDropdown.querySelector(
+        ".mobile-nav-dropdown-trigger"
+      );
+
+      if (otherTrigger) {
+        otherTrigger.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    });
+  });
+});
 
 
 /* =========================================================
