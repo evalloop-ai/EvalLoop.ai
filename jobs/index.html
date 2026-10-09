@@ -2331,22 +2331,14 @@ p {
    REVEAL ANIMATION
    ========================================================= */
 
-.reveal {
-  opacity: 0;
-  transform: translate3d(0, 34px, 0) scale(0.985);
-  filter: blur(4px);
-  will-change: opacity, transform, filter;
-
-  transition:
-    opacity 0.9s var(--ease),
-    transform 0.9s var(--ease),
-    filter 0.9s var(--ease);
-}
-
+.reveal,
 .reveal.visible {
+  /* Static final state: no slide, fade, or blur reveal. */
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
+  transform: none;
+  filter: none;
+  will-change: auto;
+  transition: none;
 }
 
 /* Scroll-linked depth layers */
@@ -2468,6 +2460,40 @@ body.is-scrolling-down .section-kicker::after {
     translate: none;
     transition: none;
   }
+}
+
+/* Static-scrolling presentation: disable parallax, scroll-focus dimming/blur,
+   and scroll-linked card/hero movement. */
+.scroll-depth,
+.scroll-depth-slow {
+  translate: none !important;
+  will-change: auto !important;
+}
+
+.hero-visual.scroll-depth {
+  rotate: none !important;
+  scale: 1 !important;
+  transition: none !important;
+}
+
+.capability-card,
+.process-step,
+.about-card,
+.pricing-card,
+.faq-item {
+  translate: none !important;
+  scale: 1 !important;
+  will-change: auto !important;
+}
+
+.scroll-focus-enabled main > .section,
+.scroll-focus-enabled main > .section:not(.is-current) > .container,
+.scroll-focus-enabled main > .section.is-current > .container {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
 }
 
 /* =========================================================
