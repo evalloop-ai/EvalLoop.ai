@@ -1,0 +1,2431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>Guided Evaluation — EvalLoop AI</title>
+  <meta
+    name="description"
+    content="Build structured AI evaluations with configurable criteria, scoring methods, review workflows, and quality thresholds."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;450;500;550;600;650;700;750&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =========================================================
+       EVALLOOP AI — GUIDED EVALUATION
+       Page-specific styles. Shared workspace styles stay intact.
+       ========================================================= */
+    .guided-page {
+      --guided-bg: #101211;
+      --guided-panel: #171b18;
+      --guided-raised: #1d221f;
+      --guided-text: #f1f1ef;
+      --guided-muted: #a4aaa6;
+      --guided-dim: #727974;
+      --guided-green: #3ecf8e;
+      --guided-green-light: #85e7ba;
+      --guided-green-dark: #13261c;
+      --guided-border: rgba(241, 241, 239, 0.12);
+      --guided-border-soft: rgba(241, 241, 239, 0.07);
+      color: var(--guided-text);
+      width: 100%;
+      max-width: 1100px;
+      margin-inline: auto;
+      padding: 30px 28px 56px;
+      font-family: Inter, sans-serif;
+    }
+    .guided-page *,
+    .guided-page *::before,
+    .guided-page *::after {
+      box-sizing: border-box;
+    }
+    .guided-page button,
+    .guided-page input,
+    .guided-page select,
+    .guided-page textarea {
+      font: inherit;
+    }
+    .guided-page button {
+      cursor: pointer;
+    }
+    .guided-page button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+    .guided-page button:focus-visible,
+    .guided-page input:focus-visible,
+    .guided-page select:focus-visible,
+    .guided-page textarea:focus-visible {
+      outline: 2px solid var(--guided-green);
+      outline-offset: 3px;
+    }
+    .guided-page [hidden] {
+      display: none !important;
+    }
+    .guided-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
+    }
+    .guided-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--guided-muted);
+      font-size: 12px;
+    }
+    .guided-breadcrumb a {
+      color: var(--guided-muted);
+      text-decoration: none;
+    }
+    .guided-breadcrumb a:hover {
+      color: var(--guided-green-light);
+    }
+    .guided-breadcrumb-separator {
+      color: var(--guided-dim);
+    }
+    .guided-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(62, 207, 142, 0.25);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--guided-green-light);
+      background: rgba(62, 207, 142, 0.07);
+      font-size: 11px;
+      font-weight: 550;
+      white-space: nowrap;
+    }
+    .guided-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--guided-green);
+    }
+    .guided-heading {
+      margin-bottom: 30px;
+    }
+    .guided-eyebrow {
+      color: var(--guided-green-light);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .guided-heading h1 {
+      margin: 0;
+      font-size: clamp(27px, 4vw, 38px);
+      font-weight: 600;
+      letter-spacing: -0.055em;
+      line-height: 1.15;
+    }
+    .guided-heading p {
+      color: var(--guided-muted);
+      font-size: 13px;
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 13px 0 0;
+    }
+    .guided-layout {
+      display: grid;
+      grid-template-columns: 228px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .guided-stepper {
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 12px;
+      background: var(--guided-panel);
+      padding: 13px;
+      position: sticky;
+      top: 18px;
+    }
+    .guided-stepper-title {
+      padding: 7px 8px 13px;
+      color: var(--guided-dim);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .guided-step {
+      display: flex;
+      width: 100%;
+      gap: 11px;
+      align-items: flex-start;
+      text-align: left;
+      color: var(--guided-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 12px 9px;
+      margin-bottom: 3px;
+    }
+    .guided-step:last-child {
+      margin-bottom: 0;
+    }
+    .guided-step-number {
+      display: grid;
+      flex: 0 0 26px;
+      width: 26px;
+      height: 26px;
+      place-items: center;
+      border: 1px solid var(--guided-border);
+      border-radius: 7px;
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+    }
+    .guided-step-copy {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding-top: 2px;
+    }
+    .guided-step-name {
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.35;
+    }
+    .guided-step-description {
+      font-size: 10px;
+      line-height: 1.5;
+      color: var(--guided-dim);
+    }
+    .guided-step.is-active {
+      color: var(--guided-text);
+      background: var(--guided-green-dark);
+      border-color: rgba(62, 207, 142, 0.18);
+    }
+    .guided-step.is-active .guided-step-number {
+      color: #08140d;
+      background: var(--guided-green);
+      border-color: var(--guided-green);
+      font-weight: 700;
+    }
+    .guided-step.is-active .guided-step-description {
+      color: #a9cbb8;
+    }
+    .guided-step.is-complete .guided-step-number {
+      color: var(--guided-green-light);
+      border-color: rgba(62, 207, 142, 0.4);
+    }
+    .guided-step:disabled {
+      opacity: 0.6;
+    }
+    .guided-sidebar-note {
+      border-top: 1px solid var(--guided-border-soft);
+      margin-top: 12px;
+      padding: 16px 8px 5px;
+      color: var(--guided-dim);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+    .guided-main {
+      min-width: 0;
+    }
+    .guided-progress-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: var(--guided-muted);
+      font-size: 11px;
+    }
+    .guided-progress-row strong {
+      color: var(--guided-text);
+      font-weight: 550;
+    }
+    .guided-progress-track {
+      height: 3px;
+      border-radius: 999px;
+      background: var(--guided-raised);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .guided-progress-fill {
+      height: 100%;
+      width: 20%;
+      background: var(--guided-green);
+      transition: width 180ms ease;
+    }
+    .guided-panel {
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 12px;
+      background: var(--guided-panel);
+      overflow: hidden;
+    }
+    .guided-panel-header {
+      padding: 23px 24px 20px;
+      border-bottom: 1px solid var(--guided-border-soft);
+    }
+    .guided-panel-kicker {
+      color: var(--guided-green-light);
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+    .guided-panel-header h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.035em;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .guided-panel-header p {
+      color: var(--guided-muted);
+      font-size: 12px;
+      line-height: 1.75;
+      margin: 8px 0 0;
+    }
+    .guided-panel-body {
+      padding: 22px 24px 25px;
+    }
+    .guided-field {
+      margin-bottom: 22px;
+    }
+    .guided-field:last-child {
+      margin-bottom: 0;
+    }
+    .guided-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+      flex-wrap: wrap;
+    }
+    .guided-label {
+      display: block;
+      color: var(--guided-text);
+      font-size: 12px;
+      font-weight: 550;
+    }
+    .guided-help {
+      color: var(--guided-dim);
+      font-size: 10px;
+      line-height: 1.6;
+      margin-top: 7px;
+    }
+    .guided-input,
+    .guided-select,
+    .guided-textarea {
+      width: 100%;
+      border: 1px solid var(--guided-border);
+      border-radius: 7px;
+      background: #111512;
+      color: var(--guided-text);
+      padding: 11px 12px;
+      font-size: 12px;
+      min-height: 42px;
+    }
+    .guided-input::placeholder,
+    .guided-textarea::placeholder {
+      color: #68706a;
+    }
+    .guided-textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+    .guided-textarea.is-compact {
+      min-height: 76px;
+    }
+    .guided-grid-2,
+    .guided-grid-3 {
+      display: grid;
+      gap: 12px;
+    }
+    .guided-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .guided-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .guided-choice-list {
+      display: grid;
+      gap: 10px;
+    }
+    .guided-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .guided-choice {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      width: 100%;
+      padding: 15px;
+      min-width: 0;
+      text-align: left;
+      color: var(--guided-text);
+      border: 1px solid var(--guided-border);
+      border-radius: 9px;
+      background: #131714;
+      transition: border-color 120ms ease, background 120ms ease;
+    }
+    .guided-choice:hover {
+      border-color: rgba(62, 207, 142, 0.38);
+    }
+    .guided-choice.is-selected {
+      background: var(--guided-green-dark);
+      border-color: rgba(62, 207, 142, 0.7);
+    }
+    .guided-choice-indicator {
+      flex: 0 0 16px;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      border: 1px solid #59645c;
+      border-radius: 50%;
+      position: relative;
+    }
+    .guided-choice[data-choice-type="multiple"] .guided-choice-indicator {
+      border-radius: 4px;
+    }
+    .guided-choice.is-selected .guided-choice-indicator {
+      border-color: var(--guided-green);
+    }
+    .guided-choice.is-selected .guided-choice-indicator::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: inherit;
+      background: var(--guided-green);
+    }
+    .guided-choice-copy {
+      min-width: 0;
+      flex: 1;
+    }
+    .guided-choice-title {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .guided-choice-description {
+      display: block;
+      margin-top: 5px;
+      color: var(--guided-muted);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+    .guided-choice-tag {
+      display: inline-flex;
+      margin-top: 9px;
+      padding: 4px 7px;
+      border: 1px solid var(--guided-border);
+      border-radius: 4px;
+      color: var(--guided-muted);
+      font-size: 9px;
+    }
+    .guided-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 13px;
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.015);
+      color: var(--guided-muted);
+      font-size: 10px;
+      line-height: 1.8;
+      margin-top: 16px;
+    }
+    .guided-info-icon {
+      color: var(--guided-green-light);
+      font-family: "DM Mono", monospace;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+    .guided-criteria {
+      display: grid;
+      gap: 9px;
+    }
+    .guided-criterion {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 13px;
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 8px;
+      background: #131714;
+    }
+    .guided-criterion input {
+      width: 15px;
+      height: 15px;
+      margin: 2px 0 0;
+      accent-color: var(--guided-green);
+      flex: 0 0 auto;
+    }
+    .guided-criterion-content {
+      min-width: 0;
+      flex: 1;
+    }
+    .guided-criterion-title {
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .guided-criterion-description {
+      margin-top: 4px;
+      color: var(--guided-muted);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+    .guided-criterion-weight {
+      width: 64px;
+      min-height: 34px;
+      border: 1px solid var(--guided-border);
+      border-radius: 6px;
+      background: #101411;
+      color: var(--guided-text);
+      padding: 6px;
+      font-size: 11px;
+      text-align: center;
+    }
+    .guided-selected-count {
+      color: var(--guided-green-light);
+      font-size: 10px;
+      font-family: "DM Mono", monospace;
+    }
+    .guided-divider {
+      height: 1px;
+      background: var(--guided-border-soft);
+      margin: 23px 0;
+    }
+    .guided-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+    .guided-section-description {
+      color: var(--guided-muted);
+      font-size: 10px;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+    .guided-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin-bottom: 19px;
+    }
+    .guided-summary-card {
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 8px;
+      padding: 13px;
+      background: #131714;
+      min-width: 0;
+    }
+    .guided-summary-label {
+      color: var(--guided-dim);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+    .guided-summary-value {
+      margin-top: 8px;
+      color: var(--guided-text);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    .guided-review-list {
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .guided-review-row {
+      display: grid;
+      grid-template-columns: 135px minmax(0, 1fr);
+      gap: 15px;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--guided-border-soft);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+    .guided-review-row:last-child {
+      border-bottom: 0;
+    }
+    .guided-review-key {
+      color: var(--guided-muted);
+    }
+    .guided-review-value {
+      color: var(--guided-text);
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .guided-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 17px 24px;
+      border-top: 1px solid var(--guided-border-soft);
+      background: rgba(255, 255, 255, 0.01);
+    }
+    .guided-footer-hint {
+      color: var(--guided-dim);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    .guided-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+    .guided-btn {
+      min-height: 38px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid var(--guided-border);
+      border-radius: 7px;
+      background: transparent;
+      color: var(--guided-text);
+      font-size: 11px;
+      font-weight: 550;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .guided-btn:hover {
+      border-color: rgba(62, 207, 142, 0.5);
+    }
+    .guided-btn-primary {
+      background: var(--guided-green);
+      border-color: var(--guided-green);
+      color: #08140d;
+      font-weight: 700;
+    }
+    .guided-btn-primary:hover {
+      background: var(--guided-green-light);
+      border-color: var(--guided-green-light);
+    }
+    .guided-btn-danger {
+      color: #ffb6b6;
+    }
+    .guided-status {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--guided-border);
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+    .guided-status.is-success {
+      border-color: rgba(62, 207, 142, 0.35);
+      color: var(--guided-green-light);
+      background: rgba(62, 207, 142, 0.06);
+    }
+    .guided-status.is-error {
+      border-color: rgba(255, 120, 120, 0.3);
+      color: #ffb6b6;
+      background: rgba(255, 100, 100, 0.05);
+    }
+    .guided-status.is-info {
+      color: var(--guided-muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .guided-inline-link {
+      color: var(--guided-green-light);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .guided-weight-total {
+      color: var(--guided-muted);
+      font-size: 10px;
+      margin-top: 10px;
+    }
+    .guided-weight-total strong {
+      color: var(--guided-green-light);
+      font-family: "DM Mono", monospace;
+    }
+    .guided-advanced-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--guided-green-light);
+      font-size: 10px;
+    }
+    .guided-json {
+      width: 100%;
+      min-height: 200px;
+      border: 1px solid var(--guided-border);
+      border-radius: 7px;
+      background: #0d100e;
+      color: var(--guided-green-light);
+      padding: 13px;
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      line-height: 1.8;
+      resize: vertical;
+    }
+    .guided-run-preview {
+      padding: 14px;
+      border: 1px solid var(--guided-border-soft);
+      border-radius: 8px;
+      background: #131714;
+      margin-top: 14px;
+    }
+    .guided-run-preview strong {
+      display: block;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+    .guided-run-preview p {
+      margin: 0;
+      color: var(--guided-muted);
+      font-size: 10px;
+      line-height: 1.8;
+    }
+    .guided-spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(8, 20, 13, 0.3);
+      border-top-color: #08140d;
+      border-radius: 50%;
+      animation: guided-spin 0.7s linear infinite;
+    }
+    @keyframes guided-spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .guided-page *,
+      .guided-page *::before,
+      .guided-page *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    @media (max-width: 900px) {
+      .guided-page {
+        padding: 24px 18px 40px;
+      }
+      .guided-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .guided-stepper {
+        position: static;
+        padding: 10px;
+      }
+      .guided-stepper-title {
+        padding: 5px 6px 10px;
+      }
+      .guided-step-list {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 5px;
+      }
+      .guided-step {
+        flex-direction: column;
+        gap: 7px;
+        padding: 9px 7px;
+        margin: 0;
+      }
+      .guided-step-description {
+        display: none;
+      }
+      .guided-step-name {
+        font-size: 10px;
+      }
+      .guided-sidebar-note {
+        display: none;
+      }
+    }
+    @media (max-width: 560px) {
+      .guided-page {
+        padding: 20px 12px 32px;
+      }
+      .guided-topline {
+        margin-bottom: 22px;
+      }
+      .guided-heading {
+        margin-bottom: 23px;
+      }
+      .guided-heading p {
+        font-size: 12px;
+      }
+      .guided-step-list {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+      .guided-step {
+        align-items: center;
+        text-align: center;
+        padding: 8px 3px;
+      }
+      .guided-step-copy {
+        padding-top: 0;
+      }
+      .guided-step-name {
+        font-size: 9px;
+        overflow-wrap: anywhere;
+      }
+      .guided-panel-header {
+        padding: 19px 16px 16px;
+      }
+      .guided-panel-header h2 {
+        font-size: 18px;
+      }
+      .guided-panel-body {
+        padding: 18px 16px 20px;
+      }
+      .guided-grid-2,
+      .guided-grid-3,
+      .guided-choice-grid {
+        grid-template-columns: 1fr;
+      }
+      .guided-summary {
+        grid-template-columns: 1fr;
+      }
+      .guided-summary-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .guided-summary-value {
+        margin-top: 0;
+        text-align: right;
+      }
+      .guided-review-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .guided-footer {
+        align-items: stretch;
+        padding: 15px 16px;
+      }
+      .guided-footer-hint {
+        width: 100%;
+      }
+      .guided-actions {
+        width: 100%;
+      }
+      .guided-actions .guided-btn {
+        flex: 1;
+      }
+      .guided-criterion {
+        flex-wrap: wrap;
+      }
+      .guided-criterion-weight {
+        margin-left: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared application navigation is managed by app.js. -->
+  <main class="guided-page" id="guidedEvaluationPage">
+    <div class="guided-topline">
+      <nav class="guided-breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Workspace</a>
+        <span class="guided-breadcrumb-separator">/</span>
+        <a href="evaluations.html">Evaluations</a>
+        <span class="guided-breadcrumb-separator">/</span>
+        <span aria-current="page">Guided Evaluation</span>
+      </nav>
+      <span class="guided-badge">
+        <span class="guided-badge-dot"></span>
+        Evaluation builder
+      </span>
+    </div>
+    <header class="guided-heading">
+      <div class="guided-eyebrow">Evaluation workflow / Builder</div>
+      <h1>Build an evaluation.</h1>
+      <p>
+        Configure what you want to measure, choose how responses will be
+        reviewed, and define how results should be scored. Move through each
+        step to create a reusable evaluation configuration.
+      </p>
+    </header>
+    <div class="guided-layout">
+      <aside class="guided-stepper" aria-label="Evaluation setup steps">
+        <div class="guided-stepper-title">Setup progress</div>
+        <div class="guided-step-list" id="guidedStepList">
+          <button class="guided-step is-active" type="button" data-step="0" aria-current="step">
+            <span class="guided-step-number">01</span>
+            <span class="guided-step-copy">
+              <span class="guided-step-name">Input</span>
+              <span class="guided-step-description">Choose evaluation data</span>
+            </span>
+          </button>
+          <button class="guided-step" type="button" data-step="1" disabled>
+            <span class="guided-step-number">02</span>
+            <span class="guided-step-copy">
+              <span class="guided-step-name">Criteria</span>
+              <span class="guided-step-description">Define quality dimensions</span>
+            </span>
+          </button>
+          <button class="guided-step" type="button" data-step="2" disabled>
+            <span class="guided-step-number">03</span>
+            <span class="guided-step-copy">
+              <span class="guided-step-name">Method</span>
+              <span class="guided-step-description">Choose a review method</span>
+            </span>
+          </button>
+          <button class="guided-step" type="button" data-step="3" disabled>
+            <span class="guided-step-number">04</span>
+            <span class="guided-step-copy">
+              <span class="guided-step-name">Scoring</span>
+              <span class="guided-step-description">Configure score rules</span>
+            </span>
+          </button>
+          <button class="guided-step" type="button" data-step="4" disabled>
+            <span class="guided-step-number">05</span>
+            <span class="guided-step-copy">
+              <span class="guided-step-name">Review</span>
+              <span class="guided-step-description">Verify your configuration</span>
+            </span>
+          </button>
+        </div>
+        <div class="guided-sidebar-note">
+          Your configuration can be saved as a draft before you run it.
+          Evaluation execution depends on your workspace's configured
+          evaluator and backend.
+        </div>
+      </aside>
+      <section class="guided-main">
+        <div class="guided-progress-row">
+          <span id="guidedProgressLabel">Step 1 of 5</span>
+          <strong id="guidedProgressPercent">20% complete</strong>
+        </div>
+        <div
+          class="guided-progress-track"
+          role="progressbar"
+          aria-label="Evaluation setup progress"
+          aria-valuemin="1"
+          aria-valuemax="5"
+          aria-valuenow="1"
+          id="guidedProgressBar"
+        >
+          <div class="guided-progress-fill" id="guidedProgressFill"></div>
+        </div>
+        <form id="guidedEvaluationForm" novalidate>
+          <!-- STEP 1: INPUT -->
+          <section class="guided-panel" data-panel="0">
+            <header class="guided-panel-header">
+              <div class="guided-panel-kicker">Step 01 / Data</div>
+              <h2>What do you want to evaluate?</h2>
+              <p>
+                Start with an example response or use a dataset you have
+                already prepared in your workspace.
+              </p>
+            </header>
+            <div class="guided-panel-body">
+              <div class="guided-field">
+                <div class="guided-label-row">
+                  <label class="guided-label" for="guidedEvaluationName">
+                    Evaluation name
+                  </label>
+                </div>
+                <input
+                  class="guided-input"
+                  id="guidedEvaluationName"
+                  name="name"
+                  type="text"
+                  maxlength="120"
+                  placeholder="e.g. Customer support response quality"
+                  required
+                >
+                <div class="guided-help">
+                  Use a name that describes the model, task, or quality
+                  objective you want to measure.
+                </div>
+              </div>
+              <div class="guided-field">
+                <div class="guided-label-row">
+                  <span class="guided-label">Choose your input source</span>
+                </div>
+                <div class="guided-choice-list" id="guidedInputChoices">
+                  <button
+                    class="guided-choice is-selected"
+                    type="button"
+                    data-choice-type="single"
+                    data-input-source="single"
+                    aria-pressed="true"
+                  >
+                    <span class="guided-choice-indicator"></span>
+                    <span class="guided-choice-copy">
+                      <span class="guided-choice-title">Single example</span>
+                      <span class="guided-choice-description">
+                        Evaluate one prompt and its corresponding model
+                        response. Useful for testing criteria before scaling up.
+                      </span>
+                      <span class="guided-choice-tag">Quick evaluation</span>
+                    </span>
+                  </button>
+                  <button
+                    class="guided-choice"
+                    type="button"
+                    data-choice-type="single"
+                    data-input-source="dataset"
+                    aria-pressed="false"
+                  >
+                    <span class="guided-choice-indicator"></span>
+                    <span class="guided-choice-copy">
+                      <span class="guided-choice-title">Existing dataset</span>
+                      <span class="guided-choice-description">
+                        Use records from a dataset already available in your
+                        EvalLoop workspace.
+                      </span>
+                      <span class="guided-choice-tag">Batch evaluation</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div id="guidedSingleInput">
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedPrompt">Prompt / input</label>
+                  <textarea
+                    class="guided-textarea"
+                    id="guidedPrompt"
+                    name="prompt"
+                    maxlength="20000"
+                    placeholder="Enter the user prompt or input that was sent to the model..."
+                  ></textarea>
+                  <div class="guided-help">
+                    This is the input the evaluated model received.
+                  </div>
+                </div>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedResponse">
+                    Model response
+                  </label>
+                  <textarea
+                    class="guided-textarea"
+                    id="guidedResponse"
+                    name="response"
+                    maxlength="30000"
+                    placeholder="Paste the model's response here..."
+                  ></textarea>
+                  <div class="guided-help">
+                    Enter the response you want to score. This builder does
+                    not call a model to generate a response automatically.
+                  </div>
+                </div>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedExpectedOutput">
+                    Expected answer <span style="color:var(--guided-dim);font-weight:400;">(optional)</span>
+                  </label>
+                  <textarea
+                    class="guided-textarea is-compact"
+                    id="guidedExpectedOutput"
+                    name="expected_output"
+                    maxlength="20000"
+                    placeholder="Enter a reference answer or ground truth, if available..."
+                  ></textarea>
+                  <div class="guided-help">
+                    Reference answers can support correctness and factuality
+                    checks. Leave blank if your evaluation does not require one.
+                  </div>
+                </div>
+              </div>
+              <div id="guidedDatasetInput" hidden>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedDatasetId">
+                    Workspace dataset
+                  </label>
+                  <select class="guided-select" id="guidedDatasetId" name="dataset_id">
+                    <option value="">Loading available datasets…</option>
+                  </select>
+                  <div class="guided-help" id="guidedDatasetHelp">
+                    Dataset records must provide the input and response fields
+                    expected by the selected evaluation criteria.
+                  </div>
+                </div>
+                <div class="guided-info">
+                  <span class="guided-info-icon">i</span>
+                  <span>
+                    Dataset loading requires the configured Supabase workspace
+                    schema and permission to read datasets. If no datasets are
+                    available, create one in the Datasets section first.
+                  </span>
+                </div>
+              </div>
+              <div class="guided-field">
+                <label class="guided-label" for="guidedDescription">
+                  Description <span style="color:var(--guided-dim);font-weight:400;">(optional)</span>
+                </label>
+                <textarea
+                  class="guided-textarea is-compact"
+                  id="guidedDescription"
+                  name="description"
+                  maxlength="2000"
+                  placeholder="What question should this evaluation help answer?"
+                ></textarea>
+              </div>
+            </div>
+          </section>
+          <!-- STEP 2: CRITERIA -->
+          <section class="guided-panel" data-panel="1" hidden>
+            <header class="guided-panel-header">
+              <div class="guided-panel-kicker">Step 02 / Quality dimensions</div>
+              <h2>Define what good looks like.</h2>
+              <p>
+                Choose the dimensions you want to measure. You can adjust
+                their relative importance using weights.
+              </p>
+            </header>
+            <div class="guided-panel-body">
+              <div class="guided-label-row">
+                <span class="guided-label">Evaluation criteria</span>
+                <span class="guided-selected-count" id="guidedCriteriaCount">
+                  4 selected
+                </span>
+              </div>
+              <div class="guided-criteria" id="guidedCriteria">
+                <label class="guided-criterion">
+                  <input type="checkbox" value="factuality" checked>
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Factuality</span>
+                    <span class="guided-criterion-description">
+                      Are the response's claims accurate and supported by
+                      the available information?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="30"
+                    aria-label="Factuality weight"
+                    data-weight="factuality"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="instruction_following" checked>
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Instruction following</span>
+                    <span class="guided-criterion-description">
+                      Does the response follow the user's instructions,
+                      constraints, and requested format?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="30"
+                    aria-label="Instruction-following weight"
+                    data-weight="instruction_following"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="relevance" checked>
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Relevance</span>
+                    <span class="guided-criterion-description">
+                      Does the response address the actual question without
+                      unnecessary digressions?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="20"
+                    aria-label="Relevance weight"
+                    data-weight="relevance"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="completeness" checked>
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Completeness</span>
+                    <span class="guided-criterion-description">
+                      Does the response cover the important parts of the
+                      request without missing required information?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="20"
+                    aria-label="Completeness weight"
+                    data-weight="completeness"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="safety">
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Safety</span>
+                    <span class="guided-criterion-description">
+                      Does the response avoid harmful assistance, privacy
+                      violations, and policy-inconsistent content?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="20"
+                    aria-label="Safety weight"
+                    data-weight="safety"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="groundedness">
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Groundedness</span>
+                    <span class="guided-criterion-description">
+                      Is the response supported by the provided context,
+                      source documents, or retrieved evidence?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="20"
+                    aria-label="Groundedness weight"
+                    data-weight="groundedness"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="clarity">
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Clarity and fluency</span>
+                    <span class="guided-criterion-description">
+                      Is the response readable, coherent, and appropriately
+                      expressed for its intended audience?
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="10"
+                    aria-label="Clarity and fluency weight"
+                    data-weight="clarity"
+                  >
+                </label>
+                <label class="guided-criterion">
+                  <input type="checkbox" value="custom">
+                  <span class="guided-criterion-content">
+                    <span class="guided-criterion-title">Custom criterion</span>
+                    <span class="guided-criterion-description">
+                      Define a task-specific quality dimension that matters
+                      to your evaluation.
+                    </span>
+                  </span>
+                  <input
+                    class="guided-criterion-weight"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="10"
+                    aria-label="Custom criterion weight"
+                    data-weight="custom"
+                  >
+                </label>
+              </div>
+              <div class="guided-weight-total" id="guidedWeightTotal">
+                Selected weights total: <strong>100</strong>
+              </div>
+              <div class="guided-divider"></div>
+              <div class="guided-field" id="guidedCustomCriterionField" hidden>
+                <label class="guided-label" for="guidedCustomCriterion">
+                  Custom criterion name
+                </label>
+                <input
+                  class="guided-input"
+                  id="guidedCustomCriterion"
+                  maxlength="100"
+                  placeholder="e.g. Domain-specific correctness"
+                >
+                <div class="guided-help">
+                  The custom criterion name will be stored with this evaluation.
+                </div>
+              </div>
+              <div class="guided-field">
+                <label class="guided-label" for="guidedContext">
+                  Reference context <span style="color:var(--guided-dim);font-weight:400;">(optional)</span>
+                </label>
+                <textarea
+                  class="guided-textarea"
+                  id="guidedContext"
+                  maxlength="30000"
+                  placeholder="Paste source material, retrieved documents, or other evidence the evaluator should use..."
+                ></textarea>
+                <div class="guided-help">
+                  Supply evidence when your evaluation requires groundedness
+                  or source-based factuality checks. A selected criterion alone
+                  does not automatically retrieve external evidence.
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- STEP 3: METHOD -->
+          <section class="guided-panel" data-panel="2" hidden>
+            <header class="guided-panel-header">
+              <div class="guided-panel-kicker">Step 03 / Review method</div>
+              <h2>Choose how responses are evaluated.</h2>
+              <p>
+                Select a review method that fits your workload, accuracy
+                requirements, and available evaluation infrastructure.
+              </p>
+            </header>
+            <div class="guided-panel-body">
+              <div class="guided-choice-list" id="guidedMethodChoices">
+                <button
+                  class="guided-choice is-selected"
+                  type="button"
+                  data-choice-type="single"
+                  data-method="llm_judge"
+                  aria-pressed="true"
+                >
+                  <span class="guided-choice-indicator"></span>
+                  <span class="guided-choice-copy">
+                    <span class="guided-choice-title">LLM-as-a-Judge</span>
+                    <span class="guided-choice-description">
+                      An evaluator model scores responses against your
+                      selected criteria and scoring instructions. Requires a
+                      configured evaluator backend.
+                    </span>
+                    <span class="guided-choice-tag">Automated evaluation</span>
+                  </span>
+                </button>
+                <button
+                  class="guided-choice"
+                  type="button"
+                  data-choice-type="single"
+                  data-method="human"
+                  aria-pressed="false"
+                >
+                  <span class="guided-choice-indicator"></span>
+                  <span class="guided-choice-copy">
+                    <span class="guided-choice-title">Human review</span>
+                    <span class="guided-choice-description">
+                      A reviewer evaluates responses using the rubric. Requires
+                      a reviewer interface and a process for assigning or
+                      collecting human scores.
+                    </span>
+                    <span class="guided-choice-tag">Human-in-the-loop</span>
+                  </span>
+                </button>
+                <button
+                  class="guided-choice"
+                  type="button"
+                  data-choice-type="single"
+                  data-method="hybrid"
+                  aria-pressed="false"
+                >
+                  <span class="guided-choice-indicator"></span>
+                  <span class="guided-choice-copy">
+                    <span class="guided-choice-title">Hybrid evaluation</span>
+                    <span class="guided-choice-description">
+                      Combine automated scoring with human verification.
+                      Requires both evaluator execution and a human-review
+                      workflow.
+                    </span>
+                    <span class="guided-choice-tag">Combined review</span>
+                  </span>
+                </button>
+              </div>
+              <div class="guided-divider"></div>
+              <div class="guided-field" id="guidedJudgeOptions">
+                <div class="guided-section-title">Judge configuration</div>
+                <div class="guided-section-description">
+                  Specify the evaluator configuration expected by your backend.
+                  Provider availability depends on your workspace setup.
+                </div>
+                <div class="guided-grid-2">
+                  <div>
+                    <label class="guided-label" for="guidedJudgeProvider">
+                      Provider
+                    </label>
+                    <select class="guided-select" id="guidedJudgeProvider">
+                      <option value="workspace_default">Workspace default</option>
+                      <option value="openai">OpenAI</option>
+                      <option value="anthropic">Anthropic</option>
+                      <option value="google">Google</option>
+                      <option value="groq">Groq</option>
+                      <option value="custom">Custom provider</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="guided-label" for="guidedJudgeModel">
+                      Model identifier
+                    </label>
+                    <input
+                      class="guided-input"
+                      id="guidedJudgeModel"
+                      maxlength="150"
+                      placeholder="Use workspace default"
+                    >
+                  </div>
+                </div>
+                <div class="guided-help">
+                  These values describe the requested evaluator. This page
+                  does not validate provider access or call a model directly.
+                  API credentials must remain on the server.
+                </div>
+              </div>
+              <div class="guided-field" id="guidedHumanOptions" hidden>
+                <div class="guided-section-title">Human review configuration</div>
+                <div class="guided-grid-2">
+                  <div>
+                    <label class="guided-label" for="guidedReviewerCount">
+                      Reviews per response
+                    </label>
+                    <select class="guided-select" id="guidedReviewerCount">
+                      <option value="1">1 reviewer</option>
+                      <option value="2">2 independent reviewers</option>
+                      <option value="3">3 independent reviewers</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="guided-label" for="guidedReviewInstructions">
+                      Reviewer instructions
+                    </label>
+                    <input
+                      class="guided-input"
+                      id="guidedReviewInstructions"
+                      maxlength="500"
+                      placeholder="e.g. Score independently"
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="guided-field" id="guidedHybridOptions" hidden>
+                <div class="guided-section-title">Hybrid review configuration</div>
+                <div class="guided-grid-2">
+                  <div>
+                    <label class="guided-label" for="guidedReviewTrigger">
+                      Send for human review when
+                    </label>
+                    <select class="guided-select" id="guidedReviewTrigger">
+                      <option value="all">Every response</option>
+                      <option value="below_threshold">Score is below threshold</option>
+                      <option value="low_confidence">Judge reports low confidence</option>
+                      <option value="flagged">A criterion is flagged</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="guided-label" for="guidedHybridReviewers">
+                      Human reviewers
+                    </label>
+                    <select class="guided-select" id="guidedHybridReviewers">
+                      <option value="1">1 reviewer</option>
+                      <option value="2">2 independent reviewers</option>
+                      <option value="3">3 independent reviewers</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="guided-info">
+                <span class="guided-info-icon">i</span>
+                <span>
+                  Selecting a review method configures the intended workflow.
+                  Actual execution requires the corresponding server-side
+                  evaluator or human-review system to be implemented and enabled.
+                </span>
+              </div>
+            </div>
+          </section>
+          <!-- STEP 4: SCORING -->
+          <section class="guided-panel" data-panel="3" hidden>
+            <header class="guided-panel-header">
+              <div class="guided-panel-kicker">Step 04 / Scoring rules</div>
+              <h2>Define how scores are interpreted.</h2>
+              <p>
+                Set the score scale, determine the overall score calculation,
+                and choose the minimum score required to pass.
+              </p>
+            </header>
+            <div class="guided-panel-body">
+              <div class="guided-field">
+                <label class="guided-label" for="guidedScoreScale">
+                  Score scale
+                </label>
+                <select class="guided-select" id="guidedScoreScale">
+                  <option value="1_5">1–5 · Five-point quality scale</option>
+                  <option value="0_1">0–1 · Normalized score</option>
+                  <option value="0_100">0–100 · Percentage-style score</option>
+                </select>
+                <div class="guided-help">
+                  The scale determines how scores are represented. Your
+                  evaluator must use and return the same scale.
+                </div>
+              </div>
+              <div class="guided-grid-2">
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedAggregation">
+                    Overall score calculation
+                  </label>
+                  <select class="guided-select" id="guidedAggregation">
+                    <option value="weighted_mean">Weighted mean</option>
+                    <option value="mean">Simple mean</option>
+                    <option value="minimum">Minimum criterion score</option>
+                  </select>
+                  <div class="guided-help">
+                    Weighted mean uses the weights assigned to selected criteria.
+                  </div>
+                </div>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedPassThreshold">
+                    Passing threshold
+                  </label>
+                  <input
+                    class="guided-input"
+                    type="number"
+                    id="guidedPassThreshold"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value="4"
+                    required
+                  >
+                  <div class="guided-help" id="guidedThresholdHelp">
+                    Scores at or above this value pass.
+                  </div>
+                </div>
+              </div>
+              <div class="guided-field">
+                <div class="guided-label-row">
+                  <span class="guided-label">Failure handling</span>
+                </div>
+                <div class="guided-choice-list" id="guidedFailureChoices">
+                  <button
+                    class="guided-choice is-selected"
+                    type="button"
+                    data-choice-type="single"
+                    data-failure="flag"
+                    aria-pressed="true"
+                  >
+                    <span class="guided-choice-indicator"></span>
+                    <span class="guided-choice-copy">
+                      <span class="guided-choice-title">Flag failed responses</span>
+                      <span class="guided-choice-description">
+                        Keep the evaluation result and mark responses below
+                        the passing threshold as failed.
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="guided-choice"
+                    type="button"
+                    data-choice-type="single"
+                    data-failure="review"
+                    aria-pressed="false"
+                  >
+                    <span class="guided-choice-indicator"></span>
+                    <span class="guided-choice-copy">
+                      <span class="guided-choice-title">Flag and request review</span>
+                      <span class="guided-choice-description">
+                        Mark failures for further investigation. This requires
+                        a review workflow to process flagged results.
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div class="guided-divider"></div>
+              <button
+                class="guided-advanced-toggle"
+                id="guidedAdvancedToggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="guidedAdvancedOptions"
+              >
+                <span id="guidedAdvancedIcon">＋</span>
+                Advanced scoring settings
+              </button>
+              <div id="guidedAdvancedOptions" hidden style="margin-top:18px;">
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedMissingScore">
+                    Missing criterion scores
+                  </label>
+                  <select class="guided-select" id="guidedMissingScore">
+                    <option value="fail">Fail the record</option>
+                    <option value="exclude">Exclude missing criteria from aggregation</option>
+                    <option value="zero">Treat missing scores as zero</option>
+                  </select>
+                </div>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedJudgeInstructions">
+                    Additional evaluator instructions
+                  </label>
+                  <textarea
+                    class="guided-textarea"
+                    id="guidedJudgeInstructions"
+                    maxlength="5000"
+                    placeholder="Describe task-specific scoring rules, evidence requirements, and important exceptions..."
+                  ></textarea>
+                </div>
+                <div class="guided-field">
+                  <label class="guided-label" for="guidedOutputFormat">
+                    Expected structured output
+                  </label>
+                  <select class="guided-select" id="guidedOutputFormat">
+                    <option value="json">JSON scores and findings</option>
+                  </select>
+                  <div class="guided-help">
+                    JSON is the intended output format. The backend must validate
+                    the response against its own schema before accepting scores.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- STEP 5: REVIEW -->
+          <section class="guided-panel" data-panel="4" hidden>
+            <header class="guided-panel-header">
+              <div class="guided-panel-kicker">Step 05 / Final review</div>
+              <h2>Review your evaluation setup.</h2>
+              <p>
+                Confirm the configuration before saving it. Saving creates a
+                draft configuration; execution is a separate operation.
+              </p>
+            </header>
+            <div class="guided-panel-body">
+              <div class="guided-summary">
+                <div class="guided-summary-card">
+                  <div>
+                    <div class="guided-summary-label">Selected criteria</div>
+                    <div class="guided-summary-value" id="guidedReviewCriteriaCount">4</div>
+                  </div>
+                </div>
+                <div class="guided-summary-card">
+                  <div>
+                    <div class="guided-summary-label">Review method</div>
+                    <div class="guided-summary-value" id="guidedReviewMethod">LLM Judge</div>
+                  </div>
+                </div>
+                <div class="guided-summary-card">
+                  <div>
+                    <div class="guided-summary-label">Pass threshold</div>
+                    <div class="guided-summary-value" id="guidedReviewThreshold">4 / 5</div>
+                  </div>
+                </div>
+              </div>
+              <div class="guided-review-list" id="guidedReviewList"></div>
+              <div class="guided-divider"></div>
+              <div class="guided-field">
+                <label class="guided-label" for="guidedFinalNotes">
+                  Internal notes <span style="color:var(--guided-dim);font-weight:400;">(optional)</span>
+                </label>
+                <textarea
+                  class="guided-textarea is-compact"
+                  id="guidedFinalNotes"
+                  maxlength="3000"
+                  placeholder="Add notes for your team about this evaluation..."
+                ></textarea>
+              </div>
+              <div class="guided-field">
+                <div class="guided-label-row">
+                  <span class="guided-label">Configuration preview</span>
+                  <button class="guided-btn" type="button" id="guidedRefreshJson">
+                    Refresh JSON
+                  </button>
+                </div>
+                <textarea
+                  class="guided-json"
+                  id="guidedJsonPreview"
+                  readonly
+                  spellcheck="false"
+                  aria-label="Evaluation configuration JSON preview"
+                ></textarea>
+                <div class="guided-help">
+                  This is a read-only preview of the configuration that will
+                  be saved. It does not include secrets or provider API keys.
+                </div>
+              </div>
+              <div class="guided-info">
+                <span class="guided-info-icon">!</span>
+                <span>
+                  Saving and running are different actions. This page saves the
+                  configuration through the configured Supabase integration.
+                  A run is only started if your backend provides an authorized
+                  evaluation-run endpoint. This page will not pretend a run
+                  succeeded if that endpoint is unavailable.
+                </span>
+              </div>
+            </div>
+          </section>
+          <footer class="guided-footer">
+            <div class="guided-footer-hint" id="guidedFooterHint">
+              Step 1 of 5 · Enter your evaluation input.
+            </div>
+            <div class="guided-actions">
+              <button
+                class="guided-btn"
+                id="guidedBack"
+                type="button"
+                disabled
+              >
+                ← Back
+              </button>
+              <button
+                class="guided-btn"
+                id="guidedSaveDraft"
+                type="button"
+              >
+                Save draft
+              </button>
+              <button
+                class="guided-btn guided-btn-primary"
+                id="guidedNext"
+                type="button"
+              >
+                Continue →
+              </button>
+              <button
+                class="guided-btn guided-btn-primary"
+                id="guidedSaveFinal"
+                type="button"
+                hidden
+              >
+                Save evaluation
+              </button>
+            </div>
+          </footer>
+        </form>
+        <div
+          id="guidedStatus"
+          class="guided-status is-info"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+      </section>
+    </div>
+  </main>
+  <!-- Load the shared workspace JavaScript after the page content. -->
+  <script src="app.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const root = document.getElementById('guidedEvaluationPage');
+      if (!root || root.dataset.initialized === 'true') return;
+      root.dataset.initialized = 'true';
+      const $ = (selector, parent = root) => parent.querySelector(selector);
+      const $$ = (selector, parent = root) => Array.from(parent.querySelectorAll(selector));
+      const state = {
+        step: 0,
+        maxVisitedStep: 0,
+        inputSource: 'single',
+        method: 'llm_judge',
+        failureMode: 'flag',
+        saving: false,
+        currentEvaluationId: null,
+        datasets: []
+      };
+      const stepPanels = $$('[data-panel]');
+      const stepButtons = $$('.guided-step');
+      const progressFill = $('#guidedProgressFill');
+      const progressBar = $('#guidedProgressBar');
+      const progressLabel = $('#guidedProgressLabel');
+      const progressPercent = $('#guidedProgressPercent');
+      const backButton = $('#guidedBack');
+      const nextButton = $('#guidedNext');
+      const saveDraftButton = $('#guidedSaveDraft');
+      const saveFinalButton = $('#guidedSaveFinal');
+      const statusBox = $('#guidedStatus');
+      const datasetSelect = $('#guidedDatasetId');
+      const thresholdInput = $('#guidedPassThreshold');
+      const STEP_NAMES = ['Input', 'Criteria', 'Method', 'Scoring', 'Review'];
+      const CRITERIA_DESCRIPTIONS = {
+        factuality: 'Accuracy and support for factual claims.',
+        instruction_following: 'Adherence to the user’s instructions and constraints.',
+        relevance: 'Relevance to the request and avoidance of unnecessary content.',
+        completeness: 'Coverage of the important requirements in the request.',
+        safety: 'Avoidance of harmful, unsafe, or policy-inconsistent content.',
+        groundedness: 'Support from provided context or source evidence.',
+        clarity: 'Readability, coherence, and appropriate language.',
+        custom: 'Task-specific quality criterion.'
+      };
+      function showStatus(message, type = 'info') {
+        statusBox.hidden = false;
+        statusBox.className = 'guided-status is-' + type;
+        statusBox.textContent = message;
+      }
+      function clearStatus() {
+        statusBox.hidden = true;
+        statusBox.textContent = '';
+        statusBox.className = 'guided-status is-info';
+      }
+      function getSelectedCriteria() {
+        return $$('#guidedCriteria > .guided-criterion').map(row => {
+          const checkbox = $('input[type="checkbox"]', row);
+          const weightInput = $('[data-weight]', row);
+          if (!checkbox.checked) return null;
+          const key = checkbox.value;
+          const customName = $('#guidedCustomCriterion').value.trim();
+          return {
+            key,
+            name: key === 'custom'
+              ? (customName || 'Custom criterion')
+              : key.replaceAll('_', ' ').replace(/\b\w/g, letter => letter.toUpperCase()),
+            description: CRITERIA_DESCRIPTIONS[key] || '',
+            weight: Math.max(0, Math.min(100, Number(weightInput.value) || 0))
+          };
+        }).filter(Boolean);
+      }
+      function getScoreScale() {
+        const value = $('#guidedScoreScale').value;
+        if (value === '0_1') {
+          return { key: value, min: 0, max: 1, step: 0.01 };
+        }
+        if (value === '0_100') {
+          return { key: value, min: 0, max: 100, step: 1 };
+        }
+        return { key: '1_5', min: 1, max: 5, step: 0.1 };
+      }
+      function getThreshold() {
+        return Number(thresholdInput.value);
+      }
+      function getMethodLabel() {
+        return ({
+          llm_judge: 'LLM-as-a-Judge',
+          human: 'Human review',
+          hybrid: 'Hybrid evaluation'
+        })[state.method] || state.method;
+      }
+      function getInputSourceLabel() {
+        return state.inputSource === 'dataset'
+          ? 'Existing dataset'
+          : 'Single example';
+      }
+      function getAggregationLabel() {
+        return ({
+          weighted_mean: 'Weighted mean',
+          mean: 'Simple mean',
+          minimum: 'Minimum criterion score'
+        })[$('#guidedAggregation').value];
+      }
+      function getConfiguration() {
+        const scale = getScoreScale();
+        const criteria = getSelectedCriteria();
+        const input = state.inputSource === 'single'
+          ? {
+              source_type: 'single',
+              prompt: $('#guidedPrompt').value.trim(),
+              response: $('#guidedResponse').value.trim(),
+              expected_output: $('#guidedExpectedOutput').value.trim() || null,
+              context: $('#guidedContext').value.trim() || null
+            }
+          : {
+              source_type: 'dataset',
+              dataset_id: datasetSelect.value || null
+            };
+        const method = {
+          type: state.method
+        };
+        if (state.method === 'llm_judge' || state.method === 'hybrid') {
+          method.judge = {
+            provider: $('#guidedJudgeProvider').value,
+            model: $('#guidedJudgeModel').value.trim() || null,
+            output_format: $('#guidedOutputFormat').value,
+            instructions: $('#guidedJudgeInstructions').value.trim() || null
+          };
+        }
+        if (state.method === 'human') {
+          method.human = {
+            reviewers_per_response: Number($('#guidedReviewerCount').value),
+            instructions: $('#guidedReviewInstructions').value.trim() || null
+          };
+        }
+        if (state.method === 'hybrid') {
+          method.human = {
+            reviewers_per_response: Number($('#guidedHybridReviewers').value),
+            trigger: $('#guidedReviewTrigger').value
+          };
+        }
+        const scoring = {
+          scale: scale.key,
+          min_score: scale.min,
+          max_score: scale.max,
+          aggregation: $('#guidedAggregation').value,
+          passing_threshold: getThreshold(),
+          failure_handling: state.failureMode,
+          missing_score_policy: $('#guidedMissingScore').value,
+          criteria
+        };
+        return {
+          schema_version: 1,
+          name: $('#guidedEvaluationName').value.trim(),
+          description: $('#guidedDescription').value.trim() || null,
+          evaluation_type: 'guided',
+          status: 'draft',
+          input,
+          criteria,
+          method,
+          scoring,
+          notes: $('#guidedFinalNotes').value.trim() || null,
+          created_via: 'guided-evaluation'
+        };
+      }
+      function updateInputSource() {
+        $('#guidedSingleInput').hidden = state.inputSource !== 'single';
+        $('#guidedDatasetInput').hidden = state.inputSource !== 'dataset';
+        $$('[data-input-source]').forEach(button => {
+          const selected = button.dataset.inputSource === state.inputSource;
+          button.classList.toggle('is-selected', selected);
+          button.setAttribute('aria-pressed', String(selected));
+        });
+      }
+      function updateMethodOptions() {
+        $('#guidedJudgeOptions').hidden =
+          state.method !== 'llm_judge' && state.method !== 'hybrid';
+        $('#guidedHumanOptions').hidden = state.method !== 'human';
+        $('#guidedHybridOptions').hidden = state.method !== 'hybrid';
+        $$('[data-method]').forEach(button => {
+          const selected = button.dataset.method === state.method;
+          button.classList.toggle('is-selected', selected);
+          button.setAttribute('aria-pressed', String(selected));
+        });
+      }
+      function updateCriteriaSummary() {
+        const criteria = getSelectedCriteria();
+        const count = criteria.length;
+        $('#guidedCriteriaCount').textContent =
+          count + (count === 1 ? ' selected' : ' selected');
+        const total = criteria.reduce((sum, criterion) => sum + criterion.weight, 0);
+        $('#guidedWeightTotal').innerHTML =
+          'Selected weights total: <strong>' +
+          escapeHtml(String(total)) +
+          '</strong>' +
+          (Math.abs(total - 100) > 0.001
+            ? ' <span style="color:var(--guided-dim)">· Recommended total: 100</span>'
+            : ' <span style="color:var(--guided-green-light)">· Balanced</span>');
+        $('#guidedCustomCriterionField').hidden =
+          !criteria.some(criterion => criterion.key === 'custom');
+      }
+      function updateThresholdScale() {
+        const scale = getScoreScale();
+        thresholdInput.min = String(scale.min);
+        thresholdInput.max = String(scale.max);
+        thresholdInput.step = String(scale.step);
+        let current = Number(thresholdInput.value);
+        if (!Number.isFinite(current)) current = scale.max * 0.8;
+        current = Math.max(scale.min, Math.min(scale.max, current));
+        thresholdInput.value = String(current);
+        $('#guidedThresholdHelp').textContent =
+          'Allowed range: ' + scale.min + ' to ' + scale.max +
+          '. Scores at or above this value pass.';
+      }
+      function updateStepper() {
+        stepPanels.forEach((panel, index) => {
+          panel.hidden = index !== state.step;
+        });
+        stepButtons.forEach((button, index) => {
+          const active = index === state.step;
+          const complete = index < state.step;
+          button.classList.toggle('is-active', active);
+          button.classList.toggle('is-complete', complete);
+          button.disabled = index > state.maxVisitedStep;
+          if (active) {
+            button.setAttribute('aria-current', 'step');
+          } else {
+            button.removeAttribute('aria-current');
+          }
+          $('.guided-step-number', button).textContent =
+            complete ? '✓' : String(index + 1).padStart(2, '0');
+        });
+        const percent = Math.round(((state.step + 1) / stepPanels.length) * 100);
+        progressFill.style.width = percent + '%';
+        progressLabel.textContent = 'Step ' + (state.step + 1) + ' of ' + stepPanels.length;
+        progressPercent.textContent = percent + '% complete';
+        progressBar.setAttribute('aria-valuenow', String(state.step + 1));
+        backButton.disabled = state.step === 0;
+        nextButton.hidden = state.step === stepPanels.length - 1;
+        saveFinalButton.hidden = state.step !== stepPanels.length - 1;
+        const footerHints = [
+          'Step 1 of 5 · Enter your evaluation input.',
+          'Step 2 of 5 · Select at least one criterion.',
+          'Step 3 of 5 · Choose the review method.',
+          'Step 4 of 5 · Configure your scoring rules.',
+          'Step 5 of 5 · Review and save your configuration.'
+        ];
+        $('#guidedFooterHint').textContent = footerHints[state.step];
+        if (state.step === 4) {
+          refreshReview();
+        }
+      }
+      function validateStep(step) {
+        clearStatus();
+        if (step === 0) {
+          const name = $('#guidedEvaluationName').value.trim();
+          if (!name) {
+            showStatus('Enter an evaluation name before continuing.', 'error');
+            $('#guidedEvaluationName').focus();
+            return false;
+          }
+          if (state.inputSource === 'single') {
+            if (!$('#guidedPrompt').value.trim()) {
+              showStatus('Enter the prompt or input you want to evaluate.', 'error');
+              $('#guidedPrompt').focus();
+              return false;
+            }
+            if (!$('#guidedResponse').value.trim()) {
+              showStatus('Enter the model response you want to evaluate.', 'error');
+              $('#guidedResponse').focus();
+              return false;
+            }
+          } else if (!datasetSelect.value) {
+            showStatus('Select a dataset before continuing.', 'error');
+            datasetSelect.focus();
+            return false;
+          }
+        }
+        if (step === 1) {
+          const criteria = getSelectedCriteria();
+          if (!criteria.length) {
+            showStatus('Select at least one evaluation criterion.', 'error');
+            return false;
+          }
+          if (criteria.some(criterion => !Number.isFinite(criterion.weight))) {
+            showStatus('Provide a valid weight for each selected criterion.', 'error');
+            return false;
+          }
+          if (criteria.some(criterion => criterion.weight < 0 || criterion.weight > 100)) {
+            showStatus('Criterion weights must be between 0 and 100.', 'error');
+            return false;
+          }
+          if (criteria.some(criterion => criterion.weight < 0)) {
+            showStatus('Criterion weights cannot be negative.', 'error');
+            return false;
+          }
+          if (criteria.some(criterion => criterion.key === 'custom') &&
+              !$('#guidedCustomCriterion').value.trim()) {
+            showStatus('Name your custom criterion or deselect it.', 'error');
+            $('#guidedCustomCriterion').focus();
+            return false;
+          }
+          if ($('#guidedAggregation').value === 'weighted_mean' &&
+              criteria.reduce((sum, criterion) => sum + criterion.weight, 0) <= 0) {
+            showStatus('Weighted mean requires a positive total weight.', 'error');
+            return false;
+          }
+        }
+        if (step === 3) {
+          const scale = getScoreScale();
+          const threshold = getThreshold();
+          if (!Number.isFinite(threshold) ||
+              threshold < scale.min ||
+              threshold > scale.max) {
+            showStatus(
+              'The passing threshold must be between ' +
+              scale.min + ' and ' + scale.max + '.',
+              'error'
+            );
+            thresholdInput.focus();
+            return false;
+          }
+        }
+        return true;
+      }
+      function goToStep(step) {
+        if (step < 0 || step >= stepPanels.length) return;
+        if (step > state.step && !validateStep(state.step)) return;
+        state.step = step;
+        state.maxVisitedStep = Math.max(state.maxVisitedStep, step);
+        updateStepper();
+        clearStatus();
+        const mainTop = root.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: Math.max(0, mainTop - 20),
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto'
+            : 'smooth'
+        });
+      }
+      function refreshReview() {
+        const criteria = getSelectedCriteria();
+        const scale = getScoreScale();
+        const configuration = getConfiguration();
+        $('#guidedReviewCriteriaCount').textContent = String(criteria.length);
+        $('#guidedReviewMethod').textContent = getMethodLabel();
+        $('#guidedReviewThreshold').textContent =
+          getThreshold() + ' / ' + scale.max;
+        const rows = [
+          ['Evaluation name', configuration.name],
+          ['Description', configuration.description || 'Not provided'],
+          ['Input source', getInputSourceLabel()],
+          [
+            'Dataset',
+            state.inputSource === 'dataset'
+              ? (datasetSelect.selectedOptions[0]?.textContent || 'Not selected')
+              : 'Single prompt and response'
+          ],
+          ['Review method', getMethodLabel()],
+          [
+            'Criteria',
+            criteria.map(item => item.name + ' (' + item.weight + '%)').join(', ')
+          ],
+          ['Score scale', scale.min + ' to ' + scale.max],
+          ['Aggregation', getAggregationLabel()],
+          ['Passing threshold', String(getThreshold())],
+          ['Failure handling', state.failureMode === 'review'
+            ? 'Flag and request review'
+            : 'Flag failed responses']
+        ];
+        if (configuration.method.judge) {
+          rows.push([
+            'Judge provider',
+            configuration.method.judge.provider
+          ]);
+          rows.push([
+            'Judge model',
+            configuration.method.judge.model || 'Workspace default'
+          ]);
+        }
+        $('#guidedReviewList').innerHTML = rows.map(([key, value]) =>
+          '<div class="guided-review-row">' +
+            '<div class="guided-review-key">' + escapeHtml(key) + '</div>' +
+            '<div class="guided-review-value">' + escapeHtml(String(value)) + '</div>' +
+          '</div>'
+        ).join('');
+        $('#guidedJsonPreview').value = JSON.stringify(configuration, null, 2);
+      }
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+      function resolveSupabaseClient() {
+        // Use an existing client if the shared application exposes one.
+        const candidates = [
+          window.supabaseClient,
+          window.supabase,
+          window._supabase,
+          window.evalLoopSupabase
+        ];
+        return candidates.find(candidate =>
+          candidate &&
+          typeof candidate.from === 'function' &&
+          candidate.auth
+        ) || null;
+      }
+      async function getCurrentUser(client) {
+        const result = await client.auth.getUser();
+        if (result.error) throw result.error;
+        if (!result.data || !result.data.user) {
+          throw new Error('Sign in to save an evaluation to your workspace.');
+        }
+        return result.data.user;
+      }
+      async function loadDatasets() {
+        const client = resolveSupabaseClient();
+        if (!client) {
+          datasetSelect.innerHTML = '<option value="">Dataset connection unavailable</option>';
+          $('#guidedDatasetHelp').textContent =
+            'The shared application must expose an authenticated Supabase client before datasets can be loaded.';
+          return;
+        }
+        try {
+          await getCurrentUser(client);
+          const { data, error } = await client
+            .from('datasets')
+            .select('id, name, description, created_at')
+            .order('created_at', { ascending: false })
+            .limit(100);
+          if (error) throw error;
+          state.datasets = Array.isArray(data) ? data : [];
+          if (!state.datasets.length) {
+            datasetSelect.innerHTML = '<option value="">No datasets found</option>';
+            $('#guidedDatasetHelp').textContent =
+              'No accessible datasets were found. Create a dataset in your workspace and return here.';
+            return;
+          }
+          datasetSelect.innerHTML =
+            '<option value="">Choose a dataset…</option>' +
+            state.datasets.map(dataset =>
+              '<option value="' + escapeHtml(dataset.id) + '">' +
+                escapeHtml(dataset.name || 'Untitled dataset') +
+              '</option>'
+            ).join('');
+          $('#guidedDatasetHelp').textContent =
+            state.datasets.length + ' accessible dataset(s) found.';
+        } catch (error) {
+          datasetSelect.innerHTML = '<option value="">Could not load datasets</option>';
+          $('#guidedDatasetHelp').textContent =
+            error.message || 'Unable to load datasets. Check workspace permissions.';
+        }
+      }
+      function buildDatabasePayload(configuration, user) {
+        /*
+         * This payload targets the workspace evaluations table described
+         * in the current project design.
+         *
+         * If the actual database has different columns, adapt this mapping
+         * to the verified schema instead of assuming the columns exist.
+         */
+        return {
+          workspace_id: null,
+          template_id: null,
+          dataset_id: state.inputSource === 'dataset'
+            ? datasetSelect.value
+            : null,
+          name: configuration.name,
+          description: configuration.description,
+          evaluation_type: 'guided',
+          status: 'draft',
+          configuration: configuration,
+          created_by: user.id
+        };
+      }
+      async function saveEvaluation(isFinal = false) {
+        if (state.saving) return;
+        clearStatus();
+        if (isFinal) {
+          for (let index = 0; index < 4; index++) {
+            if (!validateStep(index)) {
+              goToStep(index);
+              return;
+            }
+          }
+        } else {
+          if (!validateStep(state.step)) return;
+        }
+        const client = resolveSupabaseClient();
+        if (!client) {
+          showStatus(
+            'The evaluation configuration is ready, but it could not be saved because the shared authenticated Supabase client is not available. Connect the workspace client in app.js before saving.',
+            'error'
+          );
+          return;
+        }
+        state.saving = true;
+        saveDraftButton.disabled = true;
+        saveFinalButton.disabled = true;
+        nextButton.disabled = true;
+        const originalDraftText = saveDraftButton.textContent;
+        const originalFinalText = saveFinalButton.textContent;
+        saveDraftButton.textContent = 'Saving…';
+        saveFinalButton.textContent = 'Saving…';
+        try {
+          const user = await getCurrentUser(client);
+          const configuration = getConfiguration();
+          const payload = buildDatabasePayload(configuration, user);
+          /*
+           * workspace_id is intentionally not fabricated. A multi-tenant
+           * database must associate the evaluation with the authenticated
+           * user's actual workspace. If your schema requires workspace_id,
+           * set it from the active workspace selected by the shared app.
+           */
+          if (!payload.workspace_id) {
+            const activeWorkspace =
+              window.activeWorkspace ||
+              window.currentWorkspace ||
+              window.evalLoopWorkspace;
+            if (activeWorkspace && activeWorkspace.id) {
+              payload.workspace_id = activeWorkspace.id;
+            }
+          }
+          if (!payload.workspace_id) {
+            throw new Error(
+              'No active workspace was found. Select a workspace in the shared app, then try saving again.'
+            );
+          }
+          const table = 'evaluations';
+          let result;
+          if (state.currentEvaluationId) {
+            result = await client
+              .from(table)
+              .update({
+                name: payload.name,
+                description: payload.description,
+                evaluation_type: payload.evaluation_type,
+                status: payload.status,
+                configuration: payload.configuration
+              })
+              .eq('id', state.currentEvaluationId)
+              .eq('workspace_id', payload.workspace_id)
+              .select('id')
+              .single();
+          } else {
+            result = await client
+              .from(table)
+              .insert(payload)
+              .select('id')
+              .single();
+          }
+          if (result.error) throw result.error;
+          state.currentEvaluationId = result.data.id;
+          showStatus(
+            isFinal
+              ? 'Evaluation configuration saved successfully. No evaluation run has been started.'
+              : 'Draft saved successfully. Continue editing whenever you are ready.',
+            'success'
+          );
+          saveDraftButton.textContent = 'Draft saved';
+          saveFinalButton.textContent = 'Saved';
+        } catch (error) {
+          console.error('[Guided Evaluation] Save failed:', error);
+          showStatus(
+            error.message ||
+            'Could not save the evaluation. Verify the database schema, RLS policies, and workspace membership.',
+            'error'
+          );
+          saveDraftButton.textContent = originalDraftText;
+          saveFinalButton.textContent = originalFinalText;
+        } finally {
+          state.saving = false;
+          saveDraftButton.disabled = false;
+          saveFinalButton.disabled = false;
+          nextButton.disabled = false;
+        }
+      }
+      // Input source choices.
+      $$('[data-input-source]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.inputSource = button.dataset.inputSource;
+          updateInputSource();
+          clearStatus();
+        });
+      });
+      // Evaluation method choices.
+      $$('[data-method]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.method = button.dataset.method;
+          updateMethodOptions();
+          clearStatus();
+        });
+      });
+      // Failure handling choices.
+      $$('[data-failure]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.failureMode = button.dataset.failure;
+          $$('[data-failure]').forEach(choice => {
+            const selected = choice.dataset.failure === state.failureMode;
+            choice.classList.toggle('is-selected', selected);
+            choice.setAttribute('aria-pressed', String(selected));
+          });
+        });
+      });
+      // Keep weights and criteria count synchronized.
+      $$('#guidedCriteria input').forEach(input => {
+        input.addEventListener('input', updateCriteriaSummary);
+        input.addEventListener('change', updateCriteriaSummary);
+      });
+      // Update the scoring scale and threshold together.
+      $('#guidedScoreScale').addEventListener('change', () => {
+        updateThresholdScale();
+        if (state.step === 4) refreshReview();
+      });
+      [
+        '#guidedEvaluationName',
+        '#guidedDescription',
+        '#guidedPrompt',
+        '#guidedResponse',
+        '#guidedExpectedOutput',
+        '#guidedContext',
+        '#guidedAggregation',
+        '#guidedPassThreshold',
+        '#guidedCustomCriterion',
+        '#guidedJudgeProvider',
+        '#guidedJudgeModel',
+        '#guidedJudgeInstructions',
+        '#guidedReviewerCount',
+        '#guidedReviewInstructions',
+        '#guidedHybridReviewers',
+        '#guidedReviewTrigger',
+        '#guidedMissingScore',
+        '#guidedFinalNotes'
+      ].forEach(selector => {
+        const element = $(selector);
+        if (!element) return;
+        element.addEventListener('input', () => {
+          if (state.step === 4) refreshReview();
+        });
+        element.addEventListener('change', () => {
+          if (state.step === 4) refreshReview();
+        });
+      });
+      // Advanced scoring controls.
+      $('#guidedAdvancedToggle').addEventListener('click', () => {
+        const options = $('#guidedAdvancedOptions');
+        const expanded = $('#guidedAdvancedToggle').getAttribute('aria-expanded') === 'true';
+        $('#guidedAdvancedToggle').setAttribute('aria-expanded', String(!expanded));
+        options.hidden = expanded;
+        $('#guidedAdvancedIcon').textContent = expanded ? '＋' : '−';
+      });
+      // Step navigation.
+      stepButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const target = Number(button.dataset.step);
+          if (target <= state.maxVisitedStep) {
+            if (target < state.step) {
+              state.step = target;
+              updateStepper();
+              clearStatus();
+            } else if (target > state.step) {
+              goToStep(target);
+            }
+          }
+        });
+      });
+      backButton.addEventListener('click', () => {
+        if (state.step > 0) {
+          state.step--;
+          updateStepper();
+          clearStatus();
+        }
+      });
+      nextButton.addEventListener('click', () => {
+        if (!validateStep(state.step)) return;
+        goToStep(state.step + 1);
+      });
+      saveDraftButton.addEventListener('click', () => saveEvaluation(false));
+      saveFinalButton.addEventListener('click', () => saveEvaluation(true));
+      $('#guidedRefreshJson').addEventListener('click', refreshReview);
+      // Initial state.
+      updateInputSource();
+      updateMethodOptions();
+      updateCriteriaSummary();
+      updateThresholdScale();
+      updateStepper();
+      loadDatasets();
+    })();
+  </script>
+</body>
+</html>
