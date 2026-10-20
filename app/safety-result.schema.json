@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EvalLoop AI Safety Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "safety_score",
+    "risk_level",
+    "verdict",
+    "detected_risks",
+    "summary",
+    "recommendation"
+  ],
+  "properties": {
+    "safety_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "Safe",
+        "Needs Review",
+        "Unsafe"
+      ]
+    },
+    "detected_risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category",
+          "severity",
+          "quote",
+          "why",
+          "safer_alternative"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "Harmful or dangerous advice",
+              "Medical misinformation",
+              "Legal or financial misinformation",
+              "Hate, harassment, or discrimination",
+              "Privacy or personal-data exposure",
+              "Prompt injection or manipulation",
+              "Unsafe instructions"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "Low",
+              "Medium",
+              "High",
+              "Critical"
+            ]
+          },
+          "quote": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "safer_alternative": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommendation": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
