@@ -3,11 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Docs — EvalLoop AI</title>
-  <meta
-    name="description"
-    content="Documentation for EvalLoop AI evaluation engines, evaluation dimensions, benchmarks, and API usage."
-  >
+  <title>Documentation — EvalLoop AI</title>
+  <meta name="description" content="Learn how to use EvalLoop AI to evaluate AI responses and compare response quality.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -630,673 +627,380 @@
       <span class="kicker-line"></span>
       DOCUMENTATION
     </div>
+
     <h1>
-      Measure. Evaluate.<br>
-      <span>Improve.</span>
+      Evaluate.<br>
+      <span>Understand. Improve.</span>
     </h1>
+
     <p class="intro">
-      Documentation for EvalLoop AI evaluation engines,
-      evaluation dimensions, benchmark architecture,
-      and the EvalLoop evaluation API.
+      EvalLoop AI helps you evaluate AI-generated responses using structured,
+      explainable quality scores. Start with a single response or compare two
+      responses against the same prompt.
     </p>
-    <!-- =========================================
-         DOCUMENTATION SECTIONS
-         ========================================= -->
+
+    <!-- DOCUMENTATION SECTIONS -->
     <div class="section-header">
-      <div class="section-label">
-        DOCUMENTATION
-      </div>
+      <div class="section-label">ON THIS PAGE</div>
       <p class="section-description">
-        Start with the core evaluation concepts, then explore
-        evaluation profiles, benchmarks, API usage, and security.
+        Learn the evaluation workflow, understand the six scoring dimensions,
+        compare responses, and review important privacy and usage limitations.
       </p>
     </div>
+
     <section class="docs-grid">
-      <!-- DOC 01 -->
       <a href="#getting-started" class="doc-card">
-        <span class="doc-number">
-          DOC.01
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          Getting Started
-        </h2>
+        <span class="doc-number">DOC.01</span>
+        <span class="doc-status current">● AVAILABLE</span>
+        <h2 class="doc-title">Getting Started</h2>
         <p class="doc-description">
-          Understand how EvalLoop AI evaluates an AI response,
-          what inputs are required, and how evaluation results
-          are returned.
+          Follow the basic workflow from entering a prompt to reviewing
+          evaluation scores, detected issues, and suggestions.
         </p>
       </a>
-      <!-- DOC 02 -->
-      <a href="#evaluation" class="doc-card">
-        <span class="doc-number">
-          DOC.02
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          Evaluation
-        </h2>
+
+      <a href="#general-response" class="doc-card">
+        <span class="doc-number">DOC.02</span>
+        <span class="doc-status current">● AVAILABLE</span>
+        <h2 class="doc-title">General Response</h2>
         <p class="doc-description">
-          Learn about the six evaluation dimensions currently
-          used by EVP.Aureon to measure AI response quality.
+          Evaluate one AI-generated response using six quality dimensions
+          and receive a structured result.
         </p>
       </a>
-      <!-- DOC 03 -->
-      <a href="#profiles" class="doc-card">
-        <span class="doc-number">
-          DOC.03
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          Evaluation Profiles
-        </h2>
+
+      <a href="#dimensions" class="doc-card">
+        <span class="doc-number">DOC.03</span>
+        <span class="doc-status current">● AVAILABLE</span>
+        <h2 class="doc-title">Evaluation Dimensions</h2>
         <p class="doc-description">
-          Explore the EVP architecture and the specialized
-          evaluation capabilities planned across EvalLoop AI.
+          Understand what each dimension measures and how scores are
+          interpreted.
         </p>
       </a>
-      <!-- DOC 04 -->
-      <a href="#benchmarks" class="doc-card">
-        <span class="doc-number">
-          DOC.04
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          Benchmarks
-        </h2>
+
+      <a href="#compare" class="doc-card">
+        <span class="doc-number">DOC.04</span>
+        <span class="doc-status current">● AVAILABLE</span>
+        <h2 class="doc-title">Compare A vs B</h2>
         <p class="doc-description">
-          Understand how benchmark datasets, target AI systems,
-          evaluation engines, scores, and history fit together.
+          Compare two responses to the same prompt and review the winner,
+          confidence, differences, and recommendation.
         </p>
       </a>
-      <!-- DOC 05 -->
-      <a href="#api" class="doc-card">
-        <span class="doc-number">
-          DOC.05
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          API
-        </h2>
+
+      <a href="#privacy" class="doc-card">
+        <span class="doc-number">DOC.05</span>
+        <span class="doc-status current">● IMPORTANT</span>
+        <h2 class="doc-title">Data &amp; Privacy</h2>
         <p class="doc-description">
-          Integrate the current EvalLoop evaluation endpoint
-          using a prompt, AI response, and optional reference.
+          Understand what information is sent to the evaluation service
+          and how provider credentials are handled.
         </p>
       </a>
-      <!-- DOC 06 -->
-      <a href="#security" class="doc-card">
-        <span class="doc-number">
-          DOC.06
-        </span>
-        <span class="doc-status current">
-          ● AVAILABLE
-        </span>
-        <h2 class="doc-title">
-          Security
-        </h2>
+
+      <a href="#limitations" class="doc-card">
+        <span class="doc-number">DOC.06</span>
+        <span class="doc-status current">● IMPORTANT</span>
+        <h2 class="doc-title">Limitations</h2>
         <p class="doc-description">
-          Learn how API credentials are handled and which
-          secrets must remain on the server side.
+          Review the current free-beta limitations and why important
+          results should be checked by a person.
         </p>
       </a>
     </section>
-    <!-- =========================================
-         GETTING STARTED
-         ========================================= -->
+
+    <!-- GETTING STARTED -->
     <div class="section-header" id="getting-started">
-      <div class="section-label">
-        GETTING STARTED
-      </div>
+      <div class="section-label">GETTING STARTED</div>
       <p class="section-description">
-        The basic EvalLoop evaluation flow.
+        The basic workflow for evaluating one response or comparing two.
       </p>
     </div>
+
     <section class="content-panel">
       <div class="content-block">
-        <h3>
-          Evaluate an AI response with EVP.<span>Aureon</span>
-        </h3>
-        <p>
-          EvalLoop AI currently provides a general-purpose evaluation
-          flow through EVP.Aureon. The evaluator receives the original
-          prompt, the AI-generated response, and an optional reference
-          answer.
-        </p>
-        <p>
-          It evaluates the supplied response across six dimensions,
-          normalizes the dimension scores to a 0–100 range, and returns
-          a calculated overall score together with issues, summary,
-          and recommendation.
-        </p>
-        <div class="code-block"><div class="code-label">EVALUATION FLOW</div>TARGET PROMPT
-       ↓
-AI RESPONSE
-       ↓
-OPTIONAL REFERENCE
-       ↓
-EVP.AUREON
-       ↓
-SIX EVALUATION DIMENSIONS
-       ↓
-OVERALL SCORE
-       ↓
-ISSUES + SUMMARY + RECOMMENDATION</div>
+        <h3>Run your first <span>evaluation.</span></h3>
+        <p>To get started with EvalLoop AI:</p>
+        <ol class="content-list">
+          <li>Open the EvalLoop Workspace.</li>
+          <li>Choose <strong>General Response</strong> or <strong>Compare</strong>.</li>
+          <li>Paste your prompt.</li>
+          <li>Paste the AI response, or enter both Response A and Response B when comparing.</li>
+          <li>Optionally add a reference answer or source context.</li>
+          <li>Click <strong>Evaluate</strong> or <strong>Compare</strong>.</li>
+          <li>Review the scores, detected issues, and improvement suggestions.</li>
+        </ol>
       </div>
     </section>
-    <!-- =========================================
-         EVALUATION
-         ========================================= -->
-    <div class="section-header" id="evaluation">
-      <div class="section-label">
-        EVALUATION DIMENSIONS
-      </div>
+
+    <!-- GENERAL RESPONSE -->
+    <div class="section-header" id="general-response">
+      <div class="section-label">GENERAL RESPONSE EVALUATION</div>
       <p class="section-description">
-        EVP.Aureon currently evaluates six core dimensions.
-        Each dimension produces a score from 0 to 100.
+        Evaluate one AI response against the prompt that produced it.
       </p>
     </div>
+
     <section class="content-panel">
       <div class="content-block">
-        <h3>
-          Six dimensions. <span>One quality signal.</span>
-        </h3>
+        <h3>One response. <span>Six dimensions.</span></h3>
         <p>
-          The current evaluator uses six dimensions to provide a
-          structured view of AI response quality.
+          General Response evaluates one AI response against a prompt.
+          It returns an overall quality score, scores for each dimension,
+          detected issues, a summary, and an improvement recommendation.
         </p>
+
+        <p><strong>Required inputs</strong></p>
+        <ul class="content-list">
+          <li>Prompt</li>
+          <li>AI Response</li>
+        </ul>
+
+        <p><strong>Optional input</strong></p>
+        <ul class="content-list">
+          <li>Reference / Context</li>
+        </ul>
+
+        <p>
+          A reference answer or source context can give the evaluator
+          additional information to consider. The overall score is calculated
+          as the average of the six dimension scores.
+        </p>
+      </div>
+    </section>
+
+    <!-- DIMENSIONS -->
+    <div class="section-header" id="dimensions">
+      <div class="section-label">EVALUATION DIMENSIONS</div>
+      <p class="section-description">
+        Each dimension is scored from 0 to 100.
+      </p>
+    </div>
+
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>Understand the <span>quality scores.</span></h3>
+        <p>
+          EvalLoop AI assesses response quality across six dimensions.
+          Each score represents the evaluator's assessment of that aspect
+          of the response.
+        </p>
+
         <div class="dimension-grid">
           <div class="dimension">
-            <div class="dimension-name">
-              Factuality
-            </div>
+            <div class="dimension-name">Factuality</div>
             <p class="dimension-description">
-              Measures whether the response is factually accurate
-              and avoids unsupported claims.
+              Accuracy, unsupported claims, and potential hallucinations.
             </p>
           </div>
           <div class="dimension">
-            <div class="dimension-name">
-              Instruction Following
-            </div>
+            <div class="dimension-name">Relevance</div>
             <p class="dimension-description">
-              Measures whether the response follows the user's
-              stated instructions and requirements.
+              How directly the response answers the request.
             </p>
           </div>
           <div class="dimension">
-            <div class="dimension-name">
-              Relevance
-            </div>
+            <div class="dimension-name">Instruction Following</div>
             <p class="dimension-description">
-              Measures how directly the response addresses the
-              requested task or question.
+              Whether the response follows the user's requirements.
             </p>
           </div>
           <div class="dimension">
-            <div class="dimension-name">
-              Completeness
-            </div>
+            <div class="dimension-name">Completeness</div>
             <p class="dimension-description">
-              Measures whether the response adequately covers
-              the important parts of the requested task.
+              Whether important information is missing.
             </p>
           </div>
           <div class="dimension">
-            <div class="dimension-name">
-              Safety
-            </div>
+            <div class="dimension-name">Safety</div>
             <p class="dimension-description">
-              Measures whether the response avoids relevant
-              safety failures and harmful behavior.
+              Whether the response avoids harmful or unsafe content.
             </p>
           </div>
           <div class="dimension">
-            <div class="dimension-name">
-              Fluency
-            </div>
+            <div class="dimension-name">Fluency</div>
             <p class="dimension-description">
-              Measures clarity, readability, language quality,
-              and overall response fluency.
+              Clarity, readability, coherence, and language quality.
             </p>
           </div>
         </div>
       </div>
-    </section>
-    <!-- =========================================
-         EVALUATION PROFILES
-         ========================================= -->
-    <div class="section-header" id="profiles">
-      <div class="section-label">
-        EVALUATION PROFILES
-      </div>
-      <p class="section-description">
-        Specialized evaluation profiles planned around
-        different AI quality requirements.
-      </p>
-    </div>
-    <section class="docs-grid">
-      <div class="doc-card">
-        <span class="doc-status current">
-          ● CURRENT
-        </span>
-        <div class="doc-number">
-          EVP.01
-        </div>
-        <h2 class="doc-title">
-          EVP.Aureon
-        </h2>
-        <p class="doc-description">
-          General-purpose evaluation across factuality,
-          instruction following, relevance, completeness,
-          safety, and fluency.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.02
-        </div>
-        <h2 class="doc-title">
-          EVP.Lunara
-        </h2>
-        <p class="doc-description">
-          Reasoning evaluation for logical consistency,
-          problem solving, and structured reasoning quality.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.03
-        </div>
-        <h2 class="doc-title">
-          EVP.Aethera
-        </h2>
-        <p class="doc-description">
-          RAG evaluation focused on retrieval quality,
-          groundedness, context usage, and unsupported claims.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.04
-        </div>
-        <h2 class="doc-title">
-          EVP.Vespera
-        </h2>
-        <p class="doc-description">
-          Safety evaluation covering harmful outputs,
-          jailbreaks, prompt injection, and policy compliance.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.05
-        </div>
-        <h2 class="doc-title">
-          EVP.Nebryx
-        </h2>
-        <p class="doc-description">
-          Multimodal evaluation across text, image, audio,
-          video understanding, and cross-modal consistency.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.06
-        </div>
-        <h2 class="doc-title">
-          EVP.Celestia
-        </h2>
-        <p class="doc-description">
-          Agent evaluation covering planning, tool usage,
-          task execution, trajectories, and recovery.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.07
-        </div>
-        <h2 class="doc-title">
-          EVP.Nexora
-        </h2>
-        <p class="doc-description">
-          Planned orchestration layer for coordinating
-          specialized evaluation capabilities.
-        </p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-status">
-          ○ COMING SOON
-        </span>
-        <div class="doc-number">
-          EVP.08
-        </div>
-        <h2 class="doc-title">
-          EVP.Stellara
-        </h2>
-        <p class="doc-description">
-          Planned benchmark evaluation engine for datasets,
-          regression testing, repeatability, and tracking.
-        </p>
-      </div>
-    </section>
-    <!-- =========================================
-         BENCHMARKS
-         ========================================= -->
-    <div class="section-header" id="benchmarks">
-      <div class="section-label">
-        BENCHMARKS
-      </div>
-      <p class="section-description">
-        A benchmark runs a defined dataset through a target
-        AI system and evaluates the resulting responses.
-      </p>
-    </div>
-    <section class="content-panel">
+
       <div class="content-block">
-        <h3>
-          Benchmark <span>architecture</span>
-        </h3>
+        <h3>Overall score <span>calculation.</span></h3>
         <p>
-          EvalLoop AI benchmarks are designed to separate the target
-          AI system from the evaluation engine. The target system
-          generates responses, while the evaluation engine measures
-          those responses against the selected benchmark criteria.
+          The overall score is the average of the six dimension scores.
+          Each dimension contributes equally to the result.
         </p>
-        <div class="code-block"><div class="code-label">BENCHMARK FLOW</div>TARGET AI SYSTEM
-       ↓
-CUSTOM API / PROVIDER API / UPLOAD
-       ↓
-BENCHMARK DATASET
-       ↓
-TARGET AI GENERATES RESPONSES
-       ↓
-EVP.AUREON
-       ↓
-DIMENSION SCORES
-       ↓
-BENCHMARK RESULT
-       ↓
-HISTORY</div>
-        <p>
-          The current benchmark experience is centered on General
-          Quality evaluation. Specialized benchmark engines and
-          suites are planned for future releases.
-        </p>
-      </div>
-    </section>
-    <!-- =========================================
-         API
-         ========================================= -->
-    <div class="section-header" id="api">
-      <div class="section-label">
-        API
-      </div>
-      <p class="section-description">
-        Current evaluation API endpoint and request/response format.
-      </p>
-    </div>
-    <section class="content-panel">
-      <!-- ENDPOINT -->
-      <div class="content-block">
-        <h3>
-          Evaluate a response
-        </h3>
-        <div class="api-route">
-          <span class="api-method">
-            POST
-          </span>
-          <span class="api-path">
-            /api/evaluate
-          </span>
-        </div>
-        <p>
-          Send an AI prompt and its generated response to the
-          EvalLoop evaluator. A reference answer can optionally
-          be supplied to provide additional evaluation context.
-        </p>
-        <div class="code-block"><div class="code-label">REQUEST</div>{
-  "prompt": "What is the capital of France?",
-  "response": "The capital of France is Paris.",
-  "reference": "France's capital city is Paris."
-}</div>
-        <p>
-          The request must use JSON. The <strong>prompt</strong> and
-          <strong>response</strong> fields are required non-empty strings.
-          The <strong>reference</strong> field is optional.
-        </p>
-      </div>
-      <!-- RESPONSE -->
-      <div class="content-block">
-        <h3>
-          Evaluation <span>response</span>
-        </h3>
-        <p>
-          A successful evaluation returns the overall score, the six
-          dimension scores, detected issues, a summary, and a recommendation.
-        </p>
-        <div class="code-block"><div class="code-label">RESPONSE</div>{
-  "overall_score": 100,
-  "overall_text": "Strong response.",
-  "scores": {
-    "factuality": 100,
-    "instruction_following": 100,
-    "relevance": 100,
-    "completeness": 100,
-    "safety": 100,
-    "fluency": 100
-  },
-  "issues": [],
-  "summary": "The response accurately answers the user's question.",
-  "recommendation": "No major improvements are required."
-}</div>
-        <div class="note">
-          <strong>Important:</strong>
-          The example scores and text are illustrative.
-          Actual evaluation results depend on the supplied prompt,
-          response, reference, and evaluator output.
-        </div>
-      </div>
-      <!-- SCORE CALCULATION -->
-      <div class="content-block">
-        <h3>
-          Overall score <span>calculation</span>
-        </h3>
-        <p>
-          The backend does not trust an overall score supplied by the
-          evaluator model. It calculates the final overall score from
-          the six normalized dimension scores.
-        </p>
-        <div class="code-block"><div class="code-label">CALCULATION</div>overall_score =
-ROUND(
+        <div class="code-block"><div class="code-label">OVERALL SCORE</div>overall_score =
   (
     factuality +
-    instruction_following +
     relevance +
+    instruction_following +
     completeness +
     safety +
     fluency
-  ) / 6
-)</div>
-        <p>
-          Each dimension is normalized to an integer from 0 to 100
-          before the overall score is calculated.
-        </p>
+  ) / 6</div>
       </div>
-      <!-- ISSUES -->
+
       <div class="content-block">
-        <h3>
-          Evaluation <span>issues</span>
-        </h3>
+        <h3>Score <span>meaning.</span></h3>
         <p>
-          The evaluator can return up to ten issues. Each issue contains
-          a type and description.
+          Use these ranges as a guide when interpreting the overall score.
         </p>
-        <div class="code-block"><div class="code-label">ISSUE FORMAT</div>{
-  "type": "factuality",
-  "description": "The response contains an unsupported claim."
-}</div>
-        <p>
-          Invalid issue entries are filtered by the backend before the
-          final response is returned.
-        </p>
-      </div>
-      <!-- ERRORS -->
-      <div class="content-block">
-        <h3>
-          API <span>errors</span>
-        </h3>
-        <p>
-          The current endpoint returns standard HTTP error responses
-          for invalid requests, configuration failures, upstream
-          evaluation failures, and unexpected server errors.
-        </p>
-        <ul class="content-list">
-          <li>
-            <strong>405</strong> — Method not allowed.
-          </li>
-          <li>
-            <strong>400</strong> — Prompt is required.
-          </li>
-          <li>
-            <strong>400</strong> — AI response is required.
-          </li>
-          <li>
-            <strong>500</strong> — GROQ_API_KEY is not configured.
-          </li>
-          <li>
-            <strong>502</strong> — Groq evaluation request failed.
-          </li>
-          <li>
-            <strong>502</strong> — Groq returned an empty response.
-          </li>
-          <li>
-            <strong>502</strong> — Groq returned invalid evaluation JSON.
-          </li>
-          <li>
-            <strong>500</strong> — Unexpected server error.
-          </li>
-        </ul>
-      </div>
-      <!-- API LIMITATION -->
-      <div class="content-block">
-        <h3>
-          Current API <span>scope</span>
-        </h3>
-        <p>
-          The current <strong>/api/evaluate</strong> endpoint evaluates
-          a prompt and response supplied directly in the request.
-          It does not currently act as a general-purpose proxy for
-          arbitrary external AI provider APIs.
-        </p>
-        <p>
-          Benchmark target connections and provider integrations are
-          part of the broader benchmark architecture and may require
-          additional implementation.
-        </p>
+        <div class="dimension-grid">
+          <div class="dimension">
+            <div class="dimension-name">90–100 · Excellent</div>
+            <p class="dimension-description">A strong response with high overall quality.</p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">75–89 · Good</div>
+            <p class="dimension-description">A good response that may still have room for improvement.</p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">50–74 · Needs improvement</div>
+            <p class="dimension-description">A response with noticeable weaknesses to review.</p>
+          </div>
+          <div class="dimension">
+            <div class="dimension-name">Below 50 · Poor</div>
+            <p class="dimension-description">A response that likely needs substantial improvement.</p>
+          </div>
+        </div>
       </div>
     </section>
-    <!-- =========================================
-         SECURITY
-         ========================================= -->
-    <div class="section-header" id="security">
-      <div class="section-label">
-        SECURITY
-      </div>
+
+    <!-- COMPARE -->
+    <div class="section-header" id="compare">
+      <div class="section-label">COMPARE A VS B</div>
       <p class="section-description">
-        Keep provider credentials on the server and never expose
-        secret API keys in client-side code.
+        Evaluate two AI responses against the same prompt.
       </p>
     </div>
+
     <section class="content-panel">
       <div class="content-block">
-        <h3>
-          Server-side <span>credentials</span>
-        </h3>
+        <h3>Compare responses. <span>Review the differences.</span></h3>
         <p>
-          The current evaluation backend reads the Groq API credential
-          from the server-side environment variable
-          <strong>GROQ_API_KEY</strong>.
+          Compare lets you submit two responses for the same prompt.
+          Reference or source context is optional.
         </p>
-        <div class="note">
-          <strong>Never expose GROQ_API_KEY</strong>
-          in browser JavaScript, public HTML, GitHub repositories,
-          or client-side configuration.
-        </div>
+
+        <p><strong>Inputs</strong></p>
+        <ul class="content-list">
+          <li>Prompt</li>
+          <li>Response A</li>
+          <li>Response B</li>
+          <li>Optional reference / context</li>
+        </ul>
+
+        <p><strong>Comparison results</strong></p>
+        <ul class="content-list">
+          <li>Winner: Response A, Response B, or Tie</li>
+          <li>Confidence</li>
+          <li>Dimension-by-dimension comparison</li>
+          <li>Key differences</li>
+          <li>Issues detected in each response</li>
+          <li>Recommendation</li>
+        </ul>
+
         <p>
-          Client applications should communicate with the EvalLoop
-          backend endpoint rather than embedding provider credentials
-          in the browser.
-        </p>
-      </div>
-      <div class="content-block">
-        <h3>
-          Evaluation <span>provider</span>
-        </h3>
-        <p>
-          The current evaluator uses Groq's OpenAI-compatible chat
-          completions endpoint with the configured evaluation model.
-          The provider credential remains on the server.
-        </p>
-        <p>
-          Future evaluation profiles and benchmark integrations may
-          introduce additional providers or execution paths as the
-          EvalLoop platform develops.
+          Treat the winner and confidence as AI-generated judgments, not
+          guarantees. Review the underlying differences before deciding
+          which response is appropriate for your use case.
         </p>
       </div>
     </section>
-    <!-- =========================================
-         CTA
-         ========================================= -->
-    <section class="cta">
-      <div class="cta-label">
-        READY TO EVALUATE?
+
+    <!-- PRIVACY -->
+    <div class="section-header" id="privacy">
+      <div class="section-label">DATA &amp; PRIVACY</div>
+      <p class="section-description">
+        Understand what is sent for evaluation and how credentials are handled.
+      </p>
+    </div>
+
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>Share only what is <span>necessary.</span></h3>
+        <ul class="content-list">
+          <li>Your prompt, AI response, and optional reference are sent to the EvalLoop evaluation service.</li>
+          <li>EvalLoop uses an LLM provider to perform the evaluation.</li>
+          <li>Do not submit passwords, private keys, personal identity documents, or confidential business data.</li>
+          <li>API credentials are stored on the server and must never be exposed in browser code.</li>
+        </ul>
+
+        <div class="note">
+          <strong>Protect sensitive information.</strong>
+          Avoid including private or confidential content in prompts, responses,
+          or reference material submitted for evaluation.
+        </div>
+
+        <p>
+          For details about the website's data practices and terms of use,
+          review the Privacy Policy and Terms pages.
+        </p>
       </div>
-      <h2>
-        Test an AI response.
-      </h2>
+    </section>
+
+    <!-- LIMITATIONS -->
+    <div class="section-header" id="limitations">
+      <div class="section-label">CURRENT LIMITATIONS</div>
+      <p class="section-description">
+        Important considerations when interpreting AI-assisted evaluations.
+      </p>
+    </div>
+
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>Scores are useful signals, <span>not guarantees.</span></h3>
+        <ul class="content-list">
+          <li>EvalLoop provides AI-assisted evaluation, not a guarantee of correctness.</li>
+          <li>LLM judges can make mistakes.</li>
+          <li>Review important, high-risk, legal, medical, financial, or safety-related outputs manually.</li>
+          <li>Usage limits apply during the free beta.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <div class="section-header" id="roadmap">
+      <div class="section-label">ROADMAP</div>
+      <p class="section-description">
+        Potential future capabilities. These are not part of the current feature set.
+      </p>
+    </div>
+
+    <section class="content-panel">
+      <div class="content-block">
+        <h3>Planned <span>future capabilities.</span></h3>
+        <ul class="content-list">
+          <li>Saved evaluation history</li>
+          <li>CSV batch evaluation</li>
+          <li>Safety-focused evaluation</li>
+          <li>RAG evaluation</li>
+          <li>Prompt and model regression checks</li>
+          <li>API access</li>
+        </ul>
+        <p>
+          Roadmap items are not guaranteed and may change. Availability
+          should be confirmed in the product rather than assumed from this list.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="cta-label">READY TO EVALUATE?</div>
+      <h2>Put an AI response to the test.</h2>
       <p>
-        Use the EvalLoop evaluator to measure an AI response across
-        factuality, instruction following, relevance, completeness,
-        safety, and fluency.
+        Evaluate one response or compare two responses against the same prompt.
+        Review the scores, understand the issues, and decide what to improve.
       </p>
       <div class="cta-links">
-        <a href="/app/" class="cta-link">
-          OPEN EVALUATOR →
-        </a>
-        <a href="/benchmarks/" class="cta-link">
-          VIEW BENCHMARKS →
-        </a>
-        <a href="/" class="cta-link">
-          BACK TO EVALLOOP AI →
-        </a>
+        <a href="/app/general-response/" class="cta-link">GENERAL RESPONSE →</a>
+        <a href="/app/compare/" class="cta-link">COMPARE A VS B →</a>
+        <a href="/" class="cta-link">BACK TO EVALLOOP AI →</a>
       </div>
     </section>
   </main>
