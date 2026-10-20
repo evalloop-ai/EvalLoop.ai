@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>History & Insights — EvalLoop AI</title>
+  <meta name="description" content="Review saved EvalLoop AI evaluations and quality trends.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/history.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="/history.js" defer></script>
+</head>
+<body>
+  <div class="background-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="EvalLoop AI home"><span class="brand-mark">E</span><span>EvalLoop AI<small>History & Insights</small></span></a>
+    <nav class="topnav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/app/general-response">Workspace</a>
+      <span id="authStatus" class="auth-status">Checking session…</span>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section id="loginGate" class="login-gate" hidden>
+      <div class="eyebrow">PRIVATE WORKSPACE</div>
+      <h1>Log in to view your saved evaluations.</h1>
+      <p>Your evaluation history is available after you sign in to EvalLoop AI.</p>
+      <a class="button button-primary" href="/login">Log in</a>
+    </section>
+
+    <div id="historyApp" hidden>
+      <section class="page-heading">
+        <div>
+          <div class="eyebrow"><span class="status-dot"></span> EVALUATION WORKSPACE</div>
+          <h1>History <span>&amp; Insights.</span></h1>
+          <p>Review past judgments, track quality over time, and find the next evaluation to run.</p>
+        </div>
+        <button id="refreshButton" class="button button-quiet" type="button">Refresh data ↻</button>
+      </section>
+
+      <section class="section-block" aria-labelledby="newEvaluationTitle">
+        <div class="section-heading">
+          <div><div class="section-index">01 / ACTIONS</div><h2 id="newEvaluationTitle">New evaluation</h2></div>
+          <p>Choose a workflow to start a new run.</p>
+        </div>
+        <div class="action-grid">
+          <a class="action-card" href="/app/general-response"><span class="action-icon">↗</span><span><strong>Evaluate Response</strong><small>Score one AI response across six quality dimensions.</small></span><span class="action-arrow">→</span></a>
+          <a class="action-card" href="/app/compare"><span class="action-icon">⇄</span><span><strong>Compare A vs B</strong><small>Compare two answers to the same prompt.</small></span><span class="action-arrow">→</span></a>
+          <a class="action-card" href="/app/safety"><span class="action-icon">⌁</span><span><strong>Check Safety</strong><small>Review a response for safety concerns.</small></span><span class="action-arrow">→</span></a>
+        </div>
+      </section>
+
+      <div id="errorNotice" class="notice notice-error" role="alert" hidden></div>
+      <div id="loadingNotice" class="notice" role="status">Loading your saved evaluations…</div>
+
+      <section id="insightsContent" hidden>
+        <section class="section-block" aria-labelledby="overviewTitle">
+          <div class="section-heading">
+            <div><div class="section-index">02 / OVERVIEW</div><h2 id="overviewTitle">Evaluation overview</h2></div>
+            <p>Metrics calculated from your saved runs.</p>
+          </div>
+          <div class="kpi-grid">
+            <article class="kpi-card"><span>Total evaluations</span><strong id="kpiTotal">—</strong><small>All saved runs</small></article>
+            <article class="kpi-card"><span>General evaluations</span><strong id="kpiGeneral">—</strong><small>Single-response reviews</small></article>
+            <article class="kpi-card"><span>Comparisons</span><strong id="kpiCompare">—</strong><small>Pairwise reviews</small></article>
+            <article class="kpi-card"><span>Safety checks</span><strong id="kpiSafety">—</strong><small>Safety-focused reviews</small></article>
+            <article class="kpi-card kpi-highlight"><span>Average overall quality</span><strong id="kpiQuality">—</strong><small>Out of 100</small></article>
+            <article class="kpi-card kpi-highlight"><span>Average safety score</span><strong id="kpiSafetyScore">—</strong><small>Out of 100</small></article>
+          </div>
+        </section>
+
+        <section class="chart-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading"><div><div class="section-index">03 / TREND</div><h2>Quality over time</h2></div><span class="panel-unit">SCORE / 100</span></div>
+            <div id="trendEmpty" class="empty-chart" hidden>Run more evaluations to see trends.</div>
+            <div id="trendChartWrap" class="chart-wrap"><canvas id="qualityTrend" aria-label="Overall quality score by evaluation date"></canvas></div>
+          </article>
+          <article class="panel dimensions-panel">
+            <div class="panel-heading"><div><div class="section-index">04 / DIMENSIONS</div><h2>General response performance</h2></div></div>
+            <p class="panel-description">Average dimension scores across your saved General Response evaluations.</p>
+            <div id="dimensionsList" class="dimension-bars"></div>
+            <div id="dimensionsEmpty" class="empty-inline" hidden>No General Response scores yet.</div>
+          </article>
+        </section>
+
+        <section class="section-block history-section" aria-labelledby="historyTitle">
+          <div class="section-heading">
+            <div><div class="section-index">05 / RECORDS</div><h2 id="historyTitle">Evaluation history</h2></div>
+            <p id="historyCount">0 evaluations</p>
+          </div>
+          <div class="history-toolbar">
+            <div id="filterGroup" class="filter-group" role="group" aria-label="Filter evaluations">
+              <button class="filter-button active" data-filter="all" type="button" aria-pressed="true">All</button>
+              <button class="filter-button" data-filter="general" type="button" aria-pressed="false">General</button>
+              <button class="filter-button" data-filter="compare" type="button" aria-pressed="false">Compare</button>
+              <button class="filter-button" data-filter="safety" type="button" aria-pressed="false">Safety</button>
+            </div>
+            <label class="search-box"><span aria-hidden="true">⌕</span><input id="historySearch" type="search" placeholder="Search prompts…" aria-label="Search prompts"></label>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Type</th><th>Prompt preview</th><th>Result</th><th><span class="sr-only">Open</span></th></tr></thead>
+              <tbody id="historyRows"></tbody>
+            </table>
+          </div>
+          <div id="historyEmpty" class="empty-state" hidden><strong>No evaluations found.</strong><span>Try another filter or run a new evaluation.</span></div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <div class="dialog-head"><div><div class="section-index">SAVED EVALUATION</div><h2 id="detailTitle">Evaluation details</h2></div><button id="closeDialog" class="icon-button" type="button" aria-label="Close details">×</button></div>
+    <div id="detailMeta" class="detail-meta"></div>
+    <div id="detailBody" class="detail-body"></div>
+  </dialog>
+  <footer class="footer"><span>© <span id="year"></span> EvalLoop AI</span><span>AI-assisted scores are signals, not guarantees.</span></footer>
+</body>
+</html>
