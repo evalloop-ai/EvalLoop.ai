@@ -6,25 +6,13 @@
   const $ = (id) => document.getElementById(id);
   const state = { client: null, runs: [], filter: "all", search: "", chart: null };
 
-  $("year").textContent = new Date().getFullYear();
+  if ($("year")) $("year").textContent = new Date().getFullYear();
 
   function initSupabase() {
     if (!window.supabase?.createClient) throw new Error("Supabase client failed to load. Refresh the page and try again.");
-    // Match the exact storage key used by the homepage's Supabase client.
-    // Reuse an existing client if another script has already initialized one.
-    state.client = window.evalLoopSupabase || window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storageKey: "sb-vonknmobshxkhbewdoie-auth-token"
-        }
-      }
-    );
-    window.evalLoopSupabase = state.client;
+    state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "sb-vonknmobshxkhbewdoie-auth-token" }
+    });
   }
 
   function getRunArray(payload) {
@@ -411,44 +399,34 @@
     $("errorNotice").hidden = true;
   }
 
-  let loadSequence = 0;
-
-  async function loadPage(sessionOverride, useProvidedSession = false) {
-    const thisLoad = ++loadSequence;
+  async function loadPage() {
     clearError();
     $("loadingNotice").hidden = false;
     $("insightsContent").hidden = true;
     try {
-      let session = sessionOverride;
-      if (!useProvidedSession) {
-        const { data, error } = await state.client.auth.getSession();
-        if (error) throw error;
-        session = data?.session || null;
-      }
-      // Ignore stale overlapping loads caused by rapid auth events.
-      if (thisLoad !== loadSequence) return;
+      const { data: { session }, error } = await state.client.auth.getSession();
+      if (error) throw error;
       setHeaderAuth(session);
       if (!session) {
-        $("authStatus").textContent = "Signed out";
+        if ($("authStatus")) $("authStatus").textContent = "Signed out";
         $("loginGate").hidden = false;
         $("historyApp").hidden = true;
         $("loadingNotice").hidden = true;
         return;
       }
-      $("authStatus").textContent = "Signed in";
+      if ($("authStatus")) $("authStatus").textContent = "Signed in";
       $("loginGate").hidden = true;
       $("historyApp").hidden = false;
-      const runs = await fetchHistory(session);
-      if (thisLoad !== loadSequence) return;
-      state.runs = runs;
+      state.runs = await fetchHistory(session);
       renderAll();
       $("insightsContent").hidden = false;
     } catch (error) {
-      if (thisLoad === loadSequence) {
-        showError(error?.message || "Unable to load your saved evaluations.");
-      }
+      $("loginGate").hidden = true;
+      $("historyApp").hidden = false;
+      $("insightsContent").hidden = true;
+      showError(error?.message || "Unable to load your saved evaluations.");
     } finally {
-      if (thisLoad === loadSequence) $("loadingNotice").hidden = true;
+      $("loadingNotice").hidden = true;
     }
   }
 
@@ -467,7 +445,7 @@
   }
 
   function wireEvents() {
-    $("refreshButton").addEventListener("click", () => loadPage());
+    $("refreshButton").addEventListener("click", loadPage);
     $("filterGroup").addEventListener("click", event => {
       const button = event.target.closest("[data-filter]");
       if (!button) return;
@@ -540,31 +518,15 @@
       if (event.target === $("detailDialog")) $("detailDialog").close();
     });
     state.client.auth.onAuthStateChange((event, session) => {
-      // Keep the shared navigation in sync with the current auth session.
       setHeaderAuth(session);
-
-      if (event === "SIGNED_OUT") {
-        state.runs = [];
-        if (state.chart) {
-          state.chart.destroy();
-          state.chart = null;
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
+        if (!session) {
+          $("loginGate").hidden = false;
+          $("historyApp").hidden = true;
+          if ($("authStatus")) $("authStatus").textContent = "Signed out";
+        } else {
+          window.setTimeout(() => { void loadPage(); }, 0);
         }
-        $("loginGate").hidden = false;
-        $("historyApp").hidden = true;
-        $("insightsContent").hidden = true;
-        $("loadingNotice").hidden = true;
-        $("authStatus").textContent = "Signed out";
-        return;
-      }
-
-      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
-        // Do not call getSession() synchronously from inside the auth callback.
-        // Deferring avoids Supabase auth-lock contention during session updates.
-        window.setTimeout(() => {
-          loadPage(session, true).catch((error) => {
-            showError(error?.message || "Unable to load your saved evaluations.");
-          });
-        }, 0);
       }
     });
   }
@@ -574,7 +536,15 @@
     wireEvents();
     loadPage();
   } catch (error) {
-    $("loadingNotice").hidden = true;
+    // Keep the page from becoming visually empty when initialization fails.
+    const loginGate = $("loginGate");
+    const historyApp = $("historyApp");
+    const loadingNotice = $("loadingNotice");
+    if (loginGate) loginGate.hidden = true;
+    if (historyApp) historyApp.hidden = false;
+    if (loadingNotice) loadingNotice.hidden = true;
+    const insightsContent = $("insightsContent");
+    if (insightsContent) insightsContent.hidden = true;
     showError(error.message || "Could not initialize the History page.");
   }
 })();
