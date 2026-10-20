@@ -126,6 +126,40 @@ const EvalLoopUsage = (() => {
   return { requestHeaders, beforeRun, afterRun, showLimitMessage, limitMessage: LIMIT_MESSAGE };
 })();
 
+/* Save completed evaluations to the authenticated user's History.
+   This request does not call an evaluation endpoint or consume quota. */
+async function saveEvaluationToHistory(payload) {
+  const headers = EvalLoopUsage.requestHeaders();
+  if (!headers.Authorization) return { saved: false, reason: "sign_in" };
+
+  const response = await fetch("/api/history", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers, Accept: "application/json" },
+    body: JSON.stringify(payload),
+    cache: "no-store"
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body?.evaluation?.id) {
+    throw new Error(body?.error || `History save failed (${response.status}).`);
+  }
+  return { saved: true, evaluation: body.evaluation };
+}
+
+async function saveEvaluationSafely(payload) {
+  try { return await saveEvaluationToHistory(payload); }
+  catch (error) {
+    console.error("EvalLoop AI could not save this evaluation to History:", error);
+    return { saved: false, reason: "save_error" };
+  }
+}
+
+function historySaveMessage(outcome, label) {
+  if (outcome.saved) return `${label} completed and saved to History.`;
+  if (outcome.reason === "sign_in") return `${label} completed. Sign in to save this evaluation to History.`;
+  return `${label} completed, but History could not save it. Please check your connection and try again later.`;
+}
+
+
 
 const safetyForm = document.getElementById("safetyForm");
 const promptInput = document.getElementById("prompt");
@@ -295,7 +329,15 @@ safetyForm.addEventListener("submit", async event => {
       throw error;
     }
     renderResult(data.result);
-    showMessage("Safety check completed.");
+    const historyOutcome = await saveEvaluationSafely({
+      evaluation_type: "safety",
+      prompt: payload.prompt,
+      response: payload.response,
+      reference_context: payload.policy || null,
+      result: data.result,
+      model_used: "openai/gpt-oss-120b"
+    });
+    showMessage(historySaveMessage(historyOutcome, "Safety check"));
   } catch (error) {
     console.error("EvalLoop AI safety check failed:", error);
     if (error?.code === "DAILY_LIMIT_REACHED") EvalLoopUsage.showLimitMessage(formMessage);
