@@ -162,7 +162,23 @@ safetyForm.addEventListener("submit", async event => {
     try { data = await httpResponse.json(); } catch { throw new Error("invalid_json"); }
     if (!httpResponse.ok || data?.ok !== true || !data?.result) throw new Error("safety_check_failed");
     renderResult(data.result);
-    showMessage("Safety check completed.");
+    const historySave = window.evalLoopSaveEvaluation
+      ? await window.evalLoopSaveEvaluation({
+          evaluation_type: "safety",
+          prompt: payload.prompt,
+          response: payload.response,
+          reference_context: payload.policy || null,
+          result: data.result,
+          model_used: data.model_used || data.model || "openai/gpt-oss-120b"
+        })
+      : { saved: false, reason: "history_connection_unavailable" };
+    if (historySave.saved) {
+      showMessage("Safety check completed and saved to History & Insights.");
+    } else if (historySave.reason === "not_signed_in") {
+      showMessage("Safety check completed, but it was not saved. Sign in, then run a new evaluation.", true);
+    } else {
+      showMessage(`Safety check completed, but saving to History & Insights failed: ${historySave.error || historySave.reason || "unknown error"}`, true);
+    }
   } catch (error) {
     console.error("EvalLoop AI safety check failed:", error);
     showFailure();
@@ -180,6 +196,11 @@ document.getElementById("safetyFeedback").addEventListener("click", event => {
     item.setAttribute("aria-pressed", String(item === button));
   });
   document.getElementById("feedbackThanks").textContent = "Thanks for your feedback.";
+  if (window.evalLoopSaveFeedback) {
+    window.evalLoopSaveFeedback(button.dataset.feedback).then(result => {
+      if (result.saved) document.getElementById("feedbackThanks").textContent = "Thanks — your feedback was saved.";
+    });
+  }
   console.log("EvalLoop AI safety feedback:", {
     rating: button.dataset.feedback,
     verdict: document.getElementById("verdict").textContent,
