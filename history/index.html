@@ -37,278 +37,24 @@
         </span>
       </div>
 
-      <a href="/app/general-response.html" class="announcement-link">
+      <a href="/app/general-response" class="announcement-link">
         FREE TO USE <span>↗</span>
       </a>
 
     </div>
   </div>
 
-  <!-- =========================================================
-       NAVIGATION
-  ========================================================== -->
-  <header class="site-header" id="siteHeader">
-
-    <div class="container nav-inner">
-
-      <a href="https://evalloop-ai.vercel.app/" class="brand">
-        <span>EvalLoop AI</span><span class="brand-cursor">_</span>
+  <!-- Minimal navigation: return to the public homepage -->
+  <header class="site-header history-minimal-header">
+    <div class="container history-minimal-header-inner">
+      <a class="history-back-home" href="https://evalloop-ai.vercel.app/" aria-label="Back to EvalLoop AI home">
+        <span aria-hidden="true">←</span> Back to Home
       </a>
-
-      <!-- DESKTOP NAVIGATION -->
-      <nav class="desktop-nav" aria-label="Primary navigation">
-
-        <div class="nav-dropdown">
-          <button
-            class="nav-dropdown-trigger"
-            type="button"
-            aria-expanded="false"
-            aria-haspopup="true"
-          >
-            Products <span class="nav-chevron">⌄</span>
-          </button>
-
-          <div class="nav-dropdown-menu" role="menu">
-            <a href="/app/general-response.html" role="menuitem">
-              <span>Evaluate responses</span>
-              <small>General AI response test</small>
-            </a>
-            <a href="/app/compare/" role="menuitem">
-              <span>Compare A/B responses</span>
-              <small>Response Comparison</small>
-            </a>
-            <a href="/app/safety/" role="menuitem">
-              <span>AI Safety check</span>
-              <small>AI response for safety risks</small>
-            </a>
-          </div>
-        </div>
-        <a href="/history/">Insights</a>
-
-        <div class="nav-dropdown">
-          <button
-            class="nav-dropdown-trigger"
-            type="button"
-            aria-expanded="false"
-            aria-haspopup="true"
-          >
-            Resources <span class="nav-chevron">⌄</span>
-          </button>
-
-          <div class="nav-dropdown-menu" role="menu">
-            <a href="/docs/" role="menuitem">
-              <span>Docs</span>
-              <small>Build with EvalLoop AI</small>
-            </a>
-            <a href="/knowledge/" role="menuitem">
-              <span>Learn</span>
-              <small>Guides and evaluation basics</small>
-            </a>
-            <a href="/blog/" role="menuitem">
-              <span>Blog</span>
-              <small>Ideas, updates, and research</small>
-            </a>
-          </div>
-        </div>
-
-        <a href="/pricing/">Pricing</a>
-
-      </nav>
-
-      <div class="nav-actions" id="navActions">
-
-  <!-- Logged-out state -->
-  <div class="auth-logged-out" id="authLoggedOut">
-    <a href="/login/" class="nav-login">
-      Login
-    </a>
-
-    <a href="/signup/" class="button button-small">
-      Sign up <span>↗</span>
-    </a>
-  </div>
-
-  <!-- Logged-in state -->
-  <div class="auth-logged-in" id="authLoggedIn" hidden>
-
-    <button
-      class="profile-trigger"
-      id="profileTrigger"
-      type="button"
-      aria-label="Open account menu"
-      aria-expanded="false"
-      aria-haspopup="true"
-    >
-      <span class="profile-avatar" id="profileAvatar">VK</span>
-      <span class="profile-name" id="profileName">Vivek Kaneti</span>
-      <span class="profile-chevron">⌄</span>
-    </button>
-
-    <div
-      class="profile-menu"
-      id="profileMenu"
-      role="menu"
-      aria-hidden="true"
-    >
-
-      <div class="profile-menu-header">
-        <span class="profile-menu-avatar" id="profileMenuAvatar">VK</span>
-
-        <div class="profile-menu-identity">
-          <strong id="profileMenuName">Vivek Kaneti</strong>
-          <span id="profileMenuEmail">user@example.com</span>
-        </div>
-      </div>
-
-      <div class="profile-menu-divider"></div>
-
-      <a href="/app/" role="menuitem">
-        <span>Workspace</span>
-      </a>
-
-      <a href="/account/" role="menuitem">
-        <span>Account</span>
-      </a>
-
-      <a href="/usage/" role="menuitem">
-        <span>Usage &amp; Plan</span>
-      </a>
-
-      <a href="/api-space/" role="menuitem">
-        <span>API Keys</span>
-      </a>
-
-      <a href="/settings/" role="menuitem">
-        <span>Settings</span>
-      </a>
-
-      <div class="profile-menu-divider"></div>
-
-      <button
-        type="button"
-        class="profile-logout"
-        id="profileLogout"
-      >
-        Sign out
-      </button>
-
     </div>
-
-  </div>
-
-</div>
-
-      <!-- Mobile menu button -->
-      <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-      >
-        <span></span>
-        <span></span>
-      </button>
-
-    </div>
-
-    <!-- MOBILE NAVIGATION -->
-    <div class="mobile-nav" id="mobileNav">
-
-      <div class="mobile-nav-dropdown">
-        <button
-          class="mobile-nav-dropdown-trigger"
-          type="button"
-          aria-expanded="false"
-        >
-          Products <span class="nav-chevron">⌄</span>
-        </button>
-        <div class="mobile-nav-dropdown-menu">
-          <a href="/app/general-response.html">Evaluate responses</a>
-          <a href="/app/compare/">Compare A/B responses</a>
-          <a href="/app/safety/">AI Safety check</a>
-        </div>
-      </div>
-
-
-
-      <div class="mobile-nav-dropdown">
-        <button
-          class="mobile-nav-dropdown-trigger"
-          type="button"
-          aria-expanded="false"
-        >
-          Resources <span class="nav-chevron">⌄</span>
-        </button>
-        <div class="mobile-nav-dropdown-menu">
-          <a href="/docs/">Docs</a>
-          <a href="/knowledge/">Learn</a>
-          <a href="/blog/">Blog</a>
-        </div>
-      </div>
-
-      <a href="/pricing/">Pricing</a>
-
-     <div class="mobile-nav-actions" id="mobileAuthActions">
-
-  <!-- Logged-out -->
-  <div class="mobile-auth-logged-out" id="mobileAuthLoggedOut">
-
-    <a href="/login/">
-      Login
-    </a>
-
-    <a href="/signup/" class="button">
-      Sign up <span>↗</span>
-    </a>
-
-  </div>
-
-  <!-- Logged-in -->
-  <div class="mobile-auth-logged-in" id="mobileAuthLoggedIn" hidden>
-
-    <div class="mobile-profile-summary">
-
-      <span
-        class="profile-avatar"
-        id="mobileProfileAvatar"
-      >
-        VK
-      </span>
-
-      <div>
-        <strong id="mobileProfileName">
-          Vivek Kaneti
-        </strong>
-
-        <span id="mobileProfileEmail">
-          user@example.com
-        </span>
-      </div>
-
-    </div>
-
-    <a href="/account/">Account</a>
-    <a href="/usage/">Usage &amp; Plan</a>
-    <a href="/settings/">Settings</a>
-
-    <button
-      type="button"
-      id="mobileProfileLogout"
-      class="mobile-profile-logout"
-    >
-      Sign out
-    </button>
-
-  </div>
-
-</div>
-
-    </div>
-
   </header>
   <main class="history-main">
     <div class="container">
-      <section id="loginGate" class="history-login-gate" hidden>
+      <section id="loginGate" class="history-login-gate">
         <div class="section-kicker"><span class="kicker-line"></span> PRIVATE WORKSPACE</div>
         <h1>Log in to view your saved evaluations.</h1>
         <p>Your evaluation history is private and available after you sign in to EvalLoop AI.</p>
@@ -331,9 +77,9 @@
             <p>Choose a workflow to start a new evaluation.</p>
           </div>
           <div class="history-actions-grid">
-            <a class="history-action-card" href="/app/general-response.html"><span class="history-action-symbol">↗</span><span><h3>Evaluate Response</h3><p>Score one AI response across six quality dimensions.</p></span><span class="history-action-arrow">→</span></a>
-            <a class="history-action-card" href="/app/compare/"><span class="history-action-symbol">⇄</span><span><h3>Compare A vs B</h3><p>Compare two answers to the same prompt.</p></span><span class="history-action-arrow">→</span></a>
-            <a class="history-action-card" href="/app/safety/"><span class="history-action-symbol">⌁</span><span><h3>Check Safety</h3><p>Review an AI response for safety concerns.</p></span><span class="history-action-arrow">→</span></a>
+            <a class="history-action-card" href="/app/general-response"><span class="history-action-symbol">↗</span><span><h3>Evaluate Response</h3><p>Score one AI response across six quality dimensions.</p></span><span class="history-action-arrow">→</span></a>
+            <a class="history-action-card" href="/app/compare"><span class="history-action-symbol">⇄</span><span><h3>Compare A vs B</h3><p>Compare two answers to the same prompt.</p></span><span class="history-action-arrow">→</span></a>
+            <a class="history-action-card" href="/app/safety"><span class="history-action-symbol">⌁</span><span><h3>Check Safety</h3><p>Review an AI response for safety concerns.</p></span><span class="history-action-arrow">→</span></a>
           </div>
         </section>
         <div id="insightsContent" hidden>
