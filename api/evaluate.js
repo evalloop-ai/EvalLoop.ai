@@ -1,5 +1,6 @@
+import { reserveDailyEvaluation, DAILY_LIMIT_MESSAGE } from "./_lib/usage.js";
 /* =========================================================
-   EvalLoop AI â€” Evaluation API
+   EvalLoop AI — Evaluation API
    Groq-powered LLM Judge
    ========================================================= */
 
@@ -66,6 +67,18 @@ export default async function handler(req, res) {
         error: "GROQ_API_KEY is not configured."
       });
     }
+
+  // Shared daily quota reservation occurs before any Groq request.
+  let quota;
+  try {
+    quota = await reserveDailyEvaluation(req, res);
+  } catch (usageError) {
+    console.error("General evaluation usage enforcement failed:", usageError?.message || usageError);
+    return res.status(usageError?.status || 503).json({ ok: false, code: "USAGE_SERVICE_UNAVAILABLE", error: usageError?.status === 401 ? usageError.message : "Usage limits could not be verified. Please try again shortly." });
+  }
+  if (!quota.allowed) {
+    return res.status(429).json({ ok: false, code: "DAILY_LIMIT_REACHED", error: DAILY_LIMIT_MESSAGE, usage: quota.usage });
+  }
 
     /*
      * Evaluation instructions.
