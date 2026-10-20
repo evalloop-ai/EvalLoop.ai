@@ -322,7 +322,11 @@
     .auth-logged-out[hidden],
     .auth-logged-in[hidden],
     .mobile-auth-logged-out[hidden],
-    .mobile-auth-logged-in[hidden] {
+    .mobile-auth-logged-in[hidden],
+    #authLoggedOut[hidden],
+    #authLoggedIn[hidden],
+    #mobileAuthLoggedOut[hidden],
+    #mobileAuthLoggedIn[hidden] {
       display: none !important;
     }
 
@@ -1955,30 +1959,34 @@
 
   <script>
     /*
-     * IMPORTANT:
-     * Use the same Supabase URL and anon/publishable key as your
-     * existing EvalLoop AI landing page.
-     *
-     * Replace the two placeholders below with your existing
-     * public Supabase project credentials.
-     *
+     * Shared EvalLoop AI Supabase configuration.
+     * These are the same public project credentials and auth storage key
+     * used by the homepage, so this page can read the existing session.
      * Never put a Supabase service-role key in browser code.
      */
 
-    const SUPABASE_URL = "YOUR_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+    const SUPABASE_URL = "https://vonknmobshxkhbewdoie.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+    const SUPABASE_STORAGE_KEY = "sb-vonknmobshxkhbewdoie-auth-token";
 
     let supabaseClient = null;
 
-    if (
-      window.supabase &&
-      SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
-      SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
-    ) {
+    if (window.supabase) {
       supabaseClient = window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_ANON_KEY
+        SUPABASE_ANON_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+            storageKey: SUPABASE_STORAGE_KEY
+          }
+        }
       );
+      window.evalLoopSupabase = supabaseClient;
+    } else {
+      console.error("EvalLoop AI: Supabase library did not load.");
     }
 
     /* =====================================================
@@ -2203,6 +2211,13 @@
         return;
       }
 
+      /* Listen first so an auth change cannot be missed during startup. */
+      supabaseClient.auth.onAuthStateChange(
+        (_event, session) => {
+          renderAuthenticatedUser(session?.user || null);
+        }
+      );
+
       try {
         const { data, error } =
           await supabaseClient.auth.getSession();
@@ -2214,12 +2229,6 @@
         console.error("Unable to read Supabase session:", error);
         renderAuthenticatedUser(null);
       }
-
-      supabaseClient.auth.onAuthStateChange(
-        (_event, session) => {
-          renderAuthenticatedUser(session?.user || null);
-        }
-      );
     }
 
     initializeAuthentication();
