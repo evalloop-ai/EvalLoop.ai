@@ -6731,10 +6731,16 @@ console.log(
         auth: {
           persistSession: true,
           autoRefreshToken: true,
-          detectSessionInUrl: true
+          detectSessionInUrl: true,
+          // Keep the exact same session key on the homepage and Insights.
+          storageKey: "sb-vonknmobshxkhbewdoie-auth-token"
         }
       }
     );
+
+  // Expose this page's client for other scripts running on this page.
+  // Other pages create their own client using the same storage key.
+  window.evalLoopSupabase = supabaseClient;
 
 
   /* ---------------------------------------------------------
