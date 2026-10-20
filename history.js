@@ -10,9 +10,21 @@
 
   function initSupabase() {
     if (!window.supabase?.createClient) throw new Error("Supabase client failed to load. Refresh the page and try again.");
-    state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    });
+    // Match the exact storage key used by the homepage's Supabase client.
+    // Reuse an existing client if another script has already initialized one.
+    state.client = window.evalLoopSupabase || window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storageKey: "sb-vonknmobshxkhbewdoie-auth-token"
+        }
+      }
+    );
+    window.evalLoopSupabase = state.client;
   }
 
   function getRunArray(payload) {
@@ -399,13 +411,22 @@
     $("errorNotice").hidden = true;
   }
 
-  async function loadPage() {
+  let loadSequence = 0;
+
+  async function loadPage(sessionOverride, useProvidedSession = false) {
+    const thisLoad = ++loadSequence;
     clearError();
     $("loadingNotice").hidden = false;
     $("insightsContent").hidden = true;
     try {
-      const { data: { session }, error } = await state.client.auth.getSession();
-      if (error) throw error;
+      let session = sessionOverride;
+      if (!useProvidedSession) {
+        const { data, error } = await state.client.auth.getSession();
+        if (error) throw error;
+        session = data?.session || null;
+      }
+      // Ignore stale overlapping loads caused by rapid auth events.
+      if (thisLoad !== loadSequence) return;
       setHeaderAuth(session);
       if (!session) {
         $("authStatus").textContent = "Signed out";
@@ -417,13 +438,17 @@
       $("authStatus").textContent = "Signed in";
       $("loginGate").hidden = true;
       $("historyApp").hidden = false;
-      state.runs = await fetchHistory(session);
+      const runs = await fetchHistory(session);
+      if (thisLoad !== loadSequence) return;
+      state.runs = runs;
       renderAll();
       $("insightsContent").hidden = false;
     } catch (error) {
-      showError(error?.message || "Unable to load your saved evaluations.");
+      if (thisLoad === loadSequence) {
+        showError(error?.message || "Unable to load your saved evaluations.");
+      }
     } finally {
-      $("loadingNotice").hidden = true;
+      if (thisLoad === loadSequence) $("loadingNotice").hidden = true;
     }
   }
 
@@ -442,7 +467,7 @@
   }
 
   function wireEvents() {
-    $("refreshButton").addEventListener("click", loadPage);
+    $("refreshButton").addEventListener("click", () => loadPage());
     $("filterGroup").addEventListener("click", event => {
       const button = event.target.closest("[data-filter]");
       if (!button) return;
@@ -536,7 +561,7 @@
         // Do not call getSession() synchronously from inside the auth callback.
         // Deferring avoids Supabase auth-lock contention during session updates.
         window.setTimeout(() => {
-          loadPage().catch((error) => {
+          loadPage(session, true).catch((error) => {
             showError(error?.message || "Unable to load your saved evaluations.");
           });
         }, 0);
