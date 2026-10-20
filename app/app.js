@@ -130,6 +130,40 @@ const EvalLoopUsage = (() => {
   return { requestHeaders, beforeRun, afterRun, showLimitMessage, limitMessage: LIMIT_MESSAGE };
 })();
 
+/* Save completed evaluations to the authenticated user's History.
+   This request does not call an evaluation endpoint or consume quota. */
+async function saveEvaluationToHistory(payload) {
+  const headers = EvalLoopUsage.requestHeaders();
+  if (!headers.Authorization) return { saved: false, reason: "sign_in" };
+
+  const response = await fetch("/api/history", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers, Accept: "application/json" },
+    body: JSON.stringify(payload),
+    cache: "no-store"
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body?.evaluation?.id) {
+    throw new Error(body?.error || `History save failed (${response.status}).`);
+  }
+  return { saved: true, evaluation: body.evaluation };
+}
+
+async function saveEvaluationSafely(payload) {
+  try { return await saveEvaluationToHistory(payload); }
+  catch (error) {
+    console.error("EvalLoop AI could not save this evaluation to History:", error);
+    return { saved: false, reason: "save_error" };
+  }
+}
+
+function historySaveMessage(outcome, label) {
+  if (outcome.saved) return `${label} completed and saved to History.`;
+  if (outcome.reason === "sign_in") return `${label} completed. Sign in to save this evaluation to History.`;
+  return `${label} completed, but History could not save it. Please check your connection and try again later.`;
+}
+
+
 
 const evaluateButton = document.getElementById("evaluateButton");
 const promptInput = document.getElementById("prompt");
@@ -504,7 +538,15 @@ if (evaluateButton && promptInput && responseInput) {
       const usageBefore = await EvalLoopUsage.beforeRun(formMessage);
       const data = await evaluateWithRetry(prompt, response, reference, usageBefore);
       displayResults(data);
-      showMessage("Evaluation completed.");
+      const historyOutcome = await saveEvaluationSafely({
+        evaluation_type: "general",
+        prompt,
+        response,
+        reference_context: reference || null,
+        result: data,
+        model_used: "openai/gpt-oss-120b"
+      });
+      showMessage(historySaveMessage(historyOutcome, "Evaluation"));
     } catch (error) {
       console.error("EvalLoop AI evaluation error after retry:", error);
       if (resultState) {
