@@ -809,15 +809,273 @@
         transition-duration: 0.001ms !important;
       }
     }
-  </style>
+
+    /* =========================================================
+       CONTACT PAGE REDESIGN — refined, responsive, product-led
+       ========================================================= */
+    :root {
+      --bg: #0b100e;
+      --panel: #111916;
+      --panel2: #17221c;
+      --ink: #f4f7f4;
+      --muted: #a8b4ad;
+      --dim: #75847b;
+      --line: rgba(221, 241, 229, 0.14);
+      --line-soft: rgba(221, 241, 229, 0.075);
+      --green: #48e39b;
+      --green2: #a0f3c8;
+      --darkgreen: #153b2a;
+      --max: 1240px;
+    }
+    body {
+      background:
+        radial-gradient(ellipse at 78% 14%, rgba(51, 190, 123, .11), transparent 29%),
+        radial-gradient(ellipse at 8% 48%, rgba(40, 110, 78, .08), transparent 32%),
+        var(--bg);
+    }
+    .background-grid {
+      opacity: .58;
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,.4) 48%, transparent 86%);
+    }
+    .site-header { background: rgba(11, 16, 14, .82); border-bottom-color: rgba(221,241,229,.1); }
+    .nav-inner { min-height: 72px; }
+    .nav-dropdown { height: 72px; }
+    .brand { font-size: 15px; letter-spacing: -.055em; }
+    .brand-cursor { text-shadow: 0 0 18px rgba(72,227,155,.65); }
+    .desktop-nav { gap: clamp(18px, 2.2vw, 32px); }
+    .desktop-nav > a, .nav-dropdown-trigger, .nav-login { font-size: 12px; }
+    .button { border-radius: 7px; min-height: 46px; padding: 0 19px; letter-spacing: .025em; }
+    .button-primary { background: linear-gradient(135deg, rgba(39,116,77,.5), rgba(21,59,42,.75)); box-shadow: inset 0 1px rgba(255,255,255,.045); }
+    .contact-hero { padding: clamp(76px, 9vw, 118px) 0 70px; }
+    .contact-hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(310px, .75fr); align-items: center; gap: clamp(44px, 8vw, 112px); }
+    .contact-hero-copy { min-width: 0; }
+    .section-kicker { font-size: 10px; letter-spacing: .14em; }
+    .kicker-line { width: 30px; box-shadow: 0 0 14px rgba(72,227,155,.35); }
+    .contact-hero h1 { max-width: 850px; margin-top: 28px; font-size: clamp(48px, 6.6vw, 86px); line-height: .99; letter-spacing: -.068em; font-weight: 400; }
+    .contact-hero h1 span { margin-top: 8px; color: var(--green); }
+    .contact-description { max-width: 610px; margin-top: 28px; color: #aab7af; font-size: clamp(14px, 1.2vw, 16px); line-height: 1.9; font-weight: 300; }
+    .hero-trust-row { display: flex; align-items: center; gap: 10px; margin-top: 30px; color: #8d9c92; font-family: var(--mono); font-size: 9px; letter-spacing: .07em; line-height: 1.7; }
+    .status-dot { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(72,227,155,.1), 0 0 16px rgba(72,227,155,.45); }
+    .hero-contact-card { position: relative; overflow: hidden; min-height: 390px; padding: 25px; border: 1px solid rgba(160,243,200,.2); border-radius: 14px; background: linear-gradient(145deg, rgba(22,39,30,.92), rgba(12,19,15,.9) 70%); box-shadow: 0 28px 90px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.035); }
+    .hero-contact-card::before { content: ""; position: absolute; width: 280px; height: 280px; top: 30px; left: 50%; transform: translateX(-50%); border-radius: 50%; background: rgba(55,204,132,.08); filter: blur(45px); pointer-events: none; }
+    .hero-card-topline { position: relative; display: flex; justify-content: space-between; color: #91a69a; font: 9px/1.4 var(--mono); letter-spacing: .12em; }
+    .hero-card-index { color: #5c806a; }
+    .hero-orbit { position: relative; width: 200px; height: 178px; margin: 15px auto 5px; display: grid; place-items: center; }
+    .orbit-ring { position: absolute; border: 1px solid rgba(112,229,164,.23); border-radius: 50%; transform: rotate(-24deg); }
+    .orbit-ring-one { width: 176px; height: 104px; }
+    .orbit-ring-two { width: 132px; height: 160px; transform: rotate(42deg); border-color: rgba(112,229,164,.15); }
+    .orbit-core { width: 72px; height: 72px; display: grid; place-items: center; border: 1px solid rgba(160,243,200,.65); border-radius: 21px; background: linear-gradient(145deg, rgba(72,227,155,.2), rgba(17,35,25,.95)); box-shadow: 0 0 38px rgba(72,227,155,.13), inset 0 1px rgba(255,255,255,.1); transform: rotate(-8deg); }
+    .orbit-core span { color: #c9f9dd; font: 500 19px/1 var(--mono); letter-spacing: -.08em; transform: rotate(8deg); }
+    .orbit-node { position: absolute; width: 8px; height: 8px; border: 2px solid #a0f3c8; border-radius: 50%; background: #1d6240; box-shadow: 0 0 15px rgba(72,227,155,.55); }
+    .orbit-node-one { top: 24px; left: 47px; }
+    .orbit-node-two { right: 20px; top: 83px; }
+    .orbit-node-three { bottom: 18px; left: 68px; }
+    .hero-card-title { position: relative; margin-top: 12px; color: #eef8f1; font-size: 20px; font-weight: 400; letter-spacing: -.035em; line-height: 1.4; }
+    .hero-card-note { position: relative; margin-top: 9px; color: #87988e; font-size: 11px; line-height: 1.7; }
+    .hero-card-link { position: relative; display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding-top: 15px; border-top: 1px solid rgba(221,241,229,.11); color: var(--green2); font: 9px/1.4 var(--mono); letter-spacing: .08em; }
+    .hero-card-link span { font-size: 17px; transition: transform .2s ease; }
+    .hero-card-link:hover span { transform: translate(3px,3px); }
+    .contact-section { padding: 10px 0 112px; }
+    .contact-grid { grid-template-columns: minmax(270px, .72fr) minmax(0, 1.28fr); gap: 0; overflow: hidden; border: 1px solid rgba(221,241,229,.12); border-radius: 14px; background: transparent; box-shadow: 0 30px 90px rgba(0,0,0,.14); }
+    .contact-info { padding: clamp(25px, 3.5vw, 44px); background: linear-gradient(160deg, rgba(20,32,25,.98), rgba(13,20,16,.98)); }
+    .contact-form-wrapper { padding: clamp(25px, 4vw, 50px); background: rgba(15,22,18,.94); }
+    .contact-block { padding: 23px 0; border-bottom-color: rgba(221,241,229,.09); }
+    .contact-label { color: #82978a; font-size: 9px; letter-spacing: .13em; }
+    .contact-value { margin-top: 11px; color: #eef7f0; font-size: 15px; font-weight: 400; line-height: 1.6; }
+    .contact-value.email { color: var(--green2); }
+    .contact-note { color: #91a097; font-size: 12px; line-height: 1.8; }
+    .form-header { margin-bottom: 30px; }
+    .form-header h2 { margin-top: 17px; font-size: clamp(27px, 3vw, 37px); font-weight: 400; letter-spacing: -.055em; }
+    .form-header p { max-width: 490px; margin-top: 11px; color: #9eaca3; font-size: 12px; line-height: 1.8; }
+    .form-grid { gap: 22px 18px; }
+    .form-field label { color: #87988e; font-size: 9px; letter-spacing: .12em; }
+    .form-field input, .form-field textarea { border: 1px solid rgba(221,241,229,.13); border-radius: 6px; background: #0b110d; color: #f0f6f1; font-size: 13px; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+    .form-field input { height: 49px; padding: 0 15px; }
+    .form-field textarea { min-height: 160px; padding: 15px; }
+    .form-field input:focus, .form-field textarea:focus { border-color: rgba(72,227,155,.62); background: #0d1510; box-shadow: 0 0 0 3px rgba(72,227,155,.07); }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: #5e7064; }
+    .form-helper { margin-top: 18px; color: #75877b; font-size: 10px; line-height: 1.7; }
+    .form-actions { align-items: center; justify-content: space-between; gap: 18px; margin-top: 19px; }
+    .form-actions .button { min-width: 190px; }
+    .form-note { max-width: 210px; color: #7f9085; font-size: 9px; line-height: 1.8; }
+    .site-footer { padding-top: 58px; background: rgba(9,14,11,.78); }
+    .footer-bottom { font-size: 8px; }
+    @media (max-width: 900px) {
+      .contact-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(260px, .75fr); gap: 35px; }
+      .hero-contact-card { min-height: 360px; padding: 22px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-info { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; }
+      .contact-block:first-child { padding-top: 0; }
+      .contact-block:nth-child(2) { padding-top: 0; }
+    }
+    @media (max-width: 800px) {
+      .nav-inner { min-height: 68px; }
+      .mobile-nav { top: 68px; max-height: calc(100vh - 68px); }
+      .contact-hero { padding-top: 72px; }
+      .contact-hero-grid { grid-template-columns: 1fr; gap: 38px; }
+      .contact-hero h1 { font-size: clamp(48px, 10vw, 74px); }
+      .hero-contact-card { max-width: 560px; min-height: 340px; }
+      .hero-orbit { height: 145px; margin-top: 8px; }
+      .orbit-ring-one { width: 160px; height: 92px; }
+      .orbit-ring-two { width: 115px; height: 135px; }
+      .contact-info { padding: 28px; }
+      .contact-form-wrapper { padding: 30px; }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(calc(100% - 36px), var(--max)); }
+      .contact-hero { padding-top: 58px; padding-bottom: 44px; }
+      .contact-hero h1 { font-size: clamp(43px, 12vw, 62px); line-height: 1.02; }
+      .contact-description { margin-top: 21px; font-size: 13px; }
+      .hero-trust-row { align-items: flex-start; margin-top: 23px; font-size: 8px; }
+      .hero-contact-card { padding: 20px; min-height: 325px; }
+      .hero-card-title { font-size: 18px; }
+      .contact-section { padding-bottom: 72px; }
+      .contact-info { display: block; padding: 22px; }
+      .contact-block:nth-child(2) { padding-top: 23px; }
+      .contact-form-wrapper { padding: 23px 20px; }
+      .form-grid { grid-template-columns: 1fr; gap: 18px; }
+      .form-field.full { grid-column: auto; }
+      .form-actions { align-items: stretch; flex-direction: column; }
+      .form-actions .button { width: 100%; }
+      .form-note { max-width: none; }
+      .footer-columns { grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+    }
+
+
+    /* =========================================================
+       REFERENCE ALIGNMENT — match the supplied EvalLoop homepage
+       ========================================================= */
+    :root {
+      --bg: #101211;
+      --panel: #171b18;
+      --panel2: #1d221f;
+      --ink: #f1f1ef;
+      --muted: #a4aaa6;
+      --dim: #727974;
+      --line: rgba(241, 241, 239, 0.14);
+      --line-soft: rgba(241, 241, 239, 0.08);
+      --green: #3ecf8e;
+      --green2: #85e7ba;
+      --darkgreen: #13261c;
+      --max: 1200px;
+    }
+    body {
+      background:
+        radial-gradient(circle at 50% -15%, rgba(62, 207, 142, .075), transparent 35%),
+        var(--bg);
+    }
+    .background-grid {
+      opacity: 1;
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,.55) 55%, transparent 100%);
+    }
+    .background-glow {
+      width: 700px;
+      height: 700px;
+      top: -500px;
+      background: radial-gradient(circle, rgba(62,207,142,.085), transparent 68%);
+      filter: blur(10px);
+    }
+    .site-header { background: rgba(16,18,17,.78); border-bottom-color: var(--line-soft); }
+    .nav-inner, .nav-dropdown { min-height: 76px; height: 76px; }
+    .brand { font-size: 16px; letter-spacing: -.04em; }
+    .brand-cursor { text-shadow: none; }
+    .desktop-nav { gap: 32px; }
+    .button {
+      min-height: 44px;
+      padding: 0 17px;
+      border-radius: 3px;
+      background: rgba(62,207,142,.045);
+      border-color: rgba(62,207,142,.35);
+      color: var(--green2);
+      font-size: 10px;
+      letter-spacing: .04em;
+      box-shadow: none;
+    }
+    .button-primary { background: var(--darkgreen); border-color: rgba(62,207,142,.65); }
+    .button-primary:hover { background: #193223; border-color: var(--green); }
+    .button-secondary { background: rgba(29,34,31,.8); border-color: var(--line); color: var(--muted); }
+    .contact-hero { padding: 105px 0 85px; }
+    .contact-hero-grid { grid-template-columns: 1fr .9fr; gap: 80px; }
+    .section-kicker { font-size: 10px; letter-spacing: .10em; }
+    .kicker-line { width: 26px; box-shadow: none; }
+    .contact-hero h1 {
+      margin-top: 26px;
+      font-size: clamp(64px, 8vw, 96px);
+      line-height: .9;
+      letter-spacing: -.04em;
+      font-weight: 300;
+    }
+    .contact-hero h1 span { margin-top: 0; color: var(--green); }
+    .contact-description { margin-top: 32px; color: var(--muted); font-size: 16px; line-height: 1.8; }
+    .hero-trust-row { margin-top: 28px; color: var(--dim); font-size: 9px; letter-spacing: .07em; }
+    .status-dot { width: 5px; height: 5px; flex-basis: 5px; box-shadow: 0 0 10px rgba(62,207,142,.6); }
+    .hero-contact-card {
+      min-height: 0;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: linear-gradient(145deg, rgba(29,34,31,.94), rgba(23,27,24,.88));
+      box-shadow: 0 30px 90px rgba(0,0,0,.32);
+    }
+    .hero-contact-card::before { background: rgba(62,207,142,.075); }
+    .hero-card-topline { padding: 15px 16px; border-bottom: 1px solid var(--line-soft); color: var(--muted); font-size: 9px; letter-spacing: .06em; }
+    .hero-card-index { color: var(--dim); }
+    .hero-orbit { width: 170px; height: 170px; margin: 24px auto 20px; }
+    .orbit-ring { border-color: rgba(62,207,142,.18); }
+    .orbit-ring-two { border-color: rgba(62,207,142,.3); }
+    .orbit-core { width: 70px; height: 70px; border-radius: 50%; border-color: rgba(62,207,142,.65); background: radial-gradient(circle at 40% 35%, rgba(133,231,186,.8), rgba(62,207,142,.25) 35%, rgba(19,38,28,.9) 70%); box-shadow: 0 0 40px rgba(62,207,142,.16), inset 0 0 30px rgba(62,207,142,.12); transform: none; }
+    .orbit-core span { color: var(--green2); font-size: 16px; transform: none; }
+    .orbit-node { border-color: var(--green2); background: var(--darkgreen); box-shadow: 0 0 12px rgba(62,207,142,.4); }
+    .hero-card-title { margin: 0 24px; color: var(--ink); font-size: 22px; font-weight: 300; letter-spacing: -.04em; line-height: 1.15; }
+    .hero-card-note { margin: 14px 24px 0; color: var(--muted); font-size: 12px; }
+    .hero-card-link { margin: 24px 24px 0; padding: 16px 0; border-top-color: var(--line-soft); color: var(--green2); font-size: 9px; }
+    .contact-section { padding: 0 0 120px; }
+    .contact-grid { border-radius: 0; border-color: var(--line); box-shadow: none; }
+    .contact-info { background: var(--panel); }
+    .contact-form-wrapper { background: var(--panel); }
+    .contact-block { border-bottom-color: var(--line-soft); }
+    .contact-label, .form-field label { color: var(--dim); font-size: 9px; letter-spacing: .08em; }
+    .contact-value { color: var(--ink); font-size: 15px; }
+    .contact-value.email { color: var(--green2); }
+    .contact-note { color: var(--muted); font-size: 12px; }
+    .form-header h2 { font-weight: 300; letter-spacing: -.04em; }
+    .form-header p { color: var(--muted); }
+    .form-field input, .form-field textarea { border-radius: 3px; border-color: var(--line); background: #121513; color: var(--ink); }
+    .form-field input:focus, .form-field textarea:focus { border-color: rgba(62,207,142,.65); background: #121513; box-shadow: 0 0 0 2px rgba(62,207,142,.07); }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: var(--dim); }
+    .form-helper, .form-note { color: var(--dim); }
+    .site-footer { background: rgba(16,18,17,.75); }
+    @media (max-width: 1100px) {
+      .contact-hero-grid { gap: 45px; }
+      .contact-hero h1 { font-size: clamp(54px, 7vw, 78px); }
+    }
+    @media (max-width: 800px) {
+      .nav-inner, .nav-dropdown { min-height: 68px; height: 68px; }
+      .contact-hero { padding-top: 72px; padding-bottom: 70px; }
+      .contact-hero-grid { grid-template-columns: 1fr; gap: 38px; }
+      .contact-hero h1 { font-size: clamp(48px, 10vw, 74px); }
+      .hero-contact-card { max-width: 560px; }
+    }
+    @media (max-width: 600px) {
+      .contact-hero { padding-top: 58px; padding-bottom: 50px; }
+      .contact-hero h1 { font-size: clamp(43px, 12vw, 62px); line-height: 1.02; }
+      .contact-description { margin-top: 21px; font-size: 13px; }
+      .contact-section { padding-bottom: 72px; }
+    }
+
+  
+</style>
 </head>
 <body>
   <div class="background-grid"></div>
   <div class="background-glow"></div>
-  <!-- =========================================================
-       NAVIGATION
-  ========================================================== -->
-  <header class="site-header" id="siteHeader">
+  <!-- NAVIGATION — matched to homepage reference -->
+    <!-- =========================================================
+         NAVIGATION
+    ========================================================== -->
+    <header class="site-header" id="siteHeader">
 
     <div class="container nav-inner">
 
@@ -1076,25 +1334,48 @@
     </div>
 
   </header>
-  <!-- =======================================================
+    <!-- =======================================================
        MAIN
        ======================================================= -->
   <main>
     <!-- CONTACT HERO -->
     <section class="contact-hero">
-      <div class="container">
-        <div class="section-kicker">
-          <span class="kicker-line"></span>
-          CONTACT EVALLOOP AI
+      <div class="container contact-hero-grid">
+        <div class="contact-hero-copy">
+          <div class="section-kicker">
+            <span class="kicker-line"></span>
+            CONTACT EVALLOOP AI
+          </div>
+          <h1>
+            Good AI starts<br />
+            <span>with a conversation.</span>
+          </h1>
+          <p class="contact-description">
+            Questions about AI evaluation, product feedback, or a potential partnership?
+            Tell us what you're working on. We'll help you find the right next step.
+          </p>
+          <div class="hero-trust-row">
+            <span class="status-dot"></span>
+            <span>OPEN FOR PRODUCT QUESTIONS &amp; COLLABORATIONS</span>
+          </div>
         </div>
-        <h1>
-          Let's build
-          <span>better AI.</span>
-        </h1>
-        <p class="contact-description">
-          Have a question, idea, feedback, or collaboration proposal?
-          Get in touch with EvalLoop AI.
-        </p>
+        <aside class="hero-contact-card" aria-label="Contact overview">
+          <div class="hero-card-topline">
+            <span>CONTACT DESK</span>
+            <span class="hero-card-index">EL / 01</span>
+          </div>
+          <div class="hero-orbit" aria-hidden="true">
+            <div class="orbit-ring orbit-ring-one"></div>
+            <div class="orbit-ring orbit-ring-two"></div>
+            <div class="orbit-core"><span>EL</span></div>
+            <span class="orbit-node orbit-node-one"></span>
+            <span class="orbit-node orbit-node-two"></span>
+            <span class="orbit-node orbit-node-three"></span>
+          </div>
+          <p class="hero-card-title">One clear conversation<br />can move your AI forward.</p>
+          <p class="hero-card-note">Product support · Feedback · Partnerships</p>
+          <a href="#contact-form" class="hero-card-link">START A CONVERSATION <span>↘</span></a>
+        </aside>
       </div>
     </section>
     <!-- CONTACT CONTENT -->
@@ -1148,7 +1429,7 @@
             </div>
           </div>
           <!-- CONTACT FORM -->
-          <div class="contact-form-wrapper">
+          <div class="contact-form-wrapper" id="contact-form">
             <div class="form-header">
               <div class="section-kicker">
                 <span class="kicker-line"></span>
@@ -1158,8 +1439,7 @@
                 Start a conversation.
               </h2>
               <p>
-                Fill in the details below. Your email client will open
-                with the message prepared for EvalLoop AI.
+                Share a few details below. We'll prepare your message in your default email app so you can review and send it.
               </p>
             </div>
             <form
@@ -1215,12 +1495,13 @@
                   ></textarea>
                 </div>
               </div>
+              <p class="form-helper" id="contactFormHelper">Your message stays in your control until you send it from your email app.</p>
               <div class="form-actions">
                 <button
                   type="submit"
                   class="button button-primary"
                 >
-                  Open Email
+                  Prepare message
                   <span>↗</span>
                 </button>
                 <div class="form-note">
@@ -1234,10 +1515,10 @@
       </div>
     </section>
   </main>
-  <!-- =========================================================
+  <!-- =======================================================
        FOOTER
-  ========================================================== -->
-<footer class="site-footer">
+       ======================================================= -->
+  <footer class="site-footer">
   <div class="container">
     <div class="footer-top">
 
@@ -1292,184 +1573,2302 @@
   <!-- =======================================================
        JAVASCRIPT
        ======================================================= -->
-  <script>
-    /* =========================================================
-       MOBILE MAIN MENU
-       ========================================================= */
-    const mobileMenuButton =
-      document.getElementById("mobileMenuButton");
-    const mobileNav =
-      document.getElementById("mobileNav");
-    mobileMenuButton.addEventListener(
-      "click",
-      () => {
-        const isOpen =
-          mobileNav.classList.toggle("active");
-        mobileMenuButton.classList.toggle(
-          "active",
-          isOpen
+  
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================
+   EVALLOOP AI
+   Landing Page Interactions + Supabase Authentication
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE PROGRESS
+   ========================================================= */
+
+const pageProgress =
+  document.getElementById("pageProgress");
+
+function updatePageProgress() {
+
+  if (!pageProgress) {
+    return;
+  }
+
+  const scrollTop =
+    window.scrollY;
+
+  const documentHeight =
+    document.documentElement.scrollHeight -
+    window.innerHeight;
+
+  if (documentHeight <= 0) {
+
+    pageProgress.style.width = "0%";
+
+    return;
+  }
+
+  const progress =
+    (scrollTop / documentHeight) * 100;
+
+  pageProgress.style.width =
+    `${Math.min(progress, 100)}%`;
+
+}
+
+window.addEventListener(
+  "scroll",
+  updatePageProgress,
+  {
+    passive: true
+  }
+);
+
+updatePageProgress();
+
+
+/* =========================================================
+   FLUID SCROLL MOTION
+   ========================================================= */
+
+const reduceMotion =
+  window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+
+const depthElements = [
+
+  [
+    document.querySelector(".hero-visual"),
+    0.14,
+    "scroll-depth"
+  ],
+
+  [
+    document.querySelector(".background-grid"),
+    0.05,
+    "scroll-depth-slow"
+  ],
+
+  [
+    document.querySelector(".background-glow"),
+    0.08,
+    "scroll-depth-slow"
+  ]
+
+];
+
+
+depthElements.forEach(
+  ([element, speed, className]) => {
+
+    if (
+      element &&
+      !reduceMotion
+    ) {
+
+      element.classList.add(
+        className
+      );
+
+    }
+
+  }
+);
+
+
+const animatedSections =
+  document.querySelectorAll(
+    ".section-border, .final-cta"
+  );
+
+
+if (
+  "IntersectionObserver" in window
+) {
+
+  const sectionObserver =
+    new IntersectionObserver(
+      (entries) => {
+
+        entries.forEach(
+          (entry) => {
+
+            entry.target.classList.toggle(
+              "in-view",
+              entry.isIntersecting
+            );
+
+          }
         );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
-        mobileMenuButton.setAttribute(
-          "aria-label",
-          isOpen
-            ? "Close navigation menu"
-            : "Open navigation menu"
-        );
-        document.body.classList.toggle(
-          "menu-open",
-          isOpen
-        );
+
+      },
+      {
+        threshold: 0.08
       }
     );
-    /* =========================================================
-       DESKTOP DROPDOWN MENUS
-       ========================================================= */
-    const desktopDropdowns =
-      document.querySelectorAll(
-        ".desktop-nav .nav-dropdown"
+
+
+  animatedSections.forEach(
+    (section) =>
+      sectionObserver.observe(section)
+  );
+
+}
+
+
+const focusSections =
+  Array.from(
+    document.querySelectorAll(
+      "main > .section"
+    )
+  );
+
+
+document.body.classList.add(
+  "scroll-focus-enabled"
+);
+
+
+function updateFocusedSection() {
+
+  if (!focusSections.length) {
+    return;
+  }
+
+  const focusLine =
+    window.innerHeight * 0.48;
+
+  let closestSection =
+    focusSections[0];
+
+  let closestDistance =
+    Infinity;
+
+
+  focusSections.forEach(
+    (section) => {
+
+      const rect =
+        section.getBoundingClientRect();
+
+      const sectionCenter =
+        rect.top +
+        rect.height * 0.5;
+
+      const distance =
+        Math.abs(
+          sectionCenter -
+          focusLine
+        );
+
+
+      if (
+        distance <
+        closestDistance
+      ) {
+
+        closestDistance =
+          distance;
+
+        closestSection =
+          section;
+
+      }
+
+    }
+  );
+
+
+  focusSections.forEach(
+    (section) => {
+
+      section.classList.toggle(
+        "is-current",
+        section === closestSection
       );
-    desktopDropdowns.forEach(dropdown => {
+
+    }
+  );
+
+}
+
+
+updateFocusedSection();
+
+
+let motionFrame = null;
+
+let targetScrollY =
+  window.scrollY;
+
+let smoothScrollY =
+  window.scrollY;
+
+let scrollVelocity = 0;
+
+let previousSmoothY =
+  smoothScrollY;
+
+let scrollDirectionTimer =
+  null;
+
+
+function updateScrollTarget() {
+
+  const nextScrollY =
+    window.scrollY;
+
+  const delta =
+    nextScrollY -
+    targetScrollY;
+
+  targetScrollY =
+    nextScrollY;
+
+
+  if (
+    Math.abs(delta) >
+    0.5
+  ) {
+
+    document.body.classList.toggle(
+      "is-scrolling-down",
+      delta > 0
+    );
+
+    document.body.classList.add(
+      "is-scrolling"
+    );
+
+
+    clearTimeout(
+      scrollDirectionTimer
+    );
+
+
+    scrollDirectionTimer =
+      setTimeout(
+        () => {
+
+          document.body.classList.remove(
+            "is-scrolling"
+          );
+
+        },
+        140
+      );
+
+  }
+
+
+  requestScrollMotion();
+
+}
+
+
+function updateScrollMotion() {
+
+  motionFrame = null;
+
+
+  if (reduceMotion) {
+    return;
+  }
+
+
+  const distanceToTarget =
+    targetScrollY -
+    smoothScrollY;
+
+
+  smoothScrollY +=
+    distanceToTarget *
+    0.075;
+
+
+  scrollVelocity =
+    smoothScrollY -
+    previousSmoothY;
+
+
+  previousSmoothY =
+    smoothScrollY;
+
+
+  updateFocusedSection();
+
+
+  const viewportCenter =
+    window.innerHeight *
+    0.5;
+
+
+  const velocityTilt =
+    Math.max(
+      -2.4,
+      Math.min(
+        2.4,
+        scrollVelocity *
+        0.26
+      )
+    );
+
+
+  const velocityScale =
+    1 +
+    Math.min(
+      0.026,
+      Math.abs(
+        scrollVelocity
+      ) * 0.0018
+    );
+
+
+  depthElements.forEach(
+    ([element, speed]) => {
+
+      if (!element) {
+        return;
+      }
+
+
+      element.style.setProperty(
+        "--scroll-shift",
+        `${
+          (
+            smoothScrollY *
+              speed +
+            scrollVelocity *
+              speed *
+              2.4
+          ).toFixed(2)
+        }px`
+      );
+
+    }
+  );
+
+
+  const heroVisual =
+    document.querySelector(
+      ".hero-visual"
+    );
+
+
+  if (heroVisual) {
+
+    heroVisual.style.setProperty(
+      "--scroll-rotate",
+      `${velocityTilt.toFixed(2)}deg`
+    );
+
+
+    heroVisual.style.setProperty(
+      "--scroll-scale",
+      velocityScale.toFixed(4)
+    );
+
+  }
+
+
+  document.querySelectorAll(
+    ".capability-card, .process-step, .about-card, .pricing-card, .faq-item"
+  ).forEach(
+    (element) => {
+
+      const rect =
+        element.getBoundingClientRect();
+
+
+      const distance =
+        (
+          rect.top +
+          rect.height * 0.5 -
+          viewportCenter
+        ) /
+        window.innerHeight;
+
+
+      const shift =
+        Math.max(
+          -18,
+          Math.min(
+            18,
+            distance * -10 +
+            scrollVelocity * -1.2
+          )
+        );
+
+
+      const scale =
+        1 +
+        Math.max(
+          -0.018,
+          Math.min(
+            0.018,
+            -Math.abs(
+              distance
+            ) * 0.009
+          )
+        );
+
+
+      element.style.setProperty(
+        "--scroll-lift",
+        `${shift.toFixed(2)}px`
+      );
+
+
+      element.style.setProperty(
+        "--scroll-scale",
+        scale.toFixed(4)
+      );
+
+    }
+  );
+
+
+  if (
+    Math.abs(
+      distanceToTarget
+    ) > 0.15 ||
+    Math.abs(
+      scrollVelocity
+    ) > 0.02
+  ) {
+
+    motionFrame =
+      requestAnimationFrame(
+        updateScrollMotion
+      );
+
+  }
+
+}
+
+
+function requestScrollMotion() {
+
+  if (
+    !motionFrame &&
+    !reduceMotion
+  ) {
+
+    motionFrame =
+      requestAnimationFrame(
+        updateScrollMotion
+      );
+
+  }
+
+}
+
+
+window.addEventListener(
+  "scroll",
+  updateScrollTarget,
+  {
+    passive: true
+  }
+);
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    targetScrollY =
+      window.scrollY;
+
+    smoothScrollY =
+      targetScrollY;
+
+    requestScrollMotion();
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+requestScrollMotion();
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+const mobileMenuButton =
+  document.getElementById(
+    "mobileMenuButton"
+  );
+
+
+const mobileNav =
+  document.getElementById(
+    "mobileNav"
+  );
+
+
+if (
+  mobileMenuButton &&
+  mobileNav
+) {
+
+  mobileMenuButton.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        mobileMenuButton.classList.toggle(
+          "active"
+        );
+
+
+      mobileNav.classList.toggle(
+        "active",
+        isOpen
+      );
+
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+
+      document.body.classList.toggle(
+        "menu-open",
+        isOpen
+      );
+
+    }
+  );
+
+
+  const mobileLinks =
+    mobileNav.querySelectorAll(
+      "a"
+    );
+
+
+  mobileLinks.forEach(
+    (link) => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          mobileMenuButton.classList.remove(
+            "active"
+          );
+
+
+          mobileNav.classList.remove(
+            "active"
+          );
+
+
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+
+          document.body.classList.remove(
+            "menu-open"
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   NAVIGATION DROPDOWNS
+   ========================================================= */
+
+const desktopDropdowns =
+  document.querySelectorAll(
+    ".nav-dropdown"
+  );
+
+
+function closeDesktopDropdowns(
+  except = null
+) {
+
+  desktopDropdowns.forEach(
+    (dropdown) => {
+
+      if (
+        dropdown === except
+      ) {
+        return;
+      }
+
+
       const trigger =
         dropdown.querySelector(
           ".nav-dropdown-trigger"
         );
-      trigger.addEventListener(
-        "click",
-        event => {
-          event.stopPropagation();
-          const isOpen =
-            dropdown.classList.contains("open");
-          desktopDropdowns.forEach(
-            otherDropdown => {
-              otherDropdown.classList.remove(
-                "open"
-              );
-              const otherTrigger =
-                otherDropdown.querySelector(
-                  ".nav-dropdown-trigger"
-                );
-              if (otherTrigger) {
-                otherTrigger.setAttribute(
-                  "aria-expanded",
-                  "false"
-                );
-              }
-            }
-          );
-          if (!isOpen) {
-            dropdown.classList.add("open");
-            trigger.setAttribute(
-              "aria-expanded",
-              "true"
-            );
-          }
-        }
+
+
+      const menu =
+        dropdown.querySelector(
+          ".nav-dropdown-menu"
+        );
+
+
+      if (trigger) {
+
+        trigger.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+
+      if (menu) {
+
+        menu.classList.remove(
+          "is-open"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+desktopDropdowns.forEach(
+  (dropdown) => {
+
+    const trigger =
+      dropdown.querySelector(
+        ".nav-dropdown-trigger"
       );
-    });
-    /* Close desktop dropdowns when clicking outside */
-    document.addEventListener(
+
+
+    const menu =
+      dropdown.querySelector(
+        ".nav-dropdown-menu"
+      );
+
+
+    if (
+      !trigger ||
+      !menu
+    ) {
+      return;
+    }
+
+
+    trigger.addEventListener(
+      "click",
+      (event) => {
+
+        event.stopPropagation();
+
+
+        const isOpen =
+          trigger.getAttribute(
+            "aria-expanded"
+          ) === "true";
+
+
+        closeDesktopDropdowns(
+          dropdown
+        );
+
+
+        trigger.setAttribute(
+          "aria-expanded",
+          String(!isOpen)
+        );
+
+
+        menu.classList.toggle(
+          "is-open",
+          !isOpen
+        );
+
+      }
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  () => {
+
+    closeDesktopDropdowns();
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeDesktopDropdowns();
+
+    }
+
+  }
+);
+
+
+const mobileDropdowns =
+  document.querySelectorAll(
+    ".mobile-nav-dropdown"
+  );
+
+
+mobileDropdowns.forEach(
+  (dropdown) => {
+
+    const trigger =
+      dropdown.querySelector(
+        ".mobile-nav-dropdown-trigger"
+      );
+
+
+    if (!trigger) {
+      return;
+    }
+
+
+    trigger.addEventListener(
       "click",
       () => {
-        desktopDropdowns.forEach(
-          dropdown => {
-            dropdown.classList.remove(
-              "open"
+
+        const isOpen =
+          dropdown.classList.toggle(
+            "is-open"
+          );
+
+
+        trigger.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+
+        mobileDropdowns.forEach(
+          (otherDropdown) => {
+
+            if (
+              otherDropdown ===
+              dropdown
+            ) {
+              return;
+            }
+
+
+            otherDropdown.classList.remove(
+              "is-open"
             );
-            const trigger =
-              dropdown.querySelector(
-                ".nav-dropdown-trigger"
+
+
+            const otherTrigger =
+              otherDropdown.querySelector(
+                ".mobile-nav-dropdown-trigger"
               );
-            if (trigger) {
-              trigger.setAttribute(
+
+
+            if (otherTrigger) {
+
+              otherTrigger.setAttribute(
                 "aria-expanded",
                 "false"
               );
+
             }
+
           }
         );
+
       }
     );
-    /* =========================================================
-       MOBILE DROPDOWN MENUS
-       ========================================================= */
-    const mobileDropdowns =
-      document.querySelectorAll(
-        ".mobile-nav-dropdown"
-      );
-    mobileDropdowns.forEach(dropdown => {
-      const trigger =
-        dropdown.querySelector(
-          ".mobile-nav-dropdown-trigger"
-        );
-      trigger.addEventListener(
-        "click",
-        () => {
-          const isOpen =
-            dropdown.classList.contains("open");
-          mobileDropdowns.forEach(
-            otherDropdown => {
-              if (otherDropdown !== dropdown) {
-                otherDropdown.classList.remove(
-                  "open"
-                );
-                const otherTrigger =
-                  otherDropdown.querySelector(
-                    ".mobile-nav-dropdown-trigger"
-                  );
-                if (otherTrigger) {
-                  otherTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-                }
-              }
+
+  }
+);
+
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+const revealElements =
+  document.querySelectorAll(
+    ".reveal"
+  );
+
+
+if (
+  "IntersectionObserver" in window
+) {
+
+  const revealObserver =
+    new IntersectionObserver(
+      (
+        entries,
+        observer
+      ) => {
+
+        entries.forEach(
+          (entry) => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+              return;
             }
-          );
-          dropdown.classList.toggle(
-            "open",
-            !isOpen
-          );
-          trigger.setAttribute(
-            "aria-expanded",
-            String(!isOpen)
-          );
-        }
-      );
-    });
-    /* =========================================================
-       CLOSE MOBILE MENU AFTER NAVIGATION
-       ========================================================= */
-    document
-      .querySelectorAll(".mobile-nav a")
-      .forEach(link => {
-        link.addEventListener(
-          "click",
-          () => {
-            mobileNav.classList.remove(
-              "active"
+
+
+            entry.target.classList.add(
+              "visible"
             );
-            mobileMenuButton.classList.remove(
-              "active"
+
+
+            observer.unobserve(
+              entry.target
             );
-            mobileMenuButton.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-            mobileMenuButton.setAttribute(
-              "aria-label",
-              "Open navigation menu"
-            );
-            document.body.classList.remove(
-              "menu-open"
-            );
+
           }
         );
-      });
-    /* =========================================================
+
+      },
+      {
+        threshold: 0.12,
+        rootMargin:
+          "0px 0px -40px 0px"
+      }
+    );
+
+
+  revealElements.forEach(
+    (element) => {
+
+      revealObserver.observe(
+        element
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FAQ ACCORDION
+   ========================================================= */
+
+const faqItems =
+  document.querySelectorAll(
+    ".faq-item"
+  );
+
+
+faqItems.forEach(
+  (item) => {
+
+    const question =
+      item.querySelector(
+        ".faq-question"
+      );
+
+
+    if (!question) {
+      return;
+    }
+
+
+    question.addEventListener(
+      "click",
+      () => {
+
+        const isCurrentlyActive =
+          item.classList.contains(
+            "active"
+          );
+
+
+        faqItems.forEach(
+          (otherItem) => {
+
+            otherItem.classList.remove(
+              "active"
+            );
+
+
+            const otherQuestion =
+              otherItem.querySelector(
+                ".faq-question"
+              );
+
+
+            if (otherQuestion) {
+
+              otherQuestion.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+
+          }
+        );
+
+
+        if (
+          !isCurrentlyActive
+        ) {
+
+          item.classList.add(
+            "active"
+          );
+
+
+          question.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
+
+const cursorDot =
+  document.getElementById(
+    "cursorDot"
+  );
+
+
+const cursorRing =
+  document.getElementById(
+    "cursorRing"
+  );
+
+
+const finePointer =
+  window.matchMedia(
+    "(pointer: fine)"
+  ).matches;
+
+
+if (
+  finePointer &&
+  cursorDot &&
+  cursorRing
+) {
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let ringX = 0;
+  let ringY = 0;
+
+
+  document.addEventListener(
+    "mousemove",
+    (event) => {
+
+      mouseX =
+        event.clientX;
+
+      mouseY =
+        event.clientY;
+
+
+      cursorDot.style.left =
+        `${mouseX}px`;
+
+      cursorDot.style.top =
+        `${mouseY}px`;
+
+
+      cursorDot.style.opacity =
+        "1";
+
+      cursorRing.style.opacity =
+        "1";
+
+    }
+  );
+
+
+  function animateCursor() {
+
+    ringX +=
+      (
+        mouseX -
+        ringX
+      ) * 0.15;
+
+
+    ringY +=
+      (
+        mouseY -
+        ringY
+      ) * 0.15;
+
+
+    cursorRing.style.left =
+      `${ringX}px`;
+
+
+    cursorRing.style.top =
+      `${ringY}px`;
+
+
+    requestAnimationFrame(
+      animateCursor
+    );
+
+  }
+
+
+  animateCursor();
+
+
+  const interactiveElements =
+    document.querySelectorAll(
+      "a, button, .capability-card, .about-card, .process-step"
+    );
+
+
+  interactiveElements.forEach(
+    (element) => {
+
+      element.addEventListener(
+        "mouseenter",
+        () => {
+
+          cursorRing.classList.add(
+            "active"
+          );
+
+        }
+      );
+
+
+      element.addEventListener(
+        "mouseleave",
+        () => {
+
+          cursorRing.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  document.addEventListener(
+    "mouseleave",
+    () => {
+
+      cursorDot.style.opacity =
+        "0";
+
+      cursorRing.style.opacity =
+        "0";
+
+    }
+  );
+
+
+  document.addEventListener(
+    "mouseenter",
+    () => {
+
+      cursorDot.style.opacity =
+        "1";
+
+      cursorRing.style.opacity =
+        "1";
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SMOOTH ANCHOR HANDLING
+   ========================================================= */
+
+const anchorLinks =
+  document.querySelectorAll(
+    'a[href^="#"]'
+  );
+
+
+anchorLinks.forEach(
+  (link) => {
+
+    link.addEventListener(
+      "click",
+      (event) => {
+
+        const targetId =
+          link.getAttribute(
+            "href"
+          );
+
+
+        if (
+          !targetId ||
+          targetId === "#" ||
+          targetId.length < 2
+        ) {
+          return;
+        }
+
+
+        const target =
+          document.querySelector(
+            targetId
+          );
+
+
+        if (!target) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        const header =
+          document.querySelector(
+            ".site-header"
+          );
+
+
+        const headerHeight =
+          header
+            ? header.offsetHeight
+            : 0;
+
+
+        const announcement =
+          document.querySelector(
+            ".announcement-bar"
+          );
+
+
+        const announcementHeight =
+          announcement
+            ? announcement.offsetHeight
+            : 0;
+
+
+        const offset =
+          headerHeight +
+          announcementHeight +
+          15;
+
+
+        const targetPosition =
+          target.getBoundingClientRect()
+            .top +
+          window.scrollY -
+          offset;
+
+
+        window.scrollTo(
+          {
+            top:
+              targetPosition,
+            behavior:
+              "smooth"
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   HERO ORB MOUSE PARALLAX
+   ========================================================= */
+
+const heroVisual =
+  document.querySelector(
+    ".hero-visual"
+  );
+
+
+const heroOrb =
+  document.querySelector(
+    ".evaluation-orb"
+  );
+
+
+if (
+  heroVisual &&
+  heroOrb &&
+  finePointer &&
+  !window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches
+) {
+
+  heroVisual.addEventListener(
+    "mousemove",
+    (event) => {
+
+      const rect =
+        heroVisual.getBoundingClientRect();
+
+
+      const x =
+        (
+          event.clientX -
+          rect.left
+        ) /
+        rect.width;
+
+
+      const y =
+        (
+          event.clientY -
+          rect.top
+        ) /
+        rect.height;
+
+
+      const moveX =
+        (x - 0.5) * 12;
+
+
+      const moveY =
+        (y - 0.5) * 12;
+
+
+      heroOrb.style.transform =
+        `translate(${moveX}px, ${moveY}px)`;
+
+    }
+  );
+
+
+  heroVisual.addEventListener(
+    "mouseleave",
+    () => {
+
+      heroOrb.style.transform =
+        "translate(0, 0)";
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   QUALITY METER
+   ========================================================= */
+
+const qualityMeter =
+  document.querySelector(
+    ".quality-meter-fill"
+  );
+
+
+if (qualityMeter) {
+
+  qualityMeter.style.transformOrigin =
+    "left center";
+
+
+  qualityMeter.style.transform =
+    "scaleX(0)";
+
+
+  if (
+    "IntersectionObserver" in window
+  ) {
+
+    const meterObserver =
+      new IntersectionObserver(
+        (
+          entries,
+          observer
+        ) => {
+
+          entries.forEach(
+            (entry) => {
+
+              if (
+                !entry.isIntersecting
+              ) {
+                return;
+              }
+
+
+              qualityMeter.style.transition =
+                "transform 1.2s cubic-bezier(.22,.61,.36,1)";
+
+
+              qualityMeter.style.transform =
+                "scaleX(1)";
+
+
+              observer.unobserve(
+                entry.target
+              );
+
+            }
+          );
+
+        },
+        {
+          threshold: 0.4
+        }
+      );
+
+
+    meterObserver.observe(
+      qualityMeter
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SCORE BAR ANIMATION
+   ========================================================= */
+
+const scoreBars =
+  document.querySelectorAll(
+    ".score-bar span"
+  );
+
+
+if (
+  scoreBars.length &&
+  "IntersectionObserver" in window
+) {
+
+  scoreBars.forEach(
+    (bar) => {
+
+      const finalWidth =
+        bar.style.width;
+
+
+      bar.style.width =
+        "0%";
+
+
+      const observer =
+        new IntersectionObserver(
+          (
+            entries,
+            observerInstance
+          ) => {
+
+            entries.forEach(
+              (entry) => {
+
+                if (
+                  !entry.isIntersecting
+                ) {
+                  return;
+                }
+
+
+                bar.style.transition =
+                  "width 1.1s cubic-bezier(.22,.61,.36,1)";
+
+
+                bar.style.width =
+                  finalWidth;
+
+
+                observerInstance.unobserve(
+                  entry.target
+                );
+
+              }
+            );
+
+          },
+          {
+            threshold: 0.5
+          }
+        );
+
+
+      observer.observe(
+        bar
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   YEAR
+   ========================================================= */
+
+const yearElements =
+  document.querySelectorAll(
+    "[data-current-year]"
+  );
+
+
+yearElements.forEach(
+  (element) => {
+
+    element.textContent =
+      new Date().getFullYear();
+
+  }
+);
+
+
+/* =========================================================
+   CONSOLE BRAND MESSAGE
+   ========================================================= */
+
+console.log(
+  "%cEvalLoop AI_",
+  "color:#3ecf8e;font-family:monospace;font-size:18px;"
+);
+
+
+console.log(
+  "%cAI Evaluation & LLM Quality Platform",
+  "color:#a4aaa6;font-family:monospace;font-size:11px;"
+);
+
+
+/* =========================================================
+   EVALLOOP AI
+   SUPABASE AUTHENTICATION-AWARE NAVIGATION
+   ========================================================= */
+
+(function () {
+
+  /* ---------------------------------------------------------
+     Supabase configuration
+     --------------------------------------------------------- */
+
+  const SUPABASE_URL =
+    "https://vonknmobshxkhbewdoie.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+
+
+  /* ---------------------------------------------------------
+     Verify Supabase library
+     --------------------------------------------------------- */
+
+  if (!window.supabase) {
+
+    console.error(
+      "EvalLoop AI: Supabase library was not loaded. " +
+      "Make sure the Supabase CDN script is loaded " +
+      "before this script."
+    );
+
+    return;
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Create Supabase client
+     --------------------------------------------------------- */
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          // Keep the exact same session key on the homepage and Insights.
+          storageKey: "sb-vonknmobshxkhbewdoie-auth-token"
+        }
+      }
+    );
+
+  // Expose this page's client for other scripts running on this page.
+  // Other pages create their own client using the same storage key.
+  window.evalLoopSupabase = supabaseClient;
+
+
+  /* ---------------------------------------------------------
+     Authentication elements
+     --------------------------------------------------------- */
+
+  const authLoggedOut =
+    document.getElementById(
+      "authLoggedOut"
+    );
+
+
+  const authLoggedIn =
+    document.getElementById(
+      "authLoggedIn"
+    );
+
+
+  const mobileAuthLoggedOut =
+    document.getElementById(
+      "mobileAuthLoggedOut"
+    );
+
+
+  const mobileAuthLoggedIn =
+    document.getElementById(
+      "mobileAuthLoggedIn"
+    );
+
+
+  const profileTrigger =
+    document.getElementById(
+      "profileTrigger"
+    );
+
+
+  const profileMenu =
+    document.getElementById(
+      "profileMenu"
+    );
+
+
+  const profileLogout =
+    document.getElementById(
+      "profileLogout"
+    );
+
+
+  const mobileProfileLogout =
+    document.getElementById(
+      "mobileProfileLogout"
+    );
+
+
+  /* ---------------------------------------------------------
+     Generate initials
+     --------------------------------------------------------- */
+
+  function getInitials(name) {
+
+    if (!name) {
+
+      return "U";
+
+    }
+
+
+    const parts =
+      name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+
+    if (!parts.length) {
+
+      return "U";
+
+    }
+
+
+    if (
+      parts.length === 1
+    ) {
+
+      return parts[0]
+        .charAt(0)
+        .toUpperCase();
+
+    }
+
+
+    return (
+      parts[0].charAt(0) +
+      parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Get user's display name
+     --------------------------------------------------------- */
+
+  function getUserName(user) {
+
+    if (!user) {
+
+      return "User";
+
+    }
+
+
+    const metadata =
+      user.user_metadata ||
+      {};
+
+
+    return (
+      metadata.full_name ||
+      metadata.name ||
+      metadata.user_name ||
+      user.email?.split("@")[0] ||
+      "User"
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Update profile information
+     --------------------------------------------------------- */
+
+  function updateProfile(user) {
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    const name =
+      getUserName(user);
+
+
+    const email =
+      user.email ||
+      "";
+
+
+    const initials =
+      getInitials(name);
+
+
+    /* -------------------------------------------------------
+       Desktop profile
+       ------------------------------------------------------- */
+
+    const profileAvatar =
+      document.getElementById(
+        "profileAvatar"
+      );
+
+
+    const profileMenuAvatar =
+      document.getElementById(
+        "profileMenuAvatar"
+      );
+
+
+    const profileName =
+      document.getElementById(
+        "profileName"
+      );
+
+
+    const profileMenuName =
+      document.getElementById(
+        "profileMenuName"
+      );
+
+
+    const profileMenuEmail =
+      document.getElementById(
+        "profileMenuEmail"
+      );
+
+
+    if (profileAvatar) {
+
+      profileAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (profileMenuAvatar) {
+
+      profileMenuAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (profileName) {
+
+      profileName.textContent =
+        name;
+
+    }
+
+
+    if (profileMenuName) {
+
+      profileMenuName.textContent =
+        name;
+
+    }
+
+
+    if (profileMenuEmail) {
+
+      profileMenuEmail.textContent =
+        email;
+
+    }
+
+
+    /* -------------------------------------------------------
+       Mobile profile
+       ------------------------------------------------------- */
+
+    const mobileProfileAvatar =
+      document.getElementById(
+        "mobileProfileAvatar"
+      );
+
+
+    const mobileProfileName =
+      document.getElementById(
+        "mobileProfileName"
+      );
+
+
+    const mobileProfileEmail =
+      document.getElementById(
+        "mobileProfileEmail"
+      );
+
+
+    if (mobileProfileAvatar) {
+
+      mobileProfileAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (mobileProfileName) {
+
+      mobileProfileName.textContent =
+        name;
+
+    }
+
+
+    if (mobileProfileEmail) {
+
+      mobileProfileEmail.textContent =
+        email;
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Set logged-in / logged-out state
+     --------------------------------------------------------- */
+
+  function setAuthState(
+    isLoggedIn,
+    user = null
+  ) {
+
+    if (
+      isLoggedIn &&
+      user
+    ) {
+
+      /* Desktop */
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden =
+          true;
+
+      }
+
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden =
+          false;
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden =
+          true;
+
+      }
+
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden =
+          false;
+
+      }
+
+
+      updateProfile(user);
+
+    } else {
+
+      /* Desktop */
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden =
+          false;
+
+      }
+
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden =
+          true;
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden =
+          false;
+
+      }
+
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden =
+          true;
+
+      }
+
+
+      closeProfileMenu();
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Close profile menu
+     --------------------------------------------------------- */
+
+  function closeProfileMenu() {
+
+    if (!profileMenu) {
+
+      return;
+
+    }
+
+
+    profileMenu.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    if (profileTrigger) {
+
+      profileTrigger.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Toggle profile menu
+     --------------------------------------------------------- */
+
+  function toggleProfileMenu() {
+
+    if (
+      !profileMenu ||
+      !profileTrigger
+    ) {
+
+      return;
+
+    }
+
+
+    const isOpen =
+      profileMenu.getAttribute(
+        "aria-hidden"
+      ) === "false";
+
+
+    profileMenu.setAttribute(
+      "aria-hidden",
+      isOpen
+        ? "true"
+        : "false"
+    );
+
+
+    profileTrigger.setAttribute(
+      "aria-expanded",
+      isOpen
+        ? "false"
+        : "true"
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Profile trigger
+     --------------------------------------------------------- */
+
+  if (profileTrigger) {
+
+    profileTrigger.addEventListener(
+      "click",
+      function (event) {
+
+        event.stopPropagation();
+
+        toggleProfileMenu();
+
+      }
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Close profile menu when clicking outside
+     --------------------------------------------------------- */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        profileMenu &&
+        profileTrigger &&
+        !profileMenu.contains(
+          event.target
+        ) &&
+        !profileTrigger.contains(
+          event.target
+        )
+      ) {
+
+        closeProfileMenu();
+
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------------
+     Sign out
+     --------------------------------------------------------- */
+
+  async function logout() {
+
+    closeProfileMenu();
+
+
+    if (profileLogout) {
+
+      profileLogout.disabled =
+        true;
+
+      profileLogout.textContent =
+        "Signing out...";
+
+    }
+
+
+    if (mobileProfileLogout) {
+
+      mobileProfileLogout.disabled =
+        true;
+
+      mobileProfileLogout.textContent =
+        "Signing out...";
+
+    }
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      setAuthState(
+        false
+      );
+
+
+      window.location.href =
+        "/login/";
+
+    } catch (error) {
+
+      console.error(
+        "EvalLoop AI sign-out error:",
+        error
+      );
+
+
+      if (profileLogout) {
+
+        profileLogout.disabled =
+          false;
+
+        profileLogout.textContent =
+          "Sign out";
+
+      }
+
+
+      if (mobileProfileLogout) {
+
+        mobileProfileLogout.disabled =
+          false;
+
+        mobileProfileLogout.textContent =
+          "Sign out";
+
+      }
+
+    }
+
+  }
+
+
+  if (profileLogout) {
+
+    profileLogout.addEventListener(
+      "click",
+      logout
+    );
+
+  }
+
+
+  if (mobileProfileLogout) {
+
+    mobileProfileLogout.addEventListener(
+      "click",
+      logout
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Get current Supabase session
+     --------------------------------------------------------- */
+
+  async function initializeAuth() {
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (error) {
+
+        console.error(
+          "EvalLoop AI session error:",
+          error
+        );
+
+        setAuthState(
+          false
+        );
+
+        return;
+
+      }
+
+
+      const session =
+        data?.session ||
+        null;
+
+
+      if (
+        session?.user
+      ) {
+
+        setAuthState(
+          true,
+          session.user
+        );
+
+      } else {
+
+        setAuthState(
+          false
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "EvalLoop AI authentication initialization error:",
+        error
+      );
+
+
+      setAuthState(
+        false
+      );
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Listen for Supabase authentication changes
+     --------------------------------------------------------- */
+
+  supabaseClient.auth.onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      console.log(
+        "EvalLoop AI auth event:",
+        event
+      );
+
+
+      if (
+        session?.user
+      ) {
+
+        setAuthState(
+          true,
+          session.user
+        );
+
+      } else {
+
+        setAuthState(
+          false
+        );
+
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------------
+     Initialize authentication
+     --------------------------------------------------------- */
+
+  initializeAuth();
+
+
+  /* ---------------------------------------------------------
+     Expose authentication state
+     --------------------------------------------------------- */
+
+  window.setEvalLoopAuthState =
+    setAuthState;
+
+})();
+
+
+  /* Contact form behavior retained from the original Contact page */
+/* =========================================================
        CONTACT FORM
        ========================================================= */
     const contactForm =
@@ -1511,71 +3910,7 @@
         window.location.href = mailto;
       }
     );
-    /* =========================================================
-       ESC KEY
-       ========================================================= */
-    document.addEventListener(
-      "keydown",
-      event => {
-        if (event.key !== "Escape") {
-          return;
-        }
-        /* Close desktop dropdowns */
-        desktopDropdowns.forEach(
-          dropdown => {
-            dropdown.classList.remove(
-              "open"
-            );
-            const trigger =
-              dropdown.querySelector(
-                ".nav-dropdown-trigger"
-              );
-            if (trigger) {
-              trigger.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-            }
-          }
-        );
-        /* Close mobile dropdowns */
-        mobileDropdowns.forEach(
-          dropdown => {
-            dropdown.classList.remove(
-              "open"
-            );
-            const trigger =
-              dropdown.querySelector(
-                ".mobile-nav-dropdown-trigger"
-              );
-            if (trigger) {
-              trigger.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-            }
-          }
-        );
-        /* Close mobile menu */
-        mobileNav.classList.remove(
-          "active"
-        );
-        mobileMenuButton.classList.remove(
-          "active"
-        );
-        mobileMenuButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-        mobileMenuButton.setAttribute(
-          "aria-label",
-          "Open navigation menu"
-        );
-        document.body.classList.remove(
-          "menu-open"
-        );
-      }
-    );
-  </script>
+    
+</script>
 </body>
 </html>
