@@ -126,6 +126,40 @@ const EvalLoopUsage = (() => {
   return { requestHeaders, beforeRun, afterRun, showLimitMessage, limitMessage: LIMIT_MESSAGE };
 })();
 
+/* Save completed evaluations to the authenticated user's History.
+   This request does not call an evaluation endpoint or consume quota. */
+async function saveEvaluationToHistory(payload) {
+  const headers = EvalLoopUsage.requestHeaders();
+  if (!headers.Authorization) return { saved: false, reason: "sign_in" };
+
+  const response = await fetch("/api/history", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers, Accept: "application/json" },
+    body: JSON.stringify(payload),
+    cache: "no-store"
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body?.evaluation?.id) {
+    throw new Error(body?.error || `History save failed (${response.status}).`);
+  }
+  return { saved: true, evaluation: body.evaluation };
+}
+
+async function saveEvaluationSafely(payload) {
+  try { return await saveEvaluationToHistory(payload); }
+  catch (error) {
+    console.error("EvalLoop AI could not save this evaluation to History:", error);
+    return { saved: false, reason: "save_error" };
+  }
+}
+
+function historySaveMessage(outcome, label) {
+  if (outcome.saved) return `${label} completed and saved to History.`;
+  if (outcome.reason === "sign_in") return `${label} completed. Sign in to save this evaluation to History.`;
+  return `${label} completed, but History could not save it. Please check your connection and try again later.`;
+}
+
+
 
 const form = document.getElementById("compareForm");
 const promptInput = document.getElementById("prompt");
@@ -309,7 +343,16 @@ form.addEventListener("submit", async event => {
       throw error;
     }
     renderResults(data.result);
-    showMessage("Comparison completed.");
+    const historyOutcome = await saveEvaluationSafely({
+      evaluation_type: "compare",
+      prompt: payload.prompt,
+      response_a: payload.response_a,
+      response_b: payload.response_b,
+      reference_context: payload.reference || null,
+      result: data.result,
+      model_used: "openai/gpt-oss-120b"
+    });
+    showMessage(historySaveMessage(historyOutcome, "Comparison"));
   } catch (error) {
     console.error("EvalLoop AI comparison failed:", error);
     if (error?.code === "DAILY_LIMIT_REACHED") EvalLoopUsage.showLimitMessage(formMessage);
