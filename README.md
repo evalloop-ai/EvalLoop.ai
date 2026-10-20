@@ -1,21 +1,11 @@
-# EvalLoop AI — History & Insights
+# EvalLoop AI History & Insights — reference UI match
 
-## Files
-- `history/index.html` — page markup
-- `history.css` — responsive styles
-- `history.js` — Supabase session check, `/api/history` query, KPI calculations, Chart.js line chart, dimension averages, filters, and saved-result detail dialog
-- `history-indexes.sql` — optional indexes for the existing dedicated history tables
+This revision uses the supplied EvalLoop AI page's exact shared stylesheet, announcement bar, sticky navigation, typography, and footer as its visual foundation. It keeps the evaluation workflows and APIs unchanged.
 
-## Add to the project
-Copy `history/index.html` into the repository's `history/index.html`, and copy `history.css` and `history.js` to the project root. This gives the page `/history` or `/history/` on Vercel. If your project uses a custom routing configuration, add a rewrite from `/history` to `/history/index.html` without replacing existing rewrites.
+Files: `history/index.html`, `history.css`, `history.js`, `history-indexes.sql`.
 
-## API contract
-The page calls `GET /api/history` with `Authorization: Bearer <Supabase access token>`. The endpoint should return the authenticated user's saved rows, either as an array or in one of these array properties: `runs`, `evaluations`, `history`, `items`, `data`, or `results`. Each row should include the saved `result` JSON object and columns from `evalloop_evaluation_runs`.
+Install by copying `history/index.html` into the `history/` folder and placing `history.css` and `history.js` at the project root. Preserve existing Vercel routes and API handlers. The three action links use `/app/general-response`, `/app/compare`, and `/app/safety`.
 
-This package intentionally does not replace `api/history.js`: the route is already used to save evaluations and feedback. Keep its POST behavior unchanged. If GET currently uses a different response envelope, adjust only `getRunArray()` in `history.js` to match the existing GET response.
+The page calls `GET /api/history` with the Supabase session access token. The endpoint must return the signed-in user's saved evaluation rows, including each stored `result` JSON. The frontend supports arrays under `runs`, `evaluations`, `history`, `items`, `data`, or `results`.
 
-## Existing tables
-No new table is required. Run `history-indexes.sql` only if you want the recommended indexes and they are not already present. Do not change `public.evaluations`.
-
-## Important
-The page uses only the Supabase publishable key in the browser. Never place `SUPABASE_SERVICE_ROLE_KEY` or `GROQ_API_KEY` in frontend files.
+No new table is required. Run the optional index SQL only if those indexes do not exist. Never put the service-role or Groq keys in frontend code.
