@@ -406,6 +406,7 @@
     try {
       const { data: { session }, error } = await state.client.auth.getSession();
       if (error) throw error;
+      setHeaderAuth(session);
       if (!session) {
         $("authStatus").textContent = "Signed out";
         $("loginGate").hidden = false;
@@ -426,6 +427,20 @@
     }
   }
 
+  function setHeaderAuth(session) {
+    const user = session?.user;
+    const loggedIn = Boolean(user);
+    ["authLoggedOut", "mobileAuthLoggedOut"].forEach(id => { if ($(id)) $(id).hidden = loggedIn; });
+    ["authLoggedIn", "mobileAuthLoggedIn"].forEach(id => { if ($(id)) $(id).hidden = !loggedIn; });
+    if (!loggedIn) return;
+    const meta = user.user_metadata || {};
+    const name = meta.full_name || meta.name || meta.display_name || (user.email || "Account").split("@")[0];
+    const initials = name.split(/\\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase() || "U";
+    ["profileAvatar", "profileMenuAvatar", "mobileProfileAvatar"].forEach(id => { if ($(id)) $(id).textContent = initials; });
+    ["profileName", "profileMenuName", "mobileProfileName"].forEach(id => { if ($(id)) $(id).textContent = name; });
+    ["profileMenuEmail", "mobileProfileEmail"].forEach(id => { if ($(id)) $(id).textContent = user.email || ""; });
+  }
+
   function wireEvents() {
     $("refreshButton").addEventListener("click", loadPage);
     $("filterGroup").addEventListener("click", event => {
@@ -443,11 +458,64 @@
       state.search = event.target.value.trim().toLowerCase();
       renderHistory();
     });
+    const mobileMenuButton = $("mobileMenuButton");
+    const mobileNav = $("mobileNav");
+    if (mobileMenuButton && mobileNav) {
+      mobileMenuButton.addEventListener("click", () => {
+        const open = mobileMenuButton.classList.toggle("active");
+        mobileNav.classList.toggle("active", open);
+        mobileMenuButton.setAttribute("aria-expanded", String(open));
+        document.body.classList.toggle("menu-open", open);
+      });
+      mobileNav.querySelectorAll(".mobile-nav-dropdown-trigger").forEach(trigger => {
+        trigger.addEventListener("click", () => {
+          const open = trigger.getAttribute("aria-expanded") === "true";
+          trigger.setAttribute("aria-expanded", String(!open));
+          trigger.nextElementSibling?.classList.toggle("is-open", !open);
+        });
+      });
+      mobileNav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+        mobileMenuButton.classList.remove("active");
+        mobileNav.classList.remove("active");
+        mobileMenuButton.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      }));
+    }
+    const profileTrigger = $("profileTrigger");
+    const profileMenu = $("profileMenu");
+    if (profileTrigger && profileMenu) {
+      profileTrigger.addEventListener("click", event => {
+        event.stopPropagation();
+        const open = profileMenu.getAttribute("aria-hidden") === "false";
+        profileMenu.setAttribute("aria-hidden", String(open));
+        profileTrigger.setAttribute("aria-expanded", String(!open));
+      });
+      document.addEventListener("click", event => {
+        if (!profileMenu.contains(event.target) && !profileTrigger.contains(event.target)) {
+          profileMenu.setAttribute("aria-hidden", "true");
+          profileTrigger.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+    async function logout() {
+      const buttons = [$("profileLogout"), $("mobileProfileLogout")].filter(Boolean);
+      buttons.forEach(button => { button.disabled = true; button.textContent = "Signing out..."; });
+      const { error } = await state.client.auth.signOut();
+      if (error) {
+        buttons.forEach(button => { button.disabled = false; button.textContent = "Sign out"; });
+        showError(error.message || "Could not sign out.");
+        return;
+      }
+      window.location.href = "/login/";
+    }
+    [$("profileLogout"), $("mobileProfileLogout")].filter(Boolean).forEach(button => button.addEventListener("click", logout));
+
     $("closeDialog").addEventListener("click", () => $("detailDialog").close());
     $("detailDialog").addEventListener("click", event => {
       if (event.target === $("detailDialog")) $("detailDialog").close();
     });
     state.client.auth.onAuthStateChange((event, session) => {
+      setHeaderAuth(session);
       if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
         if (!session) {
           $("loginGate").hidden = false;
