@@ -421,9 +421,6 @@
       renderAll();
       $("insightsContent").hidden = false;
     } catch (error) {
-      $("loginGate").hidden = true;
-      $("historyApp").hidden = false;
-      $("insightsContent").hidden = true;
       showError(error?.message || "Unable to load your saved evaluations.");
     } finally {
       $("loadingNotice").hidden = true;
@@ -518,15 +515,31 @@
       if (event.target === $("detailDialog")) $("detailDialog").close();
     });
     state.client.auth.onAuthStateChange((event, session) => {
+      // Keep the shared navigation in sync with the current auth session.
       setHeaderAuth(session);
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
-        if (!session) {
-          $("loginGate").hidden = false;
-          $("historyApp").hidden = true;
-          $("authStatus").textContent = "Signed out";
-        } else {
-          loadPage();
+
+      if (event === "SIGNED_OUT") {
+        state.runs = [];
+        if (state.chart) {
+          state.chart.destroy();
+          state.chart = null;
         }
+        $("loginGate").hidden = false;
+        $("historyApp").hidden = true;
+        $("insightsContent").hidden = true;
+        $("loadingNotice").hidden = true;
+        $("authStatus").textContent = "Signed out";
+        return;
+      }
+
+      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
+        // Do not call getSession() synchronously from inside the auth callback.
+        // Deferring avoids Supabase auth-lock contention during session updates.
+        window.setTimeout(() => {
+          loadPage().catch((error) => {
+            showError(error?.message || "Unable to load your saved evaluations.");
+          });
+        }, 0);
       }
     });
   }
@@ -536,15 +549,7 @@
     wireEvents();
     loadPage();
   } catch (error) {
-    // Keep the page from becoming visually empty when initialization fails.
-    const loginGate = $("loginGate");
-    const historyApp = $("historyApp");
-    const loadingNotice = $("loadingNotice");
-    if (loginGate) loginGate.hidden = true;
-    if (historyApp) historyApp.hidden = false;
-    if (loadingNotice) loadingNotice.hidden = true;
-    const insightsContent = $("insightsContent");
-    if (insightsContent) insightsContent.hidden = true;
+    $("loadingNotice").hidden = true;
     showError(error.message || "Could not initialize the History page.");
   }
 })();
