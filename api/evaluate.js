@@ -1,5 +1,5 @@
 /* =========================================================
-   EvalLoop AI — Evaluation API
+   EvalLoop AI â€” Evaluation API
    Groq-powered LLM Judge
    ========================================================= */
 
@@ -46,6 +46,12 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({
         error: "AI response is required."
+      });
+    }
+
+    if (prompt.length > 8000 || response.length > 8000) {
+      return res.status(400).json({
+        error: "Prompt and AI response must each be 8,000 characters or fewer."
       });
     }
 
@@ -137,7 +143,7 @@ Use exactly this structure:
 
 {
   "overall_score": 0,
-  "overall_text": "",
+  "overall_text": "Excellent | Good | Needs Improvement | Poor",
   "scores": {
     "factuality": 0,
     "instruction_following": 0,
@@ -148,8 +154,11 @@ Use exactly this structure:
   },
   "issues": [
     {
-      "type": "",
-      "description": ""
+      "title": "",
+      "severity": "Low | Medium | High",
+      "quote": "",
+      "why": "",
+      "suggested_fix": ""
     }
   ],
   "summary": "",
@@ -161,8 +170,13 @@ Rules:
 - Every score must be a number from 0 to 100.
 - overall_score must be a number from 0 to 100.
 - overall_score should represent the overall quality of the response.
-- issues must be an array.
-- Each issue must contain "type" and "description".
+- Use this exact overall_text verdict based on overall_score: 90-100 = "Excellent"; 75-89 = "Good"; 50-74 = "Needs Improvement"; below 50 = "Poor".
+- issues must be an array containing only meaningful issues.
+- Each issue must include title, severity, quote, why, and suggested_fix.
+- severity must be exactly "Low", "Medium", or "High".
+- quote must be an exact, verbatim substring of the AI-GENERATED RESPONSE. Never paraphrase or invent a quote. If no precise quote can be identified, use an empty string.
+- why should explain the specific problem and its impact.
+- suggested_fix should provide a concrete improvement, not generic advice.
 - If there are no meaningful issues, return an empty issues array.
 - Do not use Markdown.
 - Do not use JSON code fences.
@@ -413,38 +427,63 @@ Return ONLY the JSON object.
       );
 
     /*
-     * Normalize issues.
+     * Normalize issue details for the UI.
+     * Keep legacy type/description fallbacks during rollout.
      */
 
     let issues = [];
 
-    if (
-      Array.isArray(
-        evaluation?.issues
-      )
-    ) {
-
-      issues =
-        evaluation.issues
-          .filter(
-            issue =>
-              issue &&
-              typeof issue === "object"
-          )
-          .map(issue => ({
-            type:
-              typeof issue.type === "string" &&
-              issue.type.trim()
+    if (Array.isArray(evaluation?.issues)) {
+      issues = evaluation.issues
+        .filter(issue => issue && typeof issue === "object")
+        .map(issue => {
+          const title =
+            typeof issue.title === "string" && issue.title.trim()
+              ? issue.title.trim()
+              : (typeof issue.type === "string" && issue.type.trim()
                 ? issue.type.trim()
-                : "Issue",
+                : "Issue");
 
-            description:
-              typeof issue.description === "string" &&
-              issue.description.trim()
+          const severityValue =
+            typeof issue.severity === "string"
+              ? issue.severity.trim().toLowerCase()
+              : "medium";
+
+          const severity = ["low", "medium", "high"].includes(severityValue)
+            ? severityValue.charAt(0).toUpperCase() + severityValue.slice(1)
+            : "Medium";
+
+          const rawQuote =
+            typeof issue.quote === "string"
+              ? issue.quote.trim()
+              : (typeof issue.exact_quote === "string" ? issue.exact_quote.trim() : "");
+
+          // Only return a quote when it is verifiably present verbatim in the response.
+          const quote = rawQuote && response.includes(rawQuote) ? rawQuote : "";
+
+          const why =
+            typeof issue.why === "string" && issue.why.trim()
+              ? issue.why.trim()
+              : (typeof issue.description === "string" && issue.description.trim()
                 ? issue.description.trim()
-                : "A quality issue was detected."
-          }))
-          .slice(0, 10);
+                : (typeof issue.reason === "string" ? issue.reason.trim() : ""));
+
+          const suggestedFix =
+            typeof issue.suggested_fix === "string" && issue.suggested_fix.trim()
+              ? issue.suggested_fix.trim()
+              : (typeof issue.fix === "string" && issue.fix.trim()
+                ? issue.fix.trim()
+                : (typeof issue.recommendation === "string" ? issue.recommendation.trim() : ""));
+
+          return {
+            title,
+            severity,
+            quote,
+            why: why || "The evaluator identified a potential response-quality issue.",
+            suggested_fix: suggestedFix || "Revise the response to directly address the identified issue."
+          };
+        })
+        .slice(0, 10);
     }
 
     /*
@@ -452,10 +491,10 @@ Return ONLY the JSON object.
      */
 
     const overallText =
-      typeof evaluation?.overall_text === "string" &&
-      evaluation.overall_text.trim()
-        ? evaluation.overall_text.trim()
-        : "Evaluation completed.";
+      calculatedOverall >= 90 ? "Excellent" :
+      calculatedOverall >= 75 ? "Good" :
+      calculatedOverall >= 50 ? "Needs Improvement" :
+      "Poor";
 
     const summary =
       typeof evaluation?.summary === "string" &&
