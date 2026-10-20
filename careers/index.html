@@ -3392,9 +3392,143 @@ body.is-scrolling-down .section-kicker::after {
       <div class="nav-dropdown"><button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">Resources <span class="nav-chevron">⌄</span></button><div class="nav-dropdown-menu" role="menu"><a href="/docs/" role="menuitem"><span>Documentation</span><small>Build with EvalLoop AI</small></a><a href="/knowledge/" role="menuitem"><span>Learn</span><small>Guides and evaluation basics</small></a><a href="/blog/" role="menuitem"><span>Blog</span><small>Ideas, updates, and research</small></a></div></div>
       <a href="/pricing/">Pricing</a>
     </nav>
-    <div class="nav-actions"><a href="/login/" class="nav-login">Login</a><a href="/signup/" class="button button-small">Sign up <span>↗</span></a></div>
-    <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span></button>
-  </div><div class="mobile-nav" id="mobileNav"><div class="mobile-nav-dropdown"><button class="mobile-nav-dropdown-trigger" type="button" aria-expanded="false">Products <span class="nav-chevron">⌄</span></button><div class="mobile-nav-dropdown-menu"><a href="/app/general_response.html">Evaluate responses</a><a href="/app/compare/">Compare A/B responses</a><a href="/app/safety/">AI Safety check</a></div></div><a href="/history/">Insights</a><div class="mobile-nav-dropdown"><button class="mobile-nav-dropdown-trigger" type="button" aria-expanded="false">Resources <span class="nav-chevron">⌄</span></button><div class="mobile-nav-dropdown-menu"><a href="/docs/">Documentation</a><a href="/knowledge/">Learn</a><a href="/blog/">Blog</a></div></div><a href="/pricing/">Pricing</a><div class="mobile-nav-actions"><a href="/login/">Login</a><a href="/signup/" class="button">Sign up <span>↗</span></a></div></div></header>
+<div class="nav-actions" id="navActions">
+
+  <!-- Logged-out state -->
+  <div class="auth-logged-out" id="authLoggedOut">
+    <a href="/login/" class="nav-login">
+      Login
+    </a>
+
+    <a href="/signup/" class="button button-small">
+      Sign up <span>↗</span>
+    </a>
+  </div>
+
+  <!-- Logged-in state -->
+  <div class="auth-logged-in" id="authLoggedIn" hidden>
+
+    <button
+      class="profile-trigger"
+      id="profileTrigger"
+      type="button"
+      aria-label="Open account menu"
+      aria-expanded="false"
+      aria-haspopup="true"
+    >
+      <span class="profile-avatar" id="profileAvatar">VK</span>
+      <span class="profile-name" id="profileName">Vivek Kaneti</span>
+      <span class="profile-chevron">⌄</span>
+    </button>
+
+    <div
+      class="profile-menu"
+      id="profileMenu"
+      role="menu"
+      aria-hidden="true"
+    >
+
+      <div class="profile-menu-header">
+        <span class="profile-menu-avatar" id="profileMenuAvatar">VK</span>
+
+        <div class="profile-menu-identity">
+          <strong id="profileMenuName">Vivek Kaneti</strong>
+          <span id="profileMenuEmail">user@example.com</span>
+        </div>
+      </div>
+
+      <div class="profile-menu-divider"></div>
+
+      <a href="/app/" role="menuitem">
+        <span>Workspace</span>
+      </a>
+
+      <a href="/account/" role="menuitem">
+        <span>Account</span>
+      </a>
+
+      <a href="/usage/" role="menuitem">
+        <span>Usage &amp; Plan</span>
+      </a>
+
+      <a href="/api-space/" role="menuitem">
+        <span>API Keys</span>
+      </a>
+
+      <a href="/settings/" role="menuitem">
+        <span>Settings</span>
+      </a>
+
+      <div class="profile-menu-divider"></div>
+
+      <button
+        type="button"
+        class="profile-logout"
+        id="profileLogout"
+      >
+        Sign out
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+          <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span></button>
+  </div><div class="mobile-nav" id="mobileNav"><div class="mobile-nav-dropdown"><button class="mobile-nav-dropdown-trigger" type="button" aria-expanded="false">Products <span class="nav-chevron">⌄</span></button><div class="mobile-nav-dropdown-menu"><a href="/app/general_response.html">Evaluate responses</a><a href="/app/compare/">Compare A/B responses</a><a href="/app/safety/">AI Safety check</a></div></div><a href="/history/">Insights</a><div class="mobile-nav-dropdown"><button class="mobile-nav-dropdown-trigger" type="button" aria-expanded="false">Resources <span class="nav-chevron">⌄</span></button><div class="mobile-nav-dropdown-menu"><a href="/docs/">Documentation</a><a href="/knowledge/">Learn</a><a href="/blog/">Blog</a></div></div><a href="/pricing/">Pricing</a>     <div class="mobile-nav-actions" id="mobileAuthActions">
+
+  <!-- Logged-out -->
+  <div class="mobile-auth-logged-out" id="mobileAuthLoggedOut">
+
+    <a href="/login/">
+      Login
+    </a>
+
+    <a href="/signup/" class="button">
+      Sign up <span>↗</span>
+    </a>
+
+  </div>
+
+  <!-- Logged-in -->
+  <div class="mobile-auth-logged-in" id="mobileAuthLoggedIn" hidden>
+
+    <div class="mobile-profile-summary">
+
+      <span
+        class="profile-avatar"
+        id="mobileProfileAvatar"
+      >
+        VK
+      </span>
+
+      <div>
+        <strong id="mobileProfileName">
+          Vivek Kaneti
+        </strong>
+
+        <span id="mobileProfileEmail">
+          user@example.com
+        </span>
+      </div>
+
+    </div>
+
+    <a href="/account/">Account</a>
+    <a href="/usage/">Usage &amp; Plan</a>
+    <a href="/settings/">Settings</a>
+
+    <button
+      type="button"
+      id="mobileProfileLogout"
+      class="mobile-profile-logout"
+    >
+      Sign out
+    </button>
+
+  </div>
+
+</div></div></header>
 
 <main>
   <section class="careers-hero section"><div class="container careers-hero-grid"><div class="careers-hero-copy"><div class="section-kicker"><span class="kicker-line"></span> CAREERS / BUILD WITH US</div><h1>Good AI needs<br><span>better evaluation.</span></h1><p class="careers-lead">EvalLoop AI is building tools to help teams test, understand, and improve AI systems. We have no open positions at the moment, but we welcome thoughtful introductions from people who care about reliable AI.</p></div><aside class="careers-status"><div class="careers-status-top"><span class="status-dot"></span> CURRENT HIRING STATUS</div><strong>No open roles.<br>For now.</strong><p>We’ll publish role details here when a position becomes available.</p><div class="careers-status-rule"></div><div class="careers-status-foot"><span>STATUS / 001</span><span>NOT RECRUITING</span></div></aside></div></section>
@@ -3404,6 +3538,7 @@ body.is-scrolling-down .section-kicker::after {
 </main>
 
 <footer class="site-footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a href="/" class="brand" aria-label="EvalLoop AI"><span>EvalLoop AI</span><span class="brand-cursor">_</span></a><p>AI evaluation &amp; LLM quality platform.</p></div><div class="footer-columns"><div class="footer-column"><div class="footer-label">PRODUCT</div><a href="#product">Overview</a><a href="/app/general_response.html">Evaluate AI Response</a><a href="/app/compare/">Compare A/B Response</a><a href="/app/safety/">AI Safety Check</a></div><div class="footer-column"><div class="footer-label">RESOURCES</div><a href="/knowledge/">Learn</a><a href="/blog/">Blog</a><a href="/docs/">Documentation</a></div><div class="footer-column"><div class="footer-label">COMPANY</div><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/careers/" aria-current="page">Careers</a></div><div class="footer-column"><div class="footer-label">LEGAL</div><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms of Service</a><a href="/ai-usage/">AI Usage Disclaimer</a></div></div></div><div class="footer-bottom"><span>© <span id="currentYear">2026</span> EvalLoop AI</span><span>BUILT FOR BETTER AI</span><span>HYDERABAD · INDIA</span></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (() => {
   const menuButton = document.getElementById('mobileMenuButton');
@@ -3434,6 +3569,788 @@ body.is-scrolling-down .section-kicker::after {
   };
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
+})();
+</script>
+
+<script>
+/* =========================================================
+   EVALLOOP AI
+   SUPABASE AUTHENTICATION-AWARE NAVIGATION
+   ========================================================= */
+
+(function () {
+
+  /* ---------------------------------------------------------
+     Supabase configuration
+     --------------------------------------------------------- */
+
+  const SUPABASE_URL =
+    "https://vonknmobshxkhbewdoie.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_J_eboKnioENyrRqnp8uTkg_5I9rrE8t";
+
+
+  /* ---------------------------------------------------------
+     Verify Supabase library
+     --------------------------------------------------------- */
+
+  if (!window.supabase) {
+
+    console.error(
+      "EvalLoop AI: Supabase library was not loaded. " +
+      "Make sure the Supabase CDN script is loaded " +
+      "before this script."
+    );
+
+    return;
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Create Supabase client
+     --------------------------------------------------------- */
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          // Keep the exact same session key on the homepage and Insights.
+          storageKey: "sb-vonknmobshxkhbewdoie-auth-token"
+        }
+      }
+    );
+
+  // Expose this page's client for other scripts running on this page.
+  // Other pages create their own client using the same storage key.
+  window.evalLoopSupabase = supabaseClient;
+
+
+  /* ---------------------------------------------------------
+     Authentication elements
+     --------------------------------------------------------- */
+
+  const authLoggedOut =
+    document.getElementById(
+      "authLoggedOut"
+    );
+
+
+  const authLoggedIn =
+    document.getElementById(
+      "authLoggedIn"
+    );
+
+
+  const mobileAuthLoggedOut =
+    document.getElementById(
+      "mobileAuthLoggedOut"
+    );
+
+
+  const mobileAuthLoggedIn =
+    document.getElementById(
+      "mobileAuthLoggedIn"
+    );
+
+
+  const profileTrigger =
+    document.getElementById(
+      "profileTrigger"
+    );
+
+
+  const profileMenu =
+    document.getElementById(
+      "profileMenu"
+    );
+
+
+  const profileLogout =
+    document.getElementById(
+      "profileLogout"
+    );
+
+
+  const mobileProfileLogout =
+    document.getElementById(
+      "mobileProfileLogout"
+    );
+
+
+  /* ---------------------------------------------------------
+     Generate initials
+     --------------------------------------------------------- */
+
+  function getInitials(name) {
+
+    if (!name) {
+
+      return "U";
+
+    }
+
+
+    const parts =
+      name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+
+    if (!parts.length) {
+
+      return "U";
+
+    }
+
+
+    if (
+      parts.length === 1
+    ) {
+
+      return parts[0]
+        .charAt(0)
+        .toUpperCase();
+
+    }
+
+
+    return (
+      parts[0].charAt(0) +
+      parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Get user's display name
+     --------------------------------------------------------- */
+
+  function getUserName(user) {
+
+    if (!user) {
+
+      return "User";
+
+    }
+
+
+    const metadata =
+      user.user_metadata ||
+      {};
+
+
+    return (
+      metadata.full_name ||
+      metadata.name ||
+      metadata.user_name ||
+      user.email?.split("@")[0] ||
+      "User"
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Update profile information
+     --------------------------------------------------------- */
+
+  function updateProfile(user) {
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    const name =
+      getUserName(user);
+
+
+    const email =
+      user.email ||
+      "";
+
+
+    const initials =
+      getInitials(name);
+
+
+    /* -------------------------------------------------------
+       Desktop profile
+       ------------------------------------------------------- */
+
+    const profileAvatar =
+      document.getElementById(
+        "profileAvatar"
+      );
+
+
+    const profileMenuAvatar =
+      document.getElementById(
+        "profileMenuAvatar"
+      );
+
+
+    const profileName =
+      document.getElementById(
+        "profileName"
+      );
+
+
+    const profileMenuName =
+      document.getElementById(
+        "profileMenuName"
+      );
+
+
+    const profileMenuEmail =
+      document.getElementById(
+        "profileMenuEmail"
+      );
+
+
+    if (profileAvatar) {
+
+      profileAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (profileMenuAvatar) {
+
+      profileMenuAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (profileName) {
+
+      profileName.textContent =
+        name;
+
+    }
+
+
+    if (profileMenuName) {
+
+      profileMenuName.textContent =
+        name;
+
+    }
+
+
+    if (profileMenuEmail) {
+
+      profileMenuEmail.textContent =
+        email;
+
+    }
+
+
+    /* -------------------------------------------------------
+       Mobile profile
+       ------------------------------------------------------- */
+
+    const mobileProfileAvatar =
+      document.getElementById(
+        "mobileProfileAvatar"
+      );
+
+
+    const mobileProfileName =
+      document.getElementById(
+        "mobileProfileName"
+      );
+
+
+    const mobileProfileEmail =
+      document.getElementById(
+        "mobileProfileEmail"
+      );
+
+
+    if (mobileProfileAvatar) {
+
+      mobileProfileAvatar.textContent =
+        initials;
+
+    }
+
+
+    if (mobileProfileName) {
+
+      mobileProfileName.textContent =
+        name;
+
+    }
+
+
+    if (mobileProfileEmail) {
+
+      mobileProfileEmail.textContent =
+        email;
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Set logged-in / logged-out state
+     --------------------------------------------------------- */
+
+  function setAuthState(
+    isLoggedIn,
+    user = null
+  ) {
+
+    if (
+      isLoggedIn &&
+      user
+    ) {
+
+      /* Desktop */
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden =
+          true;
+
+      }
+
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden =
+          false;
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden =
+          true;
+
+      }
+
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden =
+          false;
+
+      }
+
+
+      updateProfile(user);
+
+    } else {
+
+      /* Desktop */
+
+      if (authLoggedOut) {
+
+        authLoggedOut.hidden =
+          false;
+
+      }
+
+
+      if (authLoggedIn) {
+
+        authLoggedIn.hidden =
+          true;
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileAuthLoggedOut) {
+
+        mobileAuthLoggedOut.hidden =
+          false;
+
+      }
+
+
+      if (mobileAuthLoggedIn) {
+
+        mobileAuthLoggedIn.hidden =
+          true;
+
+      }
+
+
+      closeProfileMenu();
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Close profile menu
+     --------------------------------------------------------- */
+
+  function closeProfileMenu() {
+
+    if (!profileMenu) {
+
+      return;
+
+    }
+
+
+    profileMenu.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    if (profileTrigger) {
+
+      profileTrigger.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Toggle profile menu
+     --------------------------------------------------------- */
+
+  function toggleProfileMenu() {
+
+    if (
+      !profileMenu ||
+      !profileTrigger
+    ) {
+
+      return;
+
+    }
+
+
+    const isOpen =
+      profileMenu.getAttribute(
+        "aria-hidden"
+      ) === "false";
+
+
+    profileMenu.setAttribute(
+      "aria-hidden",
+      isOpen
+        ? "true"
+        : "false"
+    );
+
+
+    profileTrigger.setAttribute(
+      "aria-expanded",
+      isOpen
+        ? "false"
+        : "true"
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Profile trigger
+     --------------------------------------------------------- */
+
+  if (profileTrigger) {
+
+    profileTrigger.addEventListener(
+      "click",
+      function (event) {
+
+        event.stopPropagation();
+
+        toggleProfileMenu();
+
+      }
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Close profile menu when clicking outside
+     --------------------------------------------------------- */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        profileMenu &&
+        profileTrigger &&
+        !profileMenu.contains(
+          event.target
+        ) &&
+        !profileTrigger.contains(
+          event.target
+        )
+      ) {
+
+        closeProfileMenu();
+
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------------
+     Sign out
+     --------------------------------------------------------- */
+
+  async function logout() {
+
+    closeProfileMenu();
+
+
+    if (profileLogout) {
+
+      profileLogout.disabled =
+        true;
+
+      profileLogout.textContent =
+        "Signing out...";
+
+    }
+
+
+    if (mobileProfileLogout) {
+
+      mobileProfileLogout.disabled =
+        true;
+
+      mobileProfileLogout.textContent =
+        "Signing out...";
+
+    }
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      setAuthState(
+        false
+      );
+
+
+      window.location.href =
+        "/login/";
+
+    } catch (error) {
+
+      console.error(
+        "EvalLoop AI sign-out error:",
+        error
+      );
+
+
+      if (profileLogout) {
+
+        profileLogout.disabled =
+          false;
+
+        profileLogout.textContent =
+          "Sign out";
+
+      }
+
+
+      if (mobileProfileLogout) {
+
+        mobileProfileLogout.disabled =
+          false;
+
+        mobileProfileLogout.textContent =
+          "Sign out";
+
+      }
+
+    }
+
+  }
+
+
+  if (profileLogout) {
+
+    profileLogout.addEventListener(
+      "click",
+      logout
+    );
+
+  }
+
+
+  if (mobileProfileLogout) {
+
+    mobileProfileLogout.addEventListener(
+      "click",
+      logout
+    );
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Get current Supabase session
+     --------------------------------------------------------- */
+
+  async function initializeAuth() {
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (error) {
+
+        console.error(
+          "EvalLoop AI session error:",
+          error
+        );
+
+        setAuthState(
+          false
+        );
+
+        return;
+
+      }
+
+
+      const session =
+        data?.session ||
+        null;
+
+
+      if (
+        session?.user
+      ) {
+
+        setAuthState(
+          true,
+          session.user
+        );
+
+      } else {
+
+        setAuthState(
+          false
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "EvalLoop AI authentication initialization error:",
+        error
+      );
+
+
+      setAuthState(
+        false
+      );
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     Listen for Supabase authentication changes
+     --------------------------------------------------------- */
+
+  supabaseClient.auth.onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      console.log(
+        "EvalLoop AI auth event:",
+        event
+      );
+
+
+      if (
+        session?.user
+      ) {
+
+        setAuthState(
+          true,
+          session.user
+        );
+
+      } else {
+
+        setAuthState(
+          false
+        );
+
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------------
+     Initialize authentication
+     --------------------------------------------------------- */
+
+  initializeAuth();
+
+
+  /* ---------------------------------------------------------
+     Expose authentication state
+     --------------------------------------------------------- */
+
+  window.setEvalLoopAuthState =
+    setAuthState;
+
 })();
 </script>
 
