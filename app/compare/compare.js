@@ -178,7 +178,24 @@ form.addEventListener("submit", async event => {
       throw new Error("comparison_failed");
     }
     renderResults(data.result);
-    showMessage("Comparison completed.");
+    const historySave = window.evalLoopSaveEvaluation
+      ? await window.evalLoopSaveEvaluation({
+          evaluation_type: "compare",
+          prompt: payload.prompt,
+          response_a: payload.response_a,
+          response_b: payload.response_b,
+          reference_context: payload.reference || null,
+          result: data.result,
+          model_used: data.model_used || data.model || "openai/gpt-oss-120b"
+        })
+      : { saved: false, reason: "history_connection_unavailable" };
+    if (historySave.saved) {
+      showMessage("Comparison completed and saved to History & Insights.");
+    } else if (historySave.reason === "not_signed_in") {
+      showMessage("Comparison completed, but it was not saved. Sign in, then run a new evaluation.", true);
+    } else {
+      showMessage(`Comparison completed, but saving to History & Insights failed: ${historySave.error || historySave.reason || "unknown error"}`, true);
+    }
   } catch (error) {
     console.error("EvalLoop AI comparison failed:", error);
     showError();
@@ -196,6 +213,11 @@ document.getElementById("comparisonFeedback").addEventListener("click", event =>
     item.setAttribute("aria-pressed", String(item === button));
   });
   document.getElementById("feedbackThanks").textContent = "Thanks for your feedback.";
+  if (window.evalLoopSaveFeedback) {
+    window.evalLoopSaveFeedback(button.dataset.feedback).then(result => {
+      if (result.saved) document.getElementById("feedbackThanks").textContent = "Thanks — your feedback was saved.";
+    });
+  }
   console.log("EvalLoop AI comparison feedback:", {
     rating: button.dataset.feedback,
     winner: document.getElementById("winnerValue").textContent,
