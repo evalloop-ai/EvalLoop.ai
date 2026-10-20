@@ -1137,3 +1137,171 @@ textarea:focus {
   }
 
 }
+
+/* =========================================================
+   EVALLOOP AI — PRODUCT IMPROVEMENTS
+   Additive styles; original visual system is preserved.
+   ========================================================= */
+
+.preset-section {
+  margin: 0 0 24px;
+}
+.preset-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.preset-heading strong {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.preset-heading span,
+.character-counter {
+  color: var(--dim);
+  font: 10px var(--mono);
+}
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preset-button,
+.feedback-button {
+  border: 1px solid var(--line);
+  background: rgba(16, 18, 17, .55);
+  color: var(--muted);
+  padding: 8px 10px;
+  font-size: 11px;
+  transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.preset-button:hover,
+.preset-button:focus-visible,
+.feedback-button:hover,
+.feedback-button:focus-visible {
+  border-color: rgba(62, 207, 142, .55);
+  color: var(--green2);
+  outline: none;
+}
+.preset-button[aria-pressed="true"] {
+  color: var(--green2);
+  border-color: rgba(62, 207, 142, .5);
+  background: rgba(19, 38, 28, .7);
+}
+.character-counter {
+  display: block;
+  text-align: right;
+  margin-top: 6px;
+}
+.character-counter.limit-near {
+  color: #e9bd70;
+}
+.character-counter.limit-reached {
+  color: #ff8e8e;
+}
+.score-scale {
+  margin: -3px 0 16px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+.score-scale strong {
+  color: var(--ink);
+  font-weight: 400;
+}
+.issue-severity {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 3px 0 7px;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font: 9px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.issue-severity.high {
+  color: #ff9b9b;
+  border-color: rgba(255, 115, 115, .35);
+  background: rgba(90, 25, 25, .18);
+}
+.issue-severity.medium {
+  color: #e9bd70;
+  border-color: rgba(233, 189, 112, .3);
+}
+.issue-severity.low {
+  color: var(--green2);
+  border-color: rgba(62, 207, 142, .25);
+}
+.issue-quote,
+.issue-fix,
+.issue-why {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.issue-quote {
+  padding: 8px 10px;
+  border-left: 2px solid rgba(62, 207, 142, .45);
+  background: rgba(16, 18, 17, .55);
+  color: var(--ink);
+}
+.issue-quote em {
+  color: var(--dim);
+  font-style: normal;
+}
+.issue-fix strong,
+.issue-why strong,
+.issue-quote strong {
+  display: inline;
+  margin: 0;
+  color: var(--green2);
+  font-size: inherit;
+  font-weight: 400;
+}
+.feedback-panel {
+  padding: 18px 0 0;
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+}
+.feedback-panel p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.feedback-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.feedback-button[aria-pressed="true"] {
+  color: var(--green2);
+  border-color: rgba(62, 207, 142, .55);
+  background: rgba(19, 38, 28, .7);
+}
+.feedback-thanks {
+  min-height: 18px;
+  margin-top: 8px;
+  color: var(--green2);
+  font: 10px var(--mono);
+}
+.form-message.error-message {
+  color: #ff9b9b;
+}
+@media (max-width: 600px) {
+  .preset-buttons { gap: 6px; }
+  .preset-button { padding: 8px 9px; }
+  .score-scale { font-size: 10px; }
+}
