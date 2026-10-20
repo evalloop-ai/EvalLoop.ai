@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>AI Safety Evaluation — EvalLoop AI</title>
+  <meta name="description" content="Evaluate AI response safety risks with EvalLoop AI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./safety.css">
+  <script src="./safety.js" defer></script>
+</head>
+<body>
+  <div class="background-grid" aria-hidden="true"></div>
+  <div class="background-glow" aria-hidden="true"></div>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="EvalLoop AI home">EvalLoop AI<span>_</span></a>
+      <div class="header-status"><span class="status-dot"></span> Evaluation Workspace</div>
+      <a class="back-link" href="/">← Back to Home</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="workspace-heading">
+      <div>
+        <div class="eyebrow">AI SAFETY EVALUATION</div>
+        <h1>Check AI <span>safety.</span></h1>
+        <p>Review an AI-generated response for meaningful safety risks, including dangerous advice, misinformation, privacy exposure, and manipulation.</p>
+      </div>
+      <div class="model-badge"><span class="model-dot"></span> Safety Judge</div>
+    </section>
+
+    <div class="evaluation-layout">
+      <section class="input-panel" aria-labelledby="inputTitle">
+        <div class="panel-header">
+          <div><div class="panel-label">01</div><h2 id="inputTitle">Safety Check Input</h2></div>
+          <span class="panel-state">READY</span>
+        </div>
+
+        <div class="preset-section">
+          <div class="preset-heading"><strong>Try an example</strong><span>LOAD SAMPLE INPUTS</span></div>
+          <div class="preset-buttons" role="group" aria-label="Safety example presets">
+            <button type="button" class="preset-button" data-preset="Safe Answer" aria-pressed="false">Safe Answer</button>
+            <button type="button" class="preset-button" data-preset="Medical Risk" aria-pressed="false">Medical Risk</button>
+            <button type="button" class="preset-button" data-preset="Unsafe Advice" aria-pressed="false">Unsafe Advice</button>
+            <button type="button" class="preset-button" data-preset="Prompt Injection" aria-pressed="false">Prompt Injection</button>
+          </div>
+        </div>
+
+        <form id="safetyForm" novalidate>
+          <div class="field">
+            <div class="field-top"><label for="prompt">Prompt <span class="required">*</span></label><span>REQUIRED</span></div>
+            <textarea id="prompt" name="prompt" maxlength="8000" required placeholder="Enter the original user prompt..."></textarea>
+            <div class="field-meta"><span class="field-hint">What the user asked the AI.</span><span id="promptCounter" class="character-counter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <div class="field">
+            <div class="field-top"><label for="response">AI Response <span class="required">*</span></label><span>REQUIRED</span></div>
+            <textarea id="response" name="response" class="response-box" maxlength="8000" required placeholder="Paste the AI-generated response to check..."></textarea>
+            <div class="field-meta"><span class="field-hint">The response being reviewed.</span><span id="responseCounter" class="character-counter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <div class="field">
+            <div class="field-top"><label for="policy">Policy / Context</label><span>OPTIONAL</span></div>
+            <textarea id="policy" name="policy" class="reference-box" maxlength="8000" placeholder="Optional: Add policy rules, source context, or evaluation criteria..."></textarea>
+            <div class="field-meta"><span class="field-hint">Additional context for the safety review.</span><span id="policyCounter" class="character-counter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <button id="checkSafetyButton" class="evaluate-button" type="submit">
+            <span>Check Safety</span><span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+          <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="results-panel" aria-labelledby="resultsTitle">
+        <div class="panel-header">
+          <div><div class="panel-label">02</div><h2 id="resultsTitle">Safety Results</h2></div>
+          <span id="resultState" class="panel-state waiting">WAITING</span>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-orb" aria-hidden="true"><span class="orb-ring ring-one"></span><span class="orb-ring ring-two"></span>SAFE?</div>
+          <h3>Ready for a safety check</h3>
+          <p>Enter a prompt and AI response to check safety.</p>
+        </div>
+
+        <div id="loadingState" class="loading-state hidden" role="status" aria-live="polite">
+          <span class="loading-spinner" aria-hidden="true"></span>
+          <h3>Checking safety…</h3>
+          <p>Reviewing the response for the defined safety risk categories.</p>
+        </div>
+
+        <div id="results" class="results hidden">
+          <section class="safety-overview">
+            <div class="score-block">
+              <div class="result-label">SAFETY SCORE</div>
+              <div class="score-line"><span id="safetyScore">—</span><small>/100</small></div>
+            </div>
+            <div class="overview-meta">
+              <div class="result-label">RISK LEVEL</div>
+              <span id="riskLevel" class="risk-pill">—</span>
+              <div class="result-label verdict-label">VERDICT</div>
+              <span id="verdict" class="verdict-pill">—</span>
+            </div>
+          </section>
+
+          <div id="safetyDisclaimer" class="safety-disclaimer hidden">AI safety evaluation is assistive, not a guarantee. Review important outputs manually.</div>
+
+          <section class="result-section">
+            <h3 class="result-section-title">Detected risks</h3>
+            <div id="risksList" class="risks-list"></div>
+          </section>
+
+          <section class="result-section">
+            <h3 class="result-section-title">Summary</h3>
+            <p id="summaryText" class="result-copy"></p>
+          </section>
+
+          <section class="recommendation">
+            <div class="result-section-title">Recommendation</div>
+            <p id="recommendationText"></p>
+          </section>
+
+          <section id="safetyFeedback" class="feedback-panel">
+            <p>Was this safety check helpful?</p>
+            <div class="feedback-actions" role="group" aria-label="Safety check feedback">
+              <button type="button" class="feedback-button" data-feedback="up" aria-pressed="false">👍 <span>Yes</span></button>
+              <button type="button" class="feedback-button" data-feedback="down" aria-pressed="false">👎 <span>No</span></button>
+            </div>
+            <div id="feedbackThanks" class="feedback-thanks" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
