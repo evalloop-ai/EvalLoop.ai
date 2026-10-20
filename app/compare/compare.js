@@ -1,6 +1,132 @@
 /* EvalLoop AI — Compare A vs B frontend */
 "use strict";
 
+/* Shared daily usage UX. The API is authoritative; this is only preflight/display. */
+const EvalLoopUsage = (() => {
+  const LIMIT_MESSAGE = "You have reached today’s free evaluation limit. Create a free account or try again tomorrow.";
+  const STORAGE_KEY = "evalloop-device-id-v1";
+  let lastBefore = null;
+
+  function deviceId() {
+    let id = "";
+    try { id = localStorage.getItem(STORAGE_KEY) || ""; } catch {}
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+      id = (globalThis.crypto && typeof crypto.randomUUID === "function")
+        ? crypto.randomUUID()
+        : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+            const r = Math.random() * 16 | 0;
+            return (c === "x" ? r : (r & 3 | 8)).toString(16);
+          });
+      try { localStorage.setItem(STORAGE_KEY, id); } catch {}
+    }
+    return id;
+  }
+
+  function accessToken() {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key || !key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+        try {
+          const value = JSON.parse(localStorage.getItem(key) || "null");
+          const session = Array.isArray(value) ? value[0] : value;
+          const token = session?.access_token || session?.currentSession?.access_token || session?.session?.access_token;
+          if (typeof token === "string" && token) return token;
+        } catch {}
+      }
+    } catch {}
+    return "";
+  }
+
+  function requestHeaders() {
+    const headers = { "X-EvalLoop-Anonymous-Id": deviceId() };
+    const token = accessToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return headers;
+  }
+
+  function statusElement(messageNode) {
+    if (!messageNode) return null;
+    let node = document.getElementById("evalLoopUsageStatus");
+    if (!node) {
+      node = document.createElement("p");
+      node.id = "evalLoopUsageStatus";
+      node.setAttribute("role", "status");
+      node.setAttribute("aria-live", "polite");
+      node.style.cssText = "margin:8px 0 0;font:11px/1.7 'DM Mono',monospace;color:#85e7ba;white-space:normal";
+      messageNode.insertAdjacentElement("afterend", node);
+    }
+    return node;
+  }
+
+  function setUsageText(messageNode, text) {
+    const node = statusElement(messageNode);
+    if (node) node.textContent = text;
+  }
+
+  function showLimit(messageNode) {
+    if (messageNode) {
+      messageNode.textContent = LIMIT_MESSAGE;
+      messageNode.classList.add("error-message");
+    }
+    setUsageText(messageNode, "Remaining evaluations today: 0.");
+    const error = new Error(LIMIT_MESSAGE);
+    error.code = "DAILY_LIMIT_REACHED";
+    error.status = 429;
+    throw error;
+  }
+
+  async function beforeRun(messageNode) {
+    const response = await fetch("/api/usage", { method: "GET", headers: requestHeaders(), cache: "no-store" });
+    let usage;
+    try { usage = await response.json(); } catch { usage = null; }
+    if (!response.ok || !usage || !Number.isFinite(Number(usage.remaining))) {
+      const error = new Error("Usage limits could not be verified. Please retry shortly.");
+      error.code = "USAGE_SERVICE_UNAVAILABLE";
+      throw error;
+    }
+    lastBefore = usage;
+    setUsageText(messageNode, `Before this run: ${usage.remaining} of ${usage.limit} evaluations remaining today.`);
+    if (Number(usage.remaining) <= 0) showLimit(messageNode);
+    return usage;
+  }
+
+  async function afterRun(before, response, body, messageNode) {
+    const remainingHeader = response.headers.get("X-EvalLoop-Usage-Remaining");
+    const limitHeader = response.headers.get("X-EvalLoop-Usage-Limit");
+    const usedHeader = response.headers.get("X-EvalLoop-Usage-Used");
+    let remaining = remainingHeader === null ? NaN : Number(remainingHeader);
+    let limit = limitHeader === null ? NaN : Number(limitHeader);
+    let used = usedHeader === null ? NaN : Number(usedHeader);
+    if (!Number.isFinite(remaining) && body?.usage) remaining = Number(body.usage.remaining);
+    if (!Number.isFinite(limit) && body?.usage) limit = Number(body.usage.limit);
+    if (!Number.isFinite(used) && body?.usage) used = Number(body.usage.used);
+    if (!Number.isFinite(remaining)) {
+      try {
+        const current = await fetch("/api/usage", { method: "GET", headers: requestHeaders(), cache: "no-store" });
+        const usage = await current.json();
+        if (current.ok) { remaining = Number(usage.remaining); limit = Number(usage.limit); used = Number(usage.used); }
+      } catch {}
+    }
+    if (Number.isFinite(remaining)) {
+      const previous = before || lastBefore;
+      setUsageText(messageNode, `Before this run: ${Number(previous?.remaining ?? remaining)} remaining · After this run: ${remaining} of ${Number.isFinite(limit) ? limit : "—"} remaining today.`);
+    }
+    if (response.status === 429 || body?.code === "DAILY_LIMIT_REACHED") showLimit(messageNode);
+    return { remaining, limit, used };
+  }
+
+  function showLimitMessage(messageNode) {
+    if (!messageNode) return;
+    messageNode.textContent = LIMIT_MESSAGE;
+    messageNode.classList.add("error-message");
+    setUsageText(messageNode, "Remaining evaluations today: 0.");
+  }
+
+  return { requestHeaders, beforeRun, afterRun, showLimitMessage, limitMessage: LIMIT_MESSAGE };
+})();
+
+
 const form = document.getElementById("compareForm");
 const promptInput = document.getElementById("prompt");
 const referenceInput = document.getElementById("reference");
@@ -166,39 +292,29 @@ form.addEventListener("submit", async event => {
   showLoading();
 
   try {
+    const usageBefore = await EvalLoopUsage.beforeRun(formMessage);
     const response = await fetch("/api/evaluate/compare", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...EvalLoopUsage.requestHeaders() },
       body: JSON.stringify(payload)
     });
     let data;
     try { data = await response.json(); }
     catch { throw new Error("invalid_response"); }
+    await EvalLoopUsage.afterRun(usageBefore, response, data, formMessage);
     if (!response.ok || !data || data.ok !== true || !data.result) {
-      throw new Error("comparison_failed");
+      const error = new Error(data?.error || "comparison_failed");
+      error.status = response.status;
+      error.code = data?.code || "";
+      throw error;
     }
     renderResults(data.result);
-    const historySave = window.evalLoopSaveEvaluation
-      ? await window.evalLoopSaveEvaluation({
-          evaluation_type: "compare",
-          prompt: payload.prompt,
-          response_a: payload.response_a,
-          response_b: payload.response_b,
-          reference_context: payload.reference || null,
-          result: data.result,
-          model_used: data.model_used || data.model || "openai/gpt-oss-120b"
-        })
-      : { saved: false, reason: "history_connection_unavailable" };
-    if (historySave.saved) {
-      showMessage("Comparison completed and saved to History & Insights.");
-    } else if (historySave.reason === "not_signed_in") {
-      showMessage("Comparison completed, but it was not saved. Sign in, then run a new evaluation.", true);
-    } else {
-      showMessage(`Comparison completed, but saving to History & Insights failed: ${historySave.error || historySave.reason || "unknown error"}`, true);
-    }
+    showMessage("Comparison completed.");
   } catch (error) {
     console.error("EvalLoop AI comparison failed:", error);
-    showError();
+    if (error?.code === "DAILY_LIMIT_REACHED") EvalLoopUsage.showLimitMessage(formMessage);
+    else if (error?.code === "USAGE_SERVICE_UNAVAILABLE") showMessage("Usage limits could not be verified. Please retry shortly.", true);
+    else showError();
   } finally {
     isComparing = false;
     compareButton.disabled = false;
@@ -213,11 +329,6 @@ document.getElementById("comparisonFeedback").addEventListener("click", event =>
     item.setAttribute("aria-pressed", String(item === button));
   });
   document.getElementById("feedbackThanks").textContent = "Thanks for your feedback.";
-  if (window.evalLoopSaveFeedback) {
-    window.evalLoopSaveFeedback(button.dataset.feedback).then(result => {
-      if (result.saved) document.getElementById("feedbackThanks").textContent = "Thanks — your feedback was saved.";
-    });
-  }
   console.log("EvalLoop AI comparison feedback:", {
     rating: button.dataset.feedback,
     winner: document.getElementById("winnerValue").textContent,
