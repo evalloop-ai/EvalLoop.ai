@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>Compare A vs B — EvalLoop AI</title>
+  <meta name="description" content="Compare two AI-generated responses across quality dimensions with EvalLoop AI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./compare.css">
+  <script src="./compare.js" defer></script>
+</head>
+<body>
+  <div class="background-grid" aria-hidden="true"></div>
+  <div class="background-glow" aria-hidden="true"></div>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="EvalLoop AI home">EvalLoop AI<span>_</span></a>
+      <div class="header-status"><span class="status-dot"></span> Evaluation Workspace</div>
+      <a class="back-link" href="/">← Back to Home</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="workspace-heading">
+      <div>
+        <div class="eyebrow">PAIRWISE QUALITY EVALUATION</div>
+        <h1>Compare <span>A vs B.</span></h1>
+        <p>Provide one prompt and two AI-generated responses. EvalLoop AI will compare quality, identify meaningful differences, and recommend which response to use.</p>
+      </div>
+      <div class="model-badge"><span class="model-dot"></span> LLM Judge</div>
+    </section>
+
+    <div class="evaluation-layout">
+      <section class="input-panel" aria-labelledby="inputTitle">
+        <div class="panel-header">
+          <div>
+            <div class="panel-label">01</div>
+            <h2 id="inputTitle">Comparison Input</h2>
+          </div>
+          <span class="panel-state">READY</span>
+        </div>
+
+        <form id="compareForm" novalidate>
+          <div class="field">
+            <div class="field-top">
+              <label for="prompt">Prompt <span class="required">*</span></label>
+              <span>REQUIRED</span>
+            </div>
+            <textarea id="prompt" name="prompt" maxlength="8000" required placeholder="Enter the original user prompt..."></textarea>
+            <div class="field-meta"><span class="field-hint">The same prompt used for both responses.</span><span class="character-counter" id="promptCounter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <div class="field">
+            <div class="field-top">
+              <label for="reference">Reference / Context</label>
+              <span>OPTIONAL</span>
+            </div>
+            <textarea id="reference" name="reference" class="reference-box" maxlength="8000" placeholder="Optional: Add a reference answer, source material, context, or evaluation criteria..."></textarea>
+            <div class="field-meta"><span class="field-hint">Used as evidence when provided.</span><span class="character-counter" id="referenceCounter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <div class="field">
+            <div class="field-top">
+              <label for="responseA">Response A <span class="required">*</span></label>
+              <span>REQUIRED</span>
+            </div>
+            <textarea id="responseA" name="responseA" class="response-box" maxlength="8000" required placeholder="Paste the first AI-generated response..."></textarea>
+            <div class="field-meta"><span class="field-hint">First response to evaluate.</span><span class="character-counter" id="responseACounter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <div class="field">
+            <div class="field-top">
+              <label for="responseB">Response B <span class="required">*</span></label>
+              <span>REQUIRED</span>
+            </div>
+            <textarea id="responseB" name="responseB" class="response-box" maxlength="8000" required placeholder="Paste the second AI-generated response..."></textarea>
+            <div class="field-meta"><span class="field-hint">Second response to evaluate.</span><span class="character-counter" id="responseBCounter" aria-live="polite">0 / 8,000</span></div>
+          </div>
+
+          <button id="compareButton" class="evaluate-button" type="submit">
+            <span>Compare Responses</span><span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+          <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="results-panel" aria-labelledby="resultsTitle">
+        <div class="panel-header">
+          <div>
+            <div class="panel-label">02</div>
+            <h2 id="resultsTitle">Comparison Results</h2>
+          </div>
+          <span id="resultState" class="panel-state waiting">WAITING</span>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-orb" aria-hidden="true">
+            <span class="orb-ring ring-one"></span>
+            <span class="orb-ring ring-two"></span>
+            A / B
+          </div>
+          <h3>Ready to compare</h3>
+          <p>Enter a prompt and two responses to compare.</p>
+        </div>
+
+        <div id="loadingState" class="loading-state hidden" role="status" aria-live="polite">
+          <span class="loading-spinner" aria-hidden="true"></span>
+          <h3>Comparing responses…</h3>
+          <p>Evaluating both responses across six quality dimensions.</p>
+        </div>
+
+        <div id="results" class="results hidden">
+          <section class="winner-card">
+            <div>
+              <div class="result-label">RECOMMENDED WINNER</div>
+              <div id="winnerValue" class="winner-value">—</div>
+            </div>
+            <div class="confidence-block">
+              <div class="result-label">CONFIDENCE</div>
+              <span id="confidenceValue" class="confidence-pill">—</span>
+            </div>
+          </section>
+
+          <section class="result-section">
+            <h3 class="result-section-title">Dimension-by-dimension comparison</h3>
+            <div class="dimension-table-wrap">
+              <table class="dimension-table">
+                <thead><tr><th>Dimension</th><th>Response A</th><th>Response B</th><th>Better</th></tr></thead>
+                <tbody id="dimensionRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="result-section">
+            <h3 class="result-section-title">Key differences</h3>
+            <ul id="keyDifferences" class="difference-list"></ul>
+          </section>
+
+          <section class="result-section issue-columns">
+            <div>
+              <h3 class="result-section-title">Issues in Response A</h3>
+              <div id="issuesA" class="issue-list"></div>
+            </div>
+            <div>
+              <h3 class="result-section-title">Issues in Response B</h3>
+              <div id="issuesB" class="issue-list"></div>
+            </div>
+          </section>
+
+          <section class="recommendation">
+            <div class="result-section-title">Final recommendation</div>
+            <p id="recommendationText"></p>
+            <p id="improvementText" class="improvement-text"></p>
+          </section>
+
+          <section id="comparisonFeedback" class="feedback-panel">
+            <p>Was this comparison helpful?</p>
+            <div class="feedback-actions" role="group" aria-label="Comparison feedback">
+              <button type="button" class="feedback-button" data-feedback="up" aria-pressed="false">👍 <span>Yes</span></button>
+              <button type="button" class="feedback-button" data-feedback="down" aria-pressed="false">👎 <span>No</span></button>
+            </div>
+            <div id="feedbackThanks" class="feedback-thanks" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
