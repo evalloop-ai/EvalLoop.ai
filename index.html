@@ -417,29 +417,52 @@ p {
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 32px;
-  margin-left: auto;
+  gap: 4px;
+  margin: 0 auto;
 }
 
-.nav-dropdown {
-  position: relative;
-  height: 76px;
-  display: flex;
-  align-items: center;
-}
-
+.desktop-nav > a,
 .nav-dropdown-trigger {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 0;
+  padding: 9px 13px;
   border: 0;
+  border-radius: 6px;
   background: transparent;
   color: var(--muted);
   font: inherit;
   font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
   cursor: pointer;
-  transition: color 0.25s ease;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+
+.desktop-nav > a:hover,
+.nav-dropdown:hover .nav-dropdown-trigger,
+.nav-dropdown:focus-within .nav-dropdown-trigger,
+.nav-dropdown-trigger[aria-expanded="true"] {
+  background: rgba(241, 241, 239, 0.05);
+  color: var(--ink);
+}
+
+.desktop-nav > a:focus-visible,
+.nav-dropdown-trigger:focus-visible {
+  outline: 1px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Dropdowns anchor to the header row so wide panels never overflow */
+.nav-inner {
+  position: relative;
+}
+
+.nav-dropdown {
+  position: static;
+  height: 76px;
+  display: flex;
+  align-items: center;
 }
 
 .nav-chevron {
@@ -450,12 +473,6 @@ p {
   transition: transform 0.3s var(--ease);
 }
 
-.nav-dropdown:hover .nav-dropdown-trigger,
-.nav-dropdown:focus-within .nav-dropdown-trigger,
-.nav-dropdown-trigger[aria-expanded="true"] {
-  color: var(--ink);
-}
-
 .nav-dropdown:hover .nav-chevron,
 .nav-dropdown:focus-within .nav-chevron,
 .nav-dropdown-trigger[aria-expanded="true"] .nav-chevron {
@@ -464,19 +481,26 @@ p {
 
 .nav-dropdown-menu {
   position: absolute;
-  top: calc(100% - 8px);
+  top: calc(100% - 6px);
   left: 50%;
   z-index: 200;
-  min-width: 250px;
+
+  width: min(700px, calc(100vw - 32px));
   padding: 8px;
+
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 8px;
+
   border: 1px solid var(--line);
-  border-radius: 5px;
+  border-radius: 12px;
   background: rgba(23, 27, 24, 0.98);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -8px) scale(0.97);
+  transform: translate(-50%, -8px) scale(0.98);
   transform-origin: top center;
   transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s var(--ease);
 }
@@ -490,43 +514,152 @@ p {
   transform: translate(-50%, 0) scale(1);
 }
 
-.nav-dropdown-menu a {
-  display: grid;
-  gap: 3px;
-  min-width: 232px;
-  padding: 12px 13px;
-  border-radius: 3px;
-  color: var(--ink);
-  font-size: 11px;
-  transition: background 0.2s ease, color 0.2s ease;
+.nav-menu-list {
+  padding: 8px 6px 6px;
 }
 
-.nav-dropdown-menu a:hover,
-.nav-dropdown-menu a:focus-visible {
+.nav-menu-label {
+  display: inline-block;
+  margin: 0 0 8px 8px;
+  padding: 5px 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: rgba(241, 241, 239, 0.04);
+  color: var(--green2);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.desktop-nav .nav-menu-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  color: var(--ink);
+  transition: background 0.2s ease;
+}
+
+.desktop-nav .nav-menu-item:hover,
+.desktop-nav .nav-menu-item:focus-visible {
   outline: none;
+  background: rgba(62, 207, 142, 0.07);
+}
+
+.nav-menu-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(62, 207, 142, 0.18);
+  border-radius: 8px;
   background: rgba(62, 207, 142, 0.09);
   color: var(--green2);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-dropdown-menu small {
+.nav-menu-icon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-menu-item:hover .nav-menu-icon,
+.nav-menu-item:focus-visible .nav-menu-icon {
+  background: rgba(62, 207, 142, 0.16);
+  border-color: rgba(62, 207, 142, 0.4);
+}
+
+.nav-menu-text strong {
+  display: block;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.nav-menu-text small {
+  display: block;
+  margin-top: 3px;
   color: var(--dim);
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 300;
+  line-height: 1.4;
 }
 
-.desktop-nav a,
+.nav-feature {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgba(19, 38, 28, 0.75), var(--panel2));
+}
+
+.nav-feature-tag {
+  color: var(--green2);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.nav-feature-bar {
+  height: 3px;
+  margin-top: 12px;
+  background: rgba(241, 241, 239, 0.08);
+}
+
+.nav-feature-bar span {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.25);
+}
+
+.nav-feature h4 {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.nav-feature p {
+  margin-top: 8px;
+  color: var(--dim);
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.desktop-nav .nav-feature-link {
+  color: var(--green2);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.desktop-nav .nav-feature-link:hover {
+  color: var(--ink);
+}
+
 .nav-login {
   color: var(--muted);
   font-size: 12px;
   font-weight: 400;
-
-  transition:
-    color 0.25s ease,
-    opacity 0.25s ease;
+  transition: color 0.25s ease;
 }
 
-.desktop-nav a:hover,
 .nav-login:hover {
   color: var(--ink);
 }
@@ -3417,19 +3550,48 @@ body.is-scrolling-down .section-kicker::after {
           </button>
 
           <div class="nav-dropdown-menu" role="menu">
-            <a href="/app/general_response.html" role="menuitem">
-              <span>Evaluate responses</span>
-              <small>General AI response test</small>
+          <div class="nav-menu-list">
+            <span class="nav-menu-label">EVALUATE</span>
+            <a href="/app/general_response.html" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>Evaluate responses</strong>
+                <small>General AI response test</small>
+              </span>
             </a>
-            <a href="/app/compare/" role="menuitem">
-              <span>Compare A/B responses</span>
-              <small>Response Comparison</small>
+            <a href="/app/compare/" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>Compare A/B responses</strong>
+                <small>Response Comparison</small>
+              </span>
             </a>
-            <a href="/app/safety/" role="menuitem">
-              <span>AI Safety check</span>
-              <small>AI response for safety risks</small>
+            <a href="/app/safety/" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>AI Safety check</strong>
+                <small>AI response for safety risks</small>
+              </span>
             </a>
           </div>
+          <div class="nav-feature">
+            <div>
+              <span class="nav-feature-tag">QUALITY SIGNAL</span>
+              <div class="nav-feature-bar"><span style="width:94.3%"></span></div>
+            </div>
+            <div>
+              <h4>Run your first evaluation</h4>
+              <p>Paste a prompt and response to get a scored quality view in seconds.</p>
+            </div>
+            <a href="/app/general_response.html" class="nav-feature-link">Start evaluating →</a>
+          </div>
+        </div>
         </div>
         <a href="/history/">Insights</a>
 
@@ -3444,19 +3606,48 @@ body.is-scrolling-down .section-kicker::after {
           </button>
 
           <div class="nav-dropdown-menu" role="menu">
-            <a href="/docs/" role="menuitem">
-              <span>Docs</span>
-              <small>Build with EvalLoop AI</small>
+          <div class="nav-menu-list">
+            <span class="nav-menu-label">RESOURCES</span>
+            <a href="/docs/" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>Docs</strong>
+                <small>Build with EvalLoop AI</small>
+              </span>
             </a>
-            <a href="/knowledge/" role="menuitem">
-              <span>Learn</span>
-              <small>Guides and evaluation basics</small>
+            <a href="/knowledge/" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>Learn</strong>
+                <small>Guides and evaluation basics</small>
+              </span>
             </a>
-            <a href="/blog/" role="menuitem">
-              <span>Blog</span>
-              <small>Ideas, updates, and research</small>
+            <a href="/blog/" class="nav-menu-item" role="menuitem">
+              <span class="nav-menu-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
+              </span>
+              <span class="nav-menu-text">
+                <strong>Blog</strong>
+                <small>Ideas, updates, and research</small>
+              </span>
             </a>
           </div>
+          <div class="nav-feature">
+            <div>
+              <span class="nav-feature-tag">START HERE</span>
+              <div class="nav-feature-bar"><span style="width:60%"></span></div>
+            </div>
+            <div>
+              <h4>Evaluation basics</h4>
+              <p>New to AI evaluation? Learn how factuality, relevance, and safety signals work.</p>
+            </div>
+            <a href="/knowledge/" class="nav-feature-link">Read the guide →</a>
+          </div>
+        </div>
         </div>
 
         <a href="/pricing/">Pricing</a>
